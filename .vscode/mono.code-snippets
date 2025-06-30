@@ -1,0 +1,33 @@
+{
+	"Mono": {
+		"prefix": "mono",
+		"body": [
+			"using UnityEngine;",
+			"using System.Collections;",
+			"using System.Collections.Generic;",
+			"",
+			"public class ${1} : MonoBehaviour {",
+			"\t$0",
+			"}"
+		]
+	},
+	"ScriptableObject": {
+		"prefix": "scriptobj",
+		"body": [
+			"using UnityEngine;",
+			"using System.Collections;",
+			"using System.Collections.Generic;",
+			"",
+			"[CreateAssetMenu(menuName = \"Data/$1\")]",
+			"public class ${1} : ScriptableObject {",
+			"\t$0",
+			"}"
+		]
+	},
+	"DebugLog": {
+		"prefix": "dbl",
+		"body": [
+			"Debug.Log(\"${1}\");"
+		]
+	}
+}
