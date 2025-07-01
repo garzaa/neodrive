@@ -89,46 +89,15 @@ public class Car : MonoBehaviour {
         }
 
         UpdateSteering();
-        if (grounded && false) {
-            float flatSpeed = Vector3.Dot(rb.velocity, -transform.forward);
-            float steeringDegrees = currentSteerAngle;
-            // so the car wants to turn this much in degrees?
-
-            float turnRate = steeringDegrees * (flatSpeed*settings.steeringMult) * Time.fixedDeltaTime;
-            // ok now, calculate how much stress that would put on the car
-            // and then modulate throttle/reduce skidding accordigly
-            // compute deltav as direction change - vector subtraction (new - old) with rb2d velocity
-
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, turnRate, 0));
-            rb.velocity = Quaternion.Euler(0, turnRate, 0) * rb.velocity;
-            float lateralAccel = Vector3.Dot(rb.velocity - vLastFrame, transform.right);
-            float gForce = (lateralAccel * rb.mass) / Mathf.Abs(Physics.gravity.y);
-            gForceIndicator.rectTransform.localScale = new Vector3(gForce, 1, 1);
-            gForceText.text = gForce.ToString("F2");
-
-            // then if not sliding, eliminate sideways velocity
-            Vector3 sidewaysSpeed = Vector3.Project(rb.velocity, transform.right);
-            rb.velocity -= sidewaysSpeed;
-
-            if (flatSpeed < 0.1f) {
-                // instead of doing this, slowly reduce its magnitude
-                // and account for steering and all that shit
-                rb.angularVelocity = Vector3.zero;
-            }
-
-            // goddamn it also has angular velocity after moving around. stop that somehow
-        }
-
         if (grounded) {
-            // ok so try the horizontal acceleration at the steering column point
+            // TODO: combine the axis based steering into one function
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 float steeringDegrees = currentSteerAngle;
                 float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(frontAxle), Quaternion.Euler(0, steeringDegrees, 0) * transform.right);
                 // the wheels want to halt all sideways velocity
-                // this will slow down the drift later, but no worries for now, we know how much we're losing
-                float lateralAccel = -lateralSpeed / Time.fixedDeltaTime;
-                float lateralForce = lateralAccel * rb.mass;
-                rb.AddForceAtPosition(transform.right * lateralForce * 0.1f, frontAxle);
+                // ok this is actually globally
+                float lateralAccel = -lateralSpeed * 0.5f / Time.fixedDeltaTime;
+                rb.AddForceAtPosition(Quaternion.Euler(0, steeringDegrees, 0) * transform.right * lateralAccel * rb.mass, frontAxle);
             }
 
             if (WheelRL.Grounded || WheelRR.Grounded) {
@@ -136,8 +105,7 @@ public class Car : MonoBehaviour {
                 // the wheels want to halt all sideways velocity
                 // hmm, why does this need to be halved to not go insane
                 float lateralAccel = -lateralSpeed * 0.5f / Time.fixedDeltaTime;
-                float lateralForce = lateralAccel * rb.mass;
-                rb.AddForceAtPosition(transform.right * lateralForce, rearAxle);
+                rb.AddForceAtPosition(transform.right * lateralAccel * rb.mass, rearAxle);
                 
                 float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
                 gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
