@@ -13,8 +13,17 @@ MonoBehaviour:
   m_Name: CarSettings
   m_EditorClassIdentifier: 
   suspensionTravel: 0.16
-  springStrength: 25
-  springDamper: 2
+  springStrength: 300
+  springDamper: 50
   wheelRaycast:
     serializedVersion: 2
     m_Bits: 8
+  lateralSkidThreshold: 10
+  accelForce: 200
+  brakeForce: 250
+  maxSpeed: 60
+  maxSteerAngle: 30
+  steerSpeed: 5
+  maxAngularVelocity: 20
+  steeringMult: 0.3
+  maxCorneringForce: 10

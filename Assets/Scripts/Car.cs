@@ -2,37 +2,144 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using UnityEditorInternal;
+using System;
+using Unity.VisualScripting;
 
 public class Car : MonoBehaviour {
 
     public GameObject wheelTemplate;
-    public Transform WheelFL, WheelFR, WheelRL, WheelRR;
+    public Wheel WheelFL, WheelFR, WheelRL, WheelRR;
     public CarSettings settings;
     public GameObject centerOfGravity;
 
-    Rigidbody rb;
+    public float gas;
+    public float brake;
+    public float steering;
+
+    Vector3 forceCenter;
+    Vector3 vLastFrame;
+    Vector3 posLastFrame;
+
+    public Rigidbody rb { get; private set; }
+    public bool grounded { get; private set; }
+    Wheel[] wheels;
+
+    public Text speedText;
+    public float currentSteerAngle;
+    public Image gForceIndicator;
+    public Text gForceText;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
-        if (WheelFL.transform.childCount == 0) {
-            AddWheels();
-        }
         rb.centerOfMass = centerOfGravity.transform.localPosition;
+        wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
     }
 
     void Update() {
-        
+        gas = InputManager.GetAxis(Buttons.GAS);
+        brake = InputManager.GetAxis(Buttons.BRAKE);
+        steering = InputManager.GetAxis(Buttons.STEER);
     }
 
-    [ContextMenu("Add Wheels")]
-    void AddWheels() {
-        rb = GetComponent<Rigidbody>();
-        foreach (Transform t in new Transform[]{WheelFL, WheelFR, WheelRL, WheelRR}) {
-            GameObject g = Instantiate(wheelTemplate, t);
-            g.transform.localPosition = Vector3.zero;
-            g.transform.localScale = Vector3.one;
-            g.transform.localRotation = Quaternion.identity;
-            g.GetComponent<FixedJoint>().connectedBody = rb;
+    void FixedUpdate() {
+        grounded = false;
+        int groundedWheelCount = 0;
+        Vector3 wheelCenter = Vector3.zero;
+        foreach (Wheel w in wheels) {
+            if (w.Grounded) {
+                grounded = true;
+                wheelCenter += w.transform.position;
+                groundedWheelCount++;
+            }
         }
+        wheelCenter /= groundedWheelCount;
+
+        // if wheel upwards force is similar, add force at the center of mass
+        Vector3 FLForce, FRForce, RLForce, RRForce;
+        FLForce = WheelFL.GetSuspensionForce();
+        FRForce = WheelFR.GetSuspensionForce();
+        RLForce = WheelRL.GetSuspensionForce();
+        RRForce = WheelRR.GetSuspensionForce();
+
+        WheelFL.AddForce(FLForce);
+        WheelFR.AddForce(FRForce);
+        WheelRL.AddForce(RLForce);
+        WheelRR.AddForce(RRForce);
+
+        if (WheelRR.Grounded || WheelRL.Grounded) {
+            int mult = InputManager.Button(Buttons.REVERSE) ? -1 : 1;
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, -transform.forward);
+            if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
+                rb.AddForce(-transform.forward * settings.accelForce*gas*mult);
+            }
+        }
+
+        if (brake > 0 && grounded) {
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, -transform.forward);
+            if (MPH(flatSpeed.magnitude) < 1) {
+                rb.velocity -= flatSpeed;
+            } else {
+                rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
+            }
+        }
+
+        UpdateSteering();
+        if (grounded) {
+            float flatSpeed = Vector3.Dot(rb.velocity, -transform.forward);
+            float steeringDegrees = currentSteerAngle;
+            // so the car wants to turn this much in degrees?
+
+            float turnRate = steeringDegrees * (flatSpeed*settings.steeringMult) * Time.fixedDeltaTime;
+            // ok now, calculate how much stress that would put on the car
+            // and then modulate throttle/reduce skidding accordigly
+            // compute deltav as direction change - vector subtraction (new - old) with rb2d velocity
+
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, turnRate, 0));
+            rb.velocity = Quaternion.Euler(0, turnRate, 0) * rb.velocity;
+            float lateralAccel = Vector3.Dot(rb.velocity - vLastFrame, transform.right);
+            float gForce = (lateralAccel * rb.mass) / Mathf.Abs(Physics.gravity.y);
+            gForceIndicator.rectTransform.localScale = new Vector3(gForce, 1, 1);
+            gForceText.text = gForce.ToString("F2");
+
+            // then if not sliding, eliminate sideways velocity
+            Vector3 sidewaysSpeed = Vector3.Project(rb.velocity, transform.right);
+            rb.velocity -= sidewaysSpeed;
+
+            if (flatSpeed < 0.1f) {
+                // instead of doing this, slowly reduce its magnitude
+                // and account for steering and all that shit
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            // goddamn it also has angular velocity after moving around. stop that somehow
+        }
+        
+        
+        posLastFrame = rb.position;
+        vLastFrame = rb.velocity;
+        UpdateTelemetry();
+    }
+
+    void UpdateTelemetry() {
+        speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
+    }
+
+    void UpdateSteering() {
+        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sin(steering);
+        if (steering == 0) {
+            targetSteerAngle = 0;
+        }
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed);
+
+        Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
+        WheelFL.transform.localRotation = targetRotation;
+        WheelFR.transform.localRotation = targetRotation;
+        currentSteerAngle = steerAngle;
+    }
+
+    float MPH(float speed) {
+        return speed * 2.2369362912f;
     }
 }

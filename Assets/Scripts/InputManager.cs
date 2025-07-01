@@ -10,7 +10,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public static Vector2 CameraStick() {
-        Vector2 v = new Vector2(
+        Vector2 v = new(
             player.GetAxis(Buttons.CAM_X),
             player.GetAxis(Buttons.CAM_Y)
         );

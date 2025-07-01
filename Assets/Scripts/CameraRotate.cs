@@ -25,15 +25,15 @@ public class CameraRotate : MonoBehaviour {
             }
         }
 
-        Vector3 stickRotation = new Vector3(v.x, 0, v.y);
-
         Quaternion airAim = Quaternion.identity;
         // if (!car.IsGrounded()) {
-        //     Vector3 cv = car.carBody.velocity.normalized;
-        //     // does not work
-        //     // airAim = Quaternion.LookRotation(new Vector3(cv.x, cv.y, cv.z), transform.up);
+        //     Vector3 cv = car.rb.velocity.normalized;
+        //     // makes grounded camera spaz out
+        //     airAim = Quaternion.LookRotation(new Vector3(cv.x, cv.y, cv.z), transform.up);
         // }
 
-        transform.localRotation = Quaternion.LookRotation(new Vector3(v.x, 0, v.y), transform.up) * airAim;
+        // this should be a rotation fromEuler just to actually understand what's going on here
+        float rotationAngle = Vector3.SignedAngle(Vector3.forward, new Vector3(v.x, 0, v.y), Vector3.up);
+        transform.localRotation = Quaternion.Euler(0, rotationAngle, 0);
     }   
 }

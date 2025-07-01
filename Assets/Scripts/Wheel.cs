@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
 
 public class Wheel : MonoBehaviour {
 	Car car;
-	Rigidbody carRB;
 	CarSettings settings;
 	RaycastHit raycastHit = new();
 	
@@ -13,28 +14,29 @@ public class Wheel : MonoBehaviour {
 
 	public bool Grounded;
 
-	float wheelRadius;
+	public float wheelRadius;
 	public float suspensionCompression;
 	public float suspensionCompressionLastStep;
 	public Vector3 suspensionForce;
 
 	const float springTarget = 0;
 
+	public float rpm;
+
+	public Text groundedText;
+	public Image compressionBar;
+
+	Color c;
+
+	public bool reverseRotation;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
-		carRB = car.GetComponent<Rigidbody>();
 		settings = car.settings;
 		wheelMesh = wheelObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * wheelObject.transform.localScale.x);
-	}
-
-	void FixedUpdate() {
-		UpdateSuspension();
-		UpdateWheel();
-
-		if (Grounded) {
-			carRB.AddForceAtPosition(suspensionForce, transform.position);
-		}
+		groundedText = GetComponentInChildren<Text>();
+		compressionBar = GetComponentsInChildren<Image>()[1];
 	}
 
 	public void OnDrawGizmosSelected() {
@@ -57,10 +59,12 @@ public class Wheel : MonoBehaviour {
             point0 = point1;
  
         }
+		Gizmos.DrawWireSphere(transform.position, wheelRadius);
+		Gizmos.DrawWireSphere(transform.position - (transform.up * settings.suspensionTravel) - (wheelRadius*transform.up), wheelRadius);
         Gizmos.color = Color.white;
     }
 
-	void UpdateSuspension() {
+	public Vector3 GetSuspensionForce() {
 		bool hit = Physics.Raycast(
 			new Ray(transform.position, -transform.up),
 			out raycastHit,
@@ -68,25 +72,60 @@ public class Wheel : MonoBehaviour {
 			settings.wheelRaycast
 		);
 
+		// // really annoying how this breaks if it overlaps the ground at all
+		// bool hit = Physics.SphereCast(
+		// 	transform.position,
+		// 	wheelRadius*0.95f,
+		// 	-transform.up,
+		// 	out raycastHit,
+		// 	settings.suspensionTravel + wheelRadius,
+		// 	settings.wheelRaycast
+		// );
+
 		if (hit) {
 			Grounded = true;
 			suspensionCompression = settings.suspensionTravel
 				+ wheelRadius
 				- (raycastHit.point - transform.position).magnitude;
-			// spring force
-			// 0.1 - 0.25 * 0
-			suspensionForce = transform.up * (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength;
-			// damping force
-			suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
 		} else {
-			suspensionCompression = 0;
 			Grounded = false;
+			suspensionCompression = 0;
 		}
 
+		suspensionForce = transform.up * (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength;
+		suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
+
 		suspensionCompressionLastStep = suspensionCompression;
+		UpdateWheel();
+		UpdateTelemetry();
+		return suspensionForce;
+	}
+
+	void UpdateTelemetry() {
+        c = groundedText.color;
+        c.a = Grounded ? 1 : 0.1f;
+        groundedText.color = c;
+
+		compressionBar.rectTransform.sizeDelta = new Vector2(
+            compressionBar.rectTransform.sizeDelta.x,
+            (suspensionCompression / (settings.suspensionTravel))
+        );
+	}
+
+	public void AddForce(Vector3 f) {
+		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
 	void UpdateWheel() {
-		wheelObject.transform.position = transform.position - Vector3.up * (settings.suspensionTravel - suspensionCompression);
+		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
+		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
+		// get wheel position against the ground
+		float forwardsVelocity = Vector3.Dot(car.rb.velocity, -transform.forward);
+		if (forwardsVelocity != 0) {
+			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
+			float deg = 360f * (forwardsVelocity/wheelCircumference) * Time.fixedDeltaTime;
+			v.z += deg * (reverseRotation ? -1 : 1);
+			wheelObject.transform.localRotation = Quaternion.Euler(v);
+		}
 	}
 }

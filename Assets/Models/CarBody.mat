@@ -217,11 +217,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _1st2nd_Shades_Feather: 0.092
+    - _1st2nd_Shades_Feather: 0.291
     - _1st_ShadeColor_Feather: 0.0001
     - _1st_ShadeColor_Step: 0.736
-    - _2nd_ShadeColor_Feather: 0.092
-    - _2nd_ShadeColor_Step: 0.611
+    - _2nd_ShadeColor_Feather: 0.291
+    - _2nd_ShadeColor_Step: 0.588
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ARSampler_AlphaOn: 0
@@ -402,7 +402,7 @@ Material:
     - _SecondShadeOverridden: 0
     - _SecondShadeVisible: 1
     - _Set_SystemShadowsToBase: 1
-    - _ShadeColor_Step: 0.611
+    - _ShadeColor_Step: 0.588
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -462,8 +462,8 @@ Material:
     - _Unlit_Intensity: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _Use_1stAs2nd: 0
-    - _Use_BaseAs1st: 0
+    - _Use_1stAs2nd: 1
+    - _Use_BaseAs1st: 1
     - _ZOverDrawMode: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
