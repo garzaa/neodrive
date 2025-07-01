@@ -8,6 +8,7 @@ public class Wheel : MonoBehaviour {
 	Car car;
 	CarSettings settings;
 	RaycastHit raycastHit = new();
+	RaycastHit[] hits;
 	
 	Mesh wheelMesh;
 	public GameObject wheelObject;
@@ -30,6 +31,8 @@ public class Wheel : MonoBehaviour {
 
 	public bool reverseRotation;
 
+	Rigidbody wheelRB;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
@@ -37,6 +40,7 @@ public class Wheel : MonoBehaviour {
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * wheelObject.transform.localScale.x);
 		groundedText = GetComponentInChildren<Text>();
 		compressionBar = GetComponentsInChildren<Image>()[1];
+		wheelRB = GetComponent<Rigidbody>();
 	}
 
 	public void OnDrawGizmosSelected() {
@@ -65,22 +69,16 @@ public class Wheel : MonoBehaviour {
     }
 
 	public Vector3 GetSuspensionForce() {
+		// TODO: if you really want a circle, just gotta generate a bunch of 
+		// rays at the start and use those. like a big semicircle on the bottom
+		// of the wheel. PAIN AND SUFFERING.
+		// they should go up from the center, nbot move the cente down
 		bool hit = Physics.Raycast(
 			new Ray(transform.position, -transform.up),
 			out raycastHit,
 			settings.suspensionTravel + wheelRadius,
 			settings.wheelRaycast
 		);
-
-		// // really annoying how this breaks if it overlaps the ground at all
-		// bool hit = Physics.SphereCast(
-		// 	transform.position,
-		// 	wheelRadius*0.95f,
-		// 	-transform.up,
-		// 	out raycastHit,
-		// 	settings.suspensionTravel + wheelRadius,
-		// 	settings.wheelRaycast
-		// );
 
 		if (hit) {
 			Grounded = true;

@@ -217,10 +217,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _1st2nd_Shades_Feather: 0.092
-    - _1st_ShadeColor_Feather: 0.0001
+    - _1st2nd_Shades_Feather: 0.31
+    - _1st_ShadeColor_Feather: 0.268
     - _1st_ShadeColor_Step: 0.736
-    - _2nd_ShadeColor_Feather: 0.092
+    - _2nd_ShadeColor_Feather: 0.31
     - _2nd_ShadeColor_Step: 0.611
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -250,7 +250,7 @@ Material:
     - _BaseColorOverridden: 0
     - _BaseColorVisible: 1
     - _BaseColor_Step: 0.736
-    - _BaseShade_Feather: 0.0001
+    - _BaseShade_Feather: 0.268
     - _Base_Speed: 0
     - _BlendMode: 0
     - _BlurLevelMatcap: 0

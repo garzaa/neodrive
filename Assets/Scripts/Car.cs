@@ -68,6 +68,9 @@ public class Car : MonoBehaviour {
         WheelRL.AddForce(RLForce);
         WheelRR.AddForce(RRForce);
 
+        Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
+        Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
+
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = InputManager.Button(Buttons.REVERSE) ? -1 : 1;
             Vector3 flatSpeed = Vector3.Project(rb.velocity, -transform.forward);
@@ -86,7 +89,7 @@ public class Car : MonoBehaviour {
         }
 
         UpdateSteering();
-        if (grounded) {
+        if (grounded && false) {
             float flatSpeed = Vector3.Dot(rb.velocity, -transform.forward);
             float steeringDegrees = currentSteerAngle;
             // so the car wants to turn this much in degrees?
@@ -114,6 +117,32 @@ public class Car : MonoBehaviour {
             }
 
             // goddamn it also has angular velocity after moving around. stop that somehow
+        }
+
+        if (grounded) {
+            // ok so try the horizontal acceleration at the steering column point
+            if (WheelFL.Grounded || WheelFR.Grounded) {
+                float steeringDegrees = currentSteerAngle;
+                float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(frontAxle), Quaternion.Euler(0, steeringDegrees, 0) * transform.right);
+                // the wheels want to halt all sideways velocity
+                // this will slow down the drift later, but no worries for now, we know how much we're losing
+                float lateralAccel = -lateralSpeed / Time.fixedDeltaTime;
+                float lateralForce = lateralAccel * rb.mass;
+                rb.AddForceAtPosition(transform.right * lateralForce * 0.1f, frontAxle);
+            }
+
+            if (WheelRL.Grounded || WheelRR.Grounded) {
+                float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(rearAxle), transform.right);
+                // the wheels want to halt all sideways velocity
+                // hmm, why does this need to be halved to not go insane
+                float lateralAccel = -lateralSpeed * 0.5f / Time.fixedDeltaTime;
+                float lateralForce = lateralAccel * rb.mass;
+                rb.AddForceAtPosition(transform.right * lateralForce, rearAxle);
+                
+                float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
+                gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
+                gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+            }
         }
         
         
