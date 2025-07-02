@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ec1f38951394047a2a14bc60cb5e68, type: 3}
   m_Name: CarSettings
   m_EditorClassIdentifier: 
-  suspensionTravel: 0.16
-  springStrength: 300
+  suspensionTravel: 0.1
+  springStrength: 400
   springDamper: 50
   wheelRaycast:
     serializedVersion: 2
@@ -27,3 +27,6 @@ MonoBehaviour:
   maxAngularVelocity: 20
   steeringMult: 0.3
   maxCorneringForce: 10
+  tireSlip: 0.5
+  diffRatio: 3
+  gear1Ratio: 2.5

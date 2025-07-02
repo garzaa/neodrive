@@ -9,6 +9,9 @@ public class Wheel : MonoBehaviour {
 	CarSettings settings;
 	RaycastHit raycastHit = new();
 	RaycastHit[] hits;
+
+	const int wheelRays = 16;
+	readonly Vector3[] wheelCastRays = new Vector3[wheelRays];
 	
 	Mesh wheelMesh;
 	public GameObject wheelObject;
@@ -27,8 +30,6 @@ public class Wheel : MonoBehaviour {
 	public Text groundedText;
 	public Image compressionBar;
 
-	Color c;
-
 	public bool reverseRotation;
 
 	Rigidbody wheelRB;
@@ -41,6 +42,41 @@ public class Wheel : MonoBehaviour {
 		groundedText = GetComponentInChildren<Text>();
 		compressionBar = GetComponentsInChildren<Image>()[1];
 		wheelRB = GetComponent<Rigidbody>();
+		GenerateRays();
+	}
+
+	void GenerateRays() {
+		for (int i=0; i<16; i++) {
+			float angle = Mathf.Deg2Rad * (i/(float)wheelRays * -180f);
+			wheelCastRays[i] = new Vector3(
+				0,
+				Mathf.Sin(angle) * wheelRadius,
+				Mathf.Cos(angle) * wheelRadius
+			);
+		}
+	}
+
+	public bool GetRaycast() {
+		// get the nearest raycast out of the arc of wheel raycasts
+		float minDist = float.MaxValue;
+		bool hasHit = false;
+		foreach (Vector3 rayOffset in wheelCastRays) {
+			if (Physics.Raycast(
+				new Ray(transform.position + rayOffset + transform.up*wheelRadius, -transform.up),
+				out RaycastHit tempHit,
+				settings.suspensionTravel + wheelRadius,
+				settings.wheelRaycast
+			))
+			{
+				hasHit = true;
+				if (tempHit.distance < minDist)
+				{
+					minDist = tempHit.distance;
+					raycastHit = tempHit;
+				}
+			}
+		}
+		return hasHit;
 	}
 
 	public void OnDrawGizmosSelected() {
@@ -63,22 +99,16 @@ public class Wheel : MonoBehaviour {
             point0 = point1;
  
         }
-		Gizmos.DrawWireSphere(transform.position, wheelRadius);
-		Gizmos.DrawWireSphere(transform.position - (transform.up * settings.suspensionTravel) - (wheelRadius*transform.up), wheelRadius);
         Gizmos.color = Color.white;
+
+		Gizmos.color = Color.cyan;
+		foreach (Vector3 r in wheelCastRays) {
+			Gizmos.DrawRay(transform.position + r + transform.up*wheelRadius, -transform.up * (settings.suspensionTravel+wheelRadius));
+		}
     }
 
 	public Vector3 GetSuspensionForce() {
-		// TODO: if you really want a circle, just gotta generate a bunch of 
-		// rays at the start and use those. like a big semicircle on the bottom
-		// of the wheel. PAIN AND SUFFERING.
-		// they should go up from the center, nbot move the cente down
-		bool hit = Physics.Raycast(
-			new Ray(transform.position, -transform.up),
-			out raycastHit,
-			settings.suspensionTravel + wheelRadius,
-			settings.wheelRaycast
-		);
+		bool hit = GetRaycast();
 
 		if (hit) {
 			Grounded = true;
@@ -100,13 +130,9 @@ public class Wheel : MonoBehaviour {
 	}
 
 	void UpdateTelemetry() {
-        c = groundedText.color;
-        c.a = Grounded ? 1 : 0.1f;
-        groundedText.color = c;
-
 		compressionBar.rectTransform.sizeDelta = new Vector2(
             compressionBar.rectTransform.sizeDelta.x,
-            (suspensionCompression / (settings.suspensionTravel))
+            suspensionCompression / settings.suspensionTravel
         );
 	}
 

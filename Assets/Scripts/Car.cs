@@ -30,6 +30,7 @@ public class Car : MonoBehaviour {
     public float currentSteerAngle;
     public Image gForceIndicator;
     public Text gForceText;
+    public Text rpmText;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -45,16 +46,11 @@ public class Car : MonoBehaviour {
 
     void FixedUpdate() {
         grounded = false;
-        int groundedWheelCount = 0;
-        Vector3 wheelCenter = Vector3.zero;
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
-                wheelCenter += w.transform.position;
-                groundedWheelCount++;
             }
         }
-        wheelCenter /= groundedWheelCount;
 
         // if wheel upwards force is similar, add force at the center of mass
         Vector3 FLForce, FRForce, RLForce, RRForce;
@@ -75,7 +71,7 @@ public class Car : MonoBehaviour {
             int mult = InputManager.Button(Buttons.REVERSE) ? -1 : 1;
             Vector3 flatSpeed = Vector3.Project(rb.velocity, -transform.forward);
             if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
-                rb.AddForce(-transform.forward * settings.accelForce*gas*mult);
+                rb.AddForceAtPosition(-transform.forward * settings.accelForce*gas*mult, rearAxle);
             }
         }
 
@@ -90,37 +86,44 @@ public class Car : MonoBehaviour {
 
         UpdateSteering();
         if (grounded) {
-            // TODO: combine the axis based steering into one function
             if (WheelFL.Grounded || WheelFR.Grounded) {
-                float steeringDegrees = currentSteerAngle;
-                float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(frontAxle), Quaternion.Euler(0, steeringDegrees, 0) * transform.right);
-                // the wheels want to halt all sideways velocity
-                // ok this is actually globally
-                float lateralAccel = -lateralSpeed * 0.5f / Time.fixedDeltaTime;
-                rb.AddForceAtPosition(Quaternion.Euler(0, steeringDegrees, 0) * transform.right * lateralAccel * rb.mass, frontAxle);
+                // rotate the lateral for the front axle by the amount of steering
+                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right);
             }
 
             if (WheelRL.Grounded || WheelRR.Grounded) {
-                float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(rearAxle), transform.right);
-                // the wheels want to halt all sideways velocity
-                // hmm, why does this need to be halved to not go insane
-                float lateralAccel = -lateralSpeed * 0.5f / Time.fixedDeltaTime;
-                rb.AddForceAtPosition(transform.right * lateralAccel * rb.mass, rearAxle);
-                
+                float lateralAccel = AddLateralForce(rearAxle, transform.right);
                 float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
                 gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
                 gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
             }
         }
-        
-        
         posLastFrame = rb.position;
         vLastFrame = rb.velocity;
         UpdateTelemetry();
     }
 
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal) {
+        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
+        // why does this need to be halved? unsure
+        float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
+        return lateralAccel;
+    }
+
+    float GetTireSlip(float lateralSpeed) {
+        // fill this in later
+        return settings.tireSlip;
+    }
+
     void UpdateTelemetry() {
         speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
+
+        // show engine telemetry text (just RPM for now)
+        float flatSpeed = MPH(Vector3.Dot(rb.velocity, -transform.forward));
+        // 150RPM at 60 MPH? somethiing is wrong here lol
+        float engineRPM = flatSpeed * settings.diffRatio * settings.gear1Ratio / (WheelRL.wheelRadius * 2f * Mathf.PI);
+        rpmText.text = engineRPM.ToString("F0");
     }
 
     void UpdateSteering() {

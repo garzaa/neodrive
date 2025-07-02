@@ -25,4 +25,9 @@ public class CarSettings : ScriptableObject {
 	public float steeringMult = 0.1f;
 	[Header("Force, in Gs, that the car can hold before it starts skidding")]
 	public float maxCorneringForce = 1.5f;
+	public float tireSlip = 0.5f;
+
+	[Header("Engine")]
+	public float diffRatio = 5f;
+	public float gear1Ratio = 2.5f;
 }
