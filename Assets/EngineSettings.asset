@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redline: 8000
   fuelCutoff: 0.6
-  engineBraking: 1
-  diffRatio: 4
+  engineBraking: 4
+  diffRatio: 3
   startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
   stallNoise: {fileID: 8300000, guid: 7041cc6f1fd128b4d87cba386f7afdd3, type: 3}
   idleRPM: 1800
@@ -94,7 +94,7 @@ MonoBehaviour:
     throttleOffAudio: {fileID: 0}
   gearRatios:
   - 2.5
-  - 2
+  - 1.8
   - 1.5
   - 1.2
   - 1
