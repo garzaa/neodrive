@@ -29,7 +29,7 @@ public class RPMPoint {
 public class EngineSettings : ScriptableObject {
 	public int redline = 8000;
 	public float fuelCutoff = 0.6f;
-	public float engineBraking = 0.2f;
+	public float engineBraking = 2f;
 	public float diffRatio = 4f;
 
 	public AudioClip startupNoise;

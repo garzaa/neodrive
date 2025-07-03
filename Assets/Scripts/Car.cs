@@ -109,8 +109,12 @@ public class Car : MonoBehaviour {
             }
         }
         
-        if (InputManager.ButtonDown(Buttons.STARTENGINE) && !engineRunning && !engineStarting) {
-            StartCoroutine(StartEngine());
+        if (InputManager.ButtonDown(Buttons.STARTENGINE)) {
+            if (!engineRunning && !engineStarting) {
+                StartCoroutine(StartEngine());
+            } else {
+                engineRunning = false;
+            }
         }
     }
 
@@ -220,13 +224,20 @@ public class Car : MonoBehaviour {
 
         // anti-stall check before I write the clutch
         if (engineRunning && engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
-            engineAudio.PlayOneShot(engine.stallNoise);
-            rb.AddForce(-Vector3.Project(rb.velocity, forwardVector)*0.8f / Time.fixedDeltaTime, ForceMode.Acceleration);
-            engineRunning = false;
+            StallEngine();
+        } else if (engineRPM > engine.redline+500) {
+            // money shift
+            StallEngine();
         }
 
         GetRPMPoint(engineRPM, gas);
         UpdateEngineLowPass();
+    }
+
+    void StallEngine() {
+        engineAudio.PlayOneShot(engine.stallNoise);
+        rb.AddForce(-Vector3.Project(rb.velocity, forwardVector)*0.8f / Time.fixedDeltaTime, ForceMode.Acceleration);
+        engineRunning = false;
     }
 
     void UpdateEngineLowPass() {
