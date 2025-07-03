@@ -47,7 +47,9 @@ public class Car : MonoBehaviour {
     int currentGear = 0;
     bool engineStarting = false;
     bool engineRunning = false;
-
+    
+    float engineChangeVelocity;
+    
     Camera mainCamera;
 
     Vector3 forwardVector { get {
@@ -86,8 +88,195 @@ public class Car : MonoBehaviour {
         }
     }
 
-    // TODO: optimize this
+    void Update() {
+        gas = InputManager.GetAxis(Buttons.GAS);
+        brake = InputManager.GetAxis(Buttons.BRAKE);
+        steering = InputManager.GetAxis(Buttons.STEER);
+        if (InputManager.DoubleTap(Buttons.GEARDOWN)) {
+            currentGear = -1;
+        }
+        if (InputManager.ButtonDown(Buttons.GEARDOWN)) {
+            if (currentGear > -1) {
+                // TODO: fix the reverse things
+                // speed should be absoluted or inverted in certain points (i.e. engineRPM)
+                currentGear--;
+                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+            }
+        } else if (InputManager.ButtonDown(Buttons.GEARUP)) {
+            if (currentGear < engine.gearRatios.Count) {
+                currentGear++;
+                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+            }
+        }
+        
+        if (InputManager.ButtonDown(Buttons.STARTENGINE) && !engineRunning && !engineStarting) {
+            StartCoroutine(StartEngine());
+        }
+    }
+
+    IEnumerator StartEngine() {
+        engineStarting = true;
+        engineAudio.PlayOneShot(engine.startupNoise);
+        yield return new WaitForSeconds(engine.startupNoise.length-0.2f);
+        engineStarting = false;
+        engineRunning = true;
+    }
+
+    void FixedUpdate() {
+        grounded = false;
+        foreach (Wheel w in wheels) {
+            if (w.Grounded) {
+                grounded = true;
+            }
+        }
+
+        // if wheel upwards force is similar, add force at the center of mass
+        Vector3 FLForce, FRForce, RLForce, RRForce;
+        FLForce = WheelFL.GetSuspensionForce();
+        FRForce = WheelFR.GetSuspensionForce();
+        RLForce = WheelRL.GetSuspensionForce();
+        RRForce = WheelRR.GetSuspensionForce();
+
+        WheelFL.AddForce(FLForce);
+        WheelFR.AddForce(FRForce);
+        WheelRL.AddForce(RLForce);
+        WheelRR.AddForce(RRForce);
+
+        Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
+        Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
+
+        if (WheelRR.Grounded || WheelRL.Grounded) {
+            int mult = currentGear < 0 ? -1 : 1;
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
+            if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0) {
+                if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
+                    rb.AddForceAtPosition(forwardVector * settings.accelForce*gas*mult, rearAxle);
+                }
+            } else {
+                rb.AddForce(Vector3.Project(rb.velocity, -forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
+            }
+        }
+
+        if (brake > 0 && grounded) {
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
+            if (MPH(flatSpeed.magnitude) < 1) {
+                rb.velocity -= flatSpeed;
+            } else {
+                rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
+            }
+        }
+
+        UpdateSteering();
+        if (grounded) {
+            if (WheelFL.Grounded || WheelFR.Grounded) {
+                // rotate the lateral for the front axle by the amount of steering
+                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right);
+            }
+
+            if (WheelRL.Grounded || WheelRR.Grounded) {
+                float lateralAccel = AddLateralForce(rearAxle, transform.right);
+                float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
+                gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
+                gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+            }
+
+            float flatSpeed = MPH(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
+            if (flatSpeed < 0.2f) {
+                wheelAudio.volume = 0;
+            } else {
+                wheelAudio.volume = 0.5f;
+                wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
+            }
+        } else {
+            wheelAudio.volume = 0;
+        }
+        posLastFrame = rb.position;
+        vLastFrame = rb.velocity;
+        UpdateEngine();
+        UpdateTelemetry();
+    }
+
+    void UpdateEngine() {
+        float flatSpeed = Mathf.Abs(MPH(Vector3.Dot(rb.velocity, forwardVector))) * Mathf.Sign(currentGear);
+        if (!engineRunning) {
+            engineRPM = 0;
+            if (engineStarting) {
+                engineRPM = 2400;
+            }
+        } else if (currentGear != 0) {
+            engineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+        } else if (currentGear == 0) {
+            float targetRPM = Mathf.Max(engine.idleRPM, fuelCutoff ? 0 : gas*engine.redline);
+            engineRPM = Mathf.MoveTowards(engineRPM, targetRPM, engine.throttleResponse * Time.fixedDeltaTime);
+        }
+
+        engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
+        if (engineRPM > engine.redline-100) {
+            fuelCutoff = true;
+            rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
+        } else {
+            fuelCutoff = false;
+        }
+
+        // anti-stall check before I write the clutch
+        if (engineRunning && engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
+            engineAudio.PlayOneShot(engine.stallNoise);
+            engineRunning = false;
+        }
+
+        GetRPMPoint(engineRPM, gas);
+        UpdateEngineLowPass();
+    }
+
+    void UpdateEngineLowPass() {
+        Vector3 towardsCamera = mainCamera.transform.position - engineAudio.transform.position;
+        float cameraEngineAngle = Vector3.Angle(forwardVector, Vector3.ProjectOnPlane(towardsCamera, transform.up));
+        if (cameraEngineAngle < 90) {
+            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", 5000);
+        } else {
+            cameraEngineAngle -= 90f;
+            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(5000, 22000, cameraEngineAngle/90f));
+        }
+    }
+
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal) {
+        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
+        float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
+        return lateralAccel;
+    }
+
+    float GetTireSlip(float lateralSpeed) {
+        // fill this in later
+        return settings.tireSlip;
+    }
+
+    void UpdateTelemetry() {
+        speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
+        rpmText.text = engineRPM.ToString("F0");
+        // zero-indexing
+        audioTelemetry.text = currentGear.ToString();
+    }
+
+    void UpdateSteering() {
+        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sin(steering);
+        if (steering == 0) {
+            targetSteerAngle = 0;
+        }
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed);
+
+        Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
+        WheelFL.transform.localRotation = targetRotation;
+        WheelFR.transform.localRotation = targetRotation;
+        currentSteerAngle = steerAngle;
+    }
+
+    float MPH(float speed) {
+        return speed * 2.2369362912f;
+    }
+
     void GetRPMPoint(float rpm, float gas) {
+        // profile and optimize this later
         // jesus christ, you need to have an audiosource for every single RPM point
         RPMPoint lowTarget = rpmPoints[0];
         RPMPoint highTarget = rpmPoints[0];
@@ -168,174 +357,5 @@ public class Car : MonoBehaviour {
         lowTarget.throttleOffAudio.pitch = targetLowPitch;
         highTarget.throttleAudio.pitch = targetHighPitch;
         highTarget.throttleOffAudio.pitch = targetHighPitch;
-    }
-
-    void Update() {
-        gas = InputManager.GetAxis(Buttons.GAS);
-        brake = InputManager.GetAxis(Buttons.BRAKE);
-        steering = InputManager.GetAxis(Buttons.STEER);
-        if (InputManager.ButtonDown(Buttons.GEARDOWN)) {
-            if (currentGear > 0) {
-                currentGear--;
-                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
-            }
-        } else if (InputManager.ButtonDown(Buttons.GEARUP)) {
-            if (currentGear < engine.gearRatios.Count-1) {
-                currentGear++;
-                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
-            }
-        }
-
-        if (InputManager.ButtonDown(Buttons.STARTENGINE)) {
-            Debug.Log("starting engine button");
-        }
-
-        if (InputManager.ButtonDown(Buttons.STARTENGINE) && !engineRunning && !engineStarting) {
-            StartCoroutine(StartEngine());
-        }
-    }
-
-    IEnumerator StartEngine() {
-        print("starting engine");
-        engineStarting = true;
-        engineAudio.PlayOneShot(engine.startupNoise);
-        yield return new WaitForSeconds(engine.startupNoise.length-0.2f);
-        engineStarting = false;
-        engineRunning = true;
-    }
-
-    void FixedUpdate() {
-        grounded = false;
-        foreach (Wheel w in wheels) {
-            if (w.Grounded) {
-                grounded = true;
-            }
-        }
-
-        // if wheel upwards force is similar, add force at the center of mass
-        Vector3 FLForce, FRForce, RLForce, RRForce;
-        FLForce = WheelFL.GetSuspensionForce();
-        FRForce = WheelFR.GetSuspensionForce();
-        RLForce = WheelRL.GetSuspensionForce();
-        RRForce = WheelRR.GetSuspensionForce();
-
-        WheelFL.AddForce(FLForce);
-        WheelFR.AddForce(FRForce);
-        WheelRL.AddForce(RLForce);
-        WheelRR.AddForce(RRForce);
-
-        Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
-        Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
-
-        if (WheelRR.Grounded || WheelRL.Grounded) {
-            int mult = InputManager.Button(Buttons.REVERSE) ? -1 : 1;
-            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (gas > 0 && !fuelCutoff && engineRunning) {
-                if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
-                    rb.AddForceAtPosition(forwardVector * settings.accelForce*gas*mult, rearAxle);
-                }
-            } else {
-                rb.AddForce(Vector3.Project(rb.velocity, -forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
-            }
-        }
-
-        if (brake > 0 && grounded) {
-            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (MPH(flatSpeed.magnitude) < 1) {
-                rb.velocity -= flatSpeed;
-            } else {
-                rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
-            }
-        }
-
-        UpdateSteering();
-        if (grounded) {
-            if (WheelFL.Grounded || WheelFR.Grounded) {
-                // rotate the lateral for the front axle by the amount of steering
-                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right);
-            }
-
-            if (WheelRL.Grounded || WheelRR.Grounded) {
-                float lateralAccel = AddLateralForce(rearAxle, transform.right);
-                float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
-                gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
-                gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
-            }
-
-            float flatSpeed = MPH(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
-            if (flatSpeed < 1f) {
-                wheelAudio.volume = 0;
-            } else {
-                wheelAudio.volume = 0.5f;
-                wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
-            }
-        }
-        posLastFrame = rb.position;
-        vLastFrame = rb.velocity;
-        UpdateEngine();
-        UpdateTelemetry();
-    }
-
-    void UpdateEngine() {
-        float flatSpeed = MPH(Vector3.Dot(rb.velocity, forwardVector));
-        engineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[currentGear] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
-
-        engineAnimator.speed = 1 + (engineRPM/engine.redline);
-        if (engineRPM > engine.redline-100) {
-            fuelCutoff = true;
-            rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
-        } else {
-            fuelCutoff = false;
-        }
-        engineRPM = Mathf.Max(engine.idleRPM, engineRPM);
-        GetRPMPoint(engineRPM, gas);
-        UpdateEngineLowPass();
-    }
-
-    void UpdateEngineLowPass() {
-        Vector3 towardsCamera = mainCamera.transform.position - engineAudio.transform.position;
-        float cameraEngineAngle = Vector3.Angle(forwardVector, Vector3.ProjectOnPlane(towardsCamera, transform.up));
-        if (cameraEngineAngle < 90) {
-            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", 5000);
-        } else {
-            cameraEngineAngle -= 90f;
-            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(5000, 22000, cameraEngineAngle/90f));
-        }
-    }
-
-    float AddLateralForce(Vector3 point, Vector3 lateralNormal) {
-        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
-        rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
-        return lateralAccel;
-    }
-
-    float GetTireSlip(float lateralSpeed) {
-        // fill this in later
-        return settings.tireSlip;
-    }
-
-    void UpdateTelemetry() {
-        speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
-        rpmText.text = engineRPM.ToString("F0");
-        // zero-indexing
-        audioTelemetry.text = (currentGear+1).ToString();
-    }
-
-    void UpdateSteering() {
-        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sin(steering);
-        if (steering == 0) {
-            targetSteerAngle = 0;
-        }
-        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed);
-
-        Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
-        WheelFL.transform.localRotation = targetRotation;
-        WheelFR.transform.localRotation = targetRotation;
-        currentSteerAngle = steerAngle;
-    }
-
-    float MPH(float speed) {
-        return speed * 2.2369362912f;
     }
 }

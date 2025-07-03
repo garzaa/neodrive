@@ -17,8 +17,10 @@ MonoBehaviour:
   engineBraking: 1
   diffRatio: 4
   startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
-  stallNoise: {fileID: 0}
-  idleRPM: 1500
+  stallNoise: {fileID: 8300000, guid: 7041cc6f1fd128b4d87cba386f7afdd3, type: 3}
+  idleRPM: 1800
+  stallRPM: 1000
+  throttleResponse: 6000
   rpmPoints:
   - rpm: 1800
     throttle: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}

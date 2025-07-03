@@ -346,7 +346,7 @@ MonoBehaviour:
       _mouseXYAxisDeltaCalc: 0
       _mouseOtherAxisSensitivity: 1
       _customControllerAxisSensitivity: 1
-      _buttonDoublePressSpeed: 0.3
+      _buttonDoublePressSpeed: 0.1
       _buttonShortPressTime: 0.25
       _buttonShortPressExpiresIn: 0
       _buttonLongPressTime: 1
