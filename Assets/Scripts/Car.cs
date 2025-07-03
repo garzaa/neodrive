@@ -153,7 +153,7 @@ public class Car : MonoBehaviour {
                     rb.AddForceAtPosition(forwardVector * settings.accelForce*gas*mult, rearAxle);
                 }
             } else {
-                rb.AddForce(Vector3.Project(rb.velocity, -forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
+                rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
         }
 
@@ -190,10 +190,10 @@ public class Car : MonoBehaviour {
         } else {
             wheelAudio.volume = 0;
         }
-        posLastFrame = rb.position;
-        vLastFrame = rb.velocity;
         UpdateEngine();
         UpdateTelemetry();
+        posLastFrame = rb.position;
+        vLastFrame = rb.velocity;
     }
 
     void UpdateEngine() {
@@ -221,6 +221,7 @@ public class Car : MonoBehaviour {
         // anti-stall check before I write the clutch
         if (engineRunning && engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
             engineAudio.PlayOneShot(engine.stallNoise);
+            rb.AddForce(-Vector3.Project(rb.velocity, forwardVector)*0.8f / Time.fixedDeltaTime, ForceMode.Acceleration);
             engineRunning = false;
         }
 

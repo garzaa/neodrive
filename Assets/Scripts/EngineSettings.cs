@@ -35,7 +35,7 @@ public class EngineSettings : ScriptableObject {
 	public AudioClip startupNoise;
 	public AudioClip stallNoise;
 	public float idleRPM = 1800;
-	public float stallRPM = 1000;
+	public float stallRPM = 1200;
 	public float throttleResponse = 6000f;
 	public List<RPMPoint> rpmPoints;
 	public List<float> gearRatios;
