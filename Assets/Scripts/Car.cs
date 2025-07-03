@@ -38,12 +38,15 @@ public class Car : MonoBehaviour {
     float maxEngineVolume;
     public AudioSource engineAudio;
     public AudioSource gearshiftAudio;
+    public AudioSource wheelAudio;
 
     List<RPMPoint> rpmPoints = new();
 
     public Text audioTelemetry;
-    public bool fuelCutoff = false;
+    bool fuelCutoff = false;
     int currentGear = 0;
+    bool engineStarting = false;
+    bool engineRunning = false;
 
     Camera mainCamera;
 
@@ -126,6 +129,11 @@ public class Car : MonoBehaviour {
             rpmPoints[i].throttleAudio.volume = 0;
             rpmPoints[i].throttleOffAudio.volume = 0;
         }
+
+        if (!engineRunning) {
+            return;
+        }
+
         // set the volume for low and high targets based on RPM
         float rpmRatio = (rpm - lowTarget.rpm) / (highTarget.rpm - lowTarget.rpm);
         float lowVolume = maxEngineVolume * (1-rpmRatio);
@@ -177,6 +185,23 @@ public class Car : MonoBehaviour {
                 gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
             }
         }
+
+        if (InputManager.ButtonDown(Buttons.STARTENGINE)) {
+            Debug.Log("starting engine button");
+        }
+
+        if (InputManager.ButtonDown(Buttons.STARTENGINE) && !engineRunning && !engineStarting) {
+            StartCoroutine(StartEngine());
+        }
+    }
+
+    IEnumerator StartEngine() {
+        print("starting engine");
+        engineStarting = true;
+        engineAudio.PlayOneShot(engine.startupNoise);
+        yield return new WaitForSeconds(engine.startupNoise.length-0.2f);
+        engineStarting = false;
+        engineRunning = true;
     }
 
     void FixedUpdate() {
@@ -205,7 +230,7 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = InputManager.Button(Buttons.REVERSE) ? -1 : 1;
             Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (gas > 0 && !fuelCutoff) {
+            if (gas > 0 && !fuelCutoff && engineRunning) {
                 if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
                     rb.AddForceAtPosition(forwardVector * settings.accelForce*gas*mult, rearAxle);
                 }
@@ -236,6 +261,14 @@ public class Car : MonoBehaviour {
                 gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
                 gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
             }
+
+            float flatSpeed = MPH(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
+            if (flatSpeed < 1f) {
+                wheelAudio.volume = 0;
+            } else {
+                wheelAudio.volume = 0.5f;
+                wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
+            }
         }
         posLastFrame = rb.position;
         vLastFrame = rb.velocity;
@@ -254,6 +287,7 @@ public class Car : MonoBehaviour {
         } else {
             fuelCutoff = false;
         }
+        engineRPM = Mathf.Max(engine.idleRPM, engineRPM);
         GetRPMPoint(engineRPM, gas);
         UpdateEngineLowPass();
     }

@@ -18,6 +18,7 @@ MonoBehaviour:
   diffRatio: 4
   startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
   stallNoise: {fileID: 0}
+  idleRPM: 1500
   rpmPoints:
   - rpm: 1800
     throttle: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}
@@ -90,12 +91,12 @@ MonoBehaviour:
     throttleAudio: {fileID: 0}
     throttleOffAudio: {fileID: 0}
   gearRatios:
-  - 3
   - 2.5
   - 2
   - 1.5
   - 1.2
   - 1
+  - 0.8
   gearShiftNoises:
   - {fileID: 8300000, guid: 222919f5c327e1a449b9c402bc2b1008, type: 3}
   - {fileID: 8300000, guid: c96dab42b0fdf634d984555f201189e7, type: 3}
