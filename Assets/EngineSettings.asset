@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c890f4b6fd012844822575e8a704059, type: 3}
+  m_Name: EngineSettings
+  m_EditorClassIdentifier: 
+  redline: 8000
+  fuelCutoff: 0.6
+  engineBraking: 1
+  diffRatio: 4
+  startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
+  stallNoise: {fileID: 0}
+  rpmPoints:
+  - rpm: 1800
+    throttle: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}
+    throttleOff: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 2000
+    throttle: {fileID: 8300000, guid: b34bf63436c9b6848b5842ded98766b9, type: 3}
+    throttleOff: {fileID: 8300000, guid: 154a209c4dbb5af47807be3bdc8a4af5, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 2500
+    throttle: {fileID: 8300000, guid: 06949dc892395004cabea37b705c934d, type: 3}
+    throttleOff: {fileID: 8300000, guid: 5b89c20adbfa93b4ba80b39f3bee5754, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 3000
+    throttle: {fileID: 8300000, guid: 77d624d4f5eedac46beac77bd545eca9, type: 3}
+    throttleOff: {fileID: 8300000, guid: 85a0f44745db0aa4c9443f5799a32a65, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 3500
+    throttle: {fileID: 8300000, guid: d24ccbd9b9564d24b8299850d3608bb9, type: 3}
+    throttleOff: {fileID: 8300000, guid: 4d756113e37633948850a9f31dfc3dfe, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 4000
+    throttle: {fileID: 8300000, guid: f3dda8f38b8f396489cec315e3bca2a5, type: 3}
+    throttleOff: {fileID: 8300000, guid: c1d6d87b55c91954f956490e24b63c09, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 4500
+    throttle: {fileID: 8300000, guid: 72cd7e0242ada994fa270ef3af46b5f0, type: 3}
+    throttleOff: {fileID: 8300000, guid: 16aabc06e3b3d764ca38848a1e0b8d17, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 5000
+    throttle: {fileID: 8300000, guid: 36db573126410aa4badc1cb84f348b54, type: 3}
+    throttleOff: {fileID: 8300000, guid: bb8c234abdf69f2419e9ef18e3b72025, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 5500
+    throttle: {fileID: 8300000, guid: ce378791aaf139446b913c3ad86a27d3, type: 3}
+    throttleOff: {fileID: 8300000, guid: ca33559f0be6eca4b8ae4e7f3b8cf127, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 6000
+    throttle: {fileID: 8300000, guid: c340ec8e02a8a1845ab66ae3f9240e7a, type: 3}
+    throttleOff: {fileID: 8300000, guid: 071ac573ae8e1f043a607b1fcc669507, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 6500
+    throttle: {fileID: 8300000, guid: b80ea11fa8c0336479ae0b56f151ea17, type: 3}
+    throttleOff: {fileID: 8300000, guid: 770d0a93fceb94642bd37f74382a0f89, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 7000
+    throttle: {fileID: 8300000, guid: 210608bebfed0514da347b5a788c7fe2, type: 3}
+    throttleOff: {fileID: 8300000, guid: e8a10e90afb810d4bbbac4f5ecb66e60, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 7500
+    throttle: {fileID: 8300000, guid: 597a4ff1463964343a59fcc42d69e81f, type: 3}
+    throttleOff: {fileID: 8300000, guid: 298678b33c43a544d8141ed5ce8d1fc3, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  - rpm: 8000
+    throttle: {fileID: 8300000, guid: 1b41a6537bd517642ae3ee3cda89cd7e, type: 3}
+    throttleOff: {fileID: 8300000, guid: 760eef145aaba644a8bd8e18859fd1bc, type: 3}
+    throttleAudio: {fileID: 0}
+    throttleOffAudio: {fileID: 0}
+  gearRatios:
+  - 3
+  - 2.5
+  - 2
+  - 1.5
+  - 1.2
+  - 1
+  gearShiftNoises:
+  - {fileID: 8300000, guid: 222919f5c327e1a449b9c402bc2b1008, type: 3}
+  - {fileID: 8300000, guid: c96dab42b0fdf634d984555f201189e7, type: 3}
+  - {fileID: 8300000, guid: b82719705a4f6d04789348977a780d33, type: 3}
+  - {fileID: 8300000, guid: 426a2919697209842b7c55d2edce9fa8, type: 3}

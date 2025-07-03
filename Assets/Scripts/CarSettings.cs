@@ -16,7 +16,7 @@ public class CarSettings : ScriptableObject {
 	public float brakeForce = 5f;
 
 	[Tooltip("Max speed, in MPH, that the car can go")]
-	public int maxSpeed = 10;
+	public int maxSpeed = 200;
 
 	[Header("Steering")]
 	public float maxSteerAngle = 30;
@@ -26,8 +26,4 @@ public class CarSettings : ScriptableObject {
 	[Header("Force, in Gs, that the car can hold before it starts skidding")]
 	public float maxCorneringForce = 1.5f;
 	public float tireSlip = 0.5f;
-
-	[Header("Engine")]
-	public float diffRatio = 5f;
-	public float gear1Ratio = 2.5f;
 }

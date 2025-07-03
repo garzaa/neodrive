@@ -1,0 +1,40 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class RPMPoint {
+    public float rpm;
+    public AudioClip throttle;
+    public AudioClip throttleOff;
+	public AudioSource throttleAudio;
+	public AudioSource throttleOffAudio;
+
+    public RPMPoint(float rpm, AudioClip throttle, AudioClip throttleOff) {
+        this.rpm = rpm;
+        this.throttle = throttle;
+        this.throttleOff = throttleOff;
+    }
+
+	public RPMPoint(RPMPoint r, AudioSource throttleAudio, AudioSource throttleOffAudio) {
+		this.rpm = r.rpm;
+		this.throttle = r.throttle;
+		this.throttleOff = r.throttleOff;
+		this.throttleAudio = throttleAudio;
+		this.throttleOffAudio = throttleOffAudio;
+	}
+}
+
+[CreateAssetMenu(menuName = "Data/EngineSettings")]
+public class EngineSettings : ScriptableObject {
+	public int redline = 8000;
+	public float fuelCutoff = 0.6f;
+	public float engineBraking = 0.2f;
+	public float diffRatio = 4f;
+
+	public AudioClip startupNoise;
+	public AudioClip stallNoise;
+	public List<RPMPoint> rpmPoints;
+	public List<float> gearRatios;
+	public List<AudioClip> gearShiftNoises;
+}

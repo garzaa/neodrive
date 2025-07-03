@@ -21,12 +21,10 @@ MonoBehaviour:
   lateralSkidThreshold: 10
   accelForce: 200
   brakeForce: 250
-  maxSpeed: 60
+  maxSpeed: 200
   maxSteerAngle: 30
   steerSpeed: 5
   maxAngularVelocity: 20
   steeringMult: 0.3
   maxCorneringForce: 10
   tireSlip: 0.5
-  diffRatio: 3
-  gear1Ratio: 2.5

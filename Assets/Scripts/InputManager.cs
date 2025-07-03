@@ -25,6 +25,10 @@ public class InputManager : MonoBehaviour {
     public static bool Button(string buttonName) {
         return player.GetButton(buttonName);
     }
+
+    public static bool ButtonDown(string buttonName) {
+        return player.GetButtonDown(buttonName);
+    }
 }
 
 public static class Buttons {
@@ -36,4 +40,7 @@ public static class Buttons {
     public static readonly string STEER = "Steering";
     public static readonly string REVERSE = "Reverse";
     public static readonly string HANDBRAKE = "Handbrake";
+    public static readonly string GEARUP = "Gear Up";
+    public static readonly string GEARDOWN = "Gear Down";
+    public static readonly string STARTENGINE = "Start Engine";
 }
