@@ -54,7 +54,7 @@ MonoBehaviour:
   stallNoise: {fileID: 8300000, guid: 7041cc6f1fd128b4d87cba386f7afdd3, type: 3}
   idleRPM: 1800
   stallRPM: 1200
-  throttleResponse: 6000
+  throttleResponse: 10000
   rpmPoints:
   - rpm: 1800
     throttle: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}

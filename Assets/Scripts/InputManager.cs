@@ -37,6 +37,10 @@ public class InputManager : MonoBehaviour {
     public static bool DoubleTap(string buttonName) {
         return player.GetButtonDoublePressDown(buttonName);
     }
+
+    public static bool ButtonUp(string buttonName) {
+        return player.GetButtonUp(buttonName);
+    }
 }
 
 public static class Buttons {

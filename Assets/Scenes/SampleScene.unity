@@ -169,7 +169,7 @@ AudioSource:
   m_GameObject: {fileID: 41570178}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8312322636375061050, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
   m_audioClip: {fileID: 8300000, guid: 030691a16835685418534e449869239e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.6
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 95251049}
   - component: {fileID: 95251048}
   m_Layer: 0
-  m_Name: AudioTelemetry
+  m_Name: GearTelemetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -808,9 +808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23e9c4ece6563443be8fe70b3f83fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snapDistance: 0.2
+  snapDistance: 0.5
   snapVectors:
   - {x: 0, y: -1}
+  - {x: 0, y: 1}
   car: {fileID: 937992043}
   chaseSmoothTime: 0.025
   rotationSmoothTime: 0.1
@@ -2168,7 +2169,7 @@ MonoBehaviour:
   engineAudio: {fileID: 356840475}
   gearshiftAudio: {fileID: 247076903}
   wheelAudio: {fileID: 463125931}
-  audioTelemetry: {fileID: 95251048}
+  gearTelemetry: {fileID: 95251048}
   onGearChange:
     m_PersistentCalls:
       m_Calls: []
@@ -3275,6 +3276,7 @@ MonoBehaviour:
   springStiffnessX: 200
   springStiffnessY: 50
   dampingRatio: 0.8
+  extraYForce: 0
   driftRoll: 1
 --- !u!1 &1713062628
 GameObject:

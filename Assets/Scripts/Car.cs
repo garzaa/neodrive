@@ -66,6 +66,7 @@ public class Car : MonoBehaviour {
     public AudioSource tireSkid;
     bool drifting = false;
     bool clutch = false;
+    bool clutchOut = false;
 
     bool ignition { get {
         // to be changed later 
@@ -115,6 +116,9 @@ public class Car : MonoBehaviour {
         brake = InputManager.GetAxis(Buttons.BRAKE);
         steering = InputManager.GetAxis(Buttons.STEER);
         clutch = InputManager.Button(Buttons.CLUTCH);
+        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
+            clutchOut = true;
+        }
         if (!changingGear) {
             if (InputManager.DoubleTap(Buttons.GEARDOWN) && clutch) {
                 currentGear = -1;
@@ -235,7 +239,7 @@ public class Car : MonoBehaviour {
         UpdateTelemetry();
         posLastFrame = rb.position;
         vLastFrame = rb.velocity;
-
+        clutchOut = false;
     }
 
     void UpdateEngine() {
@@ -248,7 +252,18 @@ public class Car : MonoBehaviour {
         } else if (currentGear != 0 && !clutch) { 
             // TODO: this is wheelRPM, engineRPM is gonna be different
             // good news is that the clutch spearheads the transmission chain
-            engineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+            float currentEngineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+            if (clutchOut) {
+                float rpmDiff = engineRPM - currentEngineRPM;
+                if (rpmDiff < 0 && rpmDiff < 2000) {
+                    print("power shift");
+                    impulseSource.GenerateImpulse();
+                } else if (rpmDiff > 0 && rpmDiff > 2000) {
+                    print("unsynced downshift");
+                    impulseSource.GenerateImpulse();
+                }
+            }
+            engineRPM = currentEngineRPM;
         } else if (currentGear == 0 || clutch) {
             float targetRPM = Mathf.Max(engine.idleRPM, ignition ? gas*engine.redline : 0);
         float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
@@ -275,17 +290,12 @@ public class Car : MonoBehaviour {
         UpdateEngineLowPass();
         UpdateVibration();
 
-        if (currentGear == 0) {
-            carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.04f, 0);
-        } else {
-            carBody.transform.localPosition = Vector3.zero;
-        }
+        carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
     IEnumerator ChangeGear(int to) {
         changingGear = true;
         carBody.maxXAngle *= 2f;
-        if (rb.velocity.sqrMagnitude > 1f) impulseSource.GenerateImpulse();
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
         yield return new WaitForSeconds(settings.gearShiftTime);
 
@@ -365,6 +375,9 @@ public class Car : MonoBehaviour {
             gearTelemetry.text = "R";
         }
         gearTelemetry.text += "\ngear";
+        if (clutch) {
+            gearTelemetry.text += "\nclutch";
+        }
     }
 
     void UpdateSteering() {
