@@ -51,6 +51,7 @@ public class Car : MonoBehaviour {
     int currentGear = 0;
     bool engineStarting = false;
     bool engineRunning = false;
+    bool engineStalling = false;
     
     bool changingGear = false;
     
@@ -290,7 +291,9 @@ public class Car : MonoBehaviour {
 
     IEnumerator StallRock() {
         carBody.maxXAngle *= 4f;
+        engineStalling = true;
         yield return new WaitForSeconds(0.3f);
+        engineStalling = false;
         carBody.maxXAngle /= 4f;
     }
 
@@ -363,7 +366,7 @@ public class Car : MonoBehaviour {
         if (engineRPM > engine.redline - 2000) {
             rpmVibration += ((engineRPM - (engine.redline-2000)) / 2000)*0.5f;
         }
-        if (engineStarting) {
+        if (engineStarting || engineStalling) {
             vibrationAmount = 1f;
         }
         InputManager.player.SetVibration(0, vibrationAmount);
