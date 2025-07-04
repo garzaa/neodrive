@@ -150,7 +150,7 @@ public class Car : MonoBehaviour {
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
-                w.UpdateWheel(MPH(rb.velocity.magnitude), grounded);
+                w.UpdateWheel(rb.velocity.magnitude, grounded);
             }
         }
 
@@ -343,7 +343,7 @@ public class Car : MonoBehaviour {
         
     }
 
-    float MPH(float speed) {
+    public static float MPH(float speed) {
         return speed * 2.2369362912f;
     }
 

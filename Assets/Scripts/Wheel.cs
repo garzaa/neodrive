@@ -139,18 +139,17 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheel(float speedMPH, bool grounded) {
+	public void UpdateWheel(float speed, bool grounded) {
 		fakeGroundBump = Mathf.Sin(transform.position.magnitude * 3f) * 0.005f;
 		fakeGroundBump *= grounded ? 1f : 0;
-		fakeGroundBump *= Mathf.Clamp(speedMPH / 60f, 0f, 1f);
+		fakeGroundBump *= Mathf.Clamp(Car.MPH(speed) / 60f, 0f, 1f);
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
 		// get wheel position against the ground
-		float forwardsVelocity = Vector3.Dot(car.rb.velocity, -transform.forward);
-		if (forwardsVelocity != 0) {
+		if (speed != 0) {
 			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
-			float deg = 360f * (forwardsVelocity/wheelCircumference) * Time.fixedDeltaTime;
+			float deg = 360f * (speed/wheelCircumference) * Time.fixedDeltaTime;
 			v.z += deg * (reverseRotation ? -1 : 1);
 			wheelObject.transform.localRotation = Quaternion.Euler(v);
 		}
