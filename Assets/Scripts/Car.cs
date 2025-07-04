@@ -62,6 +62,9 @@ public class Car : MonoBehaviour {
 
     CinemachineImpulseSource impulseSource;
 
+    public AudioSource tireSkid;
+    bool drifting = false;
+
     bool ignition { get {
         // to be changed later 
         return !(fuelCutoff || changingGear);
@@ -137,9 +140,10 @@ public class Car : MonoBehaviour {
         engineStarting = true;
         engineAudio.PlayOneShot(engine.startupNoise);
         carBody.StartWobbling();
-        yield return new WaitForSeconds(engine.startupNoise.length-0.4f);
+        yield return new WaitForSeconds(engine.startupNoise.length-0.5f);
         carBody.StopWobbling();
         engineStarting = false;
+        impulseSource.GenerateImpulseWithVelocity(impulseSource.m_DefaultVelocity * 1f);
         engineRunning = true;
     }
 
@@ -159,7 +163,7 @@ public class Car : MonoBehaviour {
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
-                w.UpdateWheel(rb.velocity.magnitude, grounded);
+                w.UpdateWheel(Vector3.Dot(rb.velocity, forwardVector), grounded);
             }
         }
 
@@ -186,16 +190,16 @@ public class Car : MonoBehaviour {
 
         UpdateSteering();
         if (grounded) {
-            if (WheelFL.Grounded || WheelFR.Grounded) {
-                // rotate the lateral for the front axle by the amount of steering
-                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right);
-            }
-
             if (WheelRL.Grounded || WheelRR.Grounded) {
-                float lateralAccel = AddLateralForce(rearAxle, transform.right);
+                float lateralAccel = AddLateralForce(rearAxle, transform.right, true);
                 float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
                 gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
                 gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+            }
+
+            if (WheelFL.Grounded || WheelFR.Grounded) {
+                // rotate the lateral for the front axle by the amount of steering
+                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, false);
             }
 
             float flatSpeed = MPH(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
@@ -221,7 +225,6 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateEngine() {
-        // ok don't want to do mathf.sign hbere
         float flatSpeed = Mathf.Abs(MPH(Vector3.Dot(rb.velocity, forwardVector))) * (currentGear >= 0 ? 1 : -1);
         if (!engineRunning) {
             engineRPM = 0;
@@ -268,7 +271,7 @@ public class Car : MonoBehaviour {
     IEnumerator ChangeGear(int to) {
         changingGear = true;
         carBody.maxXAngle *= 2f;
-        if (ignition) impulseSource.GenerateImpulse();
+        if (rb.velocity.sqrMagnitude > 1f) impulseSource.GenerateImpulse();
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
         yield return new WaitForSeconds(settings.gearShiftTime);
 
@@ -302,15 +305,29 @@ public class Car : MonoBehaviour {
         }
     }
 
-    float AddLateralForce(Vector3 point, Vector3 lateralNormal) {
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool driftCheck) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
         float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
-        if (lateralAccel > settings.maxCorneringGForce) {
-            // the car should start either skidding or TCS here
-            // cornering force should decrease the higher magnitude of force is applied
-            // TODO: wheel telemetry for skidding before writing the streaks
-            // otherwise you can still get up to 10
-            lateralAccel *= 0.2f;
+        float gs = Mathf.Abs(lateralAccel / Physics.gravity.y);
+        if (driftCheck) {
+            if (gs > settings.maxCorneringGForce) {
+                // the car should start either skidding or TCS here
+                // cornering force should decrease the higher magnitude of force is applied
+                // TODO: wheel telemetry for skidding before writing the streaks
+                // otherwise you can still get up to 10
+                drifting = true;
+                // todo: have a target volume to lerp to
+                tireSkid.mute = false;
+            } else {
+                tireSkid.mute = true;
+                drifting = false;
+            }
+        }
+        if (drifting) {
+            carBody.driftRoll = 5f;
+            lateralAccel *= 0.5f / (gs / settings.maxCorneringGForce);
+        } else {
+            carBody.driftRoll = 0f;
         }
         rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
         return lateralAccel;
@@ -324,7 +341,6 @@ public class Car : MonoBehaviour {
     void UpdateTelemetry() {
         speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
         rpmText.text = engineRPM.ToString("F0");
-        // zero-indexing
         audioTelemetry.text = currentGear.ToString();
     }
 
@@ -343,14 +359,15 @@ public class Car : MonoBehaviour {
 
     void UpdateVibration() {
         float vibrationAmount = 0;
+        float rpmVibration = 0;
         if (engineRPM > engine.redline - 2000) {
-            vibrationAmount += ((engineRPM - (engine.redline-2000)) / 2000)*0.5f;
+            rpmVibration += ((engineRPM - (engine.redline-2000)) / 2000)*0.5f;
         }
         if (engineStarting) {
             vibrationAmount = 1f;
         }
         InputManager.player.SetVibration(0, vibrationAmount);
-        InputManager.player.SetVibration(1, vibrationAmount);
+        InputManager.player.SetVibration(1, vibrationAmount+rpmVibration);
         
     }
 

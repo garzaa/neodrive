@@ -35,6 +35,8 @@ public class CarBody : MonoBehaviour {
 	float wobbleTs = -999f;
 	bool wobbling = false;
 
+    public float driftRoll = 1f;
+
     void Awake()
     {
         // Get the parent Rigidbody component
@@ -50,7 +52,6 @@ public class CarBody : MonoBehaviour {
     }
 
 	public void StartWobbling() {
-        print("started wobbling");
 		wobbling = true;
 		maxYAngle *= 3f;
 		extraYForce = 1000;
@@ -113,7 +114,7 @@ public class CarBody : MonoBehaviour {
         xAngle += xSpringVelocity * Time.fixedDeltaTime;
 
 		targetRockAngle = -parentVelocityY * yVelocityInfluence;
-		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle, maxYAngle);
+		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle+driftRoll, maxYAngle+driftRoll);
 		displacement = yAngle - targetRockAngle;
 		springForce = -springStiffnessY * displacement;
 		dampingForce = -2f * Mathf.Sqrt(springStiffnessY) * dampingRatio * ySpringVelocity;
