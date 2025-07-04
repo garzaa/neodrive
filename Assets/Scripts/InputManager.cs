@@ -3,7 +3,7 @@ using Rewired;
 
 public class InputManager : MonoBehaviour {
 
-    static Player player;
+    public static Player player { get; private set; }
 
     void Start() {
         player = ReInput.players.GetPlayer(0);
@@ -47,4 +47,5 @@ public static class Buttons {
     public static readonly string GEARUP = "Gear Up";
     public static readonly string GEARDOWN = "Gear Down";
     public static readonly string STARTENGINE = "Start Engine";
+    public static readonly string CLUTCH = "Clutch";
 }

@@ -32,6 +32,8 @@ public class EngineSettings : ScriptableObject {
 	public float engineBraking = 2f;
 	public float diffRatio = 4f;
 
+	public AnimationCurve powerCurve;
+	public float maxPower = 300;
 	public AudioClip startupNoise;
 	public AudioClip stallNoise;
 	public float idleRPM = 1800;
@@ -40,4 +42,8 @@ public class EngineSettings : ScriptableObject {
 	public List<RPMPoint> rpmPoints;
 	public List<float> gearRatios;
 	public List<AudioClip> gearShiftNoises;
+
+	public float GetTorque(float rpm) {
+		return powerCurve.Evaluate(rpm / redline) * maxPower;
+	}
 }

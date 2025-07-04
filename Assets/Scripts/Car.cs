@@ -6,6 +6,8 @@ using System.Linq;
 using UnityEditorInternal;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.TextCore.LowLevel;
+using UnityEngine.Events;
 
 public class Car : MonoBehaviour {
 
@@ -35,6 +37,7 @@ public class Car : MonoBehaviour {
 
     Animator engineAnimator;
     float engineRPM = 0f;
+    float wheelRPM = 0f;
     float maxEngineVolume;
     public AudioSource engineAudio;
     public AudioSource gearshiftAudio;
@@ -48,9 +51,13 @@ public class Car : MonoBehaviour {
     bool engineStarting = false;
     bool engineRunning = false;
     
-    float engineChangeVelocity;
+    bool changingGear = false;
     
     Camera mainCamera;
+
+    public UnityEvent onGearChange;
+
+    CarBody carBody;
 
     Vector3 forwardVector { get {
         // because I modeled it facing the wrong way
@@ -64,6 +71,7 @@ public class Car : MonoBehaviour {
         engineAnimator = GetComponent<Animator>();
         BuildSoundCache();
         mainCamera = Camera.main;
+        carBody = GetComponentInChildren<CarBody>();
     }
 
     void BuildSoundCache() {
@@ -92,20 +100,18 @@ public class Car : MonoBehaviour {
         gas = InputManager.GetAxis(Buttons.GAS);
         brake = InputManager.GetAxis(Buttons.BRAKE);
         steering = InputManager.GetAxis(Buttons.STEER);
-        if (InputManager.DoubleTap(Buttons.GEARDOWN)) {
-            currentGear = -1;
-        }
-        if (InputManager.ButtonDown(Buttons.GEARDOWN)) {
-            if (currentGear > -1) {
-                // TODO: fix the reverse things
-                // speed should be absoluted or inverted in certain points (i.e. engineRPM)
-                currentGear--;
-                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+        if (!changingGear) {
+            if (InputManager.DoubleTap(Buttons.GEARDOWN)) {
+                currentGear = -1;
             }
-        } else if (InputManager.ButtonDown(Buttons.GEARUP)) {
-            if (currentGear < engine.gearRatios.Count) {
-                currentGear++;
-                gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+            if (InputManager.ButtonDown(Buttons.GEARDOWN)) {
+                if (currentGear > -1) {
+                    StartCoroutine(ChangeGear(currentGear - 1));
+                }
+            } else if (InputManager.ButtonDown(Buttons.GEARUP)) {
+                if (currentGear < engine.gearRatios.Count) {
+                    StartCoroutine(ChangeGear(currentGear+1));
+                }
             }
         }
         
@@ -121,20 +127,14 @@ public class Car : MonoBehaviour {
     IEnumerator StartEngine() {
         engineStarting = true;
         engineAudio.PlayOneShot(engine.startupNoise);
-        yield return new WaitForSeconds(engine.startupNoise.length-0.2f);
+        carBody.StartWobbling();
+        yield return new WaitForSeconds(engine.startupNoise.length-0.4f);
+        carBody.StopWobbling();
         engineStarting = false;
         engineRunning = true;
     }
 
     void FixedUpdate() {
-        grounded = false;
-        foreach (Wheel w in wheels) {
-            if (w.Grounded) {
-                grounded = true;
-            }
-        }
-
-        // if wheel upwards force is similar, add force at the center of mass
         Vector3 FLForce, FRForce, RLForce, RRForce;
         FLForce = WheelFL.GetSuspensionForce();
         FRForce = WheelFR.GetSuspensionForce();
@@ -146,16 +146,21 @@ public class Car : MonoBehaviour {
         WheelRL.AddForce(RLForce);
         WheelRR.AddForce(RRForce);
 
+        grounded = false;
+        foreach (Wheel w in wheels) {
+            if (w.Grounded) {
+                grounded = true;
+                w.UpdateWheel(MPH(rb.velocity.magnitude), grounded);
+            }
+        }
+
         Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
         Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = currentGear < 0 ? -1 : 1;
-            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0) {
-                if (Mathf.Abs(MPH(flatSpeed.magnitude)) < settings.maxSpeed) {
-                    rb.AddForceAtPosition(forwardVector * settings.accelForce*gas*mult, rearAxle);
-                }
+            if (gas > 0 && !(fuelCutoff || changingGear) && engineRunning && currentGear != 0) {
+                rb.AddForceAtPosition(forwardVector * engine.GetTorque(engineRPM)*gas*mult, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
@@ -194,23 +199,33 @@ public class Car : MonoBehaviour {
         } else {
             wheelAudio.volume = 0;
         }
+
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.005f;
+        if (gas==0 ||  fuelCutoff) dragForce = 0;
+        rb.AddForce(-rb.velocity*dragForce);
+
         UpdateEngine();
         UpdateTelemetry();
         posLastFrame = rb.position;
         vLastFrame = rb.velocity;
+
     }
 
     void UpdateEngine() {
-        float flatSpeed = Mathf.Abs(MPH(Vector3.Dot(rb.velocity, forwardVector))) * Mathf.Sign(currentGear);
+        // ok don't want to do mathf.sign hbere
+        float flatSpeed = Mathf.Abs(MPH(Vector3.Dot(rb.velocity, forwardVector))) * (currentGear >= 0 ? 1 : -1);
         if (!engineRunning) {
             engineRPM = 0;
             if (engineStarting) {
                 engineRPM = 2400;
             }
         } else if (currentGear != 0) {
+            // TODO: this is wheelRPM, engineRPM is gonna be different
+            // good news is that the clutch spearheads the transmission chain
             engineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+            wheelRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
         } else if (currentGear == 0) {
-            float targetRPM = Mathf.Max(engine.idleRPM, fuelCutoff ? 0 : gas*engine.redline);
+            float targetRPM = Mathf.Max(engine.idleRPM, (fuelCutoff || changingGear) ? 0 : gas*engine.redline);
             engineRPM = Mathf.MoveTowards(engineRPM, targetRPM, engine.throttleResponse * Time.fixedDeltaTime);
         }
 
@@ -232,12 +247,37 @@ public class Car : MonoBehaviour {
 
         GetRPMPoint(engineRPM, gas);
         UpdateEngineLowPass();
+        UpdateVibration();
+
+        if (currentGear == 0) {
+            carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.02f, 0);
+        } else {
+            carBody.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    IEnumerator ChangeGear(int to) {
+        changingGear = true;
+        carBody.maxXAngle *= 2f;
+        gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+        yield return new WaitForSeconds(settings.gearShiftTime);
+
+        currentGear = to;
+        carBody.maxXAngle /= 2f;
+        changingGear = false;
     }
 
     void StallEngine() {
+        StartCoroutine(StallRock());
         engineAudio.PlayOneShot(engine.stallNoise);
         rb.AddForce(-Vector3.Project(rb.velocity, forwardVector)*0.8f / Time.fixedDeltaTime, ForceMode.Acceleration);
         engineRunning = false;
+    }
+
+    IEnumerator StallRock() {
+        carBody.maxXAngle *= 4f;
+        yield return new WaitForSeconds(0.3f);
+        carBody.maxXAngle /= 4f;
     }
 
     void UpdateEngineLowPass() {
@@ -254,6 +294,13 @@ public class Car : MonoBehaviour {
     float AddLateralForce(Vector3 point, Vector3 lateralNormal) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
         float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        if (lateralAccel > settings.maxCorneringGForce) {
+            // the car should start either skidding or TCS here
+            // cornering force should decrease the higher magnitude of force is applied
+            // TODO: wheel telemetry for skidding before writing the streaks
+            // otherwise you can still get up to 10
+            lateralAccel *= 0.2f;
+        }
         rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
         return lateralAccel;
     }
@@ -281,6 +328,19 @@ public class Car : MonoBehaviour {
         WheelFL.transform.localRotation = targetRotation;
         WheelFR.transform.localRotation = targetRotation;
         currentSteerAngle = steerAngle;
+    }
+
+    void UpdateVibration() {
+        float vibrationAmount = 0;
+        if (engineRPM > engine.redline - 2000) {
+            vibrationAmount += ((engineRPM - (engine.redline-2000)) / 2000)*0.5f;
+        }
+        if (engineStarting) {
+            vibrationAmount = 1f;
+        }
+        InputManager.player.SetVibration(0, vibrationAmount);
+        InputManager.player.SetVibration(1, vibrationAmount);
+        
     }
 
     float MPH(float speed) {

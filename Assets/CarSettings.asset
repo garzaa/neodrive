@@ -18,13 +18,10 @@ MonoBehaviour:
   wheelRaycast:
     serializedVersion: 2
     m_Bits: 8
-  lateralSkidThreshold: 10
-  accelForce: 200
+  gearShiftTime: 0.2
   brakeForce: 250
-  maxSpeed: 200
-  maxSteerAngle: 30
+  drag: 0.1
+  maxSteerAngle: 25
   steerSpeed: 5
-  maxAngularVelocity: 20
-  steeringMult: 0.3
   maxCorneringForce: 10
   tireSlip: 0.5

@@ -31,6 +31,7 @@ public class Wheel : MonoBehaviour {
 	public Image compressionBar;
 
 	public bool reverseRotation;
+	float fakeGroundBump;
 
 	Rigidbody wheelRB;
 
@@ -89,7 +90,6 @@ public class Wheel : MonoBehaviour {
             transform.position - (transform.up * (wheelRadius + settings.suspensionTravel - suspensionCompression))
         );
  
-        //Draw the wheel
         Vector3 point1;
         Vector3 point0 = transform.TransformPoint(wheelRadius * new Vector3(0, Mathf.Sin(0), Mathf.Cos(0)));
         for (int i = 1; i <= 20; ++i)
@@ -124,7 +124,6 @@ public class Wheel : MonoBehaviour {
 		suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
 
 		suspensionCompressionLastStep = suspensionCompression;
-		UpdateWheel();
 		UpdateTelemetry();
 		return suspensionForce;
 	}
@@ -140,8 +139,12 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	void UpdateWheel() {
+	public void UpdateWheel(float speedMPH, bool grounded) {
+		fakeGroundBump = Mathf.Sin(transform.position.magnitude * 3f) * 0.005f;
+		fakeGroundBump *= grounded ? 1f : 0;
+		fakeGroundBump *= Mathf.Clamp(speedMPH / 60f, 0f, 1f);
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
+		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
 		// get wheel position against the ground
 		float forwardsVelocity = Vector3.Dot(car.rb.velocity, -transform.forward);
