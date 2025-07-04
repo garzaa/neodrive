@@ -8,6 +8,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.Events;
+using Cinemachine;
 
 public class Car : MonoBehaviour {
 
@@ -59,6 +60,13 @@ public class Car : MonoBehaviour {
 
     CarBody carBody;
 
+    CinemachineImpulseSource impulseSource;
+
+    bool ignition { get {
+        // to be changed later 
+        return !(fuelCutoff || changingGear);
+    }}
+
     Vector3 forwardVector { get {
         // because I modeled it facing the wrong way
         return -transform.forward;
@@ -72,6 +80,7 @@ public class Car : MonoBehaviour {
         BuildSoundCache();
         mainCamera = Camera.main;
         carBody = GetComponentInChildren<CarBody>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void BuildSoundCache() {
@@ -159,7 +168,7 @@ public class Car : MonoBehaviour {
 
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = currentGear < 0 ? -1 : 1;
-            if (gas > 0 && !(fuelCutoff || changingGear) && engineRunning && currentGear != 0) {
+            if (gas > 0 && ignition && engineRunning && currentGear != 0) {
                 rb.AddForceAtPosition(forwardVector * engine.GetTorque(engineRPM)*gas*mult, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
@@ -225,7 +234,7 @@ public class Car : MonoBehaviour {
             engineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
             wheelRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
         } else if (currentGear == 0) {
-            float targetRPM = Mathf.Max(engine.idleRPM, (fuelCutoff || changingGear) ? 0 : gas*engine.redline);
+            float targetRPM = Mathf.Max(engine.idleRPM, ignition ? gas*engine.redline : 0);
             engineRPM = Mathf.MoveTowards(engineRPM, targetRPM, engine.throttleResponse * Time.fixedDeltaTime);
         }
 
@@ -259,6 +268,7 @@ public class Car : MonoBehaviour {
     IEnumerator ChangeGear(int to) {
         changingGear = true;
         carBody.maxXAngle *= 2f;
+        if (ignition) impulseSource.GenerateImpulse();
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
         yield return new WaitForSeconds(settings.gearShiftTime);
 
@@ -270,6 +280,7 @@ public class Car : MonoBehaviour {
     void StallEngine() {
         StartCoroutine(StallRock());
         engineAudio.PlayOneShot(engine.stallNoise);
+        impulseSource.GenerateImpulseWithVelocity(impulseSource.m_DefaultVelocity * 3f);
         rb.AddForce(-Vector3.Project(rb.velocity, forwardVector)*0.8f / Time.fixedDeltaTime, ForceMode.Acceleration);
         engineRunning = false;
     }
@@ -421,8 +432,8 @@ public class Car : MonoBehaviour {
         // then lerp between each one based on gas
         lowTarget.throttleAudio.volume *= gas;
         highTarget.throttleAudio.volume *= gas;
-        lowTarget.throttleOffAudio.volume *= 1-gas;
-        highTarget.throttleOffAudio.volume *= 1-gas;
+        lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
+        highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
 
         // then warp the sound to match the RPM
         lowTarget.throttleAudio.pitch = targetLowPitch;

@@ -50,14 +50,15 @@ public class CarBody : MonoBehaviour {
     }
 
 	public void StartWobbling() {
+        print("started wobbling");
 		wobbling = true;
-		yAngle *= 9f;
+		maxYAngle *= 3f;
 		extraYForce = 1000;
 	}
 
 	public void StopWobbling() {
 		wobbling = false;
-		yAngle /= 9f;
+		maxYAngle /= 3f;
 		extraYForce = 0;
 	}
 

@@ -33,8 +33,6 @@ public class Wheel : MonoBehaviour {
 	public bool reverseRotation;
 	float fakeGroundBump;
 
-	Rigidbody wheelRB;
-
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
@@ -42,7 +40,6 @@ public class Wheel : MonoBehaviour {
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * wheelObject.transform.localScale.x);
 		groundedText = GetComponentInChildren<Text>();
 		compressionBar = GetComponentsInChildren<Image>()[1];
-		wheelRB = GetComponent<Rigidbody>();
 		GenerateRays();
 	}
 
