@@ -10,10 +10,14 @@ public class InputManager : MonoBehaviour {
     }
 
     public static Vector2 CameraStick() {
-        Vector2 v = new(
+        if (Button(Buttons.CLUTCH)) {
+            return Vector2.zero;
+        }
+
+        Vector2 v = new Vector2(
             player.GetAxis(Buttons.CAM_X),
             player.GetAxis(Buttons.CAM_Y)
-        );
+        ).normalized;
 
         return v;
     }
@@ -48,4 +52,10 @@ public static class Buttons {
     public static readonly string GEARDOWN = "Gear Down";
     public static readonly string STARTENGINE = "Start Engine";
     public static readonly string CLUTCH = "Clutch";
+
+    public static readonly string SHIFTLEFT = "ShifterLeft";
+    public static readonly string SHIFTRIGHT = "ShifterRight";
+    public static readonly string SHIFTUP = "ShifterUp";
+    public static readonly string SHIFTDOWN = "ShifterDown";
+    public static readonly string SHIFTALT = "ShiftAlt";
 }

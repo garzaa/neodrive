@@ -31,7 +31,7 @@ public class CarBody : MonoBehaviour {
 
 	float velocityXLastStep, velocityYLastStep;
 
-	float extraYForce;
+	public float extraYForce;
 	float wobbleTs = -999f;
 	bool wobbling = false;
 

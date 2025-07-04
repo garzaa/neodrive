@@ -175,7 +175,7 @@ AudioSource:
   m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -2172,6 +2172,7 @@ MonoBehaviour:
   onGearChange:
     m_PersistentCalls:
       m_Calls: []
+  tireSkid: {fileID: 41570180}
 --- !u!4 &937992044
 Transform:
   m_ObjectHideFlags: 0
@@ -3274,6 +3275,7 @@ MonoBehaviour:
   springStiffnessX: 200
   springStiffnessY: 50
   dampingRatio: 0.8
+  driftRoll: 1
 --- !u!1 &1713062628
 GameObject:
   m_ObjectHideFlags: 0
