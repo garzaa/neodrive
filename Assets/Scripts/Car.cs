@@ -392,6 +392,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateSteering() {
+        // TODO: decrease this if the car is moving at speed - define a start to ramp-down and an end
         float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sin(steering);
         if (steering == 0) {
             targetSteerAngle = 0;
