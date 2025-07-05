@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Animations;
+using Cinemachine;
 
 public class CameraRotate : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class CameraRotate : MonoBehaviour {
 
     float rotationAngle;
     Vector2 cameraStick;
-    Transform ring;
+    public Transform ring;
 
     Vector3 camVelocity = Vector3.zero;
     float rotationSpeed = 0;
@@ -20,11 +21,30 @@ public class CameraRotate : MonoBehaviour {
     public float chaseSmoothTime = 0.05f;
     public float rotationSmoothTime = 0.1f;
 
+    public List<CinemachineVirtualCamera> cameras;
+    int currentCamera = 0;
+
     void Start() {
-        ring = transform.GetChild(0);
+        CycleCamera();
+    }
+
+    void CycleCamera() {
+        for (int i=0; i<cameras.Count; i++) {
+            if (i == currentCamera) {
+                cameras[i].enabled = true;
+            } else {
+                cameras[i].enabled = false;
+            }
+        }
     }
 
     void Update() {
+        if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
+            currentCamera += 1;
+            currentCamera %= cameras.Count;
+            CycleCamera();
+        }
+
         // don't move the camera around but allow holding its position
         // if it's moved when the clutch is depressed
         if (!InputManager.Button(Buttons.CLUTCH)) {

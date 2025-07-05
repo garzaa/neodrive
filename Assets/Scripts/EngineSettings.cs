@@ -41,6 +41,7 @@ public class EngineSettings : ScriptableObject {
 	public float throttleResponse = 6000f;
 	public List<RPMPoint> rpmPoints;
 	public List<float> gearRatios;
+	public AudioClip clutchSound;
 	public List<AudioClip> gearShiftNoises;
 
 	public float GetTorque(float rpm) {

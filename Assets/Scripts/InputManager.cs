@@ -43,6 +43,7 @@ public static class Buttons {
     public static readonly string GEARDOWN = "Gear Down";
     public static readonly string STARTENGINE = "Start Engine";
     public static readonly string CLUTCH = "Clutch";
+    public static readonly string CYCLE_CAMERA = "Cycle Camera";
 
     public static readonly string SHIFTLEFT = "ShifterLeft";
     public static readonly string SHIFTRIGHT = "ShifterRight";

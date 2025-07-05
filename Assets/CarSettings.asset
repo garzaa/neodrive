@@ -19,7 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
-  brakeForce: 250
+  brakeForce: 100
   drag: 0.1
   maxSteerAngle: 25
   steerSpeed: 5

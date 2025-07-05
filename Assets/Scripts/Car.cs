@@ -38,6 +38,7 @@ public class Car : MonoBehaviour {
     public Text clutchText;
 
     Animator engineAnimator;
+    public Animator exhaustAnimator;
     float engineRPM = 0f;
     float wheelRPM = 0f;
     float maxEngineVolume;
@@ -127,6 +128,11 @@ public class Car : MonoBehaviour {
         if (InputManager.ButtonUp(Buttons.CLUTCH)) {
             clutchOut = true;
         }
+
+        if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
+            gearshiftAudio.PlayOneShot(engine.clutchSound);
+        }
+
         if (!changingGear) {
             if (InputManager.DoubleTap(Buttons.GEARDOWN) && clutch) {
                 currentGear = -1;
@@ -167,6 +173,7 @@ public class Car : MonoBehaviour {
         engineAudio.PlayOneShot(engine.startupNoise);
         carBody.StartWobbling();
         yield return new WaitForSeconds(engine.startupNoise.length-0.5f);
+        exhaustAnimator.SetTrigger("Backfire");
         carBody.StopWobbling();
         engineStarting = false;
         impulseSource.GenerateImpulseWithVelocity(impulseSource.m_DefaultVelocity * 1f);
@@ -283,6 +290,9 @@ public class Car : MonoBehaviour {
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
             fuelCutoff = true;
+            // backfire more at lower gears when bouncing off the redline
+            float ratio = Mathf.Max(1-(currentGear/engine.gearRatios.Count), 1);
+            if (1/(ratio) * UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
             rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
         } else {
             fuelCutoff = false;
@@ -351,7 +361,7 @@ public class Car : MonoBehaviour {
                 drifting = true;
                 tireSkid.mute = false;
                 foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = true;
+                    t.emitting = true && grounded;
                 }
             } else {
                 tireSkid.mute = true;
