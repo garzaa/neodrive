@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.Events;
 using Cinemachine;
+using Palmmedia.ReportGenerator.Core;
 
 public class Car : MonoBehaviour {
 
@@ -21,10 +22,6 @@ public class Car : MonoBehaviour {
     public float gas;
     public float brake;
     public float steering;
-
-    Vector3 forceCenter;
-    Vector3 vLastFrame;
-    Vector3 posLastFrame;
 
     public Rigidbody rb { get; private set; }
     public bool grounded { get; private set; }
@@ -40,7 +37,6 @@ public class Car : MonoBehaviour {
     Animator engineAnimator;
     public Animator exhaustAnimator;
     float engineRPM = 0f;
-    float wheelRPM = 0f;
     float maxEngineVolume;
     public AudioSource engineAudio;
     public AudioSource gearshiftAudio;
@@ -49,7 +45,7 @@ public class Car : MonoBehaviour {
 
     public TrailRenderer[] tireSkids;
 
-    List<RPMPoint> rpmPoints = new();
+    readonly List<RPMPoint> rpmPoints = new();
 
     public Text gearTelemetry;
     bool fuelCutoff = false;
@@ -71,8 +67,12 @@ public class Car : MonoBehaviour {
     bool drifting = false;
     bool clutch = false;
     bool clutchOut = false;
+    public float clutchRatio = 1f;
 
     float currentGrip = 1f;
+
+    public const float u2mph = 2.2369362912f;
+    public const float mph2u = 1/u2mph;
 
     bool ignition { get {
         // to be changed later 
@@ -206,7 +206,7 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = currentGear < 0 ? -1 : 1;
             if (gas > 0 && ignition && engineRunning && currentGear != 0 && !clutch) {
-                rb.AddForceAtPosition(forwardVector * engine.GetTorque(engineRPM)*gas*mult, rearAxle);
+                rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult*clutchRatio, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
@@ -214,7 +214,7 @@ public class Car : MonoBehaviour {
 
         if (brake > 0 && grounded) {
             Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (MPH(flatSpeed.magnitude) < 1) {
+            if ((flatSpeed.magnitude*u2mph) < 1) {
                 rb.velocity -= flatSpeed;
             } else {
                 rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
@@ -236,7 +236,7 @@ public class Car : MonoBehaviour {
                 AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, false);
             }
 
-            float flatSpeed = MPH(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
+            float flatSpeed = Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)) * u2mph;
             if (flatSpeed < 0.2f) {
                 wheelAudio.volume = 0;
             } else {
@@ -253,39 +253,56 @@ public class Car : MonoBehaviour {
 
         UpdateEngine();
         UpdateTelemetry();
-        posLastFrame = rb.position;
-        vLastFrame = rb.velocity;
         clutchOut = false;
+
+        foreach (Wheel w in wheels) {
+            if (!w.Grounded) w.tireSkid.emitting = false;
+        }
     }
 
     void UpdateEngine() {
-        float flatSpeed = Mathf.Abs(MPH(Vector3.Dot(rb.velocity, forwardVector))) * (currentGear >= 0 ? 1 : -1);
+        float flatSpeed = Mathf.Abs(u2mph*Vector3.Dot(rb.velocity, forwardVector)) * (currentGear >= 0 ? 1 : -1);
         if (!engineRunning) {
-            engineRPM = 0;
+            engineRPM = Mathf.MoveTowards(engineRPM, 0, (engine.engineBraking*(engineRPM/engine.redline)+4000f) * Time.fixedDeltaTime);
             if (engineStarting) {
                 engineRPM = 2400;
             }
-        } else if (currentGear != 0 && !clutch) { 
-            // TODO: this is wheelRPM, engineRPM is gonna be different
-            // good news is that the clutch spearheads the transmission chain
-            float currentEngineRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
-            if (clutchOut) {
-                float rpmDiff = engineRPM - currentEngineRPM;
-                if (rpmDiff < 0 && rpmDiff < 2000) {
-                    print("power shift");
-                    impulseSource.GenerateImpulse();
-                } else if (rpmDiff > 0 && rpmDiff > 2000) {
-                    print("unsynced downshift");
-                    // TODO: lock up the front wheels or something on a non-revmatched downshift
-                    impulseSource.GenerateImpulse();
-                }
-            }
-            engineRPM = currentEngineRPM;
-        } else if (currentGear == 0 || clutch) {
+        } else {
             float targetRPM = Mathf.Max(engine.idleRPM, ignition ? gas*engine.redline : 0);
-        float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+2000f);
-            engineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
+            float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
+            float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
+            if (currentGear != 0 && !clutch) {
+                float wheelRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+                // if the clutch was let out this frame
+                if (clutchOut) {
+                    float rpmDiff = wheelRPM - engineRPM;
+                    if (rpmDiff < 0) {
+                        Debug.Log("upshift with diff "+rpmDiff);
+                        if (rpmDiff < -500 && currentGear > 1) {
+                            print("bad power shift!!");
+                            clutchRatio = 0f;
+                        } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
+                            print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
+                            rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
+                            // keep the clutch ratio soft to avoid a money shift
+                            clutchRatio = 0f;
+                        }
+                        impulseSource.GenerateImpulse();
+                    } else if (rpmDiff > 500) {
+                        print("unsynced downshift!");
+                        clutchRatio = 0f;
+                        impulseSource.GenerateImpulse();
+                    }
+                }
+                engineRPM = Mathf.Lerp(idealEngineRPM, wheelRPM, grounded ? clutchRatio : idealEngineRPM);
+                // eventually: apply force to the wheels based on power at rpm
+                // then calculate wheelspin accordingly
+            } else if (currentGear == 0 || clutch) {
+                engineRPM = idealEngineRPM;
+            }
         }
+
+        clutchRatio = Mathf.MoveTowards(clutchRatio, 1f, engine.clutchSharpness * Time.fixedDeltaTime);
 
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
@@ -299,11 +316,15 @@ public class Car : MonoBehaviour {
         }
 
         // anti-stall check before I write the clutch
-        if (engineRunning && engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
-            StallEngine();
-        } else if (engineRPM > engine.redline+500) {
-            // money shift
-            StallEngine();
+        if (engineRunning) {
+            if (engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
+                Debug.Log("low RPM stall");
+                StallEngine();
+            } else if (engineRPM > engine.redline+500) {
+                // money shift
+                Debug.Log("money shift, you wanted this rpm: "+engineRPM);
+                StallEngine();
+            }
         }
 
         GetRPMPoint(engineRPM, gas);
@@ -361,7 +382,7 @@ public class Car : MonoBehaviour {
                 drifting = true;
                 tireSkid.mute = false;
                 foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = true && grounded;
+                    t.emitting = grounded;
                 }
             } else {
                 tireSkid.mute = true;
@@ -389,7 +410,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateTelemetry() {
-        speedText.text = MPH(rb.velocity.magnitude).ToString("F0");
+        speedText.text = (rb.velocity.magnitude * u2mph).ToString("F0");
         rpmText.text = engineRPM.ToString("F0");
         if (currentGear > 0) {
             gearTelemetry.text = currentGear.ToString();
@@ -427,10 +448,6 @@ public class Car : MonoBehaviour {
         InputManager.player.SetVibration(0, vibrationAmount);
         InputManager.player.SetVibration(1, vibrationAmount+rpmVibration);
         
-    }
-
-    public static float MPH(float speed) {
-        return speed * 2.2369362912f;
     }
 
     void GetRPMPoint(float rpm, float gas) {

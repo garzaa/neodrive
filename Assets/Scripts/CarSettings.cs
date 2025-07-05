@@ -13,6 +13,9 @@ public class CarSettings : ScriptableObject {
 	// this will deal with torque curves and shit later on naturally
 	public float brakeForce = 5f;
 
+	[Tooltip("Get a speed boost with this many MPH on a perfect launch")]
+	public float launchBoost = 20f;
+
 	public float drag = 0.3f;
 	
 	[Header("Steering")]

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8871276491731640639}
   - component: {fileID: 8871276491731640637}
   - component: {fileID: 8871276491731640636}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 8871276491853583888}
   - component: {fileID: 8871276491853583889}
   - component: {fileID: 6507319600186688159}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WheelCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8871276491884422729}
   - component: {fileID: 8871276491884422727}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 8871276492907063029}
   - component: {fileID: 8871276492907063027}
   - component: {fileID: 8871276492907063026}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CompressionBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

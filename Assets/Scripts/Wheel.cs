@@ -33,6 +33,8 @@ public class Wheel : MonoBehaviour {
 	public bool reverseRotation;
 	float fakeGroundBump;
 
+	public TrailRenderer tireSkid;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
@@ -139,7 +141,7 @@ public class Wheel : MonoBehaviour {
 	public void UpdateWheel(float speed, bool grounded) {
 		fakeGroundBump = Mathf.Sin(transform.position.magnitude * 3f) * 0.005f;
 		fakeGroundBump *= grounded ? 1f : 0;
-		fakeGroundBump *= Mathf.Clamp(Car.MPH(speed) / 60f, 0f, 1f);
+		fakeGroundBump *= Mathf.Clamp(speed*Car.u2mph / 60f, 0f, 1f);
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;

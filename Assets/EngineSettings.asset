@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redline: 8000
   fuelCutoff: 0.6
-  engineBraking: 1
+  engineBraking: 2
   diffRatio: 3
   powerCurve:
     serializedVersion: 2
@@ -134,6 +134,7 @@ MonoBehaviour:
   - 1
   - 0.8
   clutchSound: {fileID: 8300000, guid: cb16732382b41fe468e9b49d2907427c, type: 3}
+  clutchSharpness: 0.9
   gearShiftNoises:
   - {fileID: 8300000, guid: 222919f5c327e1a449b9c402bc2b1008, type: 3}
   - {fileID: 8300000, guid: c96dab42b0fdf634d984555f201189e7, type: 3}

@@ -42,9 +42,16 @@ public class EngineSettings : ScriptableObject {
 	public List<RPMPoint> rpmPoints;
 	public List<float> gearRatios;
 	public AudioClip clutchSound;
+	[Range(0.1f, 3f)]
+	public float clutchSharpness = 0.7f;
 	public List<AudioClip> gearShiftNoises;
 
-	public float GetTorque(float rpm) {
+	public float GetPower(float rpm) {
 		return powerCurve.Evaluate(rpm / redline) * maxPower;
+	}
+
+	public bool PeakPower(float rpm) {
+		// peak power is within a 10% threshold
+		return maxPower - GetPower(rpm) < (maxPower*0.1);
 	}
 }
