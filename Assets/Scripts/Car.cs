@@ -35,6 +35,7 @@ public class Car : MonoBehaviour {
     public Image gForceIndicator;
     public Text gForceText;
     public Text rpmText;
+    public Text clutchText;
 
     Animator engineAnimator;
     float engineRPM = 0f;
@@ -43,6 +44,9 @@ public class Car : MonoBehaviour {
     public AudioSource engineAudio;
     public AudioSource gearshiftAudio;
     public AudioSource wheelAudio;
+    public AudioSource tireSkid;
+
+    public TrailRenderer[] tireSkids;
 
     List<RPMPoint> rpmPoints = new();
 
@@ -63,10 +67,11 @@ public class Car : MonoBehaviour {
 
     CinemachineImpulseSource impulseSource;
 
-    public AudioSource tireSkid;
     bool drifting = false;
     bool clutch = false;
     bool clutchOut = false;
+
+    float currentGrip = 1f;
 
     bool ignition { get {
         // to be changed later 
@@ -87,6 +92,9 @@ public class Car : MonoBehaviour {
         mainCamera = Camera.main;
         carBody = GetComponentInChildren<CarBody>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
+        foreach (TrailRenderer t in tireSkids) {
+            t.emitting = false;
+        }
     }
 
     void BuildSoundCache() {
@@ -207,6 +215,7 @@ public class Car : MonoBehaviour {
         }
 
         UpdateSteering();
+        if (!drifting) currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.7f*Time.fixedDeltaTime);
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
                 float lateralAccel = AddLateralForce(rearAxle, transform.right, true);
@@ -231,9 +240,9 @@ public class Car : MonoBehaviour {
             wheelAudio.volume = 0;
         }
 
-        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.005f;
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.0005f;
         if (gas==0 ||  fuelCutoff) dragForce = 0;
-        rb.AddForce(-rb.velocity*dragForce);
+        rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
 
         UpdateEngine();
         UpdateTelemetry();
@@ -252,7 +261,7 @@ public class Car : MonoBehaviour {
         } else if (currentGear != 0 && !clutch) { 
             // TODO: this is wheelRPM, engineRPM is gonna be different
             // good news is that the clutch spearheads the transmission chain
-            float currentEngineRPM = flatSpeed * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+            float currentEngineRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
             if (clutchOut) {
                 float rpmDiff = engineRPM - currentEngineRPM;
                 if (rpmDiff < 0 && rpmDiff < 2000) {
@@ -260,13 +269,14 @@ public class Car : MonoBehaviour {
                     impulseSource.GenerateImpulse();
                 } else if (rpmDiff > 0 && rpmDiff > 2000) {
                     print("unsynced downshift");
+                    // TODO: lock up the front wheels or something on a non-revmatched downshift
                     impulseSource.GenerateImpulse();
                 }
             }
             engineRPM = currentEngineRPM;
         } else if (currentGear == 0 || clutch) {
             float targetRPM = Mathf.Max(engine.idleRPM, ignition ? gas*engine.redline : 0);
-        float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
+        float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+2000f);
             engineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
         }
 
@@ -333,34 +343,38 @@ public class Car : MonoBehaviour {
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool driftCheck) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float lateralAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
-        float gs = Mathf.Abs(lateralAccel / Physics.gravity.y);
+        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
         if (driftCheck) {
             if (gs > settings.maxCorneringGForce) {
                 // the car should start either skidding or TCS here
-                // cornering force should decrease the higher magnitude of force is applied
-                // TODO: wheel telemetry for skidding before writing the streaks
-                // otherwise you can still get up to 10
                 drifting = true;
-                // todo: have a target volume to lerp to
                 tireSkid.mute = false;
+                foreach (TrailRenderer t in tireSkids) {
+                    t.emitting = true;
+                }
             } else {
                 tireSkid.mute = true;
                 drifting = false;
+                foreach (TrailRenderer t in tireSkids) {
+                    t.emitting = false;
+                }
             }
         }
         if (drifting) {
             carBody.driftRoll = 5f;
-            lateralAccel *= 0.5f / (gs / settings.maxCorneringGForce);
+            // instantly break traction, but ease back into it to avoid overcorrecting
+            currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
         } else {
             carBody.driftRoll = 0f;
         }
-        rb.AddForceAtPosition(lateralNormal * lateralAccel, point, ForceMode.Acceleration);
-        return lateralAccel;
+        wantedAccel *= currentGrip;
+        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
+        return wantedAccel;
     }
 
     float GetTireSlip(float lateralSpeed) {
-        // fill this in later
+        // this is flat right now, might want to make it a curve later
         return settings.tireSlip;
     }
 
@@ -374,10 +388,7 @@ public class Car : MonoBehaviour {
         } else {
             gearTelemetry.text = "R";
         }
-        gearTelemetry.text += "\ngear";
-        if (clutch) {
-            gearTelemetry.text += "\nclutch";
-        }
+        clutchText.color = new Color(1, 1, 1, clutch ? 1 : 0.2f);
     }
 
     void UpdateSteering() {

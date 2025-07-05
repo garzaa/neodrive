@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -36,6 +37,8 @@ public class CarBody : MonoBehaviour {
 	bool wobbling = false;
 
     public float driftRoll = 1f;
+
+    public Text telemetryText;
 
     void Awake()
     {
@@ -113,14 +116,16 @@ public class CarBody : MonoBehaviour {
         // Update current rocking angle
         xAngle += xSpringVelocity * Time.fixedDeltaTime;
 
-		targetRockAngle = -parentVelocityY * yVelocityInfluence;
-		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle+driftRoll, maxYAngle+driftRoll);
+		targetRockAngle = -parentVelocityY * yVelocityInfluence * driftRoll;
+		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle-driftRoll, maxYAngle+driftRoll);
 		displacement = yAngle - targetRockAngle;
 		springForce = -springStiffnessY * displacement;
 		dampingForce = -2f * Mathf.Sqrt(springStiffnessY) * dampingRatio * ySpringVelocity;
 		totalAcceleration = springForce + dampingForce + extraYForce;
 		ySpringVelocity += totalAcceleration * Time.fixedDeltaTime;
+        // TODO: this is always pushing the car left. why
 		yAngle += ySpringVelocity * Time.fixedDeltaTime;
+        telemetryText.text = yAngle.ToString("F2") + "\nroll";
 
         // Apply the rocking rotation to the object's local X-axis
         // The rotation is applied relative to its initial local rotation

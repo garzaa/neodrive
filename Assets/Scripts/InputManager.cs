@@ -9,19 +9,6 @@ public class InputManager : MonoBehaviour {
         player = ReInput.players.GetPlayer(0);
     }
 
-    public static Vector2 CameraStick() {
-        if (Button(Buttons.CLUTCH)) {
-            return Vector2.zero;
-        }
-
-        Vector2 v = new Vector2(
-            player.GetAxis(Buttons.CAM_X),
-            player.GetAxis(Buttons.CAM_Y)
-        ).normalized;
-
-        return v;
-    }
-
     public static float GetAxis(string axisName) {
         return player.GetAxis(axisName);
     }
