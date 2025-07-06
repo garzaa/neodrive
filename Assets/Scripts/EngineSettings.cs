@@ -54,4 +54,8 @@ public class EngineSettings : ScriptableObject {
 		// peak power is within a 10% threshold
 		return maxPower - GetPower(rpm) < (maxPower*0.1);
 	}
+
+	public float GetThrottleResponse(float rpm) {
+		return 1/((rpm + 2000)/redline) * throttleResponse;
+	}
 }

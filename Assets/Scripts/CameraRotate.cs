@@ -24,7 +24,12 @@ public class CameraRotate : MonoBehaviour {
     public List<CinemachineVirtualCamera> cameras;
     int currentCamera = 0;
 
+    float clutchReleased = -999;
+
+    Camera mainCam;
+
     void Start() {
+        mainCam = Camera.main;
         CycleCamera();
     }
 
@@ -45,14 +50,28 @@ public class CameraRotate : MonoBehaviour {
             CycleCamera();
         }
 
+        if (InputManager.ButtonDown(Buttons.TOGGLE_TELEMETRY)) {
+            mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("UI");
+        }
+
         // don't move the camera around but allow holding its position
-        // if it's moved when the clutch is depressed
-        if (!InputManager.Button(Buttons.CLUTCH)) {
+        // if it's moved when the clutch is depressed or right after
+        if (!InputManager.Button(Buttons.CLUTCH) && Time.unscaledTime > clutchReleased+0.5f) {
             cameraStick = new Vector2(
                 InputManager.GetAxis(Buttons.CAM_X),
                 InputManager.GetAxis(Buttons.CAM_Y)
             ).normalized;
-        } 
+        }
+
+        // if they start pushing the stick a frame before pressing the clutch, 
+        // don't lock them into a bad camera angle for the next half-second
+        if (cameraStick.sqrMagnitude < 0.5f) {
+            cameraStick = Vector2.zero;
+        }
+
+        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
+            clutchReleased = Time.unscaledTime;
+        }
 
         targetPos = car.transform.position;
         rotationAngle = Vector3.SignedAngle(-transform.forward, car.rb.velocity, Vector3.up);

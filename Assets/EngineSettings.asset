@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redline: 8000
   fuelCutoff: 0.6
-  engineBraking: 2
+  engineBraking: 0.2
   diffRatio: 3
   powerCurve:
     serializedVersion: 2
@@ -52,9 +52,9 @@ MonoBehaviour:
   maxPower: 200
   startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
   stallNoise: {fileID: 8300000, guid: 7041cc6f1fd128b4d87cba386f7afdd3, type: 3}
-  idleRPM: 1800
-  stallRPM: 1200
-  throttleResponse: 10000
+  idleRPM: 2000
+  stallRPM: 1500
+  throttleResponse: 12000
   rpmPoints:
   - rpm: 1800
     throttle: {fileID: 8300000, guid: 916e290eb74719a488f750784fb76c69, type: 3}
@@ -134,7 +134,7 @@ MonoBehaviour:
   - 1
   - 0.8
   clutchSound: {fileID: 8300000, guid: cb16732382b41fe468e9b49d2907427c, type: 3}
-  clutchSharpness: 0.9
+  clutchSharpness: 2.5
   gearShiftNoises:
   - {fileID: 8300000, guid: 222919f5c327e1a449b9c402bc2b1008, type: 3}
   - {fileID: 8300000, guid: c96dab42b0fdf634d984555f201189e7, type: 3}

@@ -66,13 +66,15 @@ public class Car : MonoBehaviour {
 
     bool drifting = false;
     bool clutch = false;
-    bool clutchOut = false;
+    bool clutchOutThisFrame = false;
     public float clutchRatio = 1f;
 
     float currentGrip = 1f;
 
     public const float u2mph = 2.2369362912f;
     public const float mph2u = 1/u2mph;
+
+    public Tachometer tachometer;
 
     bool ignition { get {
         // to be changed later 
@@ -126,7 +128,7 @@ public class Car : MonoBehaviour {
         steering = InputManager.GetAxis(Buttons.STEER);
         clutch = InputManager.Button(Buttons.CLUTCH);
         if (InputManager.ButtonUp(Buttons.CLUTCH)) {
-            clutchOut = true;
+            clutchOutThisFrame = true;
         }
 
         if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
@@ -206,7 +208,7 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = currentGear < 0 ? -1 : 1;
             if (gas > 0 && ignition && engineRunning && currentGear != 0 && !clutch) {
-                rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult*clutchRatio, rearAxle);
+                rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
@@ -222,7 +224,10 @@ public class Car : MonoBehaviour {
         }
 
         UpdateSteering();
-        if (!drifting) currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.7f*Time.fixedDeltaTime);
+        if (!drifting) {
+            // return to max grip after a drift
+            currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.7f*Time.fixedDeltaTime);
+        }
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
                 float lateralAccel = AddLateralForce(rearAxle, transform.right, true);
@@ -253,7 +258,7 @@ public class Car : MonoBehaviour {
 
         UpdateEngine();
         UpdateTelemetry();
-        clutchOut = false;
+        clutchOutThisFrame = false;
 
         foreach (Wheel w in wheels) {
             if (!w.Grounded) w.tireSkid.emitting = false;
@@ -263,18 +268,17 @@ public class Car : MonoBehaviour {
     void UpdateEngine() {
         float flatSpeed = Mathf.Abs(u2mph*Vector3.Dot(rb.velocity, forwardVector)) * (currentGear >= 0 ? 1 : -1);
         if (!engineRunning) {
-            engineRPM = Mathf.MoveTowards(engineRPM, 0, (engine.engineBraking*(engineRPM/engine.redline)+4000f) * Time.fixedDeltaTime);
+            engineRPM = Mathf.MoveTowards(engineRPM, 0, (engine.engineBraking*(engineRPM/engine.redline)+8000f) * Time.fixedDeltaTime);
             if (engineStarting) {
-                engineRPM = 2400;
+                engineRPM = 1500 + Mathf.Sin(Time.time*64) * 200;
             }
         } else {
-            float targetRPM = Mathf.Max(engine.idleRPM, ignition ? gas*engine.redline : 0);
-            float moveSpeed = ignition ? engine.throttleResponse : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
+            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, ignition ? gas*engine.redline : 0);
+            float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
                 float wheelRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
-                // if the clutch was let out this frame
-                if (clutchOut) {
+                if (clutchOutThisFrame) {
                     float rpmDiff = wheelRPM - engineRPM;
                     if (rpmDiff < 0) {
                         Debug.Log("upshift with diff "+rpmDiff);
@@ -282,10 +286,10 @@ public class Car : MonoBehaviour {
                             print("bad power shift!!");
                             clutchRatio = 0f;
                         } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
-                            print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
-                            rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
-                            // keep the clutch ratio soft to avoid a money shift
+                            // keep the clutch ratio soft to avoid a money shift on launch
                             clutchRatio = 0f;
+                            rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
+                            print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
                         }
                         impulseSource.GenerateImpulse();
                     } else if (rpmDiff > 500) {
@@ -315,14 +319,17 @@ public class Car : MonoBehaviour {
             fuelCutoff = false;
         }
 
-        // anti-stall check before I write the clutch
         if (engineRunning) {
-            if (engineRPM < engine.stallRPM && (gas < 0.5f || currentGear > 1)) {
-                Debug.Log("low RPM stall");
-                StallEngine();
+            if (engineRPM < engine.stallRPM) {
+                if (currentGear == 1 && gas > 0.7f) {
+                    // mimic letting the clutch out slowly 
+                    engineRPM = engine.stallRPM;
+                } else {
+                    Debug.Log("low RPM stall");
+                    StallEngine();
+                }
             } else if (engineRPM > engine.redline+500) {
-                // money shift
-                Debug.Log("money shift, you wanted this rpm: "+engineRPM);
+                Debug.Log("money shift, wanted this rpm: "+engineRPM);
                 StallEngine();
             }
         }
@@ -334,13 +341,14 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
+    // TODO: move the lurch logic to the rpm diff checker
     IEnumerator ChangeGear(int to) {
         changingGear = true;
         carBody.maxXAngle *= 2f;
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+        currentGear = to;
         yield return new WaitForSeconds(settings.gearShiftTime);
 
-        currentGear = to;
         carBody.maxXAngle /= 2f;
         changingGear = false;
     }
@@ -420,15 +428,21 @@ public class Car : MonoBehaviour {
             gearTelemetry.text = "R";
         }
         clutchText.color = new Color(1, 1, 1, clutch ? 1 : 0.2f);
+        tachometer.SetRPM(engineRPM, engine.redline);
     }
 
     void UpdateSteering() {
-        // TODO: decrease this if the car is moving at speed - define a start to ramp-down and an end
-        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sin(steering);
+        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
+        // don't go full lock at 100mph
+        float steeringMult = Mathf.Lerp(
+            1,
+            0.3f,
+            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 100f
+        );
         if (steering == 0) {
             targetSteerAngle = 0;
         }
-        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed);
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed);
 
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
