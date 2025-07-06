@@ -228,10 +228,7 @@ public class Car : MonoBehaviour {
         }
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
-                float lateralAccel = AddLateralForce(rearAxle, transform.right, false);
-                float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
-                gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
-                gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+                AddLateralForce(rearAxle, transform.right, false);
             }
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
@@ -250,7 +247,7 @@ public class Car : MonoBehaviour {
             wheelAudio.volume = 0;
         }
 
-        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.0005f;
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.005f;
         if (gas==0 ||  fuelCutoff) dragForce = 0;
         rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
 
@@ -271,7 +268,7 @@ public class Car : MonoBehaviour {
                 engineRPM = 1500 + Mathf.Sin(Time.time*64) * 200;
             }
         } else {
-            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
+            float targetRPM = Mathf.Max(engine.idleRPM -+ Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
             float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
@@ -287,13 +284,11 @@ public class Car : MonoBehaviour {
                             GearLurch();
                         } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
-                            print("perfect shift");
                             PerfectShift();
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
                             print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
-                        } else {
-                            print("perfect shift");
+                        } else if (currentGear > 1) {
                             PerfectShift();
                         }
                     } else {
@@ -304,7 +299,6 @@ public class Car : MonoBehaviour {
                             GearLurch();
                         } else if (idealEngineRPM < engine.redline+500) {
                             // no perfect shift on the money shift
-                            print("perfect shift");
                             PerfectShift();
                         }
                     }
@@ -324,7 +318,7 @@ public class Car : MonoBehaviour {
             fuelCutoff = true;
             // backfire more at lower gears when bouncing off the redline
             float ratio = Mathf.Max(1-(currentGear/engine.gearRatios.Count), 1);
-            if (1/(ratio) * UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
+            if (1/ratio * UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
             rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
         } else {
             fuelCutoff = false;
@@ -340,7 +334,7 @@ public class Car : MonoBehaviour {
                     StallEngine();
                 }
             } else if (engineRPM > engine.redline+500) {
-                Debug.Log("money shift, wanted this rpm: "+engineRPM);
+                // Debug.Log("money shift, wanted this rpm: "+engineRPM);
                 StallEngine();
             }
         }
@@ -353,6 +347,7 @@ public class Car : MonoBehaviour {
     }
 
     void PerfectShift() {
+        if (lastGear == currentGear) return;
         perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.05f, 0.05f);
         perfectShiftAudio.Play();
         if (lastGear > currentGear) {
@@ -402,13 +397,14 @@ public class Car : MonoBehaviour {
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed);
+        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        // these are really low now
         float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
         if (!steeringAxle) {
             if (gs > settings.maxCorneringGForce) {
                 // the car should start either skidding or TCS here
                 drifting = true;
-                tireSkid.mute = false;
+                tireSkid.mute = !grounded;
                 foreach (TrailRenderer t in tireSkids) {
                     t.emitting = grounded;
                 }
@@ -427,20 +423,12 @@ public class Car : MonoBehaviour {
         } else {
             carBody.driftRoll = 0f;
         }
-        float idealAccel = wantedAccel;
+        // hmm. maybe do this after the lateral force?
         wantedAccel *= currentGrip;
-        rb.AddForceAtPosition(transform.right * wantedAccel, point, ForceMode.Impulse);
-        if (drifting && steeringAxle) {
-            // this is the missing force on the lateral normal
-            // need to dot it with the transform.backwards
-            // ALSO need to do it based on how the front wheels are pushing the car "backwards"
-            float missingForce = Mathf.Abs(idealAccel - wantedAccel);
-            float backwardsForce = Vector3.Dot(lateralNormal, -forwardVector*missingForce);
-            // need to overcome the backwards force and push the car forward
-            backwardsForce *= 2f;
-            print(backwardsForce);
-            rb.AddForceAtPosition(forwardVector * backwardsForce * settings.driftBoost * gas, point, ForceMode.Impulse);
-        }
+        gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
+        gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
+        gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
         return wantedAccel;
     }
 
@@ -468,7 +456,7 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.4f,
+            0.8f,
             Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 120f
         );
         if (steering == 0) {

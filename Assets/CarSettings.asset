@@ -26,3 +26,4 @@ MonoBehaviour:
   steerSpeed: 5
   maxCorneringGForce: 5
   tireSlip: 0.5
+  driftBoost: 1
