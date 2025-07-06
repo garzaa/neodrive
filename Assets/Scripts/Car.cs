@@ -76,6 +76,9 @@ public class Car : MonoBehaviour {
 
     public Tachometer tachometer;
 
+    public AudioSource perfectShiftAudio;
+    public int lastGear;
+
     bool ignition { get {
         // to be changed later 
         return !(fuelCutoff || changingGear);
@@ -274,7 +277,7 @@ public class Car : MonoBehaviour {
             }
         } else {
             float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, ignition ? gas*engine.redline : 0);
-            float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)+1000f);
+            float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
                 float wheelRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
@@ -282,20 +285,33 @@ public class Car : MonoBehaviour {
                     float rpmDiff = wheelRPM - engineRPM;
                     if (rpmDiff < 0) {
                         Debug.Log("upshift with diff "+rpmDiff);
-                        if (rpmDiff < -500 && currentGear > 1) {
-                            print("bad power shift!!");
+                        if (rpmDiff < -1200 && currentGear > 1) {
+                            print("bad power shift");
                             clutchRatio = 0f;
+                            impulseSource.GenerateImpulse();
+                            GearLurch();
                         } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
+                            print("perfect shift");
+                            PerfectShiftNoise();
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
                             print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
+                        } else {
+                            print("perfect shift");
+                            PerfectShiftNoise();
                         }
-                        impulseSource.GenerateImpulse();
-                    } else if (rpmDiff > 500) {
-                        print("unsynced downshift!");
-                        clutchRatio = 0f;
-                        impulseSource.GenerateImpulse();
+                    } else {
+                        if (rpmDiff > 1200) {
+                            print("unsynced downshift!");
+                            clutchRatio = 0f;
+                            impulseSource.GenerateImpulse();
+                            GearLurch();
+                        } else if (idealEngineRPM < engine.redline+500) {
+                            // no perfect shift on the money shift
+                            print("perfect shift");
+                            PerfectShiftNoise();
+                        }
                     }
                 }
                 engineRPM = Mathf.Lerp(idealEngineRPM, wheelRPM, grounded ? clutchRatio : idealEngineRPM);
@@ -341,16 +357,24 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
+    void PerfectShiftNoise() {
+        perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.05f, 0.05f);
+        perfectShiftAudio.Play();
+    }
+
     // TODO: move the lurch logic to the rpm diff checker
     IEnumerator ChangeGear(int to) {
         changingGear = true;
-        carBody.maxXAngle *= 2f;
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
         currentGear = to;
-        yield return new WaitForSeconds(settings.gearShiftTime);
-
-        carBody.maxXAngle /= 2f;
+        yield return new WaitForSeconds(0.01f);
         changingGear = false;
+    }
+
+    IEnumerator GearLurch() {
+        carBody.maxXAngle *= 2f;
+        yield return new WaitForSeconds(settings.gearShiftTime);
+        carBody.maxXAngle /= 2f;
     }
 
     void StallEngine() {
@@ -436,8 +460,8 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.3f,
-            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 100f
+            0.2f,
+            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 140f
         );
         if (steering == 0) {
             targetSteerAngle = 0;
