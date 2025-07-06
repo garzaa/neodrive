@@ -304,7 +304,7 @@ public class Car : MonoBehaviour {
                     }
                 }
                 engineRPM = Mathf.Lerp(idealEngineRPM, wheelRPM, grounded ? clutchRatio : idealEngineRPM);
-                // eventually: apply force to the wheels based on power at rpm
+                // TODO: eventually, apply force to the wheels based on power at rpm
                 // then calculate wheelspin accordingly
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
@@ -397,7 +397,8 @@ public class Car : MonoBehaviour {
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        // TODO: this is maybe miscalculated
+        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
         // these are really low now
         float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
         if (!steeringAxle) {
@@ -417,6 +418,7 @@ public class Car : MonoBehaviour {
             }
         }
         if (drifting) {
+            // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
             carBody.driftRoll = 5f;
             // instantly break traction, but ease back into it to avoid overcorrecting
             currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
@@ -456,7 +458,7 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.8f,
+            0.3f,
             Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 120f
         );
         if (steering == 0) {

@@ -123,7 +123,6 @@ public class CarBody : MonoBehaviour {
 		dampingForce = -2f * Mathf.Sqrt(springStiffnessY) * dampingRatio * ySpringVelocity;
 		totalAcceleration = springForce + dampingForce + extraYForce;
 		ySpringVelocity += totalAcceleration * Time.fixedDeltaTime;
-        // TODO: this is always pushing the car left. why
 		yAngle += ySpringVelocity * Time.fixedDeltaTime;
         telemetryText.text = yAngle.ToString("F2") + "\nroll";
 
