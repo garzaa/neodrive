@@ -24,4 +24,5 @@ public class CarSettings : ScriptableObject {
 	[Tooltip("Force, in Gs, that the car can hold before it starts skidding")]
 	public float maxCorneringGForce = 2f;
 	public float tireSlip = 0.5f;
+	public float driftBoost = 1f;
 }

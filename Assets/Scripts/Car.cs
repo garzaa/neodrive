@@ -54,8 +54,6 @@ public class Car : MonoBehaviour {
     bool engineRunning = false;
     bool engineStalling = false;
     
-    bool changingGear = false;
-    
     Camera mainCamera;
 
     public UnityEvent onGearChange;
@@ -78,11 +76,6 @@ public class Car : MonoBehaviour {
 
     public AudioSource perfectShiftAudio;
     public int lastGear;
-
-    bool ignition { get {
-        // to be changed later 
-        return !(fuelCutoff || changingGear);
-    }}
 
     Vector3 forwardVector { get {
         // because I modeled it facing the wrong way
@@ -138,18 +131,20 @@ public class Car : MonoBehaviour {
             gearshiftAudio.PlayOneShot(engine.clutchSound);
         }
 
-        if (!changingGear) {
-            if (InputManager.DoubleTap(Buttons.GEARDOWN) && clutch) {
-                currentGear = -1;
+        if (InputManager.ButtonDown(Buttons.CLUTCH)) {
+            lastGear = currentGear;
+        }
+
+        if (InputManager.DoubleTap(Buttons.GEARDOWN) && clutch) {
+            currentGear = -1;
+        }
+        if (InputManager.ButtonDown(Buttons.SHIFTDOWN) && clutch) {
+            if (currentGear > -1) {
+                ChangeGear(currentGear - 1);
             }
-            if (InputManager.ButtonDown(Buttons.SHIFTDOWN) && clutch) {
-                if (currentGear > -1) {
-                    StartCoroutine(ChangeGear(currentGear - 1));
-                }
-            } else if (InputManager.ButtonDown(Buttons.SHIFTUP) && clutch) {
-                if (currentGear < engine.gearRatios.Count) {
-                    StartCoroutine(ChangeGear(currentGear+1));
-                }
+        } else if (InputManager.ButtonDown(Buttons.SHIFTUP) && clutch) {
+            if (currentGear < engine.gearRatios.Count) {
+                ChangeGear(currentGear+1);
             }
         }
         
@@ -210,7 +205,7 @@ public class Car : MonoBehaviour {
 
         if (WheelRR.Grounded || WheelRL.Grounded) {
             int mult = currentGear < 0 ? -1 : 1;
-            if (gas > 0 && ignition && engineRunning && currentGear != 0 && !clutch) {
+            if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
@@ -233,7 +228,7 @@ public class Car : MonoBehaviour {
         }
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
-                float lateralAccel = AddLateralForce(rearAxle, transform.right, true);
+                float lateralAccel = AddLateralForce(rearAxle, transform.right, false);
                 float gs = lateralAccel / Mathf.Abs(Physics.gravity.y);
                 gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
                 gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
@@ -241,7 +236,7 @@ public class Car : MonoBehaviour {
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
-                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, false);
+                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, true);
             }
 
             float flatSpeed = Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)) * u2mph;
@@ -276,8 +271,8 @@ public class Car : MonoBehaviour {
                 engineRPM = 1500 + Mathf.Sin(Time.time*64) * 200;
             }
         } else {
-            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, ignition ? gas*engine.redline : 0);
-            float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
+            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
+            float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
                 float wheelRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
@@ -293,13 +288,13 @@ public class Car : MonoBehaviour {
                         } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
                             print("perfect shift");
-                            PerfectShiftNoise();
+                            PerfectShift();
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
                             print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
                         } else {
                             print("perfect shift");
-                            PerfectShiftNoise();
+                            PerfectShift();
                         }
                     } else {
                         if (rpmDiff > 1200) {
@@ -310,7 +305,7 @@ public class Car : MonoBehaviour {
                         } else if (idealEngineRPM < engine.redline+500) {
                             // no perfect shift on the money shift
                             print("perfect shift");
-                            PerfectShiftNoise();
+                            PerfectShift();
                         }
                     }
                 }
@@ -357,18 +352,19 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
-    void PerfectShiftNoise() {
+    void PerfectShift() {
         perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.05f, 0.05f);
         perfectShiftAudio.Play();
+        if (lastGear > currentGear) {
+            print("perfect downshift");
+        } else if (lastGear < currentGear) {
+            print("perfect upshift");
+        }
     }
 
-    // TODO: move the lurch logic to the rpm diff checker
-    IEnumerator ChangeGear(int to) {
-        changingGear = true;
+    void ChangeGear(int to) {
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
         currentGear = to;
-        yield return new WaitForSeconds(0.01f);
-        changingGear = false;
     }
 
     IEnumerator GearLurch() {
@@ -404,11 +400,11 @@ public class Car : MonoBehaviour {
         }
     }
 
-    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool driftCheck) {
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) * 0.5f / Time.fixedDeltaTime;
+        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed);
         float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
-        if (driftCheck) {
+        if (!steeringAxle) {
             if (gs > settings.maxCorneringGForce) {
                 // the car should start either skidding or TCS here
                 drifting = true;
@@ -431,8 +427,20 @@ public class Car : MonoBehaviour {
         } else {
             carBody.driftRoll = 0f;
         }
+        float idealAccel = wantedAccel;
         wantedAccel *= currentGrip;
-        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
+        rb.AddForceAtPosition(transform.right * wantedAccel, point, ForceMode.Impulse);
+        if (drifting && steeringAxle) {
+            // this is the missing force on the lateral normal
+            // need to dot it with the transform.backwards
+            // ALSO need to do it based on how the front wheels are pushing the car "backwards"
+            float missingForce = Mathf.Abs(idealAccel - wantedAccel);
+            float backwardsForce = Vector3.Dot(lateralNormal, -forwardVector*missingForce);
+            // need to overcome the backwards force and push the car forward
+            backwardsForce *= 2f;
+            print(backwardsForce);
+            rb.AddForceAtPosition(forwardVector * backwardsForce * settings.driftBoost * gas, point, ForceMode.Impulse);
+        }
         return wantedAccel;
     }
 
@@ -460,8 +468,8 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.2f,
-            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 140f
+            0.4f,
+            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 120f
         );
         if (steering == 0) {
             targetSteerAngle = 0;
@@ -562,8 +570,8 @@ public class Car : MonoBehaviour {
         // then lerp between each one based on gas
         lowTarget.throttleAudio.volume *= gas;
         highTarget.throttleAudio.volume *= gas;
-        lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
-        highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
+        lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
+        highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
 
         // then warp the sound to match the RPM
         lowTarget.throttleAudio.pitch = targetLowPitch;
