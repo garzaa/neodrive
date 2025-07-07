@@ -468,6 +468,7 @@ public class Car : MonoBehaviour {
 
     void PerfectShift(float rpmDiff, bool alert=true) {
         if (lastGear == currentGear) return;
+        if (engineRPM + rpmDiff > engine.redline+500) return;
         perfectShiftEffect.SetTrigger("Trigger");
         perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.15f, 0.15f);
         perfectShiftAudio.Play();
@@ -478,7 +479,7 @@ public class Car : MonoBehaviour {
         } else if (lastGear < currentGear) {
             t = "revmatched upshift";
         }
-        if (alert) Alert(t + "\n+" + Mathf.Clamp(1000-Mathf.Abs(rpmDiff), 0, 1000);
+        if (alert) Alert(t + "\n+" + Mathf.Clamp(1000-Mathf.Abs(rpmDiff), 0, 1000));
     }
 
     void Alert(string text) {
