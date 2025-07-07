@@ -31,7 +31,6 @@ public class Car : MonoBehaviour {
     public float currentSteerAngle;
     public Image gForceIndicator;
     public Text gForceText;
-    public Text rpmText;
     public Text clutchText;
 
     Animator engineAnimator;
@@ -73,6 +72,8 @@ public class Car : MonoBehaviour {
     public const float mph2u = 1/u2mph;
 
     public Tachometer tachometer;
+    public Speedometer speedometer;
+    public Animator perfectShiftEffect;
 
     public AudioSource perfectShiftAudio;
     public int lastGear;
@@ -276,9 +277,8 @@ public class Car : MonoBehaviour {
                 if (clutchOutThisFrame) {
                     float rpmDiff = wheelRPM - engineRPM;
                     if (rpmDiff < 0) {
-                        Debug.Log("upshift with diff "+rpmDiff);
-                        if (rpmDiff < -1200 && currentGear > 1) {
-                            print("bad power shift");
+                        if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
+                            print("bad power shift with diff "+rpmDiff);
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
@@ -348,7 +348,8 @@ public class Car : MonoBehaviour {
 
     void PerfectShift() {
         if (lastGear == currentGear) return;
-        perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.05f, 0.05f);
+        perfectShiftEffect.SetTrigger("Trigger");
+        perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.15f, 0.15f);
         perfectShiftAudio.Play();
         if (lastGear > currentGear) {
             print("perfect downshift");
@@ -388,10 +389,10 @@ public class Car : MonoBehaviour {
         Vector3 towardsCamera = mainCamera.transform.position - engineAudio.transform.position;
         float cameraEngineAngle = Vector3.Angle(forwardVector, Vector3.ProjectOnPlane(towardsCamera, transform.up));
         if (cameraEngineAngle < 90) {
-            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", 5000);
+            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", 6000);
         } else {
             cameraEngineAngle -= 90f;
-            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(5000, 22000, cameraEngineAngle/90f));
+            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(6000, 22000, cameraEngineAngle/90f));
         }
     }
 
@@ -441,7 +442,6 @@ public class Car : MonoBehaviour {
 
     void UpdateTelemetry() {
         speedText.text = (rb.velocity.magnitude * u2mph).ToString("F0");
-        rpmText.text = engineRPM.ToString("F0");
         if (currentGear > 0) {
             gearTelemetry.text = currentGear.ToString();
         } else if (currentGear == 0) {
@@ -449,8 +449,9 @@ public class Car : MonoBehaviour {
         } else {
             gearTelemetry.text = "R";
         }
-        clutchText.color = new Color(1, 1, 1, clutch ? 1 : 0.2f);
+        clutchText.color = new Color(1, 1, 1, clutch ? 1 : (1 - (0.95f*clutchRatio)));
         tachometer.SetRPM(engineRPM, engine.redline);
+        speedometer.SetSpeed(rb.velocity.magnitude * u2mph, 180);
     }
 
     void UpdateSteering() {

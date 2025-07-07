@@ -65,7 +65,7 @@ public class CameraRotate : MonoBehaviour {
 
         // if they start pushing the stick a frame before pressing the clutch, 
         // don't lock them into a bad camera angle for the next half-second
-        if (cameraStick.sqrMagnitude < 0.5f) {
+        if (cameraStick.sqrMagnitude < 0.9f) {
             cameraStick = Vector2.zero;
         }
 
