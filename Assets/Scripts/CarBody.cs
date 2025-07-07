@@ -116,8 +116,13 @@ public class CarBody : MonoBehaviour {
         // Update current rocking angle
         xAngle += xSpringVelocity * Time.fixedDeltaTime;
 
-		targetRockAngle = -parentVelocityY * yVelocityInfluence * driftRoll;
-		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle-driftRoll, maxYAngle+driftRoll);
+		targetRockAngle = -parentVelocityY * yVelocityInfluence;
+		targetRockAngle = Mathf.Clamp(targetRockAngle, -maxYAngle, maxYAngle);
+
+        if (Mathf.Abs(driftRoll) > 0) {
+            targetRockAngle = driftRoll;
+        }
+
 		displacement = yAngle - targetRockAngle;
 		springForce = -springStiffnessY * displacement;
 		dampingForce = -2f * Mathf.Sqrt(springStiffnessY) * dampingRatio * ySpringVelocity;

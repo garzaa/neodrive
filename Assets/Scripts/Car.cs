@@ -384,14 +384,14 @@ public class Car : MonoBehaviour {
                     t.emitting = false;
                 }
             }
-        }
-        if (drifting) {
-            // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
-            carBody.driftRoll = 5f;
-            // instantly break traction, but ease back into it to avoid overcorrecting
-            currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
-        } else {
-            carBody.driftRoll = 0f;
+            if (drifting) {
+                // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
+                carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
+                // instantly break traction, but ease back into it to avoid overcorrecting
+                currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
+            } else {
+                carBody.driftRoll = 0f;
+            }
         }
         // hmm. maybe do this after the lateral force?
         wantedAccel *= currentGrip;
@@ -490,7 +490,7 @@ public class Car : MonoBehaviour {
         if (steering == 0) {
             targetSteerAngle = 0;
         }
-        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed);
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed * Time.fixedDeltaTime);
 
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
