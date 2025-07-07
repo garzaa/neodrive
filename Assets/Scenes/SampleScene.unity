@@ -2276,7 +2276,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 63
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3691,11 +3691,9 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 7b1495666efd2d348a6fbac5af9f48a5, type: 2}
   engine: {fileID: 11400000, guid: e9c39a6469a9e9b4495b9bebdcab05ca, type: 2}
   centerOfGravity: {fileID: 312713850}
-  gas: 0
   brake: 0
   steering: 0
   speedText: {fileID: 2054541866}
-  currentSteerAngle: 0
   gForceIndicator: {fileID: 832801718}
   gForceText: {fileID: 2010609129}
   clutchText: {fileID: 592627793}

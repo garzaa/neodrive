@@ -24,6 +24,7 @@ MonoBehaviour:
   drag: 0.1
   maxSteerAngle: 25
   steerSpeed: 5
-  maxCorneringGForce: 5
+  maxCorneringGForce: 2
   tireSlip: 0.5
-  driftBoost: 1
+  driftBoost: 0.5
+  driftControl: 2

@@ -26,7 +26,7 @@ public class CarSettings : ScriptableObject {
 	public float tireSlip = 1f;
 
 	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]
-	public float driftBoost = 1.5f;
+	public float driftBoost = 0.5f;
 
 	[Tooltip("Rotational torque to apply when drifting, based on steer angle")]
 	public float driftControl = 1f;

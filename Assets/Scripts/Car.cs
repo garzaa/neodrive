@@ -216,8 +216,9 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
-                mult *= drifting ? settings.driftBoost : 1;
-                rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult, rearAxle);
+                Vector3 enginePower = forwardVector * engine.GetPower(engineRPM)*gas*mult;
+                rb.AddForceAtPosition(enginePower, rearAxle);
+                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * enginePower * (drifting ? settings.driftBoost : 0));
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
