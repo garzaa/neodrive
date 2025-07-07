@@ -74,6 +74,8 @@ public class Car : MonoBehaviour {
     public Tachometer tachometer;
     public Speedometer speedometer;
     public Animator perfectShiftEffect;
+    public Animator alertAnimator;
+    Text alertText;
 
     public AudioSource perfectShiftAudio;
     public int lastGear;
@@ -95,6 +97,7 @@ public class Car : MonoBehaviour {
         foreach (TrailRenderer t in tireSkids) {
             t.emitting = false;
         }
+        alertText = alertAnimator.GetComponentInChildren<Text>();
     }
 
     void BuildSoundCache() {
@@ -197,8 +200,8 @@ public class Car : MonoBehaviour {
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
-                w.UpdateWheel(Vector3.Dot(rb.velocity, forwardVector), grounded);
             }
+            w.UpdateWheel(Vector3.Dot(rb.velocity, forwardVector), grounded);
         }
 
         Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
@@ -269,7 +272,7 @@ public class Car : MonoBehaviour {
                 engineRPM = 1500 + Mathf.Sin(Time.time*64) * 200;
             }
         } else {
-            float targetRPM = Mathf.Max(engine.idleRPM -+ Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
+            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
             float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
@@ -282,24 +285,28 @@ public class Car : MonoBehaviour {
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
-                        } else if (currentGear == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
+                        } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
-                            PerfectShift();
+                            PerfectShift(rpmDiff, alert: false);
+                            Alert("perfect launch \n+" + (int) engine.maxPower);
                             clutchRatio = 0f;
-                            rb.AddForce(forwardVector*(settings.launchBoost * mph2u), ForceMode.VelocityChange);
+                            rb.AddForce(forwardVector*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                             print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
-                        } else if (currentGear > 1) {
-                            PerfectShift();
+                        } else if (currentGear > 1 && Vector3.Dot(rb.velocity, forwardVector) * u2mph > 1f) {
+                            PerfectShift(rpmDiff);
                         }
                     } else {
-                        if (rpmDiff > 1200) {
+                        if (UnityEngine.Random.Range(0f, 1f) < 0.8f) {
+                            exhaustAnimator.SetTrigger("Backfire");
+                        }
+                        if (rpmDiff > 1000) {
                             print("unsynced downshift!");
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
                         } else if (idealEngineRPM < engine.redline+500) {
                             // no perfect shift on the money shift
-                            PerfectShift();
+                            PerfectShift(rpmDiff);
                         }
                     }
                 }
@@ -346,16 +353,24 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
-    void PerfectShift() {
+    void PerfectShift(float rpmDiff, bool alert=true) {
         if (lastGear == currentGear) return;
         perfectShiftEffect.SetTrigger("Trigger");
         perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.15f, 0.15f);
         perfectShiftAudio.Play();
+        rpmDiff = Mathf.RoundToInt(rpmDiff);
+        string t = "";
         if (lastGear > currentGear) {
-            print("perfect downshift");
+            t = "revmatched downshift";
         } else if (lastGear < currentGear) {
-            print("perfect upshift");
+            t = "revmatched upshift";
         }
+        if (alert) Alert(t + "\n+" + (1000-Mathf.Abs(rpmDiff)));
+    }
+
+    void Alert(string text) {
+        alertText.text = text;
+        alertAnimator.SetTrigger("Trigger");
     }
 
     void ChangeGear(int to) {

@@ -35,14 +35,23 @@ public class Wheel : MonoBehaviour {
 
 	public TrailRenderer tireSkid;
 
+	public GameObject normalSpeedObject;
+	public GameObject highSpeedObject;
+
+	MeshRenderer normalMesh;
+	MeshRenderer speedMesh;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
-		wheelMesh = wheelObject.GetComponent<MeshFilter>().mesh;
-		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * wheelObject.transform.localScale.x);
+		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
+		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
+		print(wheelRadius);
 		groundedText = GetComponentInChildren<Text>();
 		compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
+		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
+		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
 	}
 
 	void GenerateRays() {
@@ -150,7 +159,13 @@ public class Wheel : MonoBehaviour {
 			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
 			float deg = 360f * (speed/wheelCircumference) * Time.fixedDeltaTime;
 			v.z += deg * (reverseRotation ? -1 : 1);
+			print(deg);
 			wheelObject.transform.localRotation = Quaternion.Euler(v);
 		}
+
+		bool highSpeed = Mathf.Abs(speed * Car.u2mph) > 50;
+		print(highSpeed);	
+		normalMesh.enabled = !highSpeed;
+		speedMesh.enabled = highSpeed;
 	}
 }

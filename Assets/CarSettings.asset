@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Bits: 8
   gearShiftTime: 0.2
   brakeForce: 100
-  launchBoost: 20
+  launchBoost: 1
   drag: 0.1
   maxSteerAngle: 25
   steerSpeed: 5
