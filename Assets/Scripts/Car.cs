@@ -181,6 +181,17 @@ public class Car : MonoBehaviour {
             if (InputManager.ButtonDown(Buttons.SHIFTDOWN)) {
             }
         }
+
+        foreach (Wheel w in wheels) {
+            float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, forwardVector));
+            if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
+                rpm = Mathf.Lerp(GetWheelRPMFromEngineRPM(engineRPM), rpm, forwardTraction);
+            }
+            if (!grounded) {
+                rpm = GetWheelRPMFromEngineRPM(engineRPM);
+            }
+            w.UpdateWheelVisuals(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, rpm);
+        }
     }
 
     IEnumerator StartEngine() {
@@ -208,20 +219,10 @@ public class Car : MonoBehaviour {
         WheelRR.AddForce(RRForce);
 
         grounded = false;
-        // maybe want to do this during Update() instead since it's just visual
-        // and doesn't rely on physics
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
             }
-            float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, forwardVector));
-            if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
-                rpm = Mathf.Lerp(GetWheelRPMFromEngineRPM(engineRPM), rpm, forwardTraction);
-            }
-            if (!grounded) {
-                rpm = GetWheelRPMFromEngineRPM(engineRPM);
-            }
-            w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, rpm);
         }
 
         Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
