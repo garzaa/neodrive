@@ -36,6 +36,7 @@ public class Car : MonoBehaviour {
     Animator engineAnimator;
     public Animator exhaustAnimator;
     float engineRPM = 0f;
+    float engineRPMFromWheels = 0f;
     float maxEngineVolume;
     public AudioSource engineAudio;
     public AudioSource gearshiftAudio;
@@ -62,6 +63,7 @@ public class Car : MonoBehaviour {
     CinemachineImpulseSource impulseSource;
 
     bool drifting = false;
+    public float forwardTraction = 1f;
     bool clutch = false;
     bool clutchOutThisFrame = false;
     float clutchOutTime = 0;
@@ -209,7 +211,7 @@ public class Car : MonoBehaviour {
             if (w.Grounded) {
                 grounded = true;
             }
-            w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded);
+            w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, engineRPMFromWheels);
         }
 
         Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
@@ -218,14 +220,47 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
-                Vector3 enginePower = forwardVector * engine.GetPower(engineRPM)*gas*mult;
-                rb.AddForceAtPosition(enginePower, rearAxle);
+                Vector3 desiredForce = forwardVector * engine.GetPower(engineRPM)*gas*mult;
+                // ok, so here - if the power is more than the wheels can handle, spin them
+                // changes velocity by v = force * Time.fixedDeltaTime / mass
+                // get acceleration? 
+                // force = mass * acceleration
+                // acceleration = force / mass
+                // TODO: launch control here
+                forwardTraction = 1f;
+                Vector3 desiredVelocity = desiredForce * Time.fixedDeltaTime / rb.mass;
+                float mphNextStep = (rb.velocity+desiredVelocity).magnitude * u2mph;
+                // need to compare desired wheel RPM!!
+                // if it's within limits, fine
+                // if the engine wants one thing and the ground wants another,
+                // spin the wheels. it's that simple
+                // if (desiredAccel > settings.burnoutThreshold) {
+                //     // should decrease the more you go over the threshold
+                //     // get the difference as a function of the total?
+                //     // forwardTraction = 1 - 5f*((desiredAccel - settings.burnoutThreshold) / settings.burnoutThreshold);
+                //     // this is still weird somehow, disable it for now
+                //     forwardTraction = 1f;
+                //     // print("accel "+desiredAccel + "\nrpm: " + engineRPM);
+                // } else {
+                //     forwardTraction = 1f;
+                // }
 
-                mult = drifting ? settings.driftBoost : 0;
+                float desiredWheelRPM = GetWheelRPM(mphNextStep);
+                float actualWheelRPM = GetWheelRPM(u2mph*Vector3.Dot(rb.velocity, forwardVector));
+                float diff = Mathf.Abs(desiredWheelRPM - actualWheelRPM);
+                diff = Mathf.Max(0, diff-settings.burnoutThreshold);
+                float spinRatio = 1/((actualWheelRPM+diff) / actualWheelRPM);
+
+                forwardTraction = 1 * spinRatio;
+
+                desiredForce *= forwardTraction;
+                rb.AddForceAtPosition(desiredForce, rearAxle);
+
                 // drift boost approaches 0 as the car straightens out
+                mult = drifting ? settings.driftBoost : 0;
                 mult *= Vector3.SignedAngle(forwardVector, Vector3.ProjectOnPlane(rb.velocity, transform.up), transform.up) / 90f;
 
-                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * enginePower * mult);
+                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * desiredForce * mult);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
@@ -253,7 +288,7 @@ public class Car : MonoBehaviour {
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
                 AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, true);
-                if (drifting) {
+                if (drifting || forwardTraction < 0.9f) {
                     rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
                 }
             }
@@ -269,8 +304,8 @@ public class Car : MonoBehaviour {
             wheelAudio.volume = 0;
         }
 
-        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.005f;
-        if (gas==0 ||  fuelCutoff) dragForce = 0;
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.003f;
+        if (gas==0 || fuelCutoff) dragForce = 0;
         rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
 
         UpdateEngine();
@@ -280,6 +315,12 @@ public class Car : MonoBehaviour {
         foreach (Wheel w in wheels) {
             if (!w.Grounded) w.tireSkid.emitting = false;
         }
+    }
+
+    float GetWheelRPM(float flatSpeed) {
+        return flatSpeed*Mathf.Sign(currentGear)
+            * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1]
+            / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
     }
 
     void UpdateEngine() {
@@ -294,9 +335,9 @@ public class Car : MonoBehaviour {
             float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
-                float wheelRPM = flatSpeed*Mathf.Sign(currentGear) * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1] / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
+                engineRPMFromWheels = GetWheelRPM(flatSpeed);
                 if (clutchOutThisFrame) {
-                    float rpmDiff = wheelRPM - engineRPM;
+                    float rpmDiff = engineRPMFromWheels - engineRPM;
                     if (rpmDiff < 0) {
                         if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
                             clutchRatio = 0f;
@@ -325,9 +366,15 @@ public class Car : MonoBehaviour {
                         }
                     }
                 }
-                engineRPM = Mathf.Lerp(idealEngineRPM, wheelRPM, grounded ? clutchRatio : idealEngineRPM);
-                // TODO: eventually, apply force to the wheels based on power at rpm
-                // then calculate wheelspin accordingly
+                // if clutch is 1, it goes to wheels
+                // if clutch is 0, it goes to engine
+                // clutch is 1, forward traction is 0.7
+                // should be 0.7 from the engine
+                print(clutchRatio * forwardTraction);
+                engineRPM = Mathf.Lerp(
+                    idealEngineRPM,
+                    engineRPMFromWheels,
+                    grounded ? clutchRatio * (forwardTraction*forwardTraction) : idealEngineRPM);
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
             }
@@ -387,7 +434,7 @@ public class Car : MonoBehaviour {
                     t.emitting = false;
                 }
             }
-            if (drifting) {
+            if (drifting || forwardTraction < 0.9f) {
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
                 // instantly break traction, but ease back into it to avoid overcorrecting
                 currentGrip = 0.5f / (gs / settings.maxCorneringGForce);

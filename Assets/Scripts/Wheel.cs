@@ -151,12 +151,12 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheel(float speed, bool grounded) {
+	public void UpdateWheel(float flatSpeed, bool grounded, float idealRPM) {
 		fakeGroundBump = 0;
-		mph = Mathf.Abs(speed * Car.u2mph);
+		mph = Mathf.Abs(flatSpeed * Car.u2mph);
 
 		// start wheel bumping at 20mph and peak at 60
-		fakeGroundBump = Mathf.Clamp((speed-20f)/40f, 0, 1);
+		fakeGroundBump = Mathf.Clamp((flatSpeed-20f)/40f, 0, 1);
 		fakeGroundBump *= Mathf.Sin((Time.time+offset) * 64f) * 0.005f;
 		fakeGroundBump *= grounded ? 1 : 0;
 
@@ -164,9 +164,10 @@ public class Wheel : MonoBehaviour {
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
 		// get wheel position against the ground
-		if (speed != 0) {
+		if (flatSpeed != 0) {
 			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
-			float deg = 360f * (speed/wheelCircumference) * Time.fixedDeltaTime;
+			float deg = 360f * (flatSpeed/wheelCircumference) * Time.fixedDeltaTime;
+			print(rpm);
 			v.z += deg * (reverseRotation ? -1 : 1);
 			wheelObject.transform.localRotation = Quaternion.Euler(v);
 		}

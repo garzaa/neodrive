@@ -27,6 +27,8 @@ public class CarSettings : ScriptableObject {
 	public float maxCorneringGForce = 2f;
 	public float tireSlip = 1f;
 
+	public float burnoutThreshold = 500f;
+
 	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]
 	public float driftBoost = 0.5f;
 
