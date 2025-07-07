@@ -14,7 +14,7 @@ public class CarSettings : ScriptableObject {
 	public float brakeForce = 5f;
 
 	[Tooltip("Get a speed boost with this many MPH on a perfect launch")]
-	public float launchBoost = 20f;
+	public float launchBoost = 10f;
 
 	public float drag = 0.3f;
 	
@@ -23,6 +23,11 @@ public class CarSettings : ScriptableObject {
 	public float steerSpeed = 10f;
 	[Tooltip("Force, in Gs, that the car can hold before it starts skidding")]
 	public float maxCorneringGForce = 2f;
-	public float tireSlip = 0.5f;
-	public float driftBoost = 1f;
+	public float tireSlip = 1f;
+
+	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]
+	public float driftBoost = 1.5f;
+
+	[Tooltip("Rotational torque to apply when drifting, based on steer angle")]
+	public float driftControl = 1f;
 }

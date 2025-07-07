@@ -50,7 +50,6 @@ public class Wheel : MonoBehaviour {
 		settings = car.settings;
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
-		print(wheelRadius);
 		groundedText = GetComponentInChildren<Text>();
 		compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();

@@ -214,8 +214,9 @@ public class Car : MonoBehaviour {
         Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
         if (WheelRR.Grounded || WheelRL.Grounded) {
-            int mult = currentGear < 0 ? -1 : 1;
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
+                float mult = currentGear < 0 ? -1 : 1;
+                mult *= drifting ? settings.driftBoost : 1;
                 rb.AddForceAtPosition(forwardVector * engine.GetPower(engineRPM)*gas*mult, rearAxle);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
@@ -287,7 +288,6 @@ public class Car : MonoBehaviour {
                     float rpmDiff = wheelRPM - engineRPM;
                     if (rpmDiff < 0) {
                         if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
-                            print("bad power shift with diff "+rpmDiff);
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
@@ -297,7 +297,6 @@ public class Car : MonoBehaviour {
                             Alert("perfect launch \n+" + (int) engine.maxPower);
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
-                            print("launch at peak power. diff: "+ (engine.maxPower-engine.GetPower(idealEngineRPM)));
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, forwardVector) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
                         }
@@ -306,7 +305,6 @@ public class Car : MonoBehaviour {
                             exhaustAnimator.SetTrigger("Backfire");
                         }
                         if (rpmDiff > 1000) {
-                            print("unsynced downshift!");
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
@@ -357,6 +355,48 @@ public class Car : MonoBehaviour {
         UpdateVibration();
 
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
+    }
+
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
+        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
+        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
+        float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
+        if (!steeringAxle) {
+            if (gs > settings.maxCorneringGForce) {
+                // later: add TCS here
+                drifting = true;
+                tireSkid.mute = !grounded;
+                foreach (TrailRenderer t in tireSkids) {
+                    t.emitting = grounded;
+                }
+            } else {
+                tireSkid.mute = true;
+                drifting = false;
+                foreach (TrailRenderer t in tireSkids) {
+                    t.emitting = false;
+                }
+            }
+        }
+        if (drifting) {
+            // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
+            carBody.driftRoll = 5f;
+            // instantly break traction, but ease back into it to avoid overcorrecting
+            currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
+        } else {
+            carBody.driftRoll = 0f;
+        }
+        // hmm. maybe do this after the lateral force?
+        wantedAccel *= currentGrip;
+        gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
+        gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
+        gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
+        return wantedAccel;
+    }
+
+    float GetTireSlip(float lateralSpeed) {
+        // this is flat right now, might want to make it a curve later
+        return settings.tireSlip;
     }
 
     void PerfectShift(float rpmDiff, bool alert=true) {
@@ -415,50 +455,6 @@ public class Car : MonoBehaviour {
             cameraEngineAngle -= 90f;
             engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(6000, 22000, cameraEngineAngle/90f));
         }
-    }
-
-    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
-        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        // TODO: this is maybe miscalculated
-        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
-        // these are really low now
-        float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
-        if (!steeringAxle) {
-            if (gs > settings.maxCorneringGForce) {
-                // the car should start either skidding or TCS here
-                drifting = true;
-                tireSkid.mute = !grounded;
-                foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = grounded;
-                }
-            } else {
-                tireSkid.mute = true;
-                drifting = false;
-                foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = false;
-                }
-            }
-        }
-        if (drifting) {
-            // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
-            carBody.driftRoll = 5f;
-            // instantly break traction, but ease back into it to avoid overcorrecting
-            currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
-        } else {
-            carBody.driftRoll = 0f;
-        }
-        // hmm. maybe do this after the lateral force?
-        wantedAccel *= currentGrip;
-        gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
-        gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
-        gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
-        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
-        return wantedAccel;
-    }
-
-    float GetTireSlip(float lateralSpeed) {
-        // this is flat right now, might want to make it a curve later
-        return settings.tireSlip;
     }
 
     void UpdateTelemetry() {
@@ -582,6 +578,7 @@ public class Car : MonoBehaviour {
         // then lerp between each one based on gas
         lowTarget.throttleAudio.volume *= gas;
         highTarget.throttleAudio.volume *= gas;
+        // audibly drop the audio on fuel cutoff so you Know
         lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
         highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
 
