@@ -221,8 +221,11 @@ public class Car : MonoBehaviour {
                 Vector3 enginePower = forwardVector * engine.GetPower(engineRPM)*gas*mult;
                 rb.AddForceAtPosition(enginePower, rearAxle);
 
-                // TODO: decrease drift boost the closer you get to the current angle
-                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * enginePower * (drifting ? settings.driftBoost : 0));
+                mult = drifting ? settings.driftBoost : 0;
+                // drift boost approaches 0 as the car straightens out
+                mult *= Vector3.SignedAngle(forwardVector, Vector3.ProjectOnPlane(rb.velocity, transform.up), transform.up) / 90f;
+
+                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * enginePower * mult);
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
@@ -385,7 +388,6 @@ public class Car : MonoBehaviour {
                 }
             }
             if (drifting) {
-                // the back wheels are also ground-locked here, need to do the tirespin with torque diffs
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
                 // instantly break traction, but ease back into it to avoid overcorrecting
                 currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
