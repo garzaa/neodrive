@@ -235,7 +235,7 @@ public class Car : MonoBehaviour {
         UpdateSteering();
         if (!drifting) {
             // return to max grip after a drift
-            currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.7f*Time.fixedDeltaTime);
+            currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.5f*Time.fixedDeltaTime);
         }
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
@@ -245,6 +245,9 @@ public class Car : MonoBehaviour {
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
                 AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, true);
+                if (drifting) {
+                    rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
+                }
             }
 
             float flatSpeed = Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)) * u2mph;
