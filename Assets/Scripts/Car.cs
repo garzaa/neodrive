@@ -84,6 +84,9 @@ public class Car : MonoBehaviour {
     public AudioSource perfectShiftAudio;
     public int lastGear;
 
+    public EngineLight checkEngine;
+    public EngineLight transmissionTemp;
+
     public bool Drifting {
         get {
             return drifting;
@@ -198,6 +201,9 @@ public class Car : MonoBehaviour {
         engineStarting = true;
         engineAudio.PlayOneShot(engine.startupNoise);
         carBody.StartWobbling();
+        foreach (EngineLight l in GetComponentsInChildren<EngineLight>()) {
+            l.Startup();
+        }
         yield return new WaitForSeconds(engine.startupNoise.length-0.5f);
         exhaustAnimator.SetTrigger("Backfire");
         carBody.StopWobbling();
@@ -402,10 +408,12 @@ public class Car : MonoBehaviour {
                     engineRPM = engine.stallRPM;
                 } else {
                     Debug.Log("low RPM stall");
+                    checkEngine.Flash();
                     StallEngine();
                 }
             } else if (engineRPM > engine.redline+500) {
                 // Debug.Log("money shift, wanted this rpm: "+engineRPM);
+                transmissionTemp.Flash();
                 StallEngine();
             }
         }
@@ -470,7 +478,7 @@ public class Car : MonoBehaviour {
         } else if (lastGear < currentGear) {
             t = "revmatched upshift";
         }
-        if (alert) Alert(t + "\n+" + (1000-Mathf.Abs(rpmDiff)));
+        if (alert) Alert(t + "\n+" + Mathf.Clamp(1000-Mathf.Abs(rpmDiff), 0, 1000);
     }
 
     void Alert(string text) {
