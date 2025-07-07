@@ -27,6 +27,6 @@ MonoBehaviour:
   steerSpeed: 80
   maxCorneringGForce: 2
   tireSlip: 0.5
-  burnoutThreshold: 190
+  burnoutThreshold: 198
   driftBoost: 0.5
   driftControl: 2

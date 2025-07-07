@@ -10,6 +10,7 @@ using UnityEngine.TextCore.LowLevel;
 using UnityEngine.Events;
 using Cinemachine;
 using Palmmedia.ReportGenerator.Core;
+using System.Reflection;
 
 public class Car : MonoBehaviour {
 
@@ -211,6 +212,7 @@ public class Car : MonoBehaviour {
             if (w.Grounded) {
                 grounded = true;
             }
+            // TODO: if drive wheel, update based on engine RPM and forwardTraction
             w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, engineRPMFromWheels);
         }
 
@@ -366,15 +368,18 @@ public class Car : MonoBehaviour {
                         }
                     }
                 }
-                // if clutch is 1, it goes to wheels
-                // if clutch is 0, it goes to engine
-                // clutch is 1, forward traction is 0.7
-                // should be 0.7 from the engine
-                print(clutchRatio * forwardTraction);
                 engineRPM = Mathf.Lerp(
                     idealEngineRPM,
                     engineRPMFromWheels,
-                    grounded ? clutchRatio * (forwardTraction*forwardTraction) : idealEngineRPM);
+                    grounded ? clutchRatio : idealEngineRPM);
+
+                // then if there's wheelspin, move more towards what the engine actually wants
+                // maybe do it time-based later
+                engineRPM = Mathf.Lerp(
+                    targetRPM,
+                    engineRPM,
+                    forwardTraction
+                );
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
             }
