@@ -333,7 +333,7 @@ MonoBehaviour:
     - _id: 11
       _name: ShifterLeft
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: 
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -342,7 +342,7 @@ MonoBehaviour:
     - _id: 12
       _name: ShifterUp
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: 
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
     - _id: 13
       _name: ShifterRight
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: 
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -360,7 +360,7 @@ MonoBehaviour:
     - _id: 14
       _name: ShifterDown
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: 
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -957,7 +957,7 @@ MonoBehaviour:
     playerIdCounter: 2
     actionIdCounter: 17
     actionCategoryIdCounter: 1
-    inputBehaviorIdCounter: 3
+    inputBehaviorIdCounter: 4
     mapCategoryIdCounter: 1
     joystickLayoutIdCounter: 1
     keyboardLayoutIdCounter: 1

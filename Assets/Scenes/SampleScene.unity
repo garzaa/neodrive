@@ -327,7 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 94152714}
   - component: {fileID: 94152715}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113661388}
-  m_LocalRotation: {x: -0.03230864, y: -0.79531884, z: -0.04255433, w: 0.6038321}
+  m_LocalRotation: {x: 0.17134084, y: 0.38091564, z: -0.072059184, w: 0.90573347}
   m_LocalPosition: {x: -5.61, y: 3.08, z: -5.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 330495114}
   - component: {fileID: 330495116}
   - component: {fileID: 330495115}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: CarTelemetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1249,7 +1249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 341178976}
   - component: {fileID: 341178977}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Alert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1653,7 +1653,7 @@ GameObject:
   - component: {fileID: 455438618}
   - component: {fileID: 455438619}
   - component: {fileID: 455438620}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2025,7 +2025,7 @@ GameObject:
   - component: {fileID: 582534192}
   - component: {fileID: 582534194}
   - component: {fileID: 582534193}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Tachometer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2149,7 +2149,7 @@ GameObject:
   - component: {fileID: 592627791}
   - component: {fileID: 592627792}
   - component: {fileID: 592627793}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Clutch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2270,7 +2270,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 90
+  field of view: 20
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -2329,8 +2329,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 612606013}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -215.3, y: 27.61, z: -64.4}
+  m_LocalRotation: {x: 0.17134084, y: 0.38091564, z: -0.072059184, w: 0.90573347}
+  m_LocalPosition: {x: -5.61, y: 3.08, z: -5.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2980,7 +2980,7 @@ GameObject:
   - component: {fileID: 752936413}
   - component: {fileID: 752936415}
   - component: {fileID: 752936414}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: NeedleBlur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3395,7 +3395,7 @@ GameObject:
   - component: {fileID: 832801717}
   - component: {fileID: 832801719}
   - component: {fileID: 832801718}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: GForceBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3727,8 +3727,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937992042}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -216.8, y: 26.61, z: -64.4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3746,7 +3746,7 @@ Transform:
   - {fileID: 455438618}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &937992045
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4147,7 +4147,7 @@ GameObject:
   - component: {fileID: 1119317810}
   - component: {fileID: 1119317812}
   - component: {fileID: 1119317811}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: NeedleImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4344,7 +4344,7 @@ GameObject:
   - component: {fileID: 1196042952}
   - component: {fileID: 1196042954}
   - component: {fileID: 1196042953}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: NeedleBlur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4421,7 +4421,7 @@ GameObject:
   - component: {fileID: 1198341899}
   - component: {fileID: 1198341898}
   - component: {fileID: 1198341897}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5071,7 +5071,7 @@ GameObject:
   - component: {fileID: 1320733097}
   - component: {fileID: 1320733099}
   - component: {fileID: 1320733098}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: bodyRoll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5151,7 +5151,7 @@ GameObject:
   - component: {fileID: 1326668147}
   - component: {fileID: 1326668149}
   - component: {fileID: 1326668148}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Gear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5231,7 +5231,7 @@ GameObject:
   - component: {fileID: 1369090788}
   - component: {fileID: 1369090790}
   - component: {fileID: 1369090789}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: AlertText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6086,7 +6086,7 @@ GameObject:
   - component: {fileID: 1617400833}
   - component: {fileID: 1617400832}
   - component: {fileID: 1617400831}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: RPMText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6320,7 +6320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1699260251}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Needle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6589,7 +6589,7 @@ GameObject:
   - component: {fileID: 1733480443}
   - component: {fileID: 1733480445}
   - component: {fileID: 1733480444}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Speedometer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6666,7 +6666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1758083371}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Needle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6707,7 +6707,7 @@ GameObject:
   - component: {fileID: 1809787640}
   - component: {fileID: 1809787639}
   - component: {fileID: 1809787641}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: BlueRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6933,7 +6933,7 @@ GameObject:
   - component: {fileID: 1860828080}
   - component: {fileID: 1860828082}
   - component: {fileID: 1860828081}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: NeedleImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7278,7 +7278,7 @@ GameObject:
   - component: {fileID: 2010609124}
   - component: {fileID: 2010609130}
   - component: {fileID: 2010609129}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: GForceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7590,7 +7590,7 @@ GameObject:
   - component: {fileID: 2038895127}
   - component: {fileID: 2038895129}
   - component: {fileID: 2038895128}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Units
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7670,7 +7670,7 @@ GameObject:
   - component: {fileID: 2054541865}
   - component: {fileID: 2054541867}
   - component: {fileID: 2054541866}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Speed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

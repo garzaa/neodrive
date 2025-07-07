@@ -51,7 +51,7 @@ public class CameraRotate : MonoBehaviour {
         }
 
         if (InputManager.ButtonDown(Buttons.TOGGLE_TELEMETRY)) {
-            mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("UI");
+            mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("Telemetry");
         }
 
         // don't move the camera around but allow holding its position
@@ -76,7 +76,9 @@ public class CameraRotate : MonoBehaviour {
         targetPos = car.transform.position;
         rotationAngle = Vector3.SignedAngle(-transform.forward, car.rb.velocity, Vector3.up);
 
-        // TODO: if sliding, turn where the wheels are looking
+        if (car.Drifting) {
+            rotationAngle = Vector3.SignedAngle(-transform.forward, car.forwardVector, Vector3.up);
+        }
 
         // if the car's barely moving, put it at the car's rear
         if (car.rb.velocity.sqrMagnitude < 0.2f) {

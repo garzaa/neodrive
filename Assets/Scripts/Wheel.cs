@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class Wheel : MonoBehaviour {
 	Car car;
@@ -41,6 +42,9 @@ public class Wheel : MonoBehaviour {
 	MeshRenderer normalMesh;
 	MeshRenderer speedMesh;
 
+	float mph;
+	float offset;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
@@ -52,6 +56,7 @@ public class Wheel : MonoBehaviour {
 		GenerateRays();
 		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
 		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
+		offset = transform.localPosition.magnitude;
 	}
 
 	void GenerateRays() {
@@ -148,9 +153,14 @@ public class Wheel : MonoBehaviour {
 	}
 
 	public void UpdateWheel(float speed, bool grounded) {
-		fakeGroundBump = Mathf.Sin(transform.position.magnitude * 3f) * 0.005f;
-		fakeGroundBump *= grounded ? 1f : 0;
-		fakeGroundBump *= Mathf.Clamp(speed*Car.u2mph / 60f, 0f, 1f);
+		fakeGroundBump = 0;
+		mph = Mathf.Abs(speed * Car.u2mph);
+
+		// start wheel bumping at 20mph and peak at 60
+		fakeGroundBump = Mathf.Clamp((speed-20f)/40f, 0, 1);
+		fakeGroundBump *= Mathf.Sin((Time.time+offset) * 64f) * 0.005f;
+		fakeGroundBump *= grounded ? 1 : 0;
+
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
@@ -159,12 +169,10 @@ public class Wheel : MonoBehaviour {
 			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
 			float deg = 360f * (speed/wheelCircumference) * Time.fixedDeltaTime;
 			v.z += deg * (reverseRotation ? -1 : 1);
-			print(deg);
 			wheelObject.transform.localRotation = Quaternion.Euler(v);
 		}
 
-		bool highSpeed = Mathf.Abs(speed * Car.u2mph) > 50;
-		print(highSpeed);	
+		bool highSpeed = mph > 50;
 		normalMesh.enabled = !highSpeed;
 		speedMesh.enabled = highSpeed;
 	}

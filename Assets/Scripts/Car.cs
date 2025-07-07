@@ -19,7 +19,7 @@ public class Car : MonoBehaviour {
     public EngineSettings engine;
     public GameObject centerOfGravity;
 
-    public float gas;
+    public float gas { get; private set; }
     public float brake;
     public float steering;
 
@@ -28,7 +28,7 @@ public class Car : MonoBehaviour {
     Wheel[] wheels;
 
     public Text speedText;
-    public float currentSteerAngle;
+    public float currentSteerAngle { get; private set; }
     public Image gForceIndicator;
     public Text gForceText;
     public Text clutchText;
@@ -80,7 +80,13 @@ public class Car : MonoBehaviour {
     public AudioSource perfectShiftAudio;
     public int lastGear;
 
-    Vector3 forwardVector { get {
+    public bool Drifting {
+        get {
+            return drifting;
+        }
+    }
+
+    public Vector3 forwardVector { get {
         // because I modeled it facing the wrong way
         return -transform.forward;
     }}
@@ -201,7 +207,7 @@ public class Car : MonoBehaviour {
             if (w.Grounded) {
                 grounded = true;
             }
-            w.UpdateWheel(Vector3.Dot(rb.velocity, forwardVector), grounded);
+            w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded);
         }
 
         Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;

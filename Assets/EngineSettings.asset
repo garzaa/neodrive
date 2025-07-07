@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redline: 8000
   fuelCutoff: 0.6
-  engineBraking: 1
+  engineBraking: 0.7
   diffRatio: 3
   powerCurve:
     serializedVersion: 2
