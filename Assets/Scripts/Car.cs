@@ -86,6 +86,11 @@ public class Car : MonoBehaviour {
 
     public EngineLight checkEngine;
     public EngineLight transmissionTemp;
+    public EngineLight tcsLight;
+
+    bool tcs = true;
+    const int tcsIterations = 4;
+    Vector3 frontAxle, rearAxle;
 
     public bool Drifting {
         get {
@@ -185,6 +190,8 @@ public class Car : MonoBehaviour {
             }
         }
 
+        tcs = !InputManager.Button(Buttons.HANDBRAKE);
+
         foreach (Wheel w in wheels) {
             float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, forwardVector));
             if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
@@ -231,8 +238,8 @@ public class Car : MonoBehaviour {
             }
         }
 
-        Vector3 frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
-        Vector3 rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
+        frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
+        rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
@@ -427,8 +434,8 @@ public class Car : MonoBehaviour {
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
-        float wantedAccel = -lateralSpeed * GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
-        float gs = Mathf.Abs(wantedAccel / Physics.gravity.y);
+        float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
+        float gs = ToGs(wantedAccel);
         if (!steeringAxle) {
             if (gs > settings.maxCorneringGForce) {
                 // later: add TCS here
@@ -459,11 +466,6 @@ public class Car : MonoBehaviour {
         gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
         rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
         return wantedAccel;
-    }
-
-    float GetTireSlip(float lateralSpeed) {
-        // this is flat right now, might want to make it a curve later
-        return settings.tireSlip;
     }
 
     void PerfectShift(float rpmDiff, bool alert=true) {
@@ -552,10 +554,42 @@ public class Car : MonoBehaviour {
         }
         float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed * Time.fixedDeltaTime);
 
+        // calculate the g-forces that would be applied and how close it is to the threshold
+        float sidewaysGs = ToGs(GetWantedSteeringForce(steerAngle));
+        if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting) {
+            float currentAngle = Mathf.Abs(steerAngle/2f);
+            float bestAngle = currentAngle;
+            for (int i=0; i<tcsIterations; i++) {
+                // reversing the dot product and all the steering physics is too much work
+                // just binary search it lol
+                sidewaysGs = ToGs(GetWantedSteeringForce(currentAngle * Mathf.Sign(steering)));
+                if (sidewaysGs > settings.maxCorneringGForce) {
+                    currentAngle /= 2;
+                } else {
+                    bestAngle = currentAngle;
+                    currentAngle += currentAngle * 1.5f;
+                }
+            }
+            steerAngle = bestAngle * Mathf.Sign(steerAngle);
+            tcsLight.SetOn();
+        } else {
+            tcsLight.SetOff();
+        }
+
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
         WheelFR.transform.localRotation = targetRotation;
         currentSteerAngle = steerAngle;
+    }
+
+    float GetWantedSteeringForce(float steerAngle) {
+        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(frontAxle), Quaternion.Euler(0, steerAngle, 0) * transform.right);
+        float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
+        return wantedAccel;
+    }
+
+    float ToGs(float force) {
+        return Mathf.Abs(force / Physics.gravity.y);
     }
 
     void UpdateVibration() {

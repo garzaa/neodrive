@@ -16,4 +16,12 @@ public class EngineLight : MonoBehaviour {
 	public void Flash() {
 		animator.SetTrigger("Flash");
 	}
+
+	public void SetOn() {
+		animator.SetBool("On", true);
+	}
+
+	public void SetOff() {
+		animator.SetBool("On", false);
+	}
 }
