@@ -26,8 +26,6 @@ public class Wheel : MonoBehaviour {
 
 	const float springTarget = 0;
 
-	public float rpm;
-
 	public Text groundedText;
 	public Image compressionBar;
 
@@ -151,7 +149,7 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheel(float flatSpeed, bool grounded, float idealRPM) {
+	public void UpdateWheel(float flatSpeed, bool grounded, float rpm) {
 		fakeGroundBump = 0;
 		mph = Mathf.Abs(flatSpeed * Car.u2mph);
 
@@ -163,11 +161,10 @@ public class Wheel : MonoBehaviour {
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
+
 		// get wheel position against the ground
 		if (flatSpeed != 0) {
-			float wheelCircumference = 2 * Mathf.PI * wheelRadius;
-			float deg = 360f * (flatSpeed/wheelCircumference) * Time.fixedDeltaTime;
-			print(rpm);
+			float deg = rpm / 60f * Time.fixedDeltaTime * 360f;
 			v.z += deg * (reverseRotation ? -1 : 1);
 			wheelObject.transform.localRotation = Quaternion.Euler(v);
 		}
