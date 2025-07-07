@@ -50,13 +50,16 @@ public class CameraRotate : MonoBehaviour {
             CycleCamera();
         }
 
+        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
+            clutchReleased = Time.unscaledTime;
+        }
+
         if (InputManager.ButtonDown(Buttons.TOGGLE_TELEMETRY)) {
             mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("Telemetry");
         }
 
         // don't move the camera around but allow holding its position
-        // if it's moved when the clutch is depressed or right after
-        if (!InputManager.Button(Buttons.CLUTCH) && Time.unscaledTime > clutchReleased+0.5f) {
+        if (!InputManager.Button(Buttons.CLUTCH)) {
             cameraStick = new Vector2(
                 InputManager.GetAxis(Buttons.CAM_X),
                 InputManager.GetAxis(Buttons.CAM_Y)
@@ -65,12 +68,8 @@ public class CameraRotate : MonoBehaviour {
 
         // if they start pushing the stick a frame before pressing the clutch, 
         // don't lock them into a bad camera angle for the next half-second
-        if (cameraStick.sqrMagnitude < 0.9f) {
+        if (cameraStick.sqrMagnitude < 0.9f || Time.unscaledTime < clutchReleased+0.5f) {
             cameraStick = Vector2.zero;
-        }
-
-        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
-            clutchReleased = Time.unscaledTime;
         }
 
         targetPos = car.transform.position;
@@ -78,6 +77,7 @@ public class CameraRotate : MonoBehaviour {
 
         if (car.Drifting) {
             rotationAngle = Vector3.SignedAngle(-transform.forward, car.forwardVector, Vector3.up);
+            // TODO: rotate based on the drift direction, slowly move towards it? very subtle rotation
         }
 
         // if the car's barely moving, put it at the car's rear

@@ -10,6 +10,8 @@ public class CarSettings : ScriptableObject {
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
 
+	public float drivelineFlex = 1f;
+
 	// this will deal with torque curves and shit later on naturally
 	public float brakeForce = 5f;
 

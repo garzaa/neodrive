@@ -19,6 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
+  drivelineFlex: 1
   brakeForce: 100
   launchBoost: 10
   drag: 0.1

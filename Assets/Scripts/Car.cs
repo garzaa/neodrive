@@ -64,6 +64,7 @@ public class Car : MonoBehaviour {
     bool drifting = false;
     bool clutch = false;
     bool clutchOutThisFrame = false;
+    float clutchOutTime = 0;
     public float clutchRatio = 1f;
 
     float currentGrip = 1f;
@@ -135,6 +136,7 @@ public class Car : MonoBehaviour {
         clutch = InputManager.Button(Buttons.CLUTCH);
         if (InputManager.ButtonUp(Buttons.CLUTCH)) {
             clutchOutThisFrame = true;
+            clutchOutTime = Time.time;
         }
 
         if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
@@ -218,6 +220,8 @@ public class Car : MonoBehaviour {
                 float mult = currentGear < 0 ? -1 : 1;
                 Vector3 enginePower = forwardVector * engine.GetPower(engineRPM)*gas*mult;
                 rb.AddForceAtPosition(enginePower, rearAxle);
+
+                // TODO: decrease drift boost the closer you get to the current angle
                 rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * enginePower * (drifting ? settings.driftBoost : 0));
             } else {
                 rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
@@ -509,6 +513,16 @@ public class Car : MonoBehaviour {
     }
 
     void GetRPMPoint(float rpm, float gas) {
+        if (currentGear > lastGear) {
+            // wobble the engine noise a little bit based on driveline flex
+            float timeSinceClutchUp = Time.time - clutchOutTime;
+            // decrease over time
+            float mult = Mathf.Clamp(1 - (timeSinceClutchUp / 0.8f), 0, 1);
+            // wobble more at lower gears
+            mult *= 1 - (Mathf.Abs(currentGear)/engine.gearRatios.Count);
+            rpm += mult * settings.drivelineFlex * Mathf.Sin(Time.time * 48f) * settings.drivelineFlex * 100 * gas;
+        }
+
         // profile and optimize this later
         // jesus christ, you need to have an audiosource for every single RPM point
         RPMPoint lowTarget = rpmPoints[0];
