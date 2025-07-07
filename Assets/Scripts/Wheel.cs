@@ -163,13 +163,11 @@ public class Wheel : MonoBehaviour {
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
 
 		// get wheel position against the ground
-		if (flatSpeed != 0) {
-			float deg = rpm / 60f * Time.fixedDeltaTime * 360f;
-			v.z += deg * (reverseRotation ? -1 : 1);
-			wheelObject.transform.localRotation = Quaternion.Euler(v);
-		}
+		float deg = rpm / 60f * Time.fixedDeltaTime * 360f;
+		v.z += deg * (reverseRotation ? -1 : 1);
+		wheelObject.transform.localRotation = Quaternion.Euler(v);
 
-		bool highSpeed = mph > 50;
+		bool highSpeed = rpm > 400;
 		normalMesh.enabled = !highSpeed;
 		speedMesh.enabled = highSpeed;
 	}

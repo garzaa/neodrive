@@ -208,14 +208,18 @@ public class Car : MonoBehaviour {
         WheelRR.AddForce(RRForce);
 
         grounded = false;
+        // maybe want to do this during Update() instead since it's just visual
+        // and doesn't rely on physics
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
             }
-            // TODO: if drive wheel, update based on engine RPM and forwardTraction
             float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, forwardVector));
             if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
-                //rpm = Mathf.Lerp(engineRPM, engineRPMFromWheels, Mathf.Pow(forwardTraction, 3));
+                rpm = Mathf.Lerp(GetWheelRPMFromEngineRPM(engineRPM), rpm, forwardTraction);
+            }
+            if (!grounded) {
+                rpm = GetWheelRPMFromEngineRPM(engineRPM);
             }
             w.UpdateWheel(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, rpm);
         }
@@ -317,7 +321,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateEngine() {
-        float flatSpeed = Mathf.Abs(u2mph*Vector3.Dot(rb.velocity, forwardVector)) * (currentGear >= 0 ? 1 : -1);
+        float flatSpeed = u2mph*Vector3.Dot(rb.velocity, forwardVector);
         if (!engineRunning) {
             engineRPM = Mathf.MoveTowards(engineRPM, 0, (engine.engineBraking*(engineRPM/engine.redline)+8000f) * Time.fixedDeltaTime);
             if (engineStarting) {
@@ -370,7 +374,7 @@ public class Car : MonoBehaviour {
                 engineRPM = Mathf.Lerp(
                     targetRPM,
                     engineRPM,
-                    forwardTraction
+                    Mathf.Max(forwardTraction, 0.2f)
                 );
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
