@@ -514,6 +514,7 @@ public class Car : MonoBehaviour {
         float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed * Time.fixedDeltaTime);
 
         // calculate the g-forces that would be applied and how close it is to the threshold
+        // TODO: this is the front wheels. need to make sure it's either all front or all rear
         float sidewaysGs = ToGs(GetWantedSteeringForce(steerAngle));
         if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting && grounded) {
             float currentAngle = Mathf.Abs(steerAngle/2f);
