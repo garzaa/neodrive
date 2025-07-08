@@ -23,6 +23,7 @@ public class Car : MonoBehaviour {
     public float gas { get; private set; }
     public float brake;
     public float steering;
+    float targetSteerAngle;
 
     public Rigidbody rb { get; private set; }
     public bool grounded { get; private set; }
@@ -90,7 +91,9 @@ public class Car : MonoBehaviour {
 
     bool tcs = true;
     const int tcsIterations = 4;
+    float tcsFrac;
     Vector3 frontAxle, rearAxle;
+    float bumpTS = -999;
 
     public bool Drifting {
         get {
@@ -278,9 +281,16 @@ public class Car : MonoBehaviour {
             }
         }
 
+        if (tcs && grounded && rb.velocity.sqrMagnitude > 1f) {
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
+            if (flatSpeed.sqrMagnitude > 1f) {
+                rb.AddForce(-flatSpeed.normalized * settings.brakeForce * (tcsFrac*0.5f));
+            }
+        }
+
         UpdateSteering();
         if (!drifting) {
-            // return to max grip after a drift
+            // gradually return to max grip after a drift
             currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.5f*Time.fixedDeltaTime);
         }
         if (grounded) {
@@ -542,12 +552,12 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateSteering() {
-        float targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
+        targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
             0.3f,
-            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 120f
+            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 80f
         );
         if (steering == 0) {
             targetSteerAngle = 0;
@@ -570,10 +580,12 @@ public class Car : MonoBehaviour {
                     currentAngle += currentAngle * 1.5f;
                 }
             }
+            tcsFrac = 1-Mathf.Abs(bestAngle/steerAngle);
             steerAngle = bestAngle * Mathf.Sign(steerAngle);
             tcsLight.SetOn();
         } else {
             tcsLight.SetOff();
+            tcsFrac = 0;
         }
 
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
@@ -593,16 +605,30 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        float vibrationAmount = 0;
+        float startVibration = 0;
         float rpmVibration = 0;
         if (engineRPM > engine.redline - 2000) {
             rpmVibration += ((engineRPM - (engine.redline-2000)) / 2000)*0.5f;
         }
-        if (engineStarting || engineStalling) {
-            vibrationAmount = 1f;
+
+        if (engineStalling || engineStarting) {
+            startVibration = 1f;
         }
-        InputManager.player.SetVibration(0, vibrationAmount);
-        InputManager.player.SetVibration(1, vibrationAmount+rpmVibration);
+
+		// check if wheel suspension is compressed
+		float bumpVibration;
+		foreach (Wheel w in wheels) {
+			if (w.GetCompressionRatio() > 1f) {
+				bumpTS = Time.time;
+			}
+		}
+		if (Time.time < bumpTS + 0.2f) {
+			bumpVibration = 1f;
+		} else {
+			bumpVibration = 0;
+		}
+		InputManager.player.SetVibration(0, startVibration+bumpVibration);
+        InputManager.player.SetVibration(1, startVibration+rpmVibration);
         
     }
 

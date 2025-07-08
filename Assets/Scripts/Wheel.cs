@@ -145,6 +145,10 @@ public class Wheel : MonoBehaviour {
         );
 	}
 
+	public float GetCompressionRatio() {
+		return suspensionCompression / settings.suspensionTravel;
+	}
+
 	public void AddForce(Vector3 f) {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
