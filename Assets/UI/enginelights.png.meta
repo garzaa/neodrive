@@ -167,7 +167,7 @@ TextureImporter:
         width: 36
         height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -175,6 +175,27 @@ TextureImporter:
       bones: []
       spriteID: 6863786bd074aab4f8c28a5dd7dbbc37
       internalID: -443765067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enginelights_3
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 593
+        width: 34
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11c3a8a757e1f0c47aa55f447cdfc517
+      internalID: 2008815268
       vertices: []
       indices: 
       edges: []
@@ -191,6 +212,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       enginelights_0: -211622244
+      enginelights_3: 2008815268
       enginelights_1: -520535961
       enginelights_2: -443765067
   spritePackingTag: 

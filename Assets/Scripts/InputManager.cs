@@ -1,5 +1,6 @@
 using UnityEngine;
 using Rewired;
+using Rewired.Platforms.XboxOne;
 
 public class InputManager : MonoBehaviour {
 

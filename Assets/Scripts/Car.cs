@@ -88,6 +88,7 @@ public class Car : MonoBehaviour {
     public EngineLight checkEngine;
     public EngineLight transmissionTemp;
     public EngineLight tcsLight;
+    public EngineLight lcsLight;
 
     bool tcs = true;
     const int tcsIterations = 4;
@@ -284,7 +285,8 @@ public class Car : MonoBehaviour {
         if (tcs && grounded && rb.velocity.sqrMagnitude > 1f) {
             Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
             if (flatSpeed.sqrMagnitude > 1f) {
-                rb.AddForce(-flatSpeed.normalized * settings.brakeForce * (tcsFrac*0.5f));
+                Vector3 f = -flatSpeed.normalized * settings.brakeForce * (tcsFrac*0.5f);
+                if (!float.IsNaN(f.x)) rb.AddForce(f);
             }
         }
 
@@ -327,6 +329,12 @@ public class Car : MonoBehaviour {
 
         foreach (Wheel w in wheels) {
             if (!w.Grounded) w.tireSkid.emitting = false;
+        }
+
+        if (forwardTraction < 1) {
+            lcsLight.SetOn();
+        } else {
+            lcsLight.SetOff();
         }
     }
 
@@ -556,7 +564,7 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.3f,
+            0.15f,
             Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 80f
         );
         if (steering == 0) {
@@ -566,7 +574,7 @@ public class Car : MonoBehaviour {
 
         // calculate the g-forces that would be applied and how close it is to the threshold
         float sidewaysGs = ToGs(GetWantedSteeringForce(steerAngle));
-        if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting) {
+        if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting && grounded) {
             float currentAngle = Mathf.Abs(steerAngle/2f);
             float bestAngle = currentAngle;
             for (int i=0; i<tcsIterations; i++) {
@@ -627,6 +635,7 @@ public class Car : MonoBehaviour {
 		} else {
 			bumpVibration = 0;
 		}
+
 		InputManager.player.SetVibration(0, startVibration+bumpVibration);
         InputManager.player.SetVibration(1, startVibration+rpmVibration);
         
