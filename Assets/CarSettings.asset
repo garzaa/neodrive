@@ -25,7 +25,7 @@ MonoBehaviour:
   drag: 0.1
   maxSteerAngle: 25
   steerSpeed: 80
-  maxCorneringGForce: 2.5
+  maxCorneringGForce: 2
   tireSlip: 0.5
   burnoutThreshold: 80
   driftBoost: 0.8

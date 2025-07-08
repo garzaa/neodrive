@@ -89,9 +89,11 @@ public class Car : MonoBehaviour {
     public EngineLight transmissionTemp;
     public EngineLight tcsLight;
     public EngineLight lcsLight;
+    public EngineLight handbrakeLight;
 
     bool tcs = true;
     const int tcsIterations = 4;
+    float handbrakeDown = -999;
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
@@ -196,6 +198,10 @@ public class Car : MonoBehaviour {
 
         tcs = !InputManager.Button(Buttons.HANDBRAKE);
 
+        if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
+            handbrakeDown = Time.time;
+        }
+
         foreach (Wheel w in wheels) {
             float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, forwardVector));
             if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
@@ -281,6 +287,15 @@ public class Car : MonoBehaviour {
             } else {
                 rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
             }
+        }
+
+        if (grounded && Time.time > handbrakeDown + 0.2f && InputManager.Button(Buttons.HANDBRAKE)) {
+            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
+            // handbrake doubles brake force (adds it again)
+            rb.AddForce(-flatSpeed.normalized * settings.brakeForce);
+            handbrakeLight.SetOn();
+        } else {
+            handbrakeLight.SetOff();
         }
 
         if (tcs && grounded && rb.velocity.sqrMagnitude > 1f) {
@@ -376,7 +391,7 @@ public class Car : MonoBehaviour {
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
                             PerfectShift(rpmDiff, alert: false);
-                            Alert("perfect launch \n+" + (int) engine.maxPower);
+                            Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, forwardVector) * u2mph > 1f) {
@@ -425,7 +440,7 @@ public class Car : MonoBehaviour {
 
         if (engineRunning) {
             if (engineRPM < engine.stallRPM) {
-                if (currentGear == 1 && gas > 0.7f) {
+                if (Mathf.Abs(currentGear) == 1 && gas > 0.7f) {
                     // mimic letting the clutch out slowly 
                     engineRPM = engine.stallRPM;
                 } else {
