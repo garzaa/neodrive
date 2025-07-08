@@ -269,7 +269,8 @@ public class Car : MonoBehaviour {
 
                 rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * desiredForce * mult);
             } else {
-                rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
+                forwardTraction = 1f;
+                if (engineRunning) rb.AddForce(-Vector3.Project(rb.velocity, forwardVector) * (engineRPM/engine.redline) * engine.engineBraking);
             }
         }
 
@@ -303,7 +304,7 @@ public class Car : MonoBehaviour {
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
                 AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, true);
-                if (drifting || forwardTraction < 0.9f) {
+                if ((drifting || forwardTraction < 0.9f) && rb.velocity.sqrMagnitude > 1f) {
                     rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
                 }
             }
@@ -418,9 +419,7 @@ public class Car : MonoBehaviour {
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
             fuelCutoff = true;
-            // backfire more at lower gears when bouncing off the redline
-            float ratio = Mathf.Max(1-(currentGear/engine.gearRatios.Count), 1);
-            if (1/ratio * UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
+            if (UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
             rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
         } else {
             fuelCutoff = false;
@@ -564,7 +563,7 @@ public class Car : MonoBehaviour {
         // don't go full lock at 100mph
         float steeringMult = Mathf.Lerp(
             1,
-            0.15f,
+            0.3f,
             Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 80f
         );
         if (steering == 0) {
