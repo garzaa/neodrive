@@ -27,12 +27,14 @@ public class Tachometer : MonoBehaviour {
 		rpmThisStep = rpm;
 		delta = rpmThisStep - rpmLastStep;
 		float speed = delta / Time.fixedDeltaTime;
-		rpmChangeSpeed = speed ;
+		rpmChangeSpeed = speed;
+		rpmChangeSpeed = Mathf.Clamp(rpmChangeSpeed, -4000, 4000);
 		predictedRPM = rpmThisStep;
 	}
 
 	void Update() {
 		predictedRPM += rpmChangeSpeed * Time.deltaTime;
+		predictedRPM = Mathf.Clamp(predictedRPM, 0, redline+500);
 		speedFraction = Mathf.Clamp(Mathf.Abs(rpmChangeSpeed) / 10000f, 0, 1);
 
 		c = needle.color;

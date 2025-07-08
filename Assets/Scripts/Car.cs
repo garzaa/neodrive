@@ -291,7 +291,6 @@ public class Car : MonoBehaviour {
 
         if (grounded && Time.time > handbrakeDown + 0.2f && InputManager.Button(Buttons.HANDBRAKE)) {
             Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            // handbrake doubles brake force (adds it again)
             rb.AddForce(-flatSpeed.normalized * settings.brakeForce);
             handbrakeLight.SetOn();
         } else {
@@ -351,6 +350,16 @@ public class Car : MonoBehaviour {
             lcsLight.SetOn();
         } else {
             lcsLight.SetOff();
+        }
+
+        // right the car if upside down
+        if (Physics.Raycast(
+            transform.position, 
+            transform.up,
+            5, 
+            1 << LayerMask.NameToLayer("Ground")
+        ) && !grounded) {
+            rb.AddTorque(new Vector3(0, 0, steering * 100), ForceMode.Acceleration);
         }
     }
 
