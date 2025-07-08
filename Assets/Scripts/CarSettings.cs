@@ -11,6 +11,8 @@ public class CarSettings : ScriptableObject {
 	public float gearShiftTime = 0.25f;
 
 	public float maxNitrox = 40000;
+	public float nitroxBoost = 3f;
+	public float boostDuration = 1f;
 
 	public float drivelineFlex = 1f;
 

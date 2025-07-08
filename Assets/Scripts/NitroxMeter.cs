@@ -4,15 +4,23 @@ using System.Collections.Generic;
 
 public class NitroxMeter : MonoBehaviour {
 	public float max = 1000;
-	public float current = 0;
-	public float needleSpeed = 100;
-	public float needleRange = 180;
+	float current = 0;
+	float needleSpeed = 300;
+	float needleRange = 180;
 
 	public RectTransform needle;
 
 	public void Add(float amount) {
 		current += amount;
 		current = Mathf.Clamp(current, 0, max);
+	}
+
+	public bool Ready() {
+		return current == max;
+	}
+
+	public void OnBoost() {
+		current = 0;
 	}
 
 	void Update() {

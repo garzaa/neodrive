@@ -19,7 +19,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
-  maxNitrox: 40000
+  maxNitrox: 10000
+  nitroxBoost: 3
+  boostDuration: 1
   drivelineFlex: 1.5
   brakeForce: 100
   launchBoost: 10

@@ -93,6 +93,11 @@ public class Car : MonoBehaviour {
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
 
+    public AudioClip boostSound;
+    bool boosting = false;
+    bool automatic = false;
+    public List<TrailRenderer> fireStreaks;
+
     public bool Drifting {
         get {
             return drifting;
@@ -186,17 +191,6 @@ public class Car : MonoBehaviour {
             }
         }
 
-        if (clutch) {
-            if (InputManager.ButtonDown(Buttons.SHIFTLEFT)) {
-            }
-            if (InputManager.ButtonDown(Buttons.SHIFTRIGHT)) {
-            }
-            if (InputManager.ButtonDown(Buttons.SHIFTUP)) {
-            }
-            if (InputManager.ButtonDown(Buttons.SHIFTDOWN)) {
-            }
-        }
-
         tcs = !InputManager.Button(Buttons.HANDBRAKE);
 
         if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
@@ -213,6 +207,25 @@ public class Car : MonoBehaviour {
             }
             w.UpdateWheelVisuals(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, rpm);
         }
+
+        if (InputManager.ButtonDown(Buttons.BOOST)) {
+            StartCoroutine(Boost());
+        }
+
+        foreach (TrailRenderer t in fireStreaks) {
+            t.emitting = boosting;
+        }
+    }
+
+    IEnumerator Boost() {
+        engineAudio.PlayOneShot(boostSound);
+        nitroxMeter.OnBoost();
+        boosting = true;
+        automatic = true;
+        yield return new WaitForSeconds(settings.boostDuration);
+        boosting = false;
+        yield return new WaitForSeconds(1);
+        automatic = false;
     }
 
     IEnumerator StartEngine() {
@@ -255,6 +268,7 @@ public class Car : MonoBehaviour {
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
+                mult *= boosting ? settings.nitroxBoost : 1;
                 Vector3 desiredForce = forwardVector * engine.GetPower(engineRPM)*gas*mult;
                 forwardTraction = 1f;
                 Vector3 desiredVelocity = desiredForce * Time.fixedDeltaTime / rb.mass;
@@ -331,8 +345,10 @@ public class Car : MonoBehaviour {
                 wheelAudio.volume = 0.5f;
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
+            tireSkid.mute = false;
         } else {
             wheelAudio.volume = 0;
+            tireSkid.mute = true;
         }
 
         float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.003f;
@@ -409,7 +425,7 @@ public class Car : MonoBehaviour {
                             PerfectShift(rpmDiff);
                         }
                     } else {
-                        if (UnityEngine.Random.Range(0f, 1f) < 0.8f) {
+                        if (Random.Range(0f, 1f) < 0.8f) {
                             exhaustAnimator.SetTrigger("Backfire");
                         }
                         if (rpmDiff > 1000) {
@@ -442,9 +458,13 @@ public class Car : MonoBehaviour {
 
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
-            fuelCutoff = true;
-            if (UnityEngine.Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
-            rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
+            if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
+                ChangeGear(currentGear + 1);
+            } else {
+                fuelCutoff = true;
+                if (Random.Range(0f, 1f) < 0.1f) exhaustAnimator.SetTrigger("Backfire");
+                rb.AddForce(-Vector3.Project(rb.velocity, forwardVector));
+            }
         } else {
             fuelCutoff = false;
         }
@@ -459,8 +479,12 @@ public class Car : MonoBehaviour {
                     StallEngine();
                 }
             } else if (engineRPM > engine.redline+500) {
-                transmissionTemp.Flash();
-                StallEngine();
+                if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
+                    ChangeGear(currentGear + 1);
+                } else {
+                    transmissionTemp.Flash();
+                    StallEngine();
+                }
             }
         }
 
@@ -522,12 +546,12 @@ public class Car : MonoBehaviour {
             if (gs > settings.maxCorneringGForce) {
                 // later: add TCS here
                 drifting = true;
-                tireSkid.mute = !grounded;
+                tireSkid.volume = 1;
                 foreach (TrailRenderer t in tireSkids) {
                     t.emitting = grounded;
                 }
             } else {
-                tireSkid.mute = true;
+                tireSkid.volume = 0;
                 drifting = false;
                 foreach (TrailRenderer t in tireSkids) {
                     t.emitting = false;
