@@ -177,8 +177,8 @@ public class Car : MonoBehaviour {
             }
         }
         
-        if (InputManager.ButtonDown(Buttons.STARTENGINE) && clutch) {
-            if (!engineRunning && !engineStarting) {
+        if (InputManager.ButtonDown(Buttons.STARTENGINE)) {
+            if (!engineRunning && !engineStarting && clutch) {
                 StartCoroutine(StartEngine());
             } else {
                 engineRunning = false;
