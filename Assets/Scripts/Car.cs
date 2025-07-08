@@ -402,12 +402,10 @@ public class Car : MonoBehaviour {
                     grounded ? clutchRatio : idealEngineRPM);
 
                 // then if there's wheelspin, move more towards what the engine actually wants
-                // maybe do it time-based later
-                // need to do this based on throttleResponse? it can snap to redline if it's moving sideways
                 engineRPM = Mathf.Lerp(
                     targetRPM,
                     engineRPM,
-                    Mathf.Max(forwardTraction, 0.2f)
+                    Mathf.Max(forwardTraction, 0.2f) * clutchRatio
                 );
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
@@ -431,12 +429,10 @@ public class Car : MonoBehaviour {
                     // mimic letting the clutch out slowly 
                     engineRPM = engine.stallRPM;
                 } else {
-                    Debug.Log("low RPM stall");
                     checkEngine.Flash();
                     StallEngine();
                 }
             } else if (engineRPM > engine.redline+500) {
-                // Debug.Log("money shift, wanted this rpm: "+engineRPM);
                 transmissionTemp.Flash();
                 StallEngine();
             }
