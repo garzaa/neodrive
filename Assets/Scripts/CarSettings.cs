@@ -10,6 +10,8 @@ public class CarSettings : ScriptableObject {
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
 
+	public float maxNitrox = 40000;
+
 	public float drivelineFlex = 1f;
 
 	// this will deal with torque curves and shit later on naturally

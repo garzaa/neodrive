@@ -19,6 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
+  maxNitrox: 40000
   drivelineFlex: 1.5
   brakeForce: 100
   launchBoost: 10
@@ -27,6 +28,6 @@ MonoBehaviour:
   steerSpeed: 80
   maxCorneringGForce: 2
   tireSlip: 0.5
-  burnoutThreshold: 80
-  driftBoost: 0.8
+  burnoutThreshold: 50
+  driftBoost: 1
   driftControl: 2

@@ -70,8 +70,9 @@ public class Car : MonoBehaviour {
     public const float u2mph = 2.2369362912f;
     public const float mph2u = 1/u2mph;
 
-    public Tachometer tachometer;
-    public Speedometer speedometer;
+    Tachometer tachometer;
+    Speedometer speedometer;
+    NitroxMeter nitroxMeter;
     public Animator perfectShiftEffect;
     public Animator alertAnimator;
     Text alertText;
@@ -116,6 +117,10 @@ public class Car : MonoBehaviour {
             t.emitting = false;
         }
         alertText = alertAnimator.GetComponentInChildren<Text>();
+        tachometer = GetComponentInChildren<Tachometer>();
+        speedometer = GetComponentInChildren<Speedometer>();
+        nitroxMeter = GetComponentInChildren<NitroxMeter>();
+        nitroxMeter.max = settings.maxNitrox;
     }
 
     void BuildSoundCache() {
@@ -127,6 +132,7 @@ public class Car : MonoBehaviour {
             rAudio.clip = r.throttle;
             rAudio.loop = true;
             rAudio.spatialBlend = 1;
+            rAudio.minDistance = engineAudio.minDistance;
             rAudio.Play();
             AudioSource rOffAudio = engineAudio.AddComponent<AudioSource>();
             rOffAudio.volume = maxEngineVolume;
@@ -134,6 +140,7 @@ public class Car : MonoBehaviour {
             rOffAudio.clip = r.throttleOff;
             rOffAudio.loop = true;
             rOffAudio.spatialBlend = 1;
+            rOffAudio.minDistance = engineAudio.minDistance;
             rOffAudio.Play();
 
             rpmPoints.Add(new RPMPoint(r, rAudio, rOffAudio));
@@ -395,6 +402,7 @@ public class Car : MonoBehaviour {
                             // keep the clutch ratio soft to avoid a money shift on launch
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
+                            nitroxMeter.Add(engine.maxPower*5);
                             clutchRatio = 0f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, forwardVector) * u2mph > 1f) {
@@ -463,6 +471,49 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
+    void UpdateSteering() {
+        targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
+        // don't go full lock at 100mph
+        float steeringMult = Mathf.Lerp(
+            1,
+            0.3f,
+            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 80f
+        );
+        if (steering == 0) {
+            targetSteerAngle = 0;
+        }
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed * Time.fixedDeltaTime);
+
+        // calculate the g-forces that would be applied and how close it is to the threshold
+        float sidewaysGs = ToGs(GetWantedSteeringForce(steerAngle));
+        if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting && grounded) {
+            float currentAngle = Mathf.Abs(steerAngle/2f);
+            float bestAngle = currentAngle;
+            for (int i=0; i<tcsIterations; i++) {
+                // reversing the dot product and all the steering physics is too much work
+                // just binary search it lol
+                sidewaysGs = ToGs(GetWantedSteeringForce(currentAngle * Mathf.Sign(steering)));
+                if (sidewaysGs > settings.maxCorneringGForce) {
+                    currentAngle /= 2;
+                } else {
+                    bestAngle = currentAngle;
+                    currentAngle += currentAngle * 1.5f;
+                }
+            }
+            tcsFrac = 1-Mathf.Abs(bestAngle/steerAngle);
+            steerAngle = bestAngle * Mathf.Sign(steerAngle);
+            tcsLight.SetOn();
+        } else {
+            tcsLight.SetOff();
+            tcsFrac = 0;
+        }
+
+        Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
+        WheelFL.transform.localRotation = targetRotation;
+        WheelFR.transform.localRotation = targetRotation;
+        currentSteerAngle = steerAngle;
+    }
+
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
         float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
         float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
@@ -512,7 +563,11 @@ public class Car : MonoBehaviour {
         } else if (lastGear < currentGear) {
             t = "revmatched upshift";
         }
-        if (alert) Alert(t + "\n+" + Mathf.Clamp(1000-Mathf.Abs(rpmDiff), 0, 1000));
+        int bonus = (int) Mathf.Clamp(1000-Mathf.Abs(rpmDiff), 10, 1000);
+        if (alert) {
+            Alert(t + "\n+" + bonus);
+            nitroxMeter.Add(bonus);
+        }
     }
 
     void Alert(string text) {
@@ -570,49 +625,6 @@ public class Car : MonoBehaviour {
         clutchText.color = new Color(1, 1, 1, clutch ? 1 : (1 - (0.95f*clutchRatio)));
         tachometer.SetRPM(engineRPM, engine.redline);
         speedometer.SetSpeed(rb.velocity.magnitude * u2mph, 180);
-    }
-
-    void UpdateSteering() {
-        targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
-        // don't go full lock at 100mph
-        float steeringMult = Mathf.Lerp(
-            1,
-            0.3f,
-            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 80f
-        );
-        if (steering == 0) {
-            targetSteerAngle = 0;
-        }
-        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle*steeringMult, settings.steerSpeed * Time.fixedDeltaTime);
-
-        // calculate the g-forces that would be applied and how close it is to the threshold
-        float sidewaysGs = ToGs(GetWantedSteeringForce(steerAngle));
-        if (tcs && sidewaysGs > settings.maxCorneringGForce && !drifting && grounded) {
-            float currentAngle = Mathf.Abs(steerAngle/2f);
-            float bestAngle = currentAngle;
-            for (int i=0; i<tcsIterations; i++) {
-                // reversing the dot product and all the steering physics is too much work
-                // just binary search it lol
-                sidewaysGs = ToGs(GetWantedSteeringForce(currentAngle * Mathf.Sign(steering)));
-                if (sidewaysGs > settings.maxCorneringGForce) {
-                    currentAngle /= 2;
-                } else {
-                    bestAngle = currentAngle;
-                    currentAngle += currentAngle * 1.5f;
-                }
-            }
-            tcsFrac = 1-Mathf.Abs(bestAngle/steerAngle);
-            steerAngle = bestAngle * Mathf.Sign(steerAngle);
-            tcsLight.SetOn();
-        } else {
-            tcsLight.SetOff();
-            tcsFrac = 0;
-        }
-
-        Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
-        WheelFL.transform.localRotation = targetRotation;
-        WheelFR.transform.localRotation = targetRotation;
-        currentSteerAngle = steerAngle;
     }
 
     float GetWantedSteeringForce(float steerAngle) {
