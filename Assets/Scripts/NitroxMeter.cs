@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class NitroxMeter : MonoBehaviour {
 	public float max = 1000;
 	float current = 0;
-	float needleSpeed = 300;
+	float needleSpeed = 600;
 	float needleRange = 180;
 
 	public RectTransform needle;
@@ -20,7 +20,8 @@ public class NitroxMeter : MonoBehaviour {
 	}
 
 	public void OnBoost() {
-		current = 0;
+		// make the needle rotate the correct way
+		current = 1;
 	}
 
 	void Update() {

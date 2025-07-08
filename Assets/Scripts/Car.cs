@@ -96,7 +96,6 @@ public class Car : MonoBehaviour {
     public AudioClip boostSound;
     bool boosting = false;
     bool automatic = false;
-    public List<TrailRenderer> fireStreaks;
 
     public bool Drifting {
         get {
@@ -205,15 +204,21 @@ public class Car : MonoBehaviour {
             if (!grounded) {
                 rpm = GetWheelRPMFromEngineRPM(engineRPM);
             }
-            w.UpdateWheelVisuals(Vector3.Dot(rb.GetPointVelocity(w.transform.position), forwardVector), grounded, rpm);
+
+            bool wheelBoost = false;
+            if (w == WheelRR || w == WheelRL) {
+                wheelBoost = boosting;
+            }
+            w.UpdateWheelVisuals(
+                Vector3.Dot(rb.GetPointVelocity(w.transform.position),forwardVector),
+                grounded,
+                rpm,
+                wheelBoost
+            );
         }
 
         if (InputManager.ButtonDown(Buttons.BOOST)) {
             StartCoroutine(Boost());
-        }
-
-        foreach (TrailRenderer t in fireStreaks) {
-            t.emitting = boosting;
         }
     }
 

@@ -43,6 +43,8 @@ public class Wheel : MonoBehaviour {
 	float mph;
 	float offset;
 
+	public TrailRenderer[] fireStreaks;
+
 	void Awake() {
 		car = GetComponentInParent<Car>();
 		settings = car.settings;
@@ -153,7 +155,7 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheelVisuals(float flatSpeed, bool grounded, float rpm) {
+	public void UpdateWheelVisuals(float flatSpeed, bool grounded, float rpm, bool boosting) {
 		fakeGroundBump = 0;
 		mph = Mathf.Abs(flatSpeed * Car.u2mph);
 
@@ -174,5 +176,9 @@ public class Wheel : MonoBehaviour {
 		bool highSpeed = rpm > 400;
 		normalMesh.enabled = !highSpeed;
 		speedMesh.enabled = highSpeed;
+
+		foreach (TrailRenderer r in fireStreaks) {
+			r.emitting = boosting;
+		}
 	}
 }
