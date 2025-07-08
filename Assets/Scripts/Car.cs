@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
-using UnityEditorInternal;
-using System;
 using Unity.VisualScripting;
-using UnityEngine.TextCore.LowLevel;
 using UnityEngine.Events;
 using Cinemachine;
-using Palmmedia.ReportGenerator.Core;
-using System.Reflection;
 
 public class Car : MonoBehaviour {
 
