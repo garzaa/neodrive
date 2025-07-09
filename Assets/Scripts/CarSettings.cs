@@ -27,7 +27,7 @@ public class CarSettings : ScriptableObject {
 	[Header("Steering")]
 	public float maxSteerAngle = 30;
 	public float steerSpeed = 10f;
-	[Tooltip("Force, in Gs, that the car can hold before it starts skidding")]
+	[Tooltip("Force, in Gs, that the fromt wheels can hold")]
 	public float maxCorneringGForce = 2f;
 	public float tireSlip = 1f;
 

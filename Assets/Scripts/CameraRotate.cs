@@ -77,11 +77,10 @@ public class CameraRotate : MonoBehaviour {
 
         if (car.Drifting) {
             rotationAngle = Vector3.SignedAngle(-transform.forward, car.forwardVector, Vector3.up);
-            // TODO: rotate based on the drift direction, slowly move towards it? very subtle rotation
         }
 
         // if the car's barely moving, put it at the car's rear
-        if (car.rb.velocity.sqrMagnitude < 0.2f) {
+        if (car.rb.velocity.sqrMagnitude < 0.5f) {
             rotationAngle = Vector3.SignedAngle(-transform.forward, -car.transform.forward, Vector3.up);
         }
 

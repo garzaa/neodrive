@@ -48,7 +48,7 @@ public class Tachometer : MonoBehaviour {
         tachNeedle.rotation = Quaternion.Euler(new Vector3(
 			0,
 			0, 
-			(tachResting - (predictedRPM/redline)*tachRange) * Mathf.Rad2Deg
+			(tachResting - predictedRPM/redline*tachRange) * Mathf.Rad2Deg
 		));
 	}
 }
