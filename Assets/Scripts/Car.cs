@@ -97,6 +97,8 @@ public class Car : MonoBehaviour {
     bool boosting = false;
     bool automatic = false;
 
+    float tireSkidVolume;
+
     public bool Drifting {
         get {
             return drifting;
@@ -211,15 +213,22 @@ public class Car : MonoBehaviour {
             }
             w.UpdateWheelVisuals(
                 Vector3.Dot(rb.GetPointVelocity(w.transform.position),forwardVector),
-                grounded,
                 rpm,
-                wheelBoost
+                wheelBoost,
+                Drifting
             );
         }
 
         if (InputManager.ButtonDown(Buttons.BOOST)) {
             StartCoroutine(Boost());
+            rb.AddRelativeTorque(125, 0, 0, ForceMode.Acceleration);
         }
+
+        if (boosting) {
+            // rb.AddRelativeTorque(4, 0, 0);
+        }
+
+        tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
     }
 
     IEnumerator Boost() {
@@ -298,11 +307,11 @@ public class Car : MonoBehaviour {
                 forwardTraction = 1 * spinRatio;
 
                 desiredForce *= forwardTraction;
+                desiredForce *= 1-tcsFrac;
                 rb.AddForceAtPosition(desiredForce, rearAxle);
 
                 // drift boost approaches 0 as the car straightens out
                 mult = drifting ? settings.driftBoost : 0;
-                mult *= 1-tcsFrac;
                 mult *= Vector3.SignedAngle(forwardVector, Vector3.ProjectOnPlane(rb.velocity, transform.up), transform.up) / 90f;
 
                 rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * desiredForce * mult);
@@ -368,10 +377,6 @@ public class Car : MonoBehaviour {
         UpdateEngine();
         UpdateTelemetry();
         clutchOutThisFrame = false;
-
-        foreach (Wheel w in wheels) {
-            if (!w.Grounded) w.tireSkid.emitting = false;
-        }
 
         if (forwardTraction < 1) {
             lcsLight.SetOn();
@@ -519,15 +524,8 @@ public class Car : MonoBehaviour {
 
     void UpdateSteering() {
         targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
-        // don't go full lock at 100mph
-        float steeringMult = Mathf.Lerp(
-            1,
-            0.1f,
-            Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)*u2mph) / 120f
-        );
-        if (tcsFrac > 0 ) {
-            steeringMult *= 0.5f;
-        }
+        float steeringMult = settings.steerLimitCurve.Evaluate(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
+        steeringMult *= 1-tcsFrac;
         if (steering == 0) {
             targetSteerAngle = 0;
         }
@@ -547,16 +545,10 @@ public class Car : MonoBehaviour {
         if (!steeringAxle) {
             if (gs > settings.maxCorneringGForce) {
                 drifting = true;
-                tireSkid.volume = 1;
-                foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = grounded;
-                }         
+                tireSkidVolume = 1;
             } else {
-                tireSkid.volume = 0;
+                tireSkidVolume = 0;
                 drifting = false;
-                foreach (TrailRenderer t in tireSkids) {
-                    t.emitting = false;
-                }
             }
             if (drifting || forwardTraction < 0.9f) {
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
@@ -633,7 +625,7 @@ public class Car : MonoBehaviour {
             engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", 6000);
         } else {
             cameraEngineAngle -= 90f;
-            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(6000, 22000, cameraEngineAngle/90f));
+            engineAudio.outputAudioMixerGroup.audioMixer.SetFloat("ExhaustLowPassCutoff", Mathf.Lerp(6000, 20000, cameraEngineAngle/90f));
         }
     }
 

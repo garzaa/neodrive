@@ -14,6 +14,9 @@ Shader "Custom2D/Fire"
 		_Gradient("Gradient Texture", 2D) = "white" {}
 		_ScrollSpeed("Scroll Speed", Vector) = (1, 1, 1, 1)
 		_NoiseScale("Noise Scale", Vector) = (1, 1, 1, 1)
+		_CoreSize("Core Size", Float) = 0.1
+		_MidSize("Mid Size", Float) = 0.30
+		_RimSize("Rim Size", Float) = 0.42
 	}
 
 	SubShader
@@ -30,7 +33,7 @@ Shader "Custom2D/Fire"
 		Cull Off
 		Lighting Off
 		ZWrite Off
-		Blend One OneMinusSrcAlpha
+		Blend One One
 
 		Pass
 		{
@@ -75,25 +78,27 @@ Shader "Custom2D/Fire"
 			float4 _ScrollSpeed;
 			float4 _NoiseScale;
 			sampler2D _Voronoise, _Noise, _Gradient;
+			float _CoreSize, _MidSize, _RimSize;
 
 			fixed4 frag(v2f IN) : SV_Target {
 				float2 uv = IN.texcoord;
 
 				uv *= _NoiseScale;
 				uv.y -= _ScrollSpeed.y * _Time.x;
+				uv.x += _ScrollSpeed.x * _Time.x;
 				fixed noiseScroll = tex2D(_Noise, uv).r + tex2D(_Voronoise, uv).r;
 				noiseScroll = clamp(noiseScroll, 0.0, 1.0);
 
 				noiseScroll *= tex2D(_Gradient, IN.texcoord).r;
 
 				// need separate params for outerfire and innerfire
-				float x = round(noiseScroll+0.1);
+				float x = round(noiseScroll+_CoreSize);
 				fixed4 core = fixed4(x, x, x, x) * _CoreColor;
 
-				float a = round(noiseScroll+0.3);
+				float a = round(noiseScroll+_MidSize);
 				fixed4 base = fixed4(a, a, a, a) * _Color;
 
-				float b = round(noiseScroll+0.42);
+				float b = round(noiseScroll+_RimSize);
 				fixed4 rim = fixed4(b, b, b, b) * _RimColor;
 
 				fixed4 c = lerp(rim, base, a);

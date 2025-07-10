@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using System.Diagnostics;
+using UnityEditor.Rendering;
 
 public class Wheel : MonoBehaviour {
 	Car car;
@@ -40,10 +41,10 @@ public class Wheel : MonoBehaviour {
 	MeshRenderer normalMesh;
 	MeshRenderer speedMesh;
 
-	float mph;
 	float offset;
 
 	public TrailRenderer[] fireStreaks;
+	public GameObject wheelFire;
 
 	void Awake() {
 		car = GetComponentInParent<Car>();
@@ -155,14 +156,13 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheelVisuals(float flatSpeed, bool grounded, float rpm, bool boosting) {
+	public void UpdateWheelVisuals(float flatSpeed, float rpm, bool boosting, bool drifting) {
 		fakeGroundBump = 0;
-		mph = Mathf.Abs(flatSpeed * Car.u2mph);
 
 		// start wheel bumping at 20mph and peak at 60
 		fakeGroundBump = Mathf.Clamp((flatSpeed-20f)/40f, 0, 1);
 		fakeGroundBump *= Mathf.Sin((Time.time+offset) * 64f) * 0.005f;
-		fakeGroundBump *= grounded ? 1 : 0;
+		fakeGroundBump *= Grounded ? 1 : 0;
 
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
@@ -180,5 +180,13 @@ public class Wheel : MonoBehaviour {
 		foreach (TrailRenderer r in fireStreaks) {
 			r.emitting = boosting;
 		}
+
+		// do not simplify this no matter how much vscode complains
+		// unity's serialization screws with the null checks
+		if (wheelFire != null) {
+			wheelFire.SetActive(boosting);
+		}
+
+		tireSkid.emitting = Grounded && drifting;
 	}
 }

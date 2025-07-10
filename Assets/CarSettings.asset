@@ -26,8 +26,41 @@ MonoBehaviour:
   brakeForce: 100
   launchBoost: 10
   drag: 0.1
-  maxSteerAngle: 25
+  maxSteerAngle: 18
   steerSpeed: 80
+  steerLimitCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.5366745
+      value: 1
+      inSlope: -0.00034770876
+      outSlope: -0.00034770876
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.23457044
+    - serializedVersion: 3
+      time: 67.57572
+      value: 0.3206068
+      inSlope: -0.006325534
+      outSlope: -0.006325534
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 150
+      value: 0.1
+      inSlope: -0.0026764784
+      outSlope: -0.0026764784
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   maxCorneringGForce: 2
   tireSlip: 0.5
   burnoutThreshold: 100
