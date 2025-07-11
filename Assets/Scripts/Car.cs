@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
 using UnityEditorInternal;
+using UnityEngineInternal;
 
 public class Car : MonoBehaviour {
 
@@ -98,6 +99,7 @@ public class Car : MonoBehaviour {
     bool automatic = false;
 
     float tireSkidVolume;
+    float spawnTime;
 
     public bool Drifting {
         get {
@@ -127,6 +129,7 @@ public class Car : MonoBehaviour {
         speedometer = GetComponentInChildren<Speedometer>();
         nitroxMeter = GetComponentInChildren<NitroxMeter>();
         nitroxMeter.max = settings.maxNitrox;
+        spawnTime = Time.time;
     }
 
     void BuildSoundCache() {
@@ -191,8 +194,6 @@ public class Car : MonoBehaviour {
                 engineRunning = false;
             }
         }
-
-        tcs = !InputManager.Button(Buttons.HANDBRAKE);
 
         if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
             handbrakeDown = Time.time;
@@ -279,17 +280,6 @@ public class Car : MonoBehaviour {
         frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
         rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
-        if (tcs) {
-            float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(rearAxle), transform.right);
-            float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
-            float gs = ToGs(wantedAccel);
-            if (Mathf.Abs(gs/settings.maxCorneringGForce) >= 0.7f && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
-                tcsFrac = Mathf.Abs(gs/settings.maxCorneringGForce);
-            } else {
-                tcsFrac = 0;
-            }
-        }
-
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
@@ -307,7 +297,6 @@ public class Car : MonoBehaviour {
                 forwardTraction = 1 * spinRatio;
 
                 desiredForce *= forwardTraction;
-                desiredForce *= 1-tcsFrac;
                 rb.AddForceAtPosition(desiredForce, rearAxle);
 
                 // drift boost approaches 0 as the car straightens out
@@ -351,7 +340,7 @@ public class Car : MonoBehaviour {
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
-                AddLateralForce(frontAxle, Quaternion.Euler(0, currentSteerAngle, 0) * transform.right, true);
+                AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true);
                 if ((drifting || forwardTraction < 0.9f) && rb.velocity.sqrMagnitude > 1f) {
                     rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
                 }
@@ -382,18 +371,6 @@ public class Car : MonoBehaviour {
             lcsLight.SetOn();
         } else {
             lcsLight.SetOff();
-        }
-
-        // apply braking TCS here
-        if (tcsFrac > 0 && grounded && rb.velocity.sqrMagnitude > 1f) {
-            Vector3 flatSpeed = Vector3.Project(rb.velocity, forwardVector);
-            if (flatSpeed.sqrMagnitude > 1f) {
-                Vector3 f = -flatSpeed.normalized * settings.brakeForce * (tcsFrac);
-                if (!float.IsNaN(f.x)) rb.AddForce(f);
-            }
-            tcsLight.SetOn();
-        } else {
-            tcsLight.SetOff();
         }
 
         // right the car if upside down
@@ -522,15 +499,58 @@ public class Car : MonoBehaviour {
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
+    float GetWantedAccel(float sa, Vector3 flatSpeed) {
+        float theta = -90f + sa + Vector3.SignedAngle(flatSpeed, forwardVector, transform.up);
+        float manualDot = flatSpeed.magnitude * Mathf.Cos(theta*Mathf.Deg2Rad);
+        float wantedAccel = manualDot * settings.tireSlip / Time.fixedDeltaTime;
+        return wantedAccel;
+    }
+
+    float GetWantedSteeringAngle(float wantedAccel, Vector3 flatSpeed) {
+        float manualDot = wantedAccel * Time.fixedDeltaTime / settings.tireSlip;
+        if (flatSpeed.magnitude < Mathf.Epsilon) return 0;
+
+        float cosThetaRad = manualDot / flatSpeed.magnitude;
+        cosThetaRad = Mathf.Clamp(cosThetaRad, -1f, 1f);
+
+        float theta = Mathf.Acos(cosThetaRad) * Mathf.Rad2Deg;
+
+        float sa = theta + 90f - Vector3.SignedAngle(flatSpeed, forwardVector, transform.up);
+        // again because of backwards bullshit
+        return (sa - 180) * -1;
+    }
+
+
     void UpdateSteering() {
-        targetSteerAngle = Mathf.Abs(steering * settings.maxSteerAngle) * Mathf.Sign(steering);
+        targetSteerAngle = steering * settings.maxSteerAngle;
         float steeringMult = settings.steerLimitCurve.Evaluate(Mathf.Abs(Vector3.Dot(rb.velocity, forwardVector)));
-        steeringMult *= 1-tcsFrac;
         if (steering == 0) {
             targetSteerAngle = 0;
         }
         targetSteerAngle *= steeringMult;
         float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed * Time.fixedDeltaTime);
+        if (tcs && !InputManager.Button(Buttons.HANDBRAKE) && !drifting) {
+            // car was modeled backwards. flip point velocity in world space
+            Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
+            axleVelocity = Vector3.Project(axleVelocity,forwardVector);
+            Vector3 flatSpeed = Vector3.ProjectOnPlane(axleVelocity, transform.up);
+            float wantedAccel = GetWantedAccel(steerAngle, flatSpeed);
+            float derivedSteeringAngle = GetWantedSteeringAngle(wantedAccel, flatSpeed);
+
+            print("current steer angle: "+steerAngle+", calculated steering angle: "+derivedSteeringAngle);
+
+            // ok maybe go back to doing the iterative solve?
+            // or no, ok. we need 
+            if (wantedAccel > settings.maxCorneringForce*0.9f) {
+                // steerAngle = GetWantedSteeringAngle(settings.maxCorneringForce * 0.9f * Mathf.Sign(wantedAccel), flatSpeed);
+                tcsFrac = 1;
+                tcsLight.SetOn();
+            } else {
+                tcsLight.SetOff();
+            }
+        } else {
+            tcsLight.SetOff();
+        }
 
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
@@ -539,11 +559,13 @@ public class Car : MonoBehaviour {
     }
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
-        float lateralSpeed = Vector3.Dot(rb.GetPointVelocity(point), lateralNormal);
+        Vector3 flatVelocity = Vector3.ProjectOnPlane(rb.GetPointVelocity(point), transform.up);
+        float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
         float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
-        float gs = ToGs(wantedAccel);
-        if (!steeringAxle) {
-            if (gs > settings.maxCorneringGForce) {
+        if (steeringAxle) {
+            // this is not on the same plane generally
+            // we need its velocity to be coplanar on the car
+            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 drifting = true;
                 tireSkidVolume = 1;
             } else {
@@ -552,11 +574,11 @@ public class Car : MonoBehaviour {
             }
             if (drifting || forwardTraction < 0.9f) {
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
-                // instantly break traction, but ease back into it to avoid overcorrecting
-                currentGrip = 0.5f / (gs / settings.maxCorneringGForce);
+                currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
             } else {
                 carBody.driftRoll = 0f;
             }
+            float gs = ToGs(wantedAccel);
             gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
             gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
         }
@@ -648,6 +670,9 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
+        if (Time.time < spawnTime + 0.5f) {
+            return;
+        }
         float startVibration = 0;
         float rpmVibration = 0;
         if (engineRPM > engine.redline - 2000) {

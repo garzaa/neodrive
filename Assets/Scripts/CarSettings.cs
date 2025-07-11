@@ -28,8 +28,7 @@ public class CarSettings : ScriptableObject {
 	public float maxSteerAngle = 30;
 	public float steerSpeed = 10f;
 	public AnimationCurve steerLimitCurve;
-	[Tooltip("Force, in Gs, that the fromt wheels can hold")]
-	public float maxCorneringGForce = 2f;
+	public float maxCorneringForce = 20f;
 	public float tireSlip = 1f;
 
 	public float burnoutThreshold = 500f;
