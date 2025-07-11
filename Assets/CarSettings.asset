@@ -61,7 +61,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxCorneringForce: 20
+  maxCorneringForce: 30
   tireSlip: 0.5
   burnoutThreshold: 100
   driftBoost: 1

@@ -415,7 +415,7 @@ public class Car : MonoBehaviour {
                     float rpmDiff = engineRPMFromSpeed - engineRPM;
                     if (rpmDiff < 0) {
                         if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
-                            clutchRatio = 0f;
+                            clutchRatio = 0.5f;
                             impulseSource.GenerateImpulse();
                             GearLurch();
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, forwardVector) * u2mph < 5f) {
@@ -423,7 +423,7 @@ public class Car : MonoBehaviour {
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             nitroxMeter.Add(engine.maxPower*5);
-                            clutchRatio = 0f;
+                            clutchRatio = 0.5f;
                             rb.AddForce(forwardVector*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, forwardVector) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
@@ -503,7 +503,7 @@ public class Car : MonoBehaviour {
         float theta = -90f + sa + Vector3.SignedAngle(flatSpeed, forwardVector, transform.up);
         float manualDot = flatSpeed.magnitude * Mathf.Cos(theta*Mathf.Deg2Rad);
         float wantedAccel = manualDot * settings.tireSlip / Time.fixedDeltaTime;
-        return wantedAccel;
+        return wantedAccel * -1;
     }
 
     float GetWantedSteeringAngle(float wantedAccel, Vector3 flatSpeed) {
@@ -528,21 +528,22 @@ public class Car : MonoBehaviour {
             targetSteerAngle = 0;
         }
         targetSteerAngle *= steeringMult;
-        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed * Time.fixedDeltaTime);
         if (tcs && !InputManager.Button(Buttons.HANDBRAKE) && !drifting) {
-            // car was modeled backwards. flip point velocity in world space
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
-            axleVelocity = Vector3.Project(axleVelocity,forwardVector);
             Vector3 flatSpeed = Vector3.ProjectOnPlane(axleVelocity, transform.up);
-            float wantedAccel = GetWantedAccel(steerAngle, flatSpeed);
-            float derivedSteeringAngle = GetWantedSteeringAngle(wantedAccel, flatSpeed);
+            float wantedAccel = GetWantedAccel(targetSteerAngle, flatSpeed);
+            print("watned accel: "+wantedAccel);
 
-            print("current steer angle: "+steerAngle+", calculated steering angle: "+derivedSteeringAngle);
-
-            // ok maybe go back to doing the iterative solve?
-            // or no, ok. we need 
-            if (wantedAccel > settings.maxCorneringForce*0.9f) {
-                // steerAngle = GetWantedSteeringAngle(settings.maxCorneringForce * 0.9f * Mathf.Sign(wantedAccel), flatSpeed);
+            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce*0.9f) {
+                // previous math is correct, but somehow if tcs is on the car stays straight
+                // also when TCS is on it gets inverted
+                var a2 = GetWantedSteeringAngle(settings.maxCorneringForce * 0.9f * Mathf.Sign(wantedAccel), flatSpeed);
+                if (Mathf.Sign(a2) != Mathf.Sign(wantedAccel)) {
+                    a2 *= -1;
+                }
+                // this is still wrong. debug it more
+                // it's getting very bad
+                targetSteerAngle = a2;
                 tcsFrac = 1;
                 tcsLight.SetOn();
             } else {
@@ -552,6 +553,7 @@ public class Car : MonoBehaviour {
             tcsLight.SetOff();
         }
 
+        float steerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed * Time.fixedDeltaTime);
         Quaternion targetRotation = Quaternion.Euler(0, steerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
         WheelFR.transform.localRotation = targetRotation;
@@ -559,12 +561,11 @@ public class Car : MonoBehaviour {
     }
 
     float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
-        Vector3 flatVelocity = Vector3.ProjectOnPlane(rb.GetPointVelocity(point), transform.up);
-        float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
-        float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
+        Vector3 axleVelocity = rb.GetPointVelocity(point);
+        Vector3 flatSpeed = Vector3.ProjectOnPlane(axleVelocity, transform.up);
+        float wantedAccel = GetWantedAccel(steeringAxle ? targetSteerAngle : 0, flatSpeed);
         if (steeringAxle) {
-            // this is not on the same plane generally
-            // we need its velocity to be coplanar on the car
+            print("applied accel: "+wantedAccel);
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 drifting = true;
                 tireSkidVolume = 1;
