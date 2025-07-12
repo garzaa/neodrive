@@ -19,14 +19,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
+  enableNitrox: 0
   maxNitrox: 10000
   nitroxBoost: 2
   boostDuration: 1
+  driftNitroGain: 300
+  edgeNitroGain: 700
   drivelineFlex: 1.5
   brakeForce: 100
   launchBoost: 10
   drag: 0.1
-  maxSteerAngle: 18
+  maxSteerAngle: 20
   steerSpeed: 60
   steerLimitCurve:
     serializedVersion: 2

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Animations;
 using Cinemachine;
+using Unity.VisualScripting.Dependencies.NCalc;
 
 public class CameraRotate : MonoBehaviour {
 
@@ -28,8 +29,11 @@ public class CameraRotate : MonoBehaviour {
 
     Camera mainCam;
 
+    float startTime;
+
     void Start() {
         mainCam = Camera.main;
+        startTime = Time.time;
         CycleCamera();
     }
 
@@ -98,7 +102,13 @@ public class CameraRotate : MonoBehaviour {
 
         // later, if grounded, average the ground normals and tilt the camera up/down to account for that
         float y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
+        if (Time.time < startTime + 0.5f) {
+            y = rotationAngle;
+        }
         ring.localRotation = Quaternion.Euler(0, y, 0);
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
+        if (Time.time < startTime + 0.5f) {
+            transform.position = targetPos;
+        }
     }   
 }

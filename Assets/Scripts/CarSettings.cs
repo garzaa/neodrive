@@ -10,6 +10,7 @@ public class CarSettings : ScriptableObject {
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
 
+	public bool enableNitrox = true;
 	public float maxNitrox = 40000;
 	public float nitroxBoost = 3f;
 	public float boostDuration = 1f;

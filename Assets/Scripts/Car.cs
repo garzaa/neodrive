@@ -215,13 +215,9 @@ public class Car : MonoBehaviour {
             );
         }
 
-        if (InputManager.ButtonDown(Buttons.BOOST)) {
+        if (settings.enableNitrox && InputManager.ButtonDown(Buttons.BOOST) && nitroxMeter.Ready()) {
             StartCoroutine(Boost());
             rb.AddRelativeTorque(-125, 0, 0, ForceMode.Acceleration);
-        }
-
-        if (boosting) {
-            // rb.AddRelativeTorque(4, 0, 0);
         }
 
         tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
