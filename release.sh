@@ -3,13 +3,13 @@ alias 7z="C:/Program\ Files/7-Zip/7z.exe"
 
 function itchrelease() {
     for i in win-exe; do
-        butler push ./demos/$i sevencrane/neodrive:$i
+        butler push ./demos/neodrive-$i sevencrane/neodrive:$i
     done
 }
 
 function zip() {
     for i in win-exe; do
-        7z a ./demos/zips/$i.zip ./demos/$i 
+        7z a ./demos/zips/neodrive-$i.zip ./demos/$i 
     done
 }
 

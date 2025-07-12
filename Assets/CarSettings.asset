@@ -27,7 +27,7 @@ MonoBehaviour:
   launchBoost: 10
   drag: 0.1
   maxSteerAngle: 18
-  steerSpeed: 80
+  steerSpeed: 60
   steerLimitCurve:
     serializedVersion: 2
     m_Curve:

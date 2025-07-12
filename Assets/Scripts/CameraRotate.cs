@@ -73,15 +73,15 @@ public class CameraRotate : MonoBehaviour {
         }
 
         targetPos = car.transform.position;
-        rotationAngle = Vector3.SignedAngle(-transform.forward, car.rb.velocity, Vector3.up);
+        rotationAngle = Vector3.SignedAngle(transform.forward, car.rb.velocity, Vector3.up);
 
         if (car.Drifting) {
-            rotationAngle = Vector3.SignedAngle(-transform.forward, car.forwardVector, Vector3.up);
+            rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
         // if the car's barely moving, put it at the car's rear
         if (car.rb.velocity.sqrMagnitude < 0.5f) {
-            rotationAngle = Vector3.SignedAngle(-transform.forward, -car.transform.forward, Vector3.up);
+            rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
         if (cameraStick.sqrMagnitude > 0) {
@@ -92,7 +92,7 @@ public class CameraRotate : MonoBehaviour {
                 }
             }
             // don't flip it around if the car starts moving backwards
-            rotationAngle = Vector3.SignedAngle(-transform.forward, -car.transform.forward, Vector3.up);
+        rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
             rotationAngle += Vector3.SignedAngle(Vector3.forward, new Vector3(cameraStick.x, 0, cameraStick.y), Vector3.up);
         }
 

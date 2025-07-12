@@ -16,7 +16,8 @@ public class NitroxMeter : MonoBehaviour {
 	}
 
 	public bool Ready() {
-		return current == max;
+		// you can boost whenever the needle is in the blue
+		return current > max*(7f/8f);
 	}
 
 	public void OnBoost() {

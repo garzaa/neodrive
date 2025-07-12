@@ -14,6 +14,11 @@ public class CarSettings : ScriptableObject {
 	public float nitroxBoost = 3f;
 	public float boostDuration = 1f;
 
+	[Tooltip("Nitrox amount, per second, gained when drifting")]
+	public float driftNitroGain = 300;
+	[Tooltip("Nitrox amount, per second, gained when _almost_ invoking TCS at 100mph")]
+	public float edgeNitroGain = 700;
+
 	public float drivelineFlex = 1f;
 
 	// this will deal with torque curves and shit later on naturally
