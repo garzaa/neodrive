@@ -20,9 +20,13 @@ public class NitroxMeter : MonoBehaviour {
 		return current > max*(7f/8f);
 	}
 
-	public void OnBoost() {
-		// make the needle rotate the correct way
+	public void Reset() {
+		// make needle rotate correct way
 		current = 1;
+	}
+
+	public void OnBoost() {
+		Reset();
 	}
 
 	void Update() {

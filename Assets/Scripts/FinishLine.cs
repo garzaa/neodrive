@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class FinishLine : MonoBehaviour {
 	List<Checkpoint> allCheckpoints = new();
@@ -18,6 +19,8 @@ public class FinishLine : MonoBehaviour {
 	bool crossedOnce = false;
 
 	public Text lapRecord;
+
+	public UnityEvent onFinishCross;
 
 	void Start() {
 		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
@@ -49,6 +52,7 @@ public class FinishLine : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
 			checkpointSound.Play();
+			onFinishCross.Invoke();
 			if (crossedOnce) {
 				if (checkpointsCrossed.Count == allCheckpoints.Count) {
 					currentLap.totalTime = lapTimer.GetTime();

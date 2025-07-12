@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
-using UnityEditorInternal;
-using UnityEngineInternal;
 
 public class Car : MonoBehaviour {
 
@@ -125,6 +123,7 @@ public class Car : MonoBehaviour {
         nitroxMeter = GetComponentInChildren<NitroxMeter>();
         nitroxMeter.max = settings.maxNitrox;
         spawnTime = Time.time;
+        FindObjectOfType<FinishLine>().onFinishCross.AddListener(() => nitroxMeter.Reset());
     }
 
     void BuildSoundCache() {
@@ -574,6 +573,8 @@ public class Car : MonoBehaviour {
                 drifting = false;
             }
             if (drifting || forwardTraction < 0.9f) {
+                // look at the wantedAccel and see how much of it is slowing down the car
+                // and then add that sideways or in the direction of movement or something
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
                 currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
             } else {

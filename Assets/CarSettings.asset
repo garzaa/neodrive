@@ -19,8 +19,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.2
-  enableNitrox: 0
-  maxNitrox: 10000
+  enableNitrox: 1
+  maxNitrox: 5000
   nitroxBoost: 2
   boostDuration: 1
   driftNitroGain: 300

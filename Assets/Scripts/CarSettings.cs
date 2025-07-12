@@ -12,6 +12,7 @@ public class CarSettings : ScriptableObject {
 
 	public bool enableNitrox = true;
 	public float maxNitrox = 40000;
+	[Tooltip("Engine power multiplier")]
 	public float nitroxBoost = 3f;
 	public float boostDuration = 1f;
 
