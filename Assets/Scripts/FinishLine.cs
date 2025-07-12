@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class FinishLine : MonoBehaviour {
 	List<Checkpoint> allCheckpoints = new();
@@ -16,6 +17,8 @@ public class FinishLine : MonoBehaviour {
 	AudioSource checkpointSound;
 	bool crossedOnce = false;
 
+	public Text lapRecord;
+
 	void Start() {
 		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
 		foreach (Checkpoint c in allCheckpoints) {
@@ -24,7 +27,6 @@ public class FinishLine : MonoBehaviour {
 		raceTimer = GameObject.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = GameObject.Find("LapTimer").GetComponent<Timer>();
 		timerAlert = FindObjectOfType<TimerAlert>();
-		raceTimer.Restart();
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
 	}
@@ -36,7 +38,8 @@ public class FinishLine : MonoBehaviour {
 			currentLap.splits[c] = lapTimer.GetTime();
 			if (bestLap != null) {
 				float diff = t - bestLap.splits[c];
-				tx += "\n" + lapTimer.FormattedTime(diff, keepSign: true);
+				string color = (diff > 0) ? "red" : "blue";
+				tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
 			}
 		}
 		checkpointsCrossed.Add(c);
@@ -45,6 +48,7 @@ public class FinishLine : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
+			checkpointSound.Play();
 			if (crossedOnce) {
 				if (checkpointsCrossed.Count == allCheckpoints.Count) {
 					currentLap.totalTime = lapTimer.GetTime();
@@ -52,17 +56,20 @@ public class FinishLine : MonoBehaviour {
 						bestLap = currentLap;
 						currentLap = new();
 						timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
+						lapRecord.text = lapTimer.GetFormattedTime();
 					} else {
 						string tx = lapTimer.FormattedTime(lapTimer.GetTime());
 						if (bestLap != null) {
 							float diff = lapTimer.GetTime() - bestLap.totalTime;
-							tx += "\n" + lapTimer.FormattedTime(diff, keepSign: true);
+							string color = (diff > 0) ? "red" : "blue";
+							tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
 						}
 						timerAlert.Alert(tx);
 					}
 				}
 			} else {
 				crossedOnce = true;
+				raceTimer.Restart();
 			}
 			currentLap = new();
 			checkpointsCrossed.Clear();
