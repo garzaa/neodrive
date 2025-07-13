@@ -56,6 +56,9 @@ public class CameraRotate : MonoBehaviour {
             Time.timeScale = photoMode ? 0 : 1;
             photoModeCamera.gameObject.SetActive(photoMode);
             AudioListener.volume = photoMode ? 0 : 1;
+            foreach (Canvas c in FindObjectsOfType<Canvas>(includeInactive: true)) {
+                c.enabled = !photoMode;
+            }
         }
 
         if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
