@@ -91,6 +91,8 @@ public class Car : MonoBehaviour {
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
+    float timeAtEdge;
+    bool edgeLastFrame;
 
     public AudioClip boostSound;
     bool boosting = false;
@@ -512,12 +514,9 @@ public class Car : MonoBehaviour {
     float GetWantedSteeringAngle(float wantedAccel, Vector3 flatVelocity) {
         float manualDot = wantedAccel * Time.fixedDeltaTime / settings.tireSlip;
         if (flatVelocity.magnitude < Mathf.Epsilon) return 0;
-
         float cosThetaRad = manualDot / flatVelocity.magnitude;
         cosThetaRad = Mathf.Clamp(cosThetaRad, -1f, 1f);
-
         float theta = Mathf.Acos(cosThetaRad) * Mathf.Rad2Deg;
-
         float sa = theta + 90f + Vector3.SignedAngle(flatVelocity, transform.forward, transform.up);
         return (sa-180) * -1;
     }
@@ -573,8 +572,6 @@ public class Car : MonoBehaviour {
                 drifting = false;
             }
             if (drifting || forwardTraction < 0.9f) {
-                // look at the wantedAccel and see how much of it is slowing down the car
-                // and then add that sideways or in the direction of movement or something
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
                 currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
             } else {
@@ -584,9 +581,13 @@ public class Car : MonoBehaviour {
             gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
             gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
         }
-        // hmm. maybe do this after the lateral force?
         wantedAccel *= currentGrip;
-        rb.AddForceAtPosition(lateralNormal * wantedAccel, point, ForceMode.Acceleration);
+        Vector3 tireForce = lateralNormal*wantedAccel;
+        rb.AddForceAtPosition(tireForce, point, ForceMode.Acceleration);
+        float slowdownForce = Vector3.Project(tireForce, -flatVelocity).magnitude;
+        if (drifting) {
+            rb.AddForceAtPosition(transform.forward*settings.driftBoost*slowdownForce, point, ForceMode.Acceleration);
+        }
         return wantedAccel;
     }
 
