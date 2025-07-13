@@ -176,7 +176,8 @@ public class Car : MonoBehaviour {
         if (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch) {
             if (InputManager.Button(Buttons.SHIFTALT)) {
                 currentGear = -1;
-                if (Vector3.Dot(rb.velocity, transform.forward) > 20f) {
+                if (Vector3.Dot(rb.velocity, transform.forward) > 26f) {
+                    // R For Racing achievement
                     StallEngine();
                 }
             } else {
