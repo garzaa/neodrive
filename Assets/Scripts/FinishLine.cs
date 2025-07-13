@@ -22,6 +22,9 @@ public class FinishLine : MonoBehaviour {
 
 	public UnityEvent onFinishCross;
 
+	RaceLogic raceLogic;
+	Ghost bestLapGhost;
+
 	void Start() {
 		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
 		foreach (Checkpoint c in allCheckpoints) {
@@ -32,6 +35,7 @@ public class FinishLine : MonoBehaviour {
 		timerAlert = FindObjectOfType<TimerAlert>();
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
+		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
 	}
 
 	void OnCheckpointCrossed(Checkpoint c) {
@@ -55,10 +59,13 @@ public class FinishLine : MonoBehaviour {
 			onFinishCross.Invoke();
 			if (crossedOnce) {
 				if (checkpointsCrossed.Count == allCheckpoints.Count) {
+					// save the lap's ghost
+					Ghost g = raceLogic.StopRecordingGhost();
 					currentLap.totalTime = lapTimer.GetTime();
 					if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
 						bestLap = currentLap;
 						currentLap = new();
+						bestLapGhost = g;
 						timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
 						lapRecord.text = lapTimer.GetFormattedTime();
 					} else {
@@ -71,10 +78,12 @@ public class FinishLine : MonoBehaviour {
 						timerAlert.Alert(tx);
 					}
 				}
+				raceLogic.PlayGhost(bestLapGhost);
 			} else {
 				crossedOnce = true;
 				raceTimer.Restart();
 			}
+			raceLogic.StartRecordingGhost();
 			currentLap = new();
 			checkpointsCrossed.Clear();
 			lapTimer.Restart();

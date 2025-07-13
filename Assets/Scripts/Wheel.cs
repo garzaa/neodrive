@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class Wheel : MonoBehaviour {
-	Car car;
 	CarSettings settings;
 	RaycastHit raycastHit = new();
 	RaycastHit[] hits;
@@ -44,8 +43,10 @@ public class Wheel : MonoBehaviour {
 	public GameObject wheelFire;
 
 	void Awake() {
-		car = GetComponentInParent<Car>();
-		settings = car.settings;
+		settings = GetComponentInParent<Car>()?.settings;
+		if (settings == null) {
+			settings = GetComponentInParent<GhostCar>().settings;
+		}
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
 		groundedText = GetComponentInChildren<Text>();
@@ -90,33 +91,6 @@ public class Wheel : MonoBehaviour {
 		return hasHit;
 	}
 
-	public void OnDrawGizmosSelected() {
-		if (!Application.isPlaying) return;
-        Gizmos.color = Color.green;
- 
-        //Draw the suspension
-        Gizmos.DrawLine(
-            transform.position - transform.up * wheelRadius, 
-            transform.position - (transform.up * (wheelRadius + settings.suspensionTravel - suspensionCompression))
-        );
- 
-        Vector3 point1;
-        Vector3 point0 = transform.TransformPoint(wheelRadius * new Vector3(0, Mathf.Sin(0), Mathf.Cos(0)));
-        for (int i = 1; i <= 20; ++i)
-        {
-            point1 = transform.TransformPoint(wheelRadius * new Vector3(0, Mathf.Sin(i / 20.0f * Mathf.PI * 2.0f), Mathf.Cos(i / 20.0f * Mathf.PI * 2.0f)));
-            Gizmos.DrawLine(point0, point1);
-            point0 = point1;
- 
-        }
-        Gizmos.color = Color.white;
-
-		Gizmos.color = Color.cyan;
-		foreach (Vector3 r in wheelCastRays) {
-			Gizmos.DrawRay(transform.position + r + transform.up*wheelRadius, -transform.up * (settings.suspensionTravel+wheelRadius));
-		}
-    }
-
 	public Vector3 GetSuspensionForce() {
 		bool hit = GetRaycast();
 
@@ -149,7 +123,7 @@ public class Wheel : MonoBehaviour {
 		return suspensionCompression / settings.suspensionTravel;
 	}
 
-	public void AddForce(Vector3 f) {
+	public void AddForce(Car car, Vector3 f) {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
@@ -186,4 +160,8 @@ public class Wheel : MonoBehaviour {
 
 		tireSkid.emitting = Grounded && drifting;
 	}
+
+	public float GetWheelRPMFromSpeed(float flatSpeed) {
+        return flatSpeed / (wheelRadius * 2f * Mathf.PI) * 60f;
+    }
 }

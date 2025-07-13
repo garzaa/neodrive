@@ -61,7 +61,7 @@ public class CameraRotate : MonoBehaviour {
             }
         }
 
-        if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
+        if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA) && Time.timeScale > 0) {
             currentCamera += 1;
             currentCamera %= cameras.Count;
             CycleCamera();

@@ -6,24 +6,24 @@ public class EngineAudio : MonoBehaviour {
 	float maxEngineVolume;
 	List<RPMPoint> rpmPoints = new();
 
-	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudio) {
-		maxEngineVolume = engineAudio.volume;
+	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudioSource) {
+		maxEngineVolume = engineAudioSource.volume;
         foreach (RPMPoint r in engine.rpmPoints) {
-            AudioSource rAudio = engineAudio.gameObject.AddComponent<AudioSource>();
+            AudioSource rAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
             rAudio.volume = maxEngineVolume;
-            rAudio.outputAudioMixerGroup = engineAudio.outputAudioMixerGroup;
+            rAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;
             rAudio.clip = r.throttle;
             rAudio.loop = true;
             rAudio.spatialBlend = 1;
-            rAudio.minDistance = engineAudio.minDistance;
+            rAudio.minDistance = engineAudioSource.minDistance;
             rAudio.Play();
-            AudioSource rOffAudio = engineAudio.gameObject.AddComponent<AudioSource>();
+            AudioSource rOffAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
             rOffAudio.volume = maxEngineVolume;
-            rOffAudio.outputAudioMixerGroup = engineAudio.outputAudioMixerGroup;
+            rOffAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;
             rOffAudio.clip = r.throttleOff;
             rOffAudio.loop = true;
             rOffAudio.spatialBlend = 1;
-            rOffAudio.minDistance = engineAudio.minDistance;
+            rOffAudio.minDistance = engineAudioSource.minDistance;
             rOffAudio.Play();
 
             rpmPoints.Add(new RPMPoint(r, rAudio, rOffAudio));

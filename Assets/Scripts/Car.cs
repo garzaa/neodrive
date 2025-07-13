@@ -9,7 +9,6 @@ using Cinemachine;
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
 
-    public GameObject wheelTemplate;
     public Wheel WheelFL, WheelFR, WheelRL, WheelRR;
     public CarSettings settings;
     public EngineSettings engine;
@@ -184,7 +183,7 @@ public class Car : MonoBehaviour {
         }
 
         foreach (Wheel w in wheels) {
-            float rpm = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
+            float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
             if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
                 rpm = Mathf.Lerp(GetWheelRPMFromEngineRPM(engineRPM), rpm, forwardTraction);
             }
@@ -245,10 +244,10 @@ public class Car : MonoBehaviour {
         RLForce = WheelRL.GetSuspensionForce();
         RRForce = WheelRR.GetSuspensionForce();
 
-        WheelFL.AddForce(FLForce);
-        WheelFR.AddForce(FRForce);
-        WheelRL.AddForce(RLForce);
-        WheelRR.AddForce(RRForce);
+        WheelFL.AddForce(this, FLForce);
+        WheelFR.AddForce(this, FRForce);
+        WheelRL.AddForce(this, RLForce);
+        WheelRR.AddForce(this, RRForce);
 
         grounded = false;
         foreach (Wheel w in wheels) {
@@ -271,8 +270,8 @@ public class Car : MonoBehaviour {
                 forwardTraction = 1f;
                 Vector3 desiredVelocity = desiredForce * Time.fixedDeltaTime / rb.mass;
                 float mphNextStep = Vector3.Dot(rb.velocity+desiredVelocity, transform.forward) * u2mph;
-                float desiredWheelRPM = GetWheelRPMFromSpeed(mphNextStep);
-                float actualWheelRPM = GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward)*u2mph);
+                float desiredWheelRPM = WheelRR.GetWheelRPMFromSpeed(mphNextStep);
+                float actualWheelRPM = WheelRR.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward)*u2mph);
                 float diff = Mathf.Abs(desiredWheelRPM - actualWheelRPM);
                 diff = Mathf.Max(0, diff-settings.burnoutThreshold);
 
@@ -378,13 +377,9 @@ public class Car : MonoBehaviour {
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
-        return GetWheelRPMFromSpeed(flatSpeed)
+        return WheelFL.GetWheelRPMFromSpeed(flatSpeed)
             * Mathf.Sign(currentGear)
             * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1];
-    }
-
-    float GetWheelRPMFromSpeed(float flatSpeed) {
-        return flatSpeed / (WheelRL.wheelRadius * 2f * Mathf.PI) * 60f;
     }
 
     float GetWheelRPMFromEngineRPM(float engineRPM) {
@@ -722,7 +717,8 @@ public class Car : MonoBehaviour {
             transform.rotation, 
             engineRPM,
             targetSteerAngle,
-            gas
+            gas,
+            drifting
         );
     }
 }
