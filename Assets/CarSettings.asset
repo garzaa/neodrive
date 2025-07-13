@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Bits: 8
   gearShiftTime: 0.2
   enableNitrox: 1
-  maxNitrox: 5000
+  maxNitrox: 3000
   nitroxBoost: 2
   boostDuration: 1
   driftNitroGain: 300

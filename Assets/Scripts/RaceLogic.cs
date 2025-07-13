@@ -13,10 +13,12 @@ public class RaceLogic : MonoBehaviour {
 	GhostCar ghostCar;
 
 	int frameIndex = 0;
+	bool ghostEnabled = true;
 
 	void Start() {
 		playerCar = FindObjectOfType<Car>();
-		ghostCar = FindObjectOfType<GhostCar>();
+		ghostCar = FindObjectOfType<GhostCar>(includeInactive: true);
+		ghostCar.gameObject.SetActive(false);
 	}
 
 	public void StartRecordingGhost() {
@@ -26,6 +28,13 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Input.GetKeyDown(KeyCode.G)) {
+			if (ghostEnabled) {
+				StopPlayingGhost();
+			}
+			ghostEnabled = !ghostEnabled;
+		}
+
 		if (recording) {
 			if (Time.timeScale > 0) {
 				recordingGhost.frames.Add(new GhostFrame(
@@ -34,7 +43,7 @@ public class RaceLogic : MonoBehaviour {
 				));
 			}
 		}
-		if (playing) {
+		if (playing && Time.timeScale > 0) {
 			if (frameIndex == playingGhost.frames.Count-1) {
 				StopPlayingGhost();
 				return;
@@ -52,11 +61,13 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public Ghost StopRecordingGhost() {
-		print("stopped ghost, saving");
 		return recordingGhost;
 	}
 
 	public void PlayGhost(Ghost g) {
+		if (!ghostEnabled) {
+			return;
+		}
 		frameIndex = 0;
 		playingGhost = g;
 		playing = true;

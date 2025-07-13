@@ -59,6 +59,7 @@ public class Car : MonoBehaviour {
     CinemachineImpulseSource impulseSource;
 
     bool drifting = false;
+    float driftingTime = 0;
     public float forwardTraction = 1f;
     bool clutch = false;
     bool clutchOutThisFrame = false;
@@ -344,7 +345,11 @@ public class Car : MonoBehaviour {
             }
             tireSkid.mute = false;
             if (drifting) {
+                driftingTime += Time.fixedDeltaTime;
+                Alert("Drift\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"));
                 nitroxMeter.Add(settings.driftNitroGain * Time.fixedDeltaTime);
+            } else {
+                driftingTime = 0;
             }
         } else {
             wheelAudio.volume = 0;
@@ -526,9 +531,11 @@ public class Car : MonoBehaviour {
             } else {
                 if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*0.7f && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
                     timeAtEdge += Time.fixedDeltaTime;
-                    // TODO: add some clicking for points going up
-                    Alert("Grip limit \n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
-                    nitroxMeter.Add(settings.edgeNitroGain * Time.fixedDeltaTime);
+                    if (timeAtEdge > 0.2f) {
+                        // TODO: add some clicking for points going up
+                        Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
+                        nitroxMeter.Add(settings.edgeNitroGain * Time.fixedDeltaTime);
+                    }
                 } else {
                     timeAtEdge = 0;
                 }
