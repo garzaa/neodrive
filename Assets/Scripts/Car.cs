@@ -173,14 +173,11 @@ public class Car : MonoBehaviour {
             lastGear = currentGear;
         }
 
-        if (InputManager.DoubleTap(Buttons.GEARDOWN) && clutch) {
-            currentGear = -1;
-        }
-        if (InputManager.ButtonDown(Buttons.SHIFTDOWN) && clutch) {
+        if (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch) {
             if (currentGear > -1) {
                 ChangeGear(currentGear - 1);
             }
-        } else if (InputManager.ButtonDown(Buttons.SHIFTUP) && clutch) {
+        } else if (InputManager.ButtonDown(Buttons.GEARUP) && clutch) {
             if (currentGear < engine.gearRatios.Count) {
                 ChangeGear(currentGear+1);
             }

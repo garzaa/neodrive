@@ -25,11 +25,12 @@ public class CameraRotate : MonoBehaviour {
     public List<CinemachineVirtualCamera> cameras;
     int currentCamera = 0;
 
-    float clutchReleased = -999;
-
     Camera mainCam;
 
     float startTime;
+
+    GameObject photoModeCamera;
+    bool photoMode = false;
 
     void Start() {
         mainCam = Camera.main;
@@ -48,14 +49,19 @@ public class CameraRotate : MonoBehaviour {
     }
 
     void Update() {
+        if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
+            photoMode = !photoMode;
+            photoModeCamera.gameObject.SetActive(photoMode);
+        }
+
+        if (photoMode) {
+            return;
+        }
+
         if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
             currentCamera += 1;
             currentCamera %= cameras.Count;
             CycleCamera();
-        }
-
-        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
-            clutchReleased = Time.unscaledTime;
         }
 
         if (InputManager.ButtonDown(Buttons.TOGGLE_TELEMETRY)) {

@@ -48,10 +48,6 @@ public static class Buttons {
     public static readonly string TOGGLE_TELEMETRY = "Toggle Telemetry";
     public static readonly string BOOST = "Boost";
     public static readonly string CAMERA = "Camera";
-
-    public static readonly string SHIFTLEFT = "ShifterLeft";
-    public static readonly string SHIFTRIGHT = "ShifterRight";
-    public static readonly string SHIFTUP = "ShifterUp";
-    public static readonly string SHIFTDOWN = "ShifterDown";
+    public static readonly string PHOTOMODE = "PhotoMode";
     public static readonly string SHIFTALT = "ShiftAlt";
 }
