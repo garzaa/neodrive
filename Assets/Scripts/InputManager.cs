@@ -47,6 +47,7 @@ public static class Buttons {
     public static readonly string CYCLE_CAMERA = "Cycle Camera";
     public static readonly string TOGGLE_TELEMETRY = "Toggle Telemetry";
     public static readonly string BOOST = "Boost";
+    public static readonly string CAMERA = "Camera";
 
     public static readonly string SHIFTLEFT = "ShifterLeft";
     public static readonly string SHIFTRIGHT = "ShifterRight";

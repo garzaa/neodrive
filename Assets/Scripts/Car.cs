@@ -91,8 +91,7 @@ public class Car : MonoBehaviour {
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
-    float timeAtEdge;
-    bool edgeLastFrame;
+    float timeAtEdge = 0;
 
     public AudioClip boostSound;
     bool boosting = false;
@@ -105,6 +104,10 @@ public class Car : MonoBehaviour {
         get {
             return drifting;
         }
+    }
+
+    bool ignition {
+        get { return !fuelCutoff && engineRunning; }
     }
 
     void Start() {
@@ -278,7 +281,7 @@ public class Car : MonoBehaviour {
                 mult *= boosting ? settings.nitroxBoost : 1;
                 // if you can just barely toe the line with TCS, you don't get slowed down
                 // maybe rework this so you fill the boost meter while being on the edge of TCS or something
-                mult *= 1-tcsFrac*0.2f;
+                mult *= 1-tcsFrac*settings.tcsBraking;
                 Vector3 desiredForce = transform.forward * engine.GetPower(engineRPM)*gas*mult;
                 forwardTraction = 1f;
                 Vector3 desiredVelocity = desiredForce * Time.fixedDeltaTime / rb.mass;
@@ -530,7 +533,8 @@ public class Car : MonoBehaviour {
             targetSteerAngle = 0;
         }
         targetSteerAngle *= steeringMult;
-        if (tcs && !InputManager.Button(Buttons.HANDBRAKE) && !drifting && grounded && forwardSpeed>1f) {
+        bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
+        if (tcs && !handbrakeInput && !drifting && grounded && forwardSpeed>1f) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
@@ -540,9 +544,13 @@ public class Car : MonoBehaviour {
                 tcsFrac = 1;
                 tcsLight.SetOn();
             } else {
-                if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*0.8f && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
-                    // eventually: highlight the speedmeter and alert that it's almost TCS
-                    nitroxMeter.Add(forwardSpeed*(settings.edgeNitroGain/100f) * Time.fixedDeltaTime);
+                if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*0.7f && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
+                    timeAtEdge += Time.fixedDeltaTime;
+                    // TODO: add some clicking for points going up
+                    Alert("Grip limit \n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
+                    nitroxMeter.Add(settings.edgeNitroGain * Time.fixedDeltaTime);
+                } else {
+                    timeAtEdge = 0;
                 }
                 tcsLight.SetOff();
             }
@@ -586,7 +594,7 @@ public class Car : MonoBehaviour {
         rb.AddForceAtPosition(tireForce, point, ForceMode.Acceleration);
         float slowdownForce = Vector3.Project(tireForce, -flatVelocity).magnitude;
         if (drifting) {
-            rb.AddForceAtPosition(transform.forward*settings.driftBoost*slowdownForce, point, ForceMode.Acceleration);
+            rb.AddForceAtPosition(transform.forward*settings.driftBoost*slowdownForce * (ignition ? gas : 0), point, ForceMode.Acceleration);
         }
         return wantedAccel;
     }

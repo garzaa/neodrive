@@ -23,7 +23,6 @@ public class CarSettings : ScriptableObject {
 
 	public float drivelineFlex = 1f;
 
-	// this will deal with torque curves and shit later on naturally
 	public float brakeForce = 5f;
 
 	[Tooltip("Get a speed boost with this many MPH on a perfect launch")]
@@ -37,12 +36,15 @@ public class CarSettings : ScriptableObject {
 	public AnimationCurve steerLimitCurve;
 	public float maxCorneringForce = 20f;
 	public float tireSlip = 1f;
+	public bool tcs = true;
+	[Range(0, 1)]
+	public float tcsBraking = 0.2f;
 
 	public float burnoutThreshold = 500f;
 
+	[Header("Drifting")]
 	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]
 	public float driftBoost = 0.5f;
-
 	[Tooltip("Rotational torque to apply when drifting, based on steer angle")]
 	public float driftControl = 1f;
 }

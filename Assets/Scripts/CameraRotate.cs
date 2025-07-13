@@ -63,16 +63,14 @@ public class CameraRotate : MonoBehaviour {
         }
 
         // don't move the camera around but allow holding its position
-        if (!InputManager.Button(Buttons.CLUTCH)) {
+        if (InputManager.Button(Buttons.CAMERA)) {
             cameraStick = new Vector2(
                 InputManager.GetAxis(Buttons.CAM_X),
                 InputManager.GetAxis(Buttons.CAM_Y)
             ).normalized;
         }
 
-        // if they start pushing the stick a frame before pressing the clutch, 
-        // don't lock them into a bad camera angle for the next half-second
-        if (cameraStick.sqrMagnitude < 0.9f || Time.unscaledTime < clutchReleased+0.5f) {
+        if (!InputManager.Button(Buttons.CAMERA)) {
             cameraStick = Vector2.zero;
         }
 
@@ -96,7 +94,7 @@ public class CameraRotate : MonoBehaviour {
                 }
             }
             // don't flip it around if the car starts moving backwards
-        rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
+            rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
             rotationAngle += Vector3.SignedAngle(Vector3.forward, new Vector3(cameraStick.x, 0, cameraStick.y), Vector3.up);
         }
 
