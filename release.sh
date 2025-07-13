@@ -9,7 +9,7 @@ function itchrelease() {
 
 function zip() {
     for i in win-exe gnu-linux win32-exe osx; do
-        7z a ./demos/zips/neodrive-$i.zip ./demos/$i 
+        7z a ./demos/zips/neodrive-$i.zip ./demos/neodrive-$i 
     done
 }
 
