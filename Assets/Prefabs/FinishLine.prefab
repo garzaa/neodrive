@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 6522224748720232524}
   - component: {fileID: 7922037096180029765}
   - component: {fileID: 7044773581848907059}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: LapRecord
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 4947265616074681392}
   - component: {fileID: 2386173555221765468}
   - component: {fileID: 4503392039187954656}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5589844211307081304}
   - component: {fileID: 3513738466158258986}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: TimerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -888,7 +888,7 @@ GameObject:
   - component: {fileID: 3782293041810030245}
   - component: {fileID: 4517408783229568788}
   - component: {fileID: 8807117156191093264}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: LapTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 6970502702224666176}
   - component: {fileID: 1067306858800183959}
   - component: {fileID: 7509825982225269720}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: RaceTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1354,6 +1354,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lapRecord: {fileID: 7044773581848907059}
+  onFinishCross:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &5108305248992882481
 AudioSource:
   m_ObjectHideFlags: 0

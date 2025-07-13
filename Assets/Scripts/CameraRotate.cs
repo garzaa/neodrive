@@ -29,12 +29,13 @@ public class CameraRotate : MonoBehaviour {
 
     float startTime;
 
-    GameObject photoModeCamera;
+    public GameObject photoModeCamera;
     bool photoMode = false;
 
     void Start() {
         mainCam = Camera.main;
         startTime = Time.time;
+        photoModeCamera.SetActive(false);
         CycleCamera();
     }
 
@@ -50,12 +51,11 @@ public class CameraRotate : MonoBehaviour {
 
     void Update() {
         if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
+            mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("UI");
             photoMode = !photoMode;
+            Time.timeScale = photoMode ? 0 : 1;
             photoModeCamera.gameObject.SetActive(photoMode);
-        }
-
-        if (photoMode) {
-            return;
+            AudioListener.volume = photoMode ? 0 : 1;
         }
 
         if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {

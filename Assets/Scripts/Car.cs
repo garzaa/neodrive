@@ -174,8 +174,15 @@ public class Car : MonoBehaviour {
         }
 
         if (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch) {
-            if (currentGear > -1) {
-                ChangeGear(currentGear - 1);
+            if (InputManager.Button(Buttons.SHIFTALT)) {
+                currentGear = -1;
+                if (Vector3.Dot(rb.velocity, transform.forward) > 20f) {
+                    StallEngine();
+                }
+            } else {
+                if (currentGear > -1) {
+                    ChangeGear(currentGear - 1);
+                }
             }
         } else if (InputManager.ButtonDown(Buttons.GEARUP) && clutch) {
             if (currentGear < engine.gearRatios.Count) {
@@ -364,7 +371,7 @@ public class Car : MonoBehaviour {
             tireSkid.mute = true;
         }
 
-        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.003f;
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.002f;
         if (gas==0 || fuelCutoff) dragForce = 0;
         rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
 
@@ -591,7 +598,9 @@ public class Car : MonoBehaviour {
         rb.AddForceAtPosition(tireForce, point, ForceMode.Acceleration);
         float slowdownForce = Vector3.Project(tireForce, -flatVelocity).magnitude;
         if (drifting) {
-            rb.AddForceAtPosition(transform.forward*settings.driftBoost*slowdownForce * (ignition ? gas : 0), point, ForceMode.Acceleration);
+            Vector3 v = transform.forward*settings.driftBoost*slowdownForce * (ignition ? gas : 0);
+            v = Quaternion.AngleAxis(targetSteerAngle, transform.up) * v;
+            rb.AddForceAtPosition(v, point, ForceMode.Acceleration);
         }
         return wantedAccel;
     }
@@ -679,6 +688,8 @@ public class Car : MonoBehaviour {
 
     void UpdateVibration() {
         if (Time.time < spawnTime + 0.5f || Time.timeScale != 1) {
+            InputManager.player.SetVibration(0, 0);
+            InputManager.player.SetVibration(1, 0);
             return;
         }
         float startVibration = 0;
