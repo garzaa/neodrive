@@ -51,14 +51,13 @@ public class CameraRotate : MonoBehaviour {
 
     void Update() {
         if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
-            mainCam.cullingMask ^= 1 << LayerMask.NameToLayer("UI");
+            // check if something else paused it
+            if (!photoMode && Time.timeScale == 0) return;
             photoMode = !photoMode;
             Time.timeScale = photoMode ? 0 : 1;
             photoModeCamera.gameObject.SetActive(photoMode);
             AudioListener.volume = photoMode ? 0 : 1;
-            foreach (Canvas c in FindObjectsOfType<Canvas>(includeInactive: true)) {
-                c.enabled = !photoMode;
-            }
+            car.SetDashboardEnabled(!photoMode);
         }
 
         if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA) && Time.timeScale > 0) {

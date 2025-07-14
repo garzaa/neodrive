@@ -50,4 +50,5 @@ public static class Buttons {
     public static readonly string CAMERA = "Camera";
     public static readonly string PHOTOMODE = "PhotoMode";
     public static readonly string SHIFTALT = "ShiftAlt";
+    public static readonly string PAUSE = "Pause";
 }

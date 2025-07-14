@@ -28,13 +28,6 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.G)) {
-			if (ghostEnabled) {
-				StopPlayingGhost();
-			}
-			ghostEnabled = !ghostEnabled;
-		}
-
 		if (recording) {
 			if (Time.timeScale > 0) {
 				recordingGhost.frames.Add(new GhostFrame(
@@ -58,6 +51,14 @@ public class RaceLogic : MonoBehaviour {
 			}
 			ghostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
 		}
+	}
+
+	public bool ToggleGhost() {
+		if (ghostEnabled) {
+			StopPlayingGhost();
+		}
+		ghostEnabled = !ghostEnabled;
+		return ghostEnabled;
 	}
 
 	public Ghost StopRecordingGhost() {

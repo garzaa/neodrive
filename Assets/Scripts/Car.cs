@@ -101,6 +101,9 @@ public class Car : MonoBehaviour {
     float tireSkidVolume;
     float spawnTime;
 
+    [SerializeField]
+    List<Canvas> dashboardUI;
+
     public bool Drifting {
         get {
             return drifting;
@@ -132,7 +135,11 @@ public class Car : MonoBehaviour {
         nitroxMeter = GetComponentInChildren<NitroxMeter>();
         nitroxMeter.max = settings.maxNitrox;
         spawnTime = Time.time;
-        FindObjectOfType<FinishLine>().onFinishCross.AddListener(() => nitroxMeter.Reset());
+        FinishLine f = FindObjectOfType<FinishLine>();
+        if (f) {
+            f.onFinishCross.AddListener(() => nitroxMeter.Reset());
+            dashboardUI.Add(f.GetComponentInChildren<Canvas>());
+        }
     }
 
     void Update() {
@@ -727,5 +734,11 @@ public class Car : MonoBehaviour {
             gas,
             drifting
         );
+    }
+
+    public void SetDashboardEnabled(bool b) {
+        foreach (Canvas c in dashboardUI) {
+            c.enabled = b;
+        }
     }
 }
