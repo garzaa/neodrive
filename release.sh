@@ -15,6 +15,6 @@ function zip() {
 
 set -x
 itchrelease
-zip
+# zip
 
 set +x

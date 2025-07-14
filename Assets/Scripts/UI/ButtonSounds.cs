@@ -13,7 +13,8 @@ public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, 
 	}
 
 	public void OnSubmit(BaseEventData data) {
-		audioSource.PlayOneShot(onClick);
+		// if it's a button that closes its parent UI
+		if (audioSource.enabled) audioSource.PlayOneShot(onClick);
 	}
 
 	public void OnPointerEnter(PointerEventData data) {

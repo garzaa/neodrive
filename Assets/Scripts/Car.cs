@@ -705,8 +705,7 @@ public class Car : MonoBehaviour {
 
     void UpdateVibration() {
         if (Time.time < spawnTime + 0.5f || Time.timeScale != 1) {
-            InputManager.player.SetVibration(0, 0);
-            InputManager.player.SetVibration(1, 0);
+            InputManager.player.StopVibration();
             return;
         }
         float startVibration = 0;
