@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour {
 	List<Checkpoint> allCheckpoints = new();
@@ -24,6 +25,7 @@ public class FinishLine : MonoBehaviour {
 
 	RaceLogic raceLogic;
 	Ghost bestLapGhost;
+	BinarySaver saver;
 
 	void Start() {
 		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
@@ -36,6 +38,17 @@ public class FinishLine : MonoBehaviour {
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
 		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
+		saver = new BinarySaver(SceneManager.GetActiveScene().name);
+	}
+
+	void Update() {
+		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
+			if (bestLapGhost != null) {
+				saver.SaveGhost(bestLapGhost);
+			} else {
+				print("no best lap to save");
+			}
+		}
 	}
 
 	void OnCheckpointCrossed(Checkpoint c) {

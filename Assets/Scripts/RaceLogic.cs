@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using Rewired.Integration.UnityUI;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
