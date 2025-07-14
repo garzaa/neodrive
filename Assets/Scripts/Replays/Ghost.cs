@@ -8,8 +8,8 @@ public class Ghost {
 	public string playerName;
 	public string version;
 
-	public Ghost() {
-		version = Application.version;
+	public Ghost(string version) {
+		this.version = version;
 	}
 }
 

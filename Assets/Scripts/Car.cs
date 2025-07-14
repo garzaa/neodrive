@@ -393,7 +393,7 @@ public class Car : MonoBehaviour {
             5, 
             1 << LayerMask.NameToLayer("Ground")
         ) && !grounded && rb.velocity.sqrMagnitude < 2f) {
-            rb.AddTorque(transform.right * steering * 75, ForceMode.Acceleration);
+            rb.AddTorque(transform.forward * steering * 75, ForceMode.Acceleration);
         }
 
         if (!grounded) {

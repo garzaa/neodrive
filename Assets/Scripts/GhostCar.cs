@@ -19,7 +19,7 @@ public class GhostCar : MonoBehaviour {
 
 	void Start() {
 		engineAudio = GetComponent<EngineAudio>();
-		engineAudio.BuildSoundCache(engineSettings, engineAudioSource);
+		engineAudio.BuildSoundCache(engineSettings, engineAudioSource, bigSteps: true);
 		wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
 
 		foreach (Wheel w in wheels) {

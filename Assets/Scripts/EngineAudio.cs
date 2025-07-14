@@ -6,9 +6,11 @@ public class EngineAudio : MonoBehaviour {
 	float maxEngineVolume;
 	List<RPMPoint> rpmPoints = new();
 
-	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudioSource) {
+	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudioSource, bool bigSteps = false) {
 		maxEngineVolume = engineAudioSource.volume;
         foreach (RPMPoint r in engine.rpmPoints) {
+			if (bigSteps && (r.rpm % 1000 != 0)) continue;
+
             AudioSource rAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
             rAudio.volume = maxEngineVolume;
             rAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;

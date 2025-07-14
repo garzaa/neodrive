@@ -44,6 +44,7 @@ public class FinishLine : MonoBehaviour {
 	void Update() {
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
 			if (bestLapGhost != null) {
+				bestLapGhost.playerName = "author";
 				saver.SaveGhost(bestLapGhost);
 			} else {
 				print("no best lap to save");
