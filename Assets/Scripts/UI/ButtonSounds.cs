@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class ButtonSounds: MonoBehaviour, IPointerDownHandler, IPointerEnterHandler {
+public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, ISubmitHandler {
 	public AudioClip onHover;
 	public AudioClip onClick;
 
@@ -11,11 +12,15 @@ public class ButtonSounds: MonoBehaviour, IPointerDownHandler, IPointerEnterHand
 		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 
-	public void OnPointerDown(PointerEventData data) {
+	public void OnSubmit(BaseEventData data) {
 		audioSource.PlayOneShot(onClick);
 	}
 
 	public void OnPointerEnter(PointerEventData data) {
+		audioSource.PlayOneShot(onHover);
+	}
+
+	public void OnSelect(BaseEventData data) {
 		audioSource.PlayOneShot(onHover);
 	}
 }

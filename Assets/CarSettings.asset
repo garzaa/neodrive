@@ -71,3 +71,5 @@ MonoBehaviour:
   burnoutThreshold: 100
   driftBoost: 1
   driftControl: 4
+  airSpinControl: 0.5
+  airPitchControl: 0.5

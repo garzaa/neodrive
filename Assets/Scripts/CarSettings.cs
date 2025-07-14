@@ -47,4 +47,8 @@ public class CarSettings : ScriptableObject {
 	public float driftBoost = 0.5f;
 	[Tooltip("Rotational torque to apply when drifting, based on steer angle")]
 	public float driftControl = 1f;
+
+	[Header("Air Control")]
+	public float airSpinControl = 0.5f;
+	public float airPitchControl = 0.5f;
 }

@@ -104,6 +104,9 @@ public class Car : MonoBehaviour {
     [SerializeField]
     List<Canvas> dashboardUI;
 
+    Vector3 startPoint;
+    Quaternion startRotation;
+
     public bool Drifting {
         get {
             return drifting;
@@ -140,6 +143,8 @@ public class Car : MonoBehaviour {
             f.onFinishCross.AddListener(() => nitroxMeter.Reset());
             dashboardUI.Add(f.GetComponentInChildren<Canvas>());
         }
+        startPoint = transform.position;
+        startRotation = transform.rotation;
     }
 
     void Update() {
@@ -188,6 +193,10 @@ public class Car : MonoBehaviour {
 
         if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
             handbrakeDown = Time.time;
+        }
+
+        if (InputManager.ButtonDown(Buttons.PAUSE) && InputManager.Button(Buttons.CLUTCH)) {
+            Respawn();
         }
 
         foreach (Wheel w in wheels) {
@@ -383,8 +392,12 @@ public class Car : MonoBehaviour {
             transform.up,
             5, 
             1 << LayerMask.NameToLayer("Ground")
-        ) && !grounded) {
-            rb.AddTorque(new Vector3(0, 0, steering * 100), ForceMode.Acceleration);
+        ) && !grounded && rb.velocity.sqrMagnitude < 2f) {
+            rb.AddTorque(transform.right * steering * 75, ForceMode.Acceleration);
+        }
+
+        if (!grounded) {
+            UpdateAirControl();
         }
     }
 
@@ -453,6 +466,8 @@ public class Car : MonoBehaviour {
                     engineRPM,
                     Mathf.Max(forwardTraction, 0.2f) * clutchRatio
                 );
+                // but if it's not grounded, that takes precedence
+                if (!grounded) engineRPM = idealEngineRPM;
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
             }
@@ -647,6 +662,18 @@ public class Car : MonoBehaviour {
         carBody.maxXAngle /= 4f;
     }
 
+    void UpdateAirControl() {
+        rb.AddTorque(transform.up * steering * 50 * settings.airSpinControl);
+
+        rb.AddTorque(transform.right * ((gas/2f)-brake) * 100 * settings.airPitchControl);
+        if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
+            rb.angularVelocity = Vector3.zero;
+        }
+        if (Time.time > handbrakeDown + 0.25f) {
+            rb.AddForce(-Vector3.Project(rb.velocity, Vector3.up)*0.2f);
+        }
+    }
+
     void UpdateEngineLowPass() {
         Vector3 towardsCamera = mainCamera.transform.position - engineAudio.transform.position;
         float cameraEngineAngle = Vector3.Angle(transform.forward, Vector3.ProjectOnPlane(towardsCamera, transform.up));
@@ -740,5 +767,15 @@ public class Car : MonoBehaviour {
         foreach (Canvas c in dashboardUI) {
             c.enabled = b;
         }
+    }
+
+    void Respawn() {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.transform.position = startPoint;
+        rb.transform.rotation = startRotation;
+        engineRunning = false;
+        currentGear = 0;
+        engineRPM = 0;
     }
 }

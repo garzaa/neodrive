@@ -77,8 +77,8 @@ public class FinishLine : MonoBehaviour {
 						}
 						timerAlert.Alert(tx);
 					}
+					raceLogic.PlayGhost(bestLapGhost);
 				}
-				raceLogic.PlayGhost(bestLapGhost);
 			} else {
 				crossedOnce = true;
 				raceTimer.Restart();

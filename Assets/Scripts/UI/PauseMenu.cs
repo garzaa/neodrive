@@ -11,15 +11,18 @@ public class PauseMenu : MonoBehaviour {
 	public Text ghostText;
 
 	void Start() {
-		GetComponent<Canvas>().worldCamera = Camera.current;
+		GetComponentInChildren<Canvas>().worldCamera = Camera.current;
 		vCam.SetActive(false);
 		car = FindObjectOfType<Car>();
-		pauseUI = GetComponent<CanvasGroup>();
+		pauseUI = GetComponentInChildren<CanvasGroup>();
 		HideCanvas();
 	}
 
 	void Update() {
 		if (InputManager.ButtonDown(Buttons.PAUSE)) {
+			if (!paused && InputManager.Button(Buttons.CLUTCH)) {
+				return;
+			}
 			if (Time.timeScale > 0 && !paused) {
 				Time.timeScale = 0;
 				paused = true;
@@ -41,16 +44,12 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	void ShowCanvas() {
-		pauseUI.alpha = 1;
+		pauseUI.gameObject.SetActive(true);
 		GetComponentInChildren<Button>().Select();
-		pauseUI.interactable = true;
-		pauseUI.blocksRaycasts = true;
 	}
 
 	void HideCanvas() {
-		pauseUI.alpha = 0;
-		pauseUI.interactable = false;
-		pauseUI.blocksRaycasts = false;
+		pauseUI.gameObject.SetActive(false);
 	}
 
 	public void Exit() {
