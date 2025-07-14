@@ -25,6 +25,9 @@ public class RaceLogic : MonoBehaviour {
 
 	public void StartRecordingGhost() {
 		recordingGhost = new();
+		// eventually name this after the player
+		// or also it can't always be me
+		recordingGhost.playerName = "crane";
 		recording = true;
 		recordStart = Time.time;
 	}

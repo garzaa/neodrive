@@ -5,7 +5,12 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Ghost {
 	public List<GhostFrame> frames = new();
-	public string playerName = "crane";
+	public string playerName;
+	public string version;
+
+	public Ghost() {
+		version = Application.version;
+	}
 }
 
 [System.Serializable]
