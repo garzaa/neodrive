@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7ec1f38951394047a2a14bc60cb5e68, type: 3}
-  m_Name: CarSettings
+  m_Name: MuscleCarSettings
   m_EditorClassIdentifier: 
   suspensionTravel: 0.1
   springStrength: 400
@@ -69,7 +69,7 @@ MonoBehaviour:
   tcs: 1
   tcsBraking: 0.2
   burnoutThreshold: 100
-  driftBoost: 1
-  driftControl: 4
+  driftBoost: 1.5
+  driftControl: 5
   airSpinControl: 0.5
   airPitchControl: 0.5

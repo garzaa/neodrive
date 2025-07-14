@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c890f4b6fd012844822575e8a704059, type: 3}
-  m_Name: EngineSettings
+  m_Name: MuscleCarEngine
   m_EditorClassIdentifier: 
   redline: 8000
   fuelCutoff: 0.6

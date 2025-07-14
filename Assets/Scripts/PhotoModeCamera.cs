@@ -23,7 +23,8 @@ public class PhotoModeCamera : MonoBehaviour {
 		) * Time.unscaledDeltaTime * cameraSpeed);
 
 		Vector3 r = transform.localRotation.eulerAngles;
-		r.y += InputManager.GetAxis("CameraLookHorizontal") * 360 * Time.unscaledDeltaTime;
+		r.y += InputManager.GetAxis(Buttons.CAM_X) * 360 * Time.unscaledDeltaTime;
+		r.x -= InputManager.GetAxis(Buttons.CAM_Y) * 90 * Time.unscaledDeltaTime;
 		transform.localRotation = Quaternion.Euler(r);
 	}
 }

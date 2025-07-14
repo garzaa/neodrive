@@ -636,7 +636,7 @@ public class Car : MonoBehaviour {
     }
 
     void ChangeGear(int to) {
-        gearshiftAudio.PlayOneShot(engine.gearShiftNoises[UnityEngine.Random.Range(0, engine.gearShiftNoises.Count)]);
+        gearshiftAudio.PlayOneShot(engine.gearShiftNoises[Random.Range(0, engine.gearShiftNoises.Count)]);
         currentGear = to;
     }
 
