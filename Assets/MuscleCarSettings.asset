@@ -66,10 +66,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxCorneringForce: 25
   tireSlip: 0.1
-  tcs: 0
+  tcs: 1
   tcsBraking: 0.2
-  burnoutThreshold: 18
-  driftBoost: 1.5
+  burnoutThreshold: 24
+  lcs: 1
+  driftBoost: 1
   driftControl: 4
   airSpinControl: 0.7
   airPitchControl: 0.5

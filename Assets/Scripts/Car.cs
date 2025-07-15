@@ -89,6 +89,7 @@ public class Car : MonoBehaviour {
     public EngineLight handbrakeLight;
 
     float handbrakeDown = -999;
+    bool tcsDisabled = false;
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
@@ -574,7 +575,7 @@ public class Car : MonoBehaviour {
         }
         targetSteerAngle *= steeringMult;
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
-        if (settings.tcs && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
+        if (settings.tcs && !tcsDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
@@ -677,7 +678,9 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
+        tcsDisabled = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
+        tcsDisabled = false;
         carBody.maxXAngle /= 2f;
     }
 

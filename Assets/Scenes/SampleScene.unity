@@ -21276,10 +21276,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2475806746609259882, guid: bb66b1ad557b3224d9e050e06341f88f, type: 3}
-      propertyPath: m_Mass
-      value: 12.5
-      objectReference: {fileID: 0}
     - target: {fileID: 2475806746609259883, guid: bb66b1ad557b3224d9e050e06341f88f, type: 3}
       propertyPath: m_RootOrder
       value: 5
