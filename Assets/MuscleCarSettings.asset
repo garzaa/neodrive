@@ -26,7 +26,7 @@ MonoBehaviour:
   driftNitroGain: 300
   edgeNitroGain: 700
   drivelineFlex: 1.5
-  brakeForce: 100
+  brakeForce: 300
   launchBoost: 10
   drag: 0.1
   maxSteerAngle: 20
@@ -68,8 +68,9 @@ MonoBehaviour:
   tireSlip: 0.1
   tcs: 1
   tcsBraking: 0.2
-  burnoutThreshold: 24
   lcs: 1
+  burnoutThreshold: 24
+  lcsLimit: 0.7
   driftBoost: 1
   driftControl: 4
   airSpinControl: 0.7

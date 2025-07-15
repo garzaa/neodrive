@@ -89,7 +89,7 @@ public class Car : MonoBehaviour {
     public EngineLight handbrakeLight;
 
     float handbrakeDown = -999;
-    bool tcsDisabled = false;
+    bool assistDisabled = false;
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
@@ -309,12 +309,14 @@ public class Car : MonoBehaviour {
                 float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
-                    if (settings.lcs && !boosting && !drifting && InputManager.Button(Buttons.HANDBRAKE)) {
+                    bool lcsBreak = (wantedAccel-settings.burnoutThreshold) > settings.lcsLimit;
+                    if (!assistDisabled && !lcsBreak && settings.lcs && !boosting && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
                         lcsLight.SetOn();
                         gas = GetWantedGas(settings.burnoutThreshold * 0.9f);
+                    } else {
+                        forwardTraction = settings.burnoutThreshold/wantedAccel;
+                        forwardTraction = Mathf.Pow(forwardTraction, 2);
                     }
-                    forwardTraction = settings.burnoutThreshold/wantedAccel;
-                    forwardTraction = Mathf.Pow(forwardTraction, 2);
                 }
 
                 float forceMagnitude = engine.GetPower(engineRPM)*gas*mult;
@@ -443,7 +445,7 @@ public class Car : MonoBehaviour {
                         if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
                             clutchRatio = 0.5f;
                             impulseSource.GenerateImpulse();
-                            GearLurch();
+                            StartCoroutine(GearLurch());
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, transform.forward) * u2mph < 5f) {
                             // keep the clutch ratio soft to avoid a money shift on launch
                             PerfectShift(rpmDiff, alert: false);
@@ -461,7 +463,7 @@ public class Car : MonoBehaviour {
                         if (rpmDiff > 1000) {
                             clutchRatio = 0f;
                             impulseSource.GenerateImpulse();
-                            GearLurch();
+                            StartCoroutine(GearLurch());
                         } else if (idealEngineRPM < engine.redline+500) {
                             // no perfect shift on the money shift
                             PerfectShift(rpmDiff);
@@ -575,7 +577,7 @@ public class Car : MonoBehaviour {
         }
         targetSteerAngle *= steeringMult;
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
-        if (settings.tcs && !tcsDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
+        if (settings.tcs && !assistDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
@@ -678,9 +680,9 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
-        tcsDisabled = true;
+        assistDisabled = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
-        tcsDisabled = false;
+        assistDisabled = false;
         carBody.maxXAngle /= 2f;
     }
 

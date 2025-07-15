@@ -368,8 +368,8 @@ MonoBehaviour:
       _categoryId: 0
     - _id: 21
       _name: CameraMoveVertical
-      _type: 1
-      _descriptiveName: Camera Look Vertical
+      _type: 0
+      _descriptiveName: Camera Move Up/Down
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -377,8 +377,8 @@ MonoBehaviour:
       _categoryId: 0
     - _id: 22
       _name: CameraMoveForward
-      _type: 1
-      _descriptiveName: Camera Look Horizontal
+      _type: 0
+      _descriptiveName: Camera Forward/Back
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 020000000300000004000000060000000700000008000000090000000a0000000f00000010000000110000001300000012000000000000000100000015000000160000001800000019000000
+        actionIds: 020000000300000004000000060000000700000008000000090000000a0000000f00000010000000110000001200000013000000000000000100000016000000150000001800000019000000
       - categoryId: 1
         actionIds: 1b0000001c0000001d0000001e000000
     inputBehaviors:

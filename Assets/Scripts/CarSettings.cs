@@ -36,13 +36,17 @@ public class CarSettings : ScriptableObject {
 	public AnimationCurve steerLimitCurve;
 	public float maxCorneringForce = 20f;
 	public float tireSlip = 1f;
+
+	[Header("Assists")]
 	public bool tcs = true;
 	[Range(0, 1)]
 	public float tcsBraking = 0.2f;
 
+	public bool lcs = true;
 	[Tooltip("Forward/backward force the wheels can sustain before burning out/locking up")]
 	public float burnoutThreshold = 20f;
-	public bool lcs = true;
+	[Tooltip("Threshold above BurnoutThreshold where LCS turns off")]
+	public float lcsLimit = 0.9f;
 
 	[Header("Drifting")]
 	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]

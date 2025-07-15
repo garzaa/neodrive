@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine.Audio;
-using System.Diagnostics;
 
 public class CameraRotate : MonoBehaviour {
 
@@ -105,7 +104,8 @@ public class CameraRotate : MonoBehaviour {
         }
 
         if (!car.grounded) {
-            rotationAngle = Vector3.SignedAngle(transform.forward, Vector3.Project(car.rb.velocity, Vector3.up), Vector3.up);
+            // look towards velocity
+            rotationAngle = Quaternion.LookRotation(car.rb.velocity, transform.up).eulerAngles.y;
         }
 
         if (cameraStick.sqrMagnitude > 0) {
