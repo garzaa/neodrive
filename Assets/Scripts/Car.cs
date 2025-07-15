@@ -304,8 +304,6 @@ public class Car : MonoBehaviour {
                 // otherwise you get slowed down a bit
                 mult *= 1-tcsFrac*settings.tcsBraking;
                 
-                // ok don't actually do this. instead, compute desired acceleration
-                // if above, THEN the wheels start spinning
                 float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
@@ -325,7 +323,7 @@ public class Car : MonoBehaviour {
                 forwardForce *= forwardTraction;
                 rb.AddForceAtPosition(forwardForce, rearAxle);
 
-				// on a burnout, push the rear end out sideways
+				// on a burnout, push the rear end sideways
                 float sidewaysVelocity = Vector3.Project(rb.velocity, transform.right).sqrMagnitude;
                 if (sidewaysVelocity > 0.01f) {
                     rb.AddForceAtPosition(forwardForce * (1-forwardTraction) * Mathf.Sign(sidewaysVelocity), rearAxle);
@@ -365,7 +363,6 @@ public class Car : MonoBehaviour {
             }
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
-                // rotate the lateral for the front axle by the amount of steering
                 AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true, false);
                 if (drifting && rb.velocity.sqrMagnitude > 1f) {
                     rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
@@ -452,7 +449,7 @@ public class Car : MonoBehaviour {
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             nitroxMeter.Add(engine.maxPower*5);
                             clutchRatio = 0.5f;
-                            // rb.AddForce(transform.forward*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
+                            rb.AddForce(transform.forward*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, transform.forward) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
                         }
