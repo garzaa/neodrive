@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Animations;
 using Cinemachine;
-using Unity.VisualScripting.Dependencies.NCalc;
+using UnityEngine.Audio;
+using System.Diagnostics;
 
 public class CameraRotate : MonoBehaviour {
 
@@ -31,6 +31,8 @@ public class CameraRotate : MonoBehaviour {
 
     public GameObject photoModeCamera;
     bool photoMode = false;
+    public AudioMixerSnapshot pausedAudio;
+	public AudioMixerSnapshot unpausedAudio;
 
     void Start() {
         mainCam = Camera.main;
@@ -57,6 +59,11 @@ public class CameraRotate : MonoBehaviour {
             Time.timeScale = photoMode ? 0 : 1;
             photoModeCamera.gameObject.SetActive(photoMode);
             AudioListener.volume = photoMode ? 0 : 1;
+            if (photoMode) {
+                pausedAudio.TransitionTo(0.5f);
+            } else {
+                unpausedAudio.TransitionTo(0.1f);
+            }
             car.SetDashboardEnabled(!photoMode);
         }
 
@@ -83,6 +90,9 @@ public class CameraRotate : MonoBehaviour {
         }
 
         targetPos = car.transform.position;
+        if (car.boosting) {
+            targetPos += -car.transform.forward;
+        }
         rotationAngle = Vector3.SignedAngle(transform.forward, car.rb.velocity, Vector3.up);
 
         if (car.Drifting) {
@@ -90,8 +100,12 @@ public class CameraRotate : MonoBehaviour {
         }
 
         // if the car's barely moving, put it at the car's rear
-        if (car.rb.velocity.sqrMagnitude < 0.5f) {
+        if (car.rb.velocity.sqrMagnitude < 5 * Car.mph2u) {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
+        }
+
+        if (!car.grounded) {
+            rotationAngle = Vector3.SignedAngle(transform.forward, Vector3.Project(car.rb.velocity, Vector3.up), Vector3.up);
         }
 
         if (cameraStick.sqrMagnitude > 0) {

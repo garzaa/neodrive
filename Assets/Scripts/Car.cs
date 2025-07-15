@@ -21,6 +21,7 @@ public class Car : MonoBehaviour {
 
     public Rigidbody rb { get; private set; }
     public bool grounded { get; private set; }
+    bool groundedLastStep;
     Wheel[] wheels;
 
     public Text speedText;
@@ -33,11 +34,11 @@ public class Car : MonoBehaviour {
     public Animator exhaustAnimator;
     float engineRPM = 0f;
     float engineRPMFromSpeed = 0f;
-    float maxEngineVolume;
     public AudioSource engineAudioSource;
     public AudioSource gearshiftAudio;
     public AudioSource wheelAudio;
     public AudioSource tireSkid;
+    public AudioSource pointsAudio;
 
     public TrailRenderer[] tireSkids;
 
@@ -87,7 +88,6 @@ public class Car : MonoBehaviour {
     public EngineLight lcsLight;
     public EngineLight handbrakeLight;
 
-    bool tcs = true;
     float handbrakeDown = -999;
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
@@ -95,7 +95,8 @@ public class Car : MonoBehaviour {
     float timeAtEdge = 0;
 
     public AudioClip boostSound;
-    bool boosting = false;
+    public GameObject boostEffect;
+    public bool boosting { get; private set; }
     bool automatic = false;
 
     float tireSkidVolume;
@@ -183,8 +184,8 @@ public class Car : MonoBehaviour {
             }
         }
         
-        if (InputManager.ButtonDown(Buttons.STARTENGINE)) {
-            if (!engineRunning && !engineStarting && clutch) {
+        if (InputManager.ButtonDown(Buttons.STARTENGINE) && clutch) {
+            if (!engineRunning && !engineStarting) {
                 StartCoroutine(StartEngine());
             } else {
                 engineRunning = false;
@@ -199,38 +200,52 @@ public class Car : MonoBehaviour {
             Respawn();
         }
 
-        foreach (Wheel w in wheels) {
-            float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
-            if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0) {
-                rpm = Mathf.Lerp(GetWheelRPMFromEngineRPM(engineRPM), rpm, forwardTraction);
-            }
-            if (!grounded) {
-                rpm = GetWheelRPMFromEngineRPM(engineRPM);
-            }
+        if (Time.timeScale > 0) {
+            foreach (Wheel w in wheels) {
+                float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
+                if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
+                    rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction);
+                    if (!grounded) {
+                        rpm = GetWheelRPMFromEngineRPM(engineRPM);
+                    }
+                }
 
-            bool wheelBoost = false;
-            if (w == WheelRR || w == WheelRL) {
-                wheelBoost = boosting;
+                bool wheelBoost = false;
+                if (w == WheelRR || w == WheelRL) {
+                    wheelBoost = boosting;
+                }
+                w.UpdateWheelVisuals(
+                    Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
+                    rpm,
+                    wheelBoost,
+                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
+                );
             }
-            w.UpdateWheelVisuals(
-                Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
-                rpm,
-                wheelBoost,
-                Drifting
-            );
         }
+
+        boostEffect.SetActive(boosting);
 
         if (settings.enableNitrox && InputManager.ButtonDown(Buttons.BOOST) && nitroxMeter.Ready()) {
             StartCoroutine(Boost());
             rb.AddRelativeTorque(-125, 0, 0, ForceMode.Acceleration);
         }
 
+        if (drifting || forwardTraction < 1f) {
+            tireSkidVolume = 1f;
+        } else {
+            tireSkidVolume = 0f;
+        }
         tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
+        // not firing when tcsFrac is 0 for some reason
+        pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
+        UpdateVibration();
     }
 
     IEnumerator Boost() {
         gearshiftAudio.PlayOneShot(boostSound);
         nitroxMeter.OnBoost();
+        StartCoroutine(GearLurch());
+        rb.AddForce(transform.forward * 100 * settings.nitroxBoost, ForceMode.Impulse);
         boosting = true;
         automatic = true;
         yield return new WaitForSeconds(settings.boostDuration);
@@ -276,41 +291,43 @@ public class Car : MonoBehaviour {
         frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
         rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
+        UpdateEngine();
+
+        forwardTraction = 1f;
+        lcsLight.SetOff();
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
                 mult *= boosting ? settings.nitroxBoost : 1;
                 // if you can just barely toe the line with TCS, you don't get slowed down
-                // maybe rework this so you fill the boost meter while being on the edge of TCS or something
+                // otherwise you get slowed down a bit
                 mult *= 1-tcsFrac*settings.tcsBraking;
-                Vector3 desiredForce = transform.forward * engine.GetPower(engineRPM)*gas*mult;
-                forwardTraction = 1f;
-                Vector3 desiredVelocity = desiredForce * Time.fixedDeltaTime / rb.mass;
-                float mphNextStep = Vector3.Dot(rb.velocity+desiredVelocity, transform.forward) * u2mph;
-                float desiredWheelRPM = WheelRR.GetWheelRPMFromSpeed(mphNextStep);
-                float actualWheelRPM = WheelRR.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward)*u2mph);
-                float diff = Mathf.Abs(desiredWheelRPM - actualWheelRPM);
-                diff = Mathf.Max(0, diff-settings.burnoutThreshold);
-
-                // the higher the difference is, the more you spin the wheels
-                float spinRatio;
-                if (actualWheelRPM == 0) {
-                    spinRatio = 0.01f;
-                } else {
-                    spinRatio = 1/((actualWheelRPM+diff) / actualWheelRPM);
+                
+                // ok don't actually do this. instead, compute desired acceleration
+                // if above, THEN the wheels start spinning
+                float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
+                float wantedAccel = GetWantedAccel(gas, forwardSpeed);
+                if (wantedAccel > settings.burnoutThreshold) {
+                    if (settings.lcs && !boosting && !drifting && InputManager.Button(Buttons.HANDBRAKE)) {
+                        lcsLight.SetOn();
+                        gas = GetWantedGas(settings.burnoutThreshold * 0.9f);
+                    }
+                    forwardTraction = settings.burnoutThreshold/wantedAccel;
+                    forwardTraction = Mathf.Pow(forwardTraction, 2);
                 }
-                forwardTraction = 1 * spinRatio;
 
-                desiredForce *= forwardTraction;
-                rb.AddForceAtPosition(desiredForce, rearAxle);
+                float forceMagnitude = engine.GetPower(engineRPM)*gas*mult;
+                Vector3 forwardForce = transform.forward * forceMagnitude;
 
-                // drift boost approaches 0 as the car straightens out
-                mult = drifting ? settings.driftBoost : 0;
-                mult *= Vector3.SignedAngle(transform.forward, Vector3.ProjectOnPlane(rb.velocity, transform.up), transform.up) / 90f;
+                forwardForce *= forwardTraction;
+                rb.AddForceAtPosition(forwardForce, rearAxle);
 
-                rb.AddForce(Quaternion.Euler(0, currentSteerAngle, 0) * desiredForce * mult);
+				// on a burnout, push the rear end out sideways
+                float sidewaysVelocity = Vector3.Project(rb.velocity, transform.right).sqrMagnitude;
+                if (sidewaysVelocity > 0.01f) {
+                    rb.AddForceAtPosition(forwardForce * (1-forwardTraction) * Mathf.Sign(sidewaysVelocity), rearAxle);
+                }
             } else {
-                forwardTraction = 1f;
                 if (engineRunning) rb.AddForce(-Vector3.Project(rb.velocity, transform.forward) * (engineRPM/engine.redline) * engine.engineBraking);
             }
         }
@@ -341,13 +358,13 @@ public class Car : MonoBehaviour {
         
         if (grounded) {
             if (WheelRL.Grounded || WheelRR.Grounded) {
-                AddLateralForce(rearAxle, transform.right, false);
+                AddLateralForce(rearAxle, transform.right, false, true);
             }
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 // rotate the lateral for the front axle by the amount of steering
-                AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true);
-                if ((drifting || forwardTraction < 0.9f) && rb.velocity.sqrMagnitude > 1f) {
+                AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true, false);
+                if (drifting && rb.velocity.sqrMagnitude > 1f) {
                     rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
                 }
             }
@@ -370,21 +387,15 @@ public class Car : MonoBehaviour {
         } else {
             wheelAudio.volume = 0;
             tireSkid.mute = true;
+            driftingTime = 0;
         }
 
         float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.002f;
         if (gas==0 || fuelCutoff) dragForce = 0;
         rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
 
-        UpdateEngine();
         UpdateTelemetry();
         clutchOutThisFrame = false;
-
-        if (forwardTraction < 1) {
-            lcsLight.SetOn();
-        } else {
-            lcsLight.SetOff();
-        }
 
         // right the car if upside down
         if (Physics.Raycast(
@@ -393,12 +404,13 @@ public class Car : MonoBehaviour {
             5, 
             1 << LayerMask.NameToLayer("Ground")
         ) && !grounded && rb.velocity.sqrMagnitude < 2f) {
-            rb.AddTorque(transform.forward * steering * 75, ForceMode.Acceleration);
+            rb.AddTorque(transform.forward * steering * -75, ForceMode.Acceleration);
         }
 
         if (!grounded) {
             UpdateAirControl();
         }
+        groundedLastStep = grounded;
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
@@ -437,7 +449,7 @@ public class Car : MonoBehaviour {
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             nitroxMeter.Add(engine.maxPower*5);
                             clutchRatio = 0.5f;
-                            rb.AddForce(transform.forward*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
+                            // rb.AddForce(transform.forward*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, transform.forward) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
                         }
@@ -500,7 +512,7 @@ public class Car : MonoBehaviour {
             } else if (engineRPM > engine.redline+500) {
                 if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
                     ChangeGear(currentGear + 1);
-                } else {
+                } else if (!boosting) {
                     transmissionTemp.Flash();
                     StallEngine();
                 }
@@ -509,8 +521,6 @@ public class Car : MonoBehaviour {
 
         engineAudio.SetRPMAudio(GetRPMAudioPoint(), gas, fuelCutoff);
         UpdateEngineLowPass();
-        UpdateVibration();
-
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }
 
@@ -528,7 +538,30 @@ public class Car : MonoBehaviour {
         cosThetaRad = Mathf.Clamp(cosThetaRad, -1f, 1f);
         float theta = Mathf.Acos(cosThetaRad) * Mathf.Rad2Deg;
         float sa = theta + 90f + Vector3.SignedAngle(flatVelocity, transform.forward, transform.up);
-        return (sa-180) * -1;
+        sa = (sa-180) * -1;
+        sa = Mathf.Clamp(sa, -settings.maxSteerAngle, settings.maxSteerAngle);
+        return sa;
+    }
+    
+    float GetWantedAccel(float gas, float forwardSpeed) {
+        float mult = 1-tcsFrac*settings.tcsBraking;
+        float forceMagnitude = engine.GetPower(engineRPM)*gas*mult;
+        float wantedSpeed = forwardSpeed + (forceMagnitude * Time.fixedDeltaTime / rb.mass);
+        float diff = (wantedSpeed - forwardSpeed) / Time.fixedDeltaTime;
+        return diff;
+    }
+
+    float GetWantedGas(float wantedAccel) {
+        float requiredForce = wantedAccel * rb.mass;
+        if (requiredForce <= 0) {
+            return 0f;
+        }
+        float mult = 1 - tcsFrac * settings.tcsBraking;
+        if (mult <= 0) return 0;
+        float maxEnginePower = engine.GetPower(engineRPM);
+        if (maxEnginePower <= 0) return 0;
+        float wantedGas = requiredForce / (maxEnginePower * mult);
+        return Mathf.Clamp01(wantedGas);
     }
 
 
@@ -541,7 +574,7 @@ public class Car : MonoBehaviour {
         }
         targetSteerAngle *= steeringMult;
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
-        if (tcs && !handbrakeInput && !drifting && grounded && forwardSpeed>1f) {
+        if (settings.tcs && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
@@ -551,10 +584,10 @@ public class Car : MonoBehaviour {
                 tcsFrac = 1;
                 tcsLight.SetOn();
             } else {
+                tcsFrac = 0;
                 if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*0.7f && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
                     timeAtEdge += Time.fixedDeltaTime;
                     if (timeAtEdge > 0.2f) {
-                        // TODO: add some clicking for points going up
                         Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
                         nitroxMeter.Add(settings.edgeNitroGain * Time.fixedDeltaTime);
                     }
@@ -564,6 +597,8 @@ public class Car : MonoBehaviour {
                 tcsLight.SetOff();
             }
         } else {
+            timeAtEdge = 0;
+            tcsFrac = 0;
             tcsLight.SetOff();
         }
 
@@ -573,7 +608,7 @@ public class Car : MonoBehaviour {
         WheelFR.transform.localRotation = targetRotation;
     }
 
-    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle) {
+    float AddLateralForce(Vector3 point, Vector3 lateralNormal, bool steeringAxle, bool driveAxle) {
         Vector3 flatVelocity = Vector3.ProjectOnPlane(rb.GetPointVelocity(point), transform.up);
         if (flatVelocity.sqrMagnitude < Mathf.Epsilon) {
             return 0;
@@ -583,12 +618,10 @@ public class Car : MonoBehaviour {
         if (steeringAxle) {
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 drifting = true;
-                tireSkidVolume = 1;
             } else {
-                tireSkidVolume = 0;
                 drifting = false;
             }
-            if (drifting || forwardTraction < 0.9f) {
+            if (drifting) {
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
                 currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
             } else {
@@ -597,6 +630,8 @@ public class Car : MonoBehaviour {
             float gs = ToGs(wantedAccel);
             gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
             gForceText.text = Mathf.Abs(gs).ToString("F2") + " lateral G";
+        } else if (driveAxle) {
+            currentGrip *= forwardTraction;
         }
         wantedAccel *= currentGrip;
         Vector3 tireForce = lateralNormal*wantedAccel;
@@ -663,9 +698,19 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateAirControl() {
+        // halt spinning except a flat spin
+        if (groundedLastStep && !grounded) {
+            Vector3 spin = rb.angularVelocity;
+            Vector3 flatSpin = Vector3.Project(spin, transform.up);
+            spin -= flatSpin;
+            rb.AddTorque(-spin);
+        }
+
         rb.AddTorque(transform.up * steering * 50 * settings.airSpinControl);
 
-        rb.AddTorque(transform.right * ((gas/2f)-brake) * 100 * settings.airPitchControl);
+        rb.AddTorque(transform.right * InputManager.GetAxis(Buttons.CAM_Y) * 50 * settings.airPitchControl);
+        rb.AddTorque(-transform.forward * InputManager.GetAxis(Buttons.CAM_X) * 50 * settings.airPitchControl);
+
         if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
             rb.angularVelocity = Vector3.zero;
         }
@@ -704,7 +749,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.time < spawnTime + 0.5f || Time.timeScale != 1) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1) {
             InputManager.player.StopVibration();
             return;
         }
@@ -725,11 +770,19 @@ public class Car : MonoBehaviour {
 				bumpTS = Time.time;
 			}
 		}
-		if (Time.time < bumpTS + 0.2f) {
+		if (Time.unscaledTime < bumpTS + 0.2f) {
 			bumpVibration = 1f;
 		} else {
 			bumpVibration = 0;
 		}
+
+        if (boosting) {
+            bumpVibration += 0.5f;
+        }
+
+        if (Mathf.Abs(engineRPM - engine.idleRPM) < 50f) {
+            startVibration += 0.1f + Mathf.Clamp01(Mathf.Sin(Time.time*16f)-0.5f);
+        }
 
 		InputManager.player.SetVibration(0, startVibration+bumpVibration);
         InputManager.player.SetVibration(1, startVibration+rpmVibration);
@@ -773,7 +826,6 @@ public class Car : MonoBehaviour {
         rb.angularVelocity = Vector3.zero;
         rb.transform.position = startPoint;
         rb.transform.rotation = startRotation;
-        engineRunning = false;
         currentGear = 0;
         engineRPM = 0;
     }

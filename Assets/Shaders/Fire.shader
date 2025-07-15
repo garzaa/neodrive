@@ -33,7 +33,7 @@ Shader "Custom2D/Fire"
 		Cull Off
 		Lighting Off
 		ZWrite Off
-		Blend One One
+		Blend OneMinusDstColor One
 
 		Pass
 		{

@@ -40,7 +40,9 @@ public class CarSettings : ScriptableObject {
 	[Range(0, 1)]
 	public float tcsBraking = 0.2f;
 
-	public float burnoutThreshold = 500f;
+	[Tooltip("Forward/backward force the wheels can sustain before burning out/locking up")]
+	public float burnoutThreshold = 20f;
+	public bool lcs = true;
 
 	[Header("Drifting")]
 	[Tooltip("Engine power multiplier when drifting to avoid speed loss")]

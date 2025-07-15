@@ -2,13 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using UnityEngine.Audio;
 
 public class PauseMenu : MonoBehaviour {
 	public GameObject vCam;
+	public CinemachineVirtualCamera chaseCam;
 	CanvasGroup pauseUI;
 	Car car;
 	bool paused = false;
 	public Text ghostText;
+
+	Quaternion targetRotation;
+	Vector3 targetPosition;
+
+	public AudioMixerSnapshot pausedAudio;
+	public AudioMixerSnapshot unpausedAudio;
 
 	void Start() {
 		GetComponentInChildren<Canvas>().worldCamera = Camera.current;
@@ -16,23 +25,46 @@ public class PauseMenu : MonoBehaviour {
 		car = FindObjectOfType<Car>();
 		pauseUI = GetComponentInChildren<CanvasGroup>();
 		HideCanvas();
+		targetPosition = vCam.transform.localPosition;
+		targetRotation = vCam.transform.localRotation;
+		chaseCam = FindObjectOfType<CameraRotate>().GetComponentInChildren<CinemachineVirtualCamera>();
 	}
 
 	void Update() {
+		if (paused) {
+			vCam.transform.localPosition = Vector3.Slerp(
+				vCam.transform.localPosition,
+				targetPosition,
+				0.05f
+			);
+			vCam.transform.localRotation = Quaternion.Slerp(
+				vCam.transform.localRotation,
+				targetRotation,
+				0.05f
+			);
+		}
+
 		if (InputManager.ButtonDown(Buttons.PAUSE)) {
 			if (!paused && InputManager.Button(Buttons.CLUTCH)) {
 				return;
 			}
 			if (Time.timeScale > 0 && !paused) {
-				Time.timeScale = 0;
-				paused = true;
-				vCam.SetActive(true);
-				car.SetDashboardEnabled(false);
-				ShowCanvas();
-			} else if (Time.timeScale == 0 && paused) {
+				Pause();
+			} else if (paused) {
 				Unpause();
 			}
 		}
+	}
+
+	void Pause() {
+		Time.timeScale = 0;
+		paused = true;
+		vCam.transform.position = chaseCam.transform.position;
+		vCam.transform.rotation = chaseCam.transform.rotation;
+		vCam.SetActive(true);
+		car.SetDashboardEnabled(false);
+		ShowCanvas();
+		pausedAudio.TransitionTo(0.5f);
 	}
 
 	public void Unpause() {
@@ -41,6 +73,7 @@ public class PauseMenu : MonoBehaviour {
 		vCam.SetActive(false);
 		car.SetDashboardEnabled(true);
 		HideCanvas();
+		unpausedAudio.TransitionTo(0.1f);
 	}
 
 	void ShowCanvas() {

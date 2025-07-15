@@ -218,7 +218,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _1st2nd_Shades_Feather: 0.588
-    - _1st_ShadeColor_Feather: 0.328
+    - _1st_ShadeColor_Feather: 0.02
     - _1st_ShadeColor_Step: 0.736
     - _2nd_ShadeColor_Feather: 0.588
     - _2nd_ShadeColor_Step: 0.588
@@ -250,7 +250,7 @@ Material:
     - _BaseColorOverridden: 0
     - _BaseColorVisible: 1
     - _BaseColor_Step: 0.736
-    - _BaseShade_Feather: 0.328
+    - _BaseShade_Feather: 0.02
     - _Base_Speed: 0
     - _BlendMode: 0
     - _BlurLevelMatcap: 0
@@ -376,7 +376,7 @@ Material:
     - _Offset_Z: 0
     - _OutlineOverridden: 0
     - _OutlineVisible: 1
-    - _Outline_Width: 0.3
+    - _Outline_Width: 0.2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5

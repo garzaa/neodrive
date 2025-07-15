@@ -65,11 +65,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxCorneringForce: 25
-  tireSlip: 0.5
-  tcs: 1
+  tireSlip: 0.1
+  tcs: 0
   tcsBraking: 0.2
-  burnoutThreshold: 100
+  burnoutThreshold: 18
   driftBoost: 1.5
-  driftControl: 5
-  airSpinControl: 0.5
+  driftControl: 4
+  airSpinControl: 0.7
   airPitchControl: 0.5

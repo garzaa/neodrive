@@ -1,8 +1,3 @@
-echo "removing old demo folders"
-for i in win-exe win32-exe osx gnu-linux; do
-    rm -r ./demos/neodrive-$i
-done
-
 code "C:\Users\Adrian\AppData\Local\Unity\Editor\Editor.log"
 echo "use revert file to pick up new changes"
 
