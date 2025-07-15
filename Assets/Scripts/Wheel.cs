@@ -128,6 +128,7 @@ public class Wheel : MonoBehaviour {
 	}
 
 	public void UpdateWheelVisuals(float flatSpeed, float rpm, bool boosting, bool drifting) {
+		if (Time.timeScale == 0) return;
 		fakeGroundBump = 0;
 
 		// start wheel bumping at 20mph and peak at 60

@@ -33,6 +33,7 @@ public class Tachometer : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Time.timeScale == 0) return;
 		predictedRPM += rpmChangeSpeed * Time.deltaTime;
 		predictedRPM = Mathf.Clamp(predictedRPM, 0, redline+500);
 		speedFraction = Mathf.Clamp(Mathf.Abs(rpmChangeSpeed) / 10000f, 0, 1);

@@ -33,10 +33,13 @@ public class CameraRotate : MonoBehaviour {
     public AudioMixerSnapshot pausedAudio;
 	public AudioMixerSnapshot unpausedAudio;
 
+    bool snapping = false;
+
     void Start() {
         mainCam = Camera.main;
         startTime = Time.time;
         photoModeCamera.SetActive(false);
+        car.onRespawn.AddListener(SnapToPlayer);
         CycleCamera();
     }
 
@@ -122,13 +125,18 @@ public class CameraRotate : MonoBehaviour {
 
         // later, if grounded, average the ground normals and tilt the camera up/down to account for that
         float y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
-        if (Time.time < startTime + 0.5f) {
+        if (Time.time < startTime + 0.5f || snapping) {
             y = rotationAngle;
         }
         ring.localRotation = Quaternion.Euler(0, y, 0);
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
-        if (Time.time < startTime + 0.5f) {
+        if (Time.time < startTime + 0.5f || snapping) {
             transform.position = targetPos;
         }
-    }   
+        snapping = false;
+    }
+
+    public void SnapToPlayer() {
+        snapping = true;
+    }
 }

@@ -20,14 +20,14 @@ public class PauseMenu : MonoBehaviour {
 	public AudioMixerSnapshot unpausedAudio;
 
 	void Start() {
-		GetComponentInChildren<Canvas>().worldCamera = Camera.current;
+		GetComponentInChildren<Canvas>(includeInactive: true).worldCamera = Camera.current;
 		vCam.SetActive(false);
 		car = FindObjectOfType<Car>();
-		pauseUI = GetComponentInChildren<CanvasGroup>();
+		pauseUI = GetComponentInChildren<CanvasGroup>(includeInactive: true);
 		HideCanvas();
 		targetPosition = vCam.transform.localPosition;
 		targetRotation = vCam.transform.localRotation;
-		chaseCam = FindObjectOfType<CameraRotate>().GetComponentInChildren<CinemachineVirtualCamera>();
+		chaseCam = FindObjectOfType<CameraRotate>().GetComponentInChildren<CinemachineVirtualCamera>(includeInactive: true);
 	}
 
 	void Update() {
@@ -78,7 +78,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void ShowCanvas() {
 		pauseUI.gameObject.SetActive(true);
-		GetComponentInChildren<Button>().Select();
+		GetComponentInChildren<Button>(includeInactive: true).Select();
 	}
 
 	void HideCanvas() {
@@ -92,5 +92,10 @@ public class PauseMenu : MonoBehaviour {
 	public void ToggleGhost() {
 		bool ghostEnabled = FindObjectOfType<RaceLogic>().ToggleGhost();
 		ghostText.text = ghostEnabled ? "Hide Ghost" : "Show Ghost";
+	}
+
+	public void Menu() {
+		Time.timeScale = 1f;
+		GetComponent<TransitionManager>().LoadScene("Main Menu");
 	}
 }

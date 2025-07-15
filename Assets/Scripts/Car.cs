@@ -109,6 +109,10 @@ public class Car : MonoBehaviour {
     Vector3 startPoint;
     Quaternion startRotation;
 
+    public UnityEvent onRespawn;
+    public UnityEvent onEngineStart;
+    public bool forceClutch;
+
     public bool Drifting {
         get {
             return drifting;
@@ -153,7 +157,7 @@ public class Car : MonoBehaviour {
         gas = InputManager.GetAxis(Buttons.GAS);
         brake = InputManager.GetAxis(Buttons.BRAKE);
         steering = InputManager.GetAxis(Buttons.STEER);
-        clutch = InputManager.Button(Buttons.CLUTCH);
+        clutch = forceClutch || InputManager.Button(Buttons.CLUTCH);
         if (InputManager.ButtonUp(Buttons.CLUTCH)) {
             clutchOutThisFrame = true;
             clutchOutTime = Time.time;
@@ -256,6 +260,7 @@ public class Car : MonoBehaviour {
     }
 
     IEnumerator StartEngine() {
+        onEngineStart.Invoke();
         engineStarting = true;
         engineAudioSource.PlayOneShot(engine.startupNoise);
         carBody.StartWobbling();
@@ -670,7 +675,7 @@ public class Car : MonoBehaviour {
         alertAnimator.SetTrigger("Trigger");
     }
 
-    void ChangeGear(int to) {
+    public void ChangeGear(int to) {
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[Random.Range(0, engine.gearShiftNoises.Count)]);
         currentGear = to;
     }
@@ -829,6 +834,8 @@ public class Car : MonoBehaviour {
         rb.transform.position = startPoint;
         rb.transform.rotation = startRotation;
         currentGear = 0;
-        engineRPM = 0;
+        engineRPM = engine.idleRPM;
+        engineRunning = true;
+        onRespawn.Invoke();
     }
 }

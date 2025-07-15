@@ -32,6 +32,7 @@ public class Speedometer : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Time.timeScale == 0) return;
 		predictedSpeed += changeSpeed * Time.deltaTime;
 		speedFraction = Mathf.Clamp(Mathf.Abs(changeSpeed) / 10000f, 0, 1);
 

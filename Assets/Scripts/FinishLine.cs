@@ -22,9 +22,10 @@ public class FinishLine : MonoBehaviour {
 	public Text lapRecord;
 
 	public UnityEvent onFinishCross;
+	public UnityEvent onValidFinish;
 
 	RaceLogic raceLogic;
-	Ghost bestLapGhost;
+	Ghost bestLapGhost = null;
 	BinarySaver saver;
 
 	void Start() {
@@ -67,6 +68,10 @@ public class FinishLine : MonoBehaviour {
 		timerAlert.Alert(tx);
 	}
 
+	void StartRace() {
+		raceTimer.Restart();
+	}
+
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
 			checkpointSound.Play();
@@ -91,8 +96,9 @@ public class FinishLine : MonoBehaviour {
 						}
 						timerAlert.Alert(tx);
 					}
-					raceLogic.PlayGhost(bestLapGhost);
+					onValidFinish.Invoke();
 				}
+				if (bestLapGhost != null) raceLogic.PlayGhost(bestLapGhost);
 			} else {
 				crossedOnce = true;
 				raceTimer.Restart();
