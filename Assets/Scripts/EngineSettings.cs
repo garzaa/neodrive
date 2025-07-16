@@ -51,7 +51,6 @@ public class EngineSettings : ScriptableObject {
 	}
 
 	public bool PeakPower(float rpm) {
-		// peak power is within a 10% threshold
 		return maxPower - GetPower(rpm) < (maxPower*0.1);
 	}
 

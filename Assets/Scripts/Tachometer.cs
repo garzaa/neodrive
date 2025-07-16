@@ -8,7 +8,8 @@ public class Tachometer : MonoBehaviour {
     const float tachResting = 0;
 
 	float rpmThisStep, rpmLastStep, delta;
-	float redline;
+	// avoid weird zero division errors when loading/unloading scenes
+	float redline = 1;
 	float predictedRPM;
 	float rpmChangeSpeed;
 
@@ -36,7 +37,7 @@ public class Tachometer : MonoBehaviour {
 		if (Time.timeScale == 0) return;
 		predictedRPM += rpmChangeSpeed * Time.deltaTime;
 		predictedRPM = Mathf.Clamp(predictedRPM, 0, redline+500);
-		speedFraction = Mathf.Clamp(Mathf.Abs(rpmChangeSpeed) / 10000f, 0, 1);
+		speedFraction = Mathf.Clamp(rpmChangeSpeed / 10000f, -1, 1);
 
 		c = needle.color;
 		c.a = 1-speedFraction;

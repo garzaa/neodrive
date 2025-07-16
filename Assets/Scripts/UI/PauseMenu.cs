@@ -48,7 +48,7 @@ public class PauseMenu : MonoBehaviour {
 			if (!paused && InputManager.Button(Buttons.CLUTCH)) {
 				return;
 			}
-			if (Time.timeScale > 0 && !paused) {
+			if (Time.timeScale == 1 && !paused) {
 				Pause();
 			} else if (paused) {
 				Unpause();

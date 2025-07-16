@@ -10,18 +10,19 @@ public struct CarSnapshot : ISerializationCallbackReceiver{
 	public readonly float steerAngle;
 	public readonly float gas;
 	public readonly bool drifting;
+	public readonly bool boosting;
 
-	// These are simple, serializable fields for storage
     [SerializeField] private float[] positionArray;
     [SerializeField] private float[] rotationArray;
 
-	public CarSnapshot(Vector3 p, Quaternion q, float r, float a, float g, bool d) {
+	public CarSnapshot(Vector3 p, Quaternion q, float r, float a, float g, bool d, bool b) {
 		position = p;
 		rotation = q;
 		rpm = r;
 		steerAngle = a;
 		gas = g;
 		drifting = d;
+		boosting = b;
 
 		positionArray = new float[3];
         rotationArray = new float[4];

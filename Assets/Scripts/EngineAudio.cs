@@ -12,7 +12,7 @@ public class EngineAudio : MonoBehaviour {
 			if (bigSteps && (r.rpm % 1000 != 0)) continue;
 
             AudioSource rAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
-            rAudio.volume = maxEngineVolume;
+            rAudio.volume = 0;
             rAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;
             rAudio.clip = r.throttle;
             rAudio.loop = true;
@@ -20,7 +20,7 @@ public class EngineAudio : MonoBehaviour {
             rAudio.minDistance = engineAudioSource.minDistance;
             rAudio.Play();
             AudioSource rOffAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
-            rOffAudio.volume = maxEngineVolume;
+            rOffAudio.volume = 0;
             rOffAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;
             rOffAudio.clip = r.throttleOff;
             rOffAudio.loop = true;

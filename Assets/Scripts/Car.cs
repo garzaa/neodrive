@@ -112,6 +112,9 @@ public class Car : MonoBehaviour {
     public UnityEvent onRespawn;
     public UnityEvent onEngineStart;
     public bool forceClutch;
+    public bool forceBrake;
+
+    public ParticleSystem collisionHitmarker;
 
     public bool Drifting {
         get {
@@ -156,12 +159,14 @@ public class Car : MonoBehaviour {
     void Update() {
         gas = InputManager.GetAxis(Buttons.GAS);
         brake = InputManager.GetAxis(Buttons.BRAKE);
+        if (forceBrake) brake = 1;
         steering = InputManager.GetAxis(Buttons.STEER);
-        clutch = forceClutch || InputManager.Button(Buttons.CLUTCH);
-        if (InputManager.ButtonUp(Buttons.CLUTCH)) {
+        bool currentClutch = InputManager.Button(Buttons.CLUTCH) || forceClutch;
+        if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
             clutchOutTime = Time.time;
         }
+        clutch = currentClutch;
 
         if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
             gearshiftAudio.PlayOneShot(engine.clutchSound);
@@ -244,6 +249,15 @@ public class Car : MonoBehaviour {
         // not firing when tcsFrac is 0 for some reason
         pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
         UpdateVibration();
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        collisionHitmarker.transform.position = collision.contacts[0].point;
+        collisionHitmarker.transform.rotation = Quaternion.FromToRotation(
+            collisionHitmarker.transform.up,
+            collision.contacts[0].normal
+        );
+        collisionHitmarker.Emit(1);
     }
 
     IEnumerator Boost() {
@@ -532,12 +546,12 @@ public class Car : MonoBehaviour {
     float GetWantedAccel(float sa, Vector3 flatVelocity) {
         float theta = 90f + sa + Vector3.SignedAngle(flatVelocity, transform.forward, transform.up);
         float manualDot = flatVelocity.magnitude * Mathf.Cos(theta*Mathf.Deg2Rad);
-        float wantedAccel = manualDot * settings.tireSlip / Time.fixedDeltaTime;
+        float wantedAccel = manualDot * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.right)) / Time.fixedDeltaTime;
         return wantedAccel * -1;
     }
 
     float GetWantedSteeringAngle(float wantedAccel, Vector3 flatVelocity) {
-        float manualDot = wantedAccel * Time.fixedDeltaTime / settings.tireSlip;
+        float manualDot = wantedAccel * Time.fixedDeltaTime / settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.right));
         if (flatVelocity.magnitude < Mathf.Epsilon) return 0;
         float cosThetaRad = manualDot / flatVelocity.magnitude;
         cosThetaRad = Mathf.Clamp(cosThetaRad, -1f, 1f);
@@ -619,7 +633,7 @@ public class Car : MonoBehaviour {
             return 0;
         }
         float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
-        float wantedAccel = -lateralSpeed * settings.tireSlip / Time.fixedDeltaTime;
+        float wantedAccel = -lateralSpeed * settings.GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
         if (steeringAxle) {
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 drifting = true;
@@ -818,7 +832,8 @@ public class Car : MonoBehaviour {
             engineRPM,
             targetSteerAngle,
             gas,
-            drifting
+            drifting,
+            boosting
         );
     }
 
@@ -828,7 +843,7 @@ public class Car : MonoBehaviour {
         }
     }
 
-    void Respawn() {
+    public void Respawn() {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.transform.position = startPoint;
@@ -836,6 +851,8 @@ public class Car : MonoBehaviour {
         currentGear = 0;
         engineRPM = engine.idleRPM;
         engineRunning = true;
+        drifting = false;
+        boosting = false;
         onRespawn.Invoke();
     }
 }

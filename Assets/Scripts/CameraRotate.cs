@@ -7,7 +7,7 @@ public class CameraRotate : MonoBehaviour {
 
     public float snapDistance = 0.5f;
     public List<Vector2> snapVectors;
-    public Car car;
+    Car car;
 
     Vector3 targetPos;
 
@@ -28,7 +28,7 @@ public class CameraRotate : MonoBehaviour {
 
     float startTime;
 
-    public GameObject photoModeCamera;
+    GameObject photoModeCamera;
     bool photoMode = false;
     public AudioMixerSnapshot pausedAudio;
 	public AudioMixerSnapshot unpausedAudio;
@@ -36,8 +36,11 @@ public class CameraRotate : MonoBehaviour {
     bool snapping = false;
 
     void Start() {
+        car = FindObjectOfType<Car>();
+        cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
         mainCam = Camera.main;
         startTime = Time.time;
+        photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true).gameObject;
         photoModeCamera.SetActive(false);
         car.onRespawn.AddListener(SnapToPlayer);
         CycleCamera();
@@ -56,7 +59,7 @@ public class CameraRotate : MonoBehaviour {
     void Update() {
         if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
             // check if something else paused it
-            if (!photoMode && Time.timeScale == 0) return;
+            if (!photoMode && Time.timeScale != 1) return;
             photoMode = !photoMode;
             Time.timeScale = photoMode ? 0 : 1;
             photoModeCamera.gameObject.SetActive(photoMode);
@@ -69,7 +72,7 @@ public class CameraRotate : MonoBehaviour {
             car.SetDashboardEnabled(!photoMode);
         }
 
-        if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA) && Time.timeScale > 0) {
+        if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA) && Time.timeScale == 1) {
             currentCamera += 1;
             currentCamera %= cameras.Count;
             CycleCamera();
@@ -106,7 +109,7 @@ public class CameraRotate : MonoBehaviour {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
-        if (!car.grounded) {
+        if (!car.grounded && car.rb.velocity.sqrMagnitude > 0) {
             // look towards velocity
             rotationAngle = Quaternion.LookRotation(car.rb.velocity, transform.up).eulerAngles.y;
         }

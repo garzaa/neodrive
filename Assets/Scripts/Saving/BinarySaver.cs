@@ -47,7 +47,7 @@ public class BinarySaver {
 		string filepath = GetGhostPath(g.playerName);
 		await Task.Run(() => {
 			Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-			FileStream dataStream = new FileStream(filepath, FileMode.Create);
+			FileStream dataStream = new(filepath, FileMode.Create);
 			BinaryFormatter formatter = new();
 			formatter.Serialize(dataStream, g);
 			dataStream.Close();
@@ -56,8 +56,8 @@ public class BinarySaver {
 	}
 
 	Ghost LoadGhost(string path) {
-		FileStream dataStream = new FileStream(path, FileMode.Open);
-		BinaryFormatter converter = new BinaryFormatter();
+		FileStream dataStream = new(path, FileMode.Open);
+		BinaryFormatter converter = new();
 		Ghost g = converter.Deserialize(dataStream) as Ghost;
 		dataStream.Close();
 		return g;

@@ -17,31 +17,42 @@ public class RaceLogic : MonoBehaviour {
 	int frameIndex = 0;
 	bool ghostEnabled = true;
 
+	public GameObject resultsCanvas;
+
 	void Start() {
 		playerCar = FindObjectOfType<Car>();
 		ghostCar = FindObjectOfType<GhostCar>(includeInactive: true);
 		ghostCar.gameObject.SetActive(false);
+		resultsCanvas.SetActive(false);
+
+		// TODO: load the ghosts
+		// player best, author best (which is saved in the application directory?)
+		// should I manually load this, damn
+		// todo: map of name -> playing ghost ghosts
+		// unlock author ghost when getting gold
+		// 1.1, 1.2, 1/5x time. ok
 	}
 
 	public void StartRecordingGhost() {
-		recordingGhost = new(Application.version);
-		// eventually name this after the player
-		// or also it can't always be me
-		recordingGhost.playerName = "crane";
+		recordingGhost = new(Application.version) {
+			// eventually name this after the player
+			// or also it can't always be me
+			playerName = "crane"
+		};
 		recording = true;
 		recordStart = Time.time;
 	}
 
 	void Update() {
 		if (recording) {
-			if (Time.timeScale > 0) {
+			if (Time.timeScale == 1) {
 				recordingGhost.frames.Add(new GhostFrame(
 					Time.time-recordStart,
 					playerCar.GetSnapshot()
 				));
 			}
 		}
-		if (playing && Time.timeScale > 0) {
+		if (playing && Time.timeScale == 1) {
 			if (frameIndex == playingGhost.frames.Count-1) {
 				StopPlayingGhost();
 				return;
@@ -84,5 +95,17 @@ public class RaceLogic : MonoBehaviour {
 	public void StopPlayingGhost() {
 		playing = false;
 		ghostCar.gameObject.SetActive(false);
+	}
+
+	public void ShowResults() {
+		// track medals here, if they got a higher medal then show it
+		// also load the track best time and compute gold medals/etc
+		// fuugck
+
+		resultsCanvas.SetActive(true);
+	}
+
+	public void HideResults() {
+		resultsCanvas.SetActive(false);
 	}
 }

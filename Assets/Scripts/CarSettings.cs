@@ -35,7 +35,7 @@ public class CarSettings : ScriptableObject {
 	public float steerSpeed = 10f;
 	public AnimationCurve steerLimitCurve;
 	public float maxCorneringForce = 20f;
-	public float tireSlip = 1f;
+	[SerializeField] float tireSlip = 1f;
 
 	[Header("Assists")]
 	public bool tcs = true;
@@ -57,4 +57,10 @@ public class CarSettings : ScriptableObject {
 	[Header("Air Control")]
 	public float airSpinControl = 0.5f;
 	public float airPitchControl = 0.5f;
+
+	public float GetTireSlip(float lateralSpeed) {
+		// don't do anything based on lateral speed
+		// it can push the car left and right in a straight line
+		return tireSlip;
+	}
 }

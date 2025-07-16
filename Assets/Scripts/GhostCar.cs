@@ -17,6 +17,8 @@ public class GhostCar : MonoBehaviour {
 	Vector3 positionLastUpdate;
 	Quaternion steerRotation;
 
+	public GameObject boostEffect;
+
 	void Start() {
 		engineAudio = GetComponent<EngineAudio>();
 		engineAudio.BuildSoundCache(engineSettings, engineAudioSource, bigSteps: true);
@@ -26,7 +28,13 @@ public class GhostCar : MonoBehaviour {
 			w.UpdateWheelVisuals(0, 0, false, false);
 		}
 
+		boostEffect.SetActive(false);
+
 		engineAudio.SetRPMAudio(0, 0, true);
+	}
+
+	public void SetName() {
+		//TODO: lil world space canvas with ghost name
 	}
 
 	public void ApplySnapshot(CarSnapshot snapshot) {
@@ -36,8 +44,11 @@ public class GhostCar : MonoBehaviour {
 		engineAudio.SetRPMAudio(snapshot.rpm, snapshot.gas, false);
 
 		foreach (Wheel w in wheels) {
-			w.UpdateWheelVisuals(flatSpeed, w.GetWheelRPMFromSpeed(flatSpeed), false, snapshot.drifting);
+			bool wheelBoost = snapshot.boosting && (w==WheelRR || w==WheelRL);
+			w.UpdateWheelVisuals(flatSpeed, w.GetWheelRPMFromSpeed(flatSpeed), wheelBoost, snapshot.drifting);
 		}
+
+		boostEffect.SetActive(snapshot.boosting);
 
 		steerRotation = Quaternion.Euler(0, snapshot.steerAngle, 0);
         WheelFL.transform.localRotation = steerRotation;
