@@ -179,7 +179,7 @@ public class Car : MonoBehaviour {
         if (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch) {
             if (InputManager.Button(Buttons.SHIFTALT)) {
                 currentGear = -1;
-                if (Vector3.Dot(rb.velocity, transform.forward) > 26f) {
+                if (Vector3.Dot(rb.velocity, transform.forward) > 60*mph2u) {
                     // R For Racing achievement
                     StallEngine();
                 }
@@ -532,6 +532,9 @@ public class Car : MonoBehaviour {
                 if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
                     ChangeGear(currentGear + 1);
                 } else if (!boosting) {
+                    // Money Shift achievement
+                    // actually throw the car forwards
+                    rb.AddRelativeTorque(160, 0, 0, ForceMode.Acceleration);
                     transmissionTemp.Flash();
                     StallEngine();
                 }
@@ -600,7 +603,8 @@ public class Car : MonoBehaviour {
 
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 targetSteerAngle = GetWantedSteeringAngle(settings.maxCorneringForce * 0.9f * Mathf.Sign(wantedAccel), flatVelocity);
-                tcsFrac = 1;
+                // set it to how much over the max cornering force you are
+                tcsFrac = 1 - Mathf.Clamp01((Mathf.Abs(wantedAccel)-settings.maxCorneringForce)/settings.maxCorneringForce);
                 tcsLight.SetOn();
             } else {
                 tcsFrac = 0;

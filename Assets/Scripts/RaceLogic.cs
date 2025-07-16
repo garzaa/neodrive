@@ -19,6 +19,14 @@ public class RaceLogic : MonoBehaviour {
 
 	public GameObject resultsCanvas;
 
+	// this should be info about a playing ghost, not the ghost itself
+	// need timestamps and all that
+	// or...keep the current playing timestamp actually
+	// ghosts wouldn't get out of sync, they all start when the player starts the race
+	// or actually you do need which ghost car it's linked to, damn
+	// then you might also need a list of which materials to replace with the ghost texture?
+	Dictionary<string, Ghost> playingGhosts;
+
 	void Start() {
 		playerCar = FindObjectOfType<Car>();
 		ghostCar = FindObjectOfType<GhostCar>(includeInactive: true);

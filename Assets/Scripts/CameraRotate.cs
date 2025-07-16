@@ -35,6 +35,8 @@ public class CameraRotate : MonoBehaviour {
 
     bool snapping = false;
 
+    Quaternion rotateVelocity;
+
     void Start() {
         car = FindObjectOfType<Car>();
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
@@ -127,6 +129,17 @@ public class CameraRotate : MonoBehaviour {
         }
 
         // later, if grounded, average the ground normals and tilt the camera up/down to account for that
+        Quaternion targetRotation = Quaternion.identity;
+        if (car.grounded) {
+            targetRotation =  Quaternion.FromToRotation(transform.up, car.transform.up);
+        }
+        transform.rotation = QuaternionUtil.SmoothDamp(
+            transform.rotation,
+            targetRotation,
+            ref rotateVelocity,
+            55f * Time.deltaTime
+        );
+
         float y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
         if (Time.time < startTime + 0.5f || snapping) {
             y = rotationAngle;

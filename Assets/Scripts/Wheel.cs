@@ -78,8 +78,7 @@ public class Wheel : MonoBehaviour {
 				out RaycastHit tempHit,
 				settings.suspensionTravel + wheelRadius,
 				settings.wheelRaycast
-			))
-			{
+			)) {
 				hasHit = true;
 				if (tempHit.distance < minDist)
 				{
