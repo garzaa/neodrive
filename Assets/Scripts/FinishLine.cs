@@ -97,6 +97,8 @@ public class FinishLine : MonoBehaviour {
 						timerAlert.Alert(tx);
 					}
 					onValidFinish.Invoke();
+				} else {
+					print("invalid lap, missing "+(allCheckpoints.Count - checkpointsCrossed.Count)+" checkpoints out of "+allCheckpoints.Count);
 				}
 				if (bestLapGhost != null) raceLogic.PlayGhost(bestLapGhost);
 			} else {

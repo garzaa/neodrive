@@ -96,6 +96,7 @@ public class Car : MonoBehaviour {
     float timeAtEdge = 0;
 
     public AudioClip boostSound;
+    public AudioClip[] impactSounds;
     public GameObject boostEffect;
     public bool boosting { get; private set; }
     bool automatic = false;
@@ -154,6 +155,7 @@ public class Car : MonoBehaviour {
         }
         startPoint = transform.position;
         startRotation = transform.rotation;
+        pointsAudio.mute = true;
     }
 
     void Update() {
@@ -252,6 +254,10 @@ public class Car : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
+        if (rb.velocity.magnitude > 5 * mph2u) {
+            gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
+        }
+
         collisionHitmarker.transform.position = collision.contacts[0].point;
         collisionHitmarker.transform.rotation = Quaternion.FromToRotation(
             collisionHitmarker.transform.up,

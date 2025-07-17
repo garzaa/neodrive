@@ -7,8 +7,13 @@ public class NitroxMeter : MonoBehaviour {
 	float current = 0;
 	float needleSpeed = 600;
 	float needleRange = 180;
+	EngineLight readyLight;
 
 	public RectTransform needle;
+
+	void Start() {
+		readyLight = GetComponentInChildren<EngineLight>();
+	}
 
 	public void Add(float amount) {
 		current += amount;
@@ -36,5 +41,7 @@ public class NitroxMeter : MonoBehaviour {
 			0,
 			Mathf.MoveTowardsAngle(needle.rotation.eulerAngles.z, targetDeg, needleSpeed*Time.deltaTime)
 		);
+		if (Ready()) readyLight.SetOn();
+		else readyLight.SetOff();
 	}
 }
