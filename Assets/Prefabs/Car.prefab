@@ -9172,7 +9172,7 @@ GameObject:
   - component: {fileID: 2475806746151248745}
   - component: {fileID: 2475806746151248744}
   - component: {fileID: 2475806746151248759}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MeshCollider
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -10953,9 +10953,9 @@ GameObject:
   - component: {fileID: 2475806746609259882}
   - component: {fileID: 2475806746609259881}
   - component: {fileID: 2475806746609259880}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

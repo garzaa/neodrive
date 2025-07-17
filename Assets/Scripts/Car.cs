@@ -856,8 +856,8 @@ public class Car : MonoBehaviour {
     public void Respawn() {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.transform.position = startPoint;
-        rb.transform.rotation = startRotation;
+        transform.position = startPoint;
+        transform.rotation = startRotation;
         currentGear = 0;
         engineRPM = engine.idleRPM;
         engineRunning = true;

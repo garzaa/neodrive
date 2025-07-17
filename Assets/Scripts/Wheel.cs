@@ -142,7 +142,9 @@ public class Wheel : MonoBehaviour {
 		// get wheel position against the ground
 		float deg = rpm / 60f * Time.deltaTime * 360f;
 		v.z += deg * (reverseRotation ? -1 : 1);
-		wheelObject.transform.localRotation = Quaternion.Euler(v);
+		if (!float.IsNaN(v.z) && float.IsFinite(v.z)) {
+			wheelObject.transform.localRotation = Quaternion.Euler(v);
+		}
 
 		bool highSpeed = rpm > 400;
 		normalMesh.enabled = !highSpeed;

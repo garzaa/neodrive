@@ -7,6 +7,8 @@ public class KickableProp : MonoBehaviour {
 	Quaternion startRot;
 	Rigidbody rb;
 
+	int defaultLayer;
+
 	void Start() {
 		startPos = transform.position;
 		startRot = transform.rotation;
@@ -16,6 +18,14 @@ public class KickableProp : MonoBehaviour {
 			rb.angularVelocity = Vector3.zero;
 			transform.position = startPos;
 			transform.rotation = startRot;
+			gameObject.layer = defaultLayer;
 		});
+		defaultLayer = gameObject.layer;
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		if (collision.gameObject.tag == "Player") {
+			gameObject.layer = LayerMask.NameToLayer("Debris");
+		}
 	}
 }
