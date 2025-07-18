@@ -134,12 +134,14 @@ public class RaceLogic : MonoBehaviour {
 				frameIndex += 1;
 			}
 			ghostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
-			print(playingGhost.frames[frameIndex].snapshot.position);
 		}
 
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
 			if (bestPlayerGhost != null) {
 				bestPlayerGhost.playerName = "author";
+				saver.SaveGhost(bestPlayerGhost);
+				// teehee
+				bestPlayerGhost.playerName = "player";
 			} else {
 				print("no best lap to save");
 			}
@@ -172,10 +174,10 @@ public class RaceLogic : MonoBehaviour {
 
 	void RenderScoreboard() {
 		if (authorGhost == null) {
-			Debug.Log("author ghost null, no scoreboard");
+			scoreContainer.gameObject.SetActive(false);
 			return;
 		}
-
+		scoreContainer.gameObject.SetActive(true);
 		// arrange the player/medal times by time
 		List<NameTimePair> pairs = new(){
 			player,

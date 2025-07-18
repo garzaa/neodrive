@@ -6,21 +6,20 @@ using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System;
+using Unity.VisualScripting;
 
 public class BinarySaver {
 	string baseDataPath;
-	string dataPath;
 	string currentTrack;
 
 	public BinarySaver(string currentTrack) {
 		this.currentTrack = currentTrack;
-		baseDataPath = Application.isEditor ? Application.dataPath : Application.persistentDataPath;
-		dataPath = Application.dataPath;
+		baseDataPath = Application.isEditor ? Application.streamingAssetsPath : Application.persistentDataPath;
 	}
 
 	public Ghost GetAuthorGhost() {
 		string fn = Path.Combine(
-			dataPath,
+			Application.streamingAssetsPath,
 			"ghosts",
 			currentTrack,
 			"author.haunt"
@@ -40,7 +39,8 @@ public class BinarySaver {
 
 	public List<Ghost> GetGhosts() {
 		// list all files in the ghost folder
-		string[] filenames = Directory.GetFiles(GetGhostFolder(), "player.haunt");
+		Directory.CreateDirectory(GetGhostFolder(false));
+		string[] filenames = Directory.GetFiles(GetGhostFolder(false), "player.haunt");
 		List<Ghost> ghosts = new();
 		foreach (string fn in filenames) {
 			Debug.Log("looking at ghost "+fn);
@@ -56,23 +56,23 @@ public class BinarySaver {
 		return ghosts;
 	}
 
-	string GetGhostPath(string playerName) {
+	string GetGhostPath(string playerName, bool author) {
 		return Path.Combine(
-			GetGhostFolder(),
+			GetGhostFolder(author),
 			playerName + ".haunt"
 		);
 	}
 
-	string GetGhostFolder() {
+	string GetGhostFolder(bool author) {
 		return Path.Combine(
-			baseDataPath,
+			author ? Application.streamingAssetsPath : baseDataPath,
 			"ghosts",
 			currentTrack
 		);
 	}
 
-	public async void SaveGhost(Ghost g) {
-		string filepath = GetGhostPath(g.playerName);
+	public async void SaveGhost(Ghost g, bool author = false) {
+		string filepath = GetGhostPath(g.playerName, author);
 		await Task.Run(() => {
 			// have to call it manually. insane
 			g.OnBeforeSerialize();
@@ -86,6 +86,7 @@ public class BinarySaver {
 	}
 
 	Ghost LoadGhost(string path) {
+		Directory.CreateDirectory(Path.GetDirectoryName(path));
 		FileStream dataStream = new(path, FileMode.Open);
 		BinaryFormatter converter = new();
 		Ghost g = converter.Deserialize(dataStream) as Ghost;

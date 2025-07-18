@@ -6115,8 +6115,9 @@ GameObject:
   - component: {fileID: 325206227}
   - component: {fileID: 325206226}
   - component: {fileID: 325206231}
+  - component: {fileID: 325206232}
   m_Layer: 5
-  m_Name: Level 03
+  m_Name: Basic Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6284,7 +6285,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Level 03
+  m_Text: Basic Loop
 --- !u!222 &325206229
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6351,6 +6352,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &325206232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325206224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c943518cbe8d7704392683b826dd5534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  track:
+    sceneAsset: {fileID: 102900000, guid: c0f0b79ff50fceb4681eff544b475888, type: 3}
+    scenePath: Assets/Scenes/Tracks/RouteRaceTest.unity
 --- !u!1 &338457613
 GameObject:
   m_ObjectHideFlags: 0

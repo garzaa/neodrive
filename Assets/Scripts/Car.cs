@@ -858,18 +858,26 @@ public class Car : MonoBehaviour {
     }
 
     public void Respawn() {
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        transform.position = startPoint;
-        transform.rotation = startRotation;
-        rb.position = startPoint;
-        rb.rotation = startRotation;
         nitroxMeter.Reset();
         currentGear = 0;
         engineRPM = engine.idleRPM;
         engineRunning = true;
         drifting = false;
         boosting = false;
+        foreach (Wheel w in wheels) {
+            w.UpdateWheelVisuals(
+                Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
+                0,
+                false,
+                false
+            );
+        }
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = startPoint;
+        transform.rotation = startRotation;
+        rb.position = startPoint;
+        rb.rotation = startRotation;
         onRespawn.Invoke();
     }
 }

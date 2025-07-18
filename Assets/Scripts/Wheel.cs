@@ -43,6 +43,7 @@ public class Wheel : MonoBehaviour {
 	public GameObject wheelFire;
 
 	Vector3 baseSkidPos;
+	bool onGhost;
 
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
@@ -51,8 +52,9 @@ public class Wheel : MonoBehaviour {
 		}
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
-		groundedText = GetComponentInChildren<Text>();
-		compressionBar = GetComponentsInChildren<Image>()[1];
+		onGhost = GetComponentInChildren<Canvas>() == null;
+		if (!onGhost) groundedText = GetComponentInChildren<Text>();
+		if (!onGhost) compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
 		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
 		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
@@ -115,6 +117,7 @@ public class Wheel : MonoBehaviour {
 	}
 
 	void UpdateTelemetry() {
+		if (onGhost) return;
 		compressionBar.rectTransform.sizeDelta = new Vector2(
             compressionBar.rectTransform.sizeDelta.x,
             suspensionCompression / settings.suspensionTravel
