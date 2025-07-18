@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class Ghost : ISerializationCallbackReceiver {
+public class Ghost {
 	public List<GhostFrame> frames = new();
 	public string playerName;
 	public float totalTime;

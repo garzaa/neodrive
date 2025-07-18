@@ -140,7 +140,6 @@ public class RaceLogic : MonoBehaviour {
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
 			if (bestPlayerGhost != null) {
 				bestPlayerGhost.playerName = "author";
-				saver.SaveGhost(bestPlayerGhost);
 			} else {
 				print("no best lap to save");
 			}

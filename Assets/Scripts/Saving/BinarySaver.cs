@@ -74,6 +74,8 @@ public class BinarySaver {
 	public async void SaveGhost(Ghost g) {
 		string filepath = GetGhostPath(g.playerName);
 		await Task.Run(() => {
+			// have to call it manually. insane
+			g.OnBeforeSerialize();
 			Directory.CreateDirectory(Path.GetDirectoryName(filepath));
 			FileStream dataStream = new(filepath, FileMode.Create);
 			BinaryFormatter formatter = new();
@@ -88,6 +90,7 @@ public class BinarySaver {
 		BinaryFormatter converter = new();
 		Ghost g = converter.Deserialize(dataStream) as Ghost;
 		dataStream.Close();
+		g.OnAfterDeserialize();
 		return g;
 	}
 
