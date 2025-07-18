@@ -30,8 +30,7 @@ public class BinarySaver {
 			if (!CompatibleVersions(g.version)) {
 				Debug.Log("no compatible ghost version");
 			}
-		} catch (Exception e) {
-			Debug.Log(e);
+		} catch {
 			return null;
 		}
 		return g;

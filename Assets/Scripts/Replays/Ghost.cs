@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 [System.Serializable]
 public class Ghost {
@@ -8,7 +9,10 @@ public class Ghost {
 	public string playerName;
 	public float totalTime;
 	public string version;
-	public Dictionary<string, float> splits;
+	[System.NonSerialized] public Dictionary<string, float> splits;
+
+	[SerializeField] private List<string> splitNames;
+	[SerializeField] private List<float> splitVals;
 
 	public Ghost(string version) {
 		this.version = version;
@@ -18,11 +22,22 @@ public class Ghost {
 		foreach (GhostFrame gf in frames) {
 			gf.snapshot.OnBeforeSerialize();
 		}
+		splitNames = new();
+		splitVals = new();
+		foreach (var kv in splits) {
+			splitNames.Add(kv.Key);
+			splitVals.Add(kv.Value);
+		}
 	}
 
 	public void OnAfterDeserialize() {
 		foreach (GhostFrame gf in frames) {
 			gf.snapshot.OnAfterDeserialize();
+		}
+		splits = new();
+		// zip it back up
+		for (int i=0; i<splitNames.Count; i++) {
+			splits[splitNames[i]] = splitVals[i];
 		}
 	}
 }

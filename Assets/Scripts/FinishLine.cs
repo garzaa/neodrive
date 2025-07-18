@@ -17,7 +17,6 @@ public class FinishLine : MonoBehaviour {
 	LapTime currentLap;
 
 	AudioSource checkpointSound;
-	bool crossedOnce = false;
 
 	public Text lapRecord;
 
@@ -42,8 +41,17 @@ public class FinishLine : MonoBehaviour {
 		GameObject.FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
 	}
 
+	public void RestartTimers() {
+		raceTimer.Restart();
+		lapTimer.Restart();
+	}
+
+	public void SetBestLap(Ghost ghost) {
+		bestLapGhost = ghost;
+		bestLap = new LapTime(ghost);
+	}
+
 	public void OnRespawn() {
-		crossedOnce = false;
 		if (raceType == RaceType.ROUTE) {
 			raceTimer.Restart();
 			lapTimer.Restart();
@@ -138,4 +146,13 @@ public class FinishLine : MonoBehaviour {
 public class LapTime {
 	public float totalTime;
 	public Dictionary<string, float> splits = new();
+
+	public LapTime() {
+
+	}
+
+	public LapTime(Ghost g) {
+		totalTime = g.totalTime;
+		splits = g.splits;
+	}
 }

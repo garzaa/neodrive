@@ -71,6 +71,10 @@ public class RaceLogic : MonoBehaviour {
 		carTrackingCamera.m_Priority = 100;
 		carTrackingCamera.enabled = false;
 
+		finishLine = FindObjectOfType<FinishLine>();
+		finishLine.SetRaceType(raceType);
+		finishLine.onValidFinish.AddListener(OnRaceFinish);
+
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
 		if (authorGhost != null) {
@@ -87,6 +91,7 @@ public class RaceLogic : MonoBehaviour {
 				bestPlayerGhost = player;
 				this.player.time = bestPlayerGhost.totalTime;
 				print("found player ghost with time " +this.player.time);
+				finishLine.SetBestLap(bestPlayerGhost);
 			}
 		}
 
@@ -96,9 +101,6 @@ public class RaceLogic : MonoBehaviour {
 		car.onEngineStart.AddListener(FirstStart);
 		car.forceClutch = true;
 		car.forceBrake = true;
-		finishLine = FindObjectOfType<FinishLine>();
-		finishLine.SetRaceType(raceType);
-		finishLine.onValidFinish.AddListener(OnRaceFinish);
 	}
 
 	public void StartRecordingGhost() {
@@ -150,6 +152,7 @@ public class RaceLogic : MonoBehaviour {
 
 	// hook this up to finish line or whatever lol
 	public void OnRaceStart() {
+		finishLine.RestartTimers();
 		if (bestPlayerGhost != null) PlayGhost(bestPlayerGhost);
 		StartRecordingGhost();
 	}
@@ -166,6 +169,7 @@ public class RaceLogic : MonoBehaviour {
 		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
 			player.time = p.totalTime;
 			bestPlayerGhost = p;
+			finishLine.SetBestLap(bestPlayerGhost);
 			p.splits = finishLine.GetLastLapSplits();
 			saver.SaveGhost(bestPlayerGhost);
 		}
