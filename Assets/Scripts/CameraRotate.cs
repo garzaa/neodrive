@@ -128,7 +128,6 @@ public class CameraRotate : MonoBehaviour {
             rotationAngle += Vector3.SignedAngle(Vector3.forward, new Vector3(cameraStick.x, 0, cameraStick.y), Vector3.up);
         }
 
-        // later, if grounded, average the ground normals and tilt the camera up/down to account for that
         Quaternion targetRotation = Quaternion.identity;
         if (car.grounded) {
             targetRotation =  Quaternion.FromToRotation(transform.up, car.transform.up);

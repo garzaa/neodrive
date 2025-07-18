@@ -28,6 +28,8 @@ public class FinishLine : MonoBehaviour {
 	Ghost bestLapGhost = null;
 	BinarySaver saver;
 
+	RaceType raceType = RaceType.HOTLAP;
+
 	void Start() {
 		StartCoroutine(WaitForSpawn());
 		raceTimer = GameObject.Find("RaceTimer").GetComponent<Timer>();
@@ -37,6 +39,21 @@ public class FinishLine : MonoBehaviour {
 		checkpointSound = GetComponent<AudioSource>();
 		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
+		GameObject.FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
+	}
+
+	public void OnRespawn() {
+		crossedOnce = false;
+		if (raceType == RaceType.ROUTE) {
+			raceTimer.Restart();
+			lapTimer.Restart();
+		}
+	}
+
+	public void SetRaceType(RaceType raceType) {
+		print("Setting race type to "+raceType);
+		this.raceType = raceType;
+		raceTimer.gameObject.SetActive(this.raceType != RaceType.ROUTE);
 	}
 
 	IEnumerator WaitForSpawn() {
@@ -47,24 +64,13 @@ public class FinishLine : MonoBehaviour {
 		}
 	}
 
-	void Update() {
-		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
-			if (bestLapGhost != null) {
-				bestLapGhost.playerName = "author";
-				saver.SaveGhost(bestLapGhost);
-			} else {
-				print("no best lap to save");
-			}
-		}
-	}
-
 	void OnCheckpointCrossed(Checkpoint c) {
 		float t = lapTimer.GetTime();
 		string tx = lapTimer.FormattedTime(t);
 		if (!checkpointsCrossed.Contains(c)) {
-			currentLap.splits[c] = lapTimer.GetTime();
+			currentLap.splits[c.name] = lapTimer.GetTime();
 			if (bestLap != null) {
-				float diff = t - bestLap.splits[c];
+				float diff = t - bestLap.splits[c.name];
 				string color = (diff > 0) ? "red" : "blue";
 				tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
 			}
@@ -73,20 +79,25 @@ public class FinishLine : MonoBehaviour {
 		timerAlert.Alert(tx);
 	}
 
-	void StartRace() {
-		raceTimer.Restart();
-	}
-
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
+			print("finish crossed");
 			checkpointSound.Play();
 			onFinishCross.Invoke();
-			if (crossedOnce) {
-				if (checkpointsCrossed.Count == allCheckpoints.Count) {
+			if (checkpointsCrossed.Count == allCheckpoints.Count) {
+				if (raceType == RaceType.ROUTE) {
+					print("valid finish");
+					onValidFinish.Invoke();
+					lapTimer.Pause();
+					raceTimer.Pause();
+					currentLap = new();
+				} else {
 					// save the lap's ghost
+					// racelogic should eventually take care of this
 					Ghost g = raceLogic.StopRecordingGhost();
 					currentLap.totalTime = lapTimer.GetTime();
 					if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
+						print("new best lap: ");
 						bestLap = currentLap;
 						currentLap = new();
 						bestLapGhost = g;
@@ -103,21 +114,28 @@ public class FinishLine : MonoBehaviour {
 					}
 					onValidFinish.Invoke();
 				}
-				if (bestLapGhost != null) raceLogic.PlayGhost(bestLapGhost);
 			} else {
-				crossedOnce = true;
-				raceTimer.Restart();
+				Debug.Log("missed checkpoints, invalid finish");
 			}
-			raceLogic.StartRecordingGhost();
+
+			if (raceType == RaceType.HOTLAP) {
+				if (bestLapGhost != null) raceLogic.PlayGhost(bestLapGhost);
+				raceLogic.StartRecordingGhost();
+			}
+			if (raceType != RaceType.ROUTE) {
+				lapTimer.Restart();
+			}
 			currentLap = new();
 			checkpointsCrossed.Clear();
-			lapTimer.Restart();
 		}
+	}
+
+	public Dictionary<string, float> GetLastLapSplits() {
+		return currentLap.splits;
 	}
 }
 
-[System.Serializable]
 public class LapTime {
 	public float totalTime;
-	public Dictionary<Checkpoint, float> splits = new();
+	public Dictionary<string, float> splits = new();
 }

@@ -853,6 +853,10 @@ public class Car : MonoBehaviour {
         }
     }
 
+    public void ShutoffEngine() {
+        engineRunning = false;
+    }
+
     public void Respawn() {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

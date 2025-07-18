@@ -46,6 +46,11 @@ public class Timer : MonoBehaviour {
 		paused = false;
 	}
 
+	public void Reset() {
+		paused = true;
+		SetTime(0);
+	}
+
 	public void Restart() {
 		time = 0;
 		paused = false;

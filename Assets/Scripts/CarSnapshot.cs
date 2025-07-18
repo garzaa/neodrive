@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public struct CarSnapshot : ISerializationCallbackReceiver{
+public class CarSnapshot {
 	[System.NonSerialized] public Vector3 position;
 	[System.NonSerialized] public Quaternion rotation;
 	public readonly float rpm;

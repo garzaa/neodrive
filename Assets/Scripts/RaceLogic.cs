@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Linq;
+using Cinemachine;
+using System;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -10,12 +14,14 @@ public class RaceLogic : MonoBehaviour {
 	bool playing = false;
 	float recordStart;
 	float playStart;
-	Car playerCar;
+	Car car;
 	GhostCar ghostCar;
 
 	int frameIndex = 0;
 	bool ghostEnabled = true;
 
+
+	public RaceType raceType = RaceType.ROUTE;
 	public GameObject resultsCanvas;
 
 	// this should be info about a playing ghost, not the ghost itself
@@ -26,32 +32,80 @@ public class RaceLogic : MonoBehaviour {
 	// then you might also need a list of which materials to replace with the ghost texture?
 	Dictionary<string, PlayingGhost> playingGhosts;
 
-	public GhostContainer authorGhost;
-
 	BinarySaver saver;
 
+	NameTimePair bronze, silver, gold, author;
+
+	Ghost bestPlayerGhost;
+	Ghost currentPlayerGhost;
+	Ghost authorGhost;
+
+	public Transform scoreContainer;
+
+	NameTimePair player = new("player", 0);
+
+	public Animator countdownAnimator;
+	public Text countdown;
+
+	FinishLine finishLine;
+
+	CinemachineVirtualCamera carTrackingCamera;
+
+	struct NameTimePair {
+		public string name;
+		public float time;
+
+		public NameTimePair(string n, float t) {
+			name = n;
+			time = t;
+		}
+	}
+
 	void Start() {
-		playerCar = FindObjectOfType<Car>();
+		car = FindObjectOfType<Car>();
 		ghostCar = FindObjectOfType<GhostCar>(includeInactive: true);
 		ghostCar.gameObject.SetActive(false);
 		resultsCanvas.SetActive(false);
+		carTrackingCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+		carTrackingCamera.m_LookAt = car.transform;
+		carTrackingCamera.m_Priority = 100;
+		carTrackingCamera.enabled = false;
 
-		// TODO: load the ghosts
-		// player best, author best (which is saved in the application directory?)
-		// should I manually load this, damn
-		// todo: map of name -> playing ghost ghosts
-		// unlock author ghost when getting gold
-		// 1.1, 1.2, 1/5x time. ok
-		// try to load the ghosts
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
+		authorGhost = saver.GetAuthorGhost();
+		if (authorGhost != null) {
+			print("found author ghost");
+			author = new("author", authorGhost.totalTime);
+			gold = new("gold", authorGhost.totalTime * 1.1f);
+			silver = new("silver", authorGhost.totalTime * 1.2f);
+			bronze = new("bronze", authorGhost.totalTime * 1.5f);
+		}
 
+		if (saver.GetGhosts().Count > 0) {
+			Ghost player = saver.GetGhosts()[0];
+			if (player != null) {
+				bestPlayerGhost = player;
+				this.player.time = bestPlayerGhost.totalTime;
+				print("found player ghost with time " +this.player.time);
+			}
+		}
+
+		RenderScoreboard();
+
+		car.onRespawn.AddListener(() => StartCoroutine(CountdownAndStart()));
+		car.onEngineStart.AddListener(FirstStart);
+		car.forceClutch = true;
+		car.forceBrake = true;
+		finishLine = FindObjectOfType<FinishLine>();
+		finishLine.SetRaceType(raceType);
+		finishLine.onValidFinish.AddListener(OnRaceFinish);
 	}
 
 	public void StartRecordingGhost() {
+		print("started recording ghost");
 		recordingGhost = new(Application.version) {
 			// eventually name this after the player
-			// or also it can't always be me
-			playerName = "crane"
+			playerName = "player"
 		};
 		recording = true;
 		recordStart = Time.time;
@@ -62,7 +116,7 @@ public class RaceLogic : MonoBehaviour {
 			if (Time.timeScale == 1) {
 				recordingGhost.frames.Add(new GhostFrame(
 					Time.time-recordStart,
-					playerCar.GetSnapshot()
+					car.GetSnapshot()
 				));
 			}
 		}
@@ -80,6 +134,68 @@ public class RaceLogic : MonoBehaviour {
 				frameIndex += 1;
 			}
 			ghostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
+			print(playingGhost.frames[frameIndex].snapshot.position);
+		}
+
+		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
+			if (bestPlayerGhost != null) {
+				bestPlayerGhost.playerName = "author";
+				saver.SaveGhost(bestPlayerGhost);
+			} else {
+				print("no best lap to save");
+			}
+		}
+	}
+
+	// hook this up to finish line or whatever lol
+	public void OnRaceStart() {
+		if (bestPlayerGhost != null) PlayGhost(bestPlayerGhost);
+		StartRecordingGhost();
+	}
+
+	public void OnRaceFinish() {
+		print("race finish");
+		// stop the car (force ebrake and neutral), show results, quit button
+		car.forceClutch = true;
+		car.forceBrake = true;
+		car.ShutoffEngine();
+		StartCoroutine(ShowResults());
+		Ghost p = StopRecordingGhost();
+		carTrackingCamera.enabled = true;
+		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
+			player.time = p.totalTime;
+			bestPlayerGhost = p;
+			p.splits = finishLine.GetLastLapSplits();
+			saver.SaveGhost(bestPlayerGhost);
+		}
+		RenderScoreboard();
+	}
+
+	void RenderScoreboard() {
+		if (authorGhost == null) {
+			Debug.Log("author ghost null, no scoreboard");
+			return;
+		}
+
+		// arrange the player/medal times by time
+		List<NameTimePair> pairs = new(){
+			player,
+			author,
+			gold,
+			silver,
+			bronze
+		};
+
+		pairs = pairs.OrderBy(x => {
+			if (x.time <= 0) {
+				return float.PositiveInfinity;
+			} else {
+				return x.time;
+			}
+		}).ToList();
+		Text[] texts = scoreContainer.GetComponentsInChildren<Text>();
+		for (int i=0; i<pairs.Count; i++) {
+			texts[i].text = pairs[i].name + "\n" + TimeSpan.FromSeconds(pairs[i].time).ToString(@"mm\:ss\.ff");
 		}
 	}
 
@@ -92,6 +208,9 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public Ghost StopRecordingGhost() {
+		print("stopped recording ghost");
+		recording = false;
+		recordingGhost.totalTime = Time.time - recordStart;
 		return recordingGhost;
 	}
 
@@ -99,6 +218,7 @@ public class RaceLogic : MonoBehaviour {
 		if (!ghostEnabled) {
 			return;
 		}
+		print("playiing ghost");
 		frameIndex = 0;
 		playingGhost = g;
 		playing = true;
@@ -107,19 +227,57 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void StopPlayingGhost() {
+		print("stopped playing ghost");
 		playing = false;
 		ghostCar.gameObject.SetActive(false);
-	}
-
-	public void ShowResults() {
-		// track medals here, if they got a higher medal then show it
-		// also load the track best time and compute gold medals/etc
-		// fuugck
-
-		resultsCanvas.SetActive(true);
 	}
 
 	public void HideResults() {
 		resultsCanvas.SetActive(false);
 	}
+
+		public void FirstStart() {
+		StartCoroutine(FirstStartRoutine());
+	}
+
+	IEnumerator FirstStartRoutine() {
+		car.onEngineStart.RemoveListener(FirstStart);
+		yield return new WaitForSeconds(1);
+		StartCoroutine(CountdownAndStart());
+	}
+
+	IEnumerator CountdownAndStart() {
+		carTrackingCamera.enabled = false;
+		HideResults();
+		StopCoroutine(ShowResults());
+		car.forceBrake = true;
+		car.forceClutch = true;
+		car.ChangeGear(1);
+		yield return new WaitForSeconds(0.25f);
+		countdown.text = "3";
+		countdownAnimator.SetTrigger("Animate");
+		yield return new WaitForSeconds(0.5f);
+		countdown.text = "2";
+		countdownAnimator.SetTrigger("Animate");
+		yield return new WaitForSeconds(0.5f);
+		countdown.text = "1";
+		countdownAnimator.SetTrigger("Animate");
+		yield return new WaitForSeconds(0.5f);
+		car.forceClutch = false;
+		car.forceBrake = false;
+		countdown.text = "GO";
+		countdownAnimator.SetTrigger("Animate");
+		OnRaceStart();
+	}
+
+	IEnumerator ShowResults() {
+		yield return new WaitForSeconds(0.5f);
+		resultsCanvas.SetActive(true);
+	}
+}
+
+public enum RaceType {
+	ROUTE = 0,
+	LAP = 1,
+	HOTLAP = 2
 }

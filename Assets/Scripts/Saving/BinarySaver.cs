@@ -5,24 +5,52 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using System;
 
 public class BinarySaver {
 	string baseDataPath;
+	string dataPath;
 	string currentTrack;
 
 	public BinarySaver(string currentTrack) {
 		this.currentTrack = currentTrack;
 		baseDataPath = Application.isEditor ? Application.dataPath : Application.persistentDataPath;
+		dataPath = Application.dataPath;
+	}
+
+	public Ghost GetAuthorGhost() {
+		string fn = Path.Combine(
+			dataPath,
+			"ghosts",
+			currentTrack,
+			"author.haunt"
+		);
+		Ghost g;
+		try {
+			g = LoadGhost(fn);
+			if (!CompatibleVersions(g.version)) {
+				Debug.Log("no compatible ghost version");
+			}
+		} catch (Exception e) {
+			Debug.Log(e);
+			return null;
+		}
+		return g;
 	}
 
 	public List<Ghost> GetGhosts() {
 		// list all files in the ghost folder
-		string[] filenames = Directory.GetFiles(GetGhostFolder(), "*.haunt");
+		string[] filenames = Directory.GetFiles(GetGhostFolder(), "player.haunt");
 		List<Ghost> ghosts = new();
 		foreach (string fn in filenames) {
-			Ghost g = LoadGhost(fn);
-			if (CompatibleVersions(g.version)) {
-				ghosts.Add(g);
+			Debug.Log("looking at ghost "+fn);
+			try {
+				Ghost g = LoadGhost(fn);
+				if (CompatibleVersions(g.version)) {
+					ghosts.Add(g);
+				}
+			} catch (Exception e) {
+				Debug.Log("invalid ghostfile "+fn+"\n"+e);
 			}
 		}
 		return ghosts;
