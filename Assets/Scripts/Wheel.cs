@@ -169,7 +169,7 @@ public class Wheel : MonoBehaviour {
 
 		// pin skidmarks to ground
 		if (Grounded) {
-			tireSkid.transform.position = raycastHit.point + transform.up*0.01f;
+			tireSkid.transform.position = raycastHit.point + transform.up*0.03f;
 		} else {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}

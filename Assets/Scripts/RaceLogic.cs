@@ -99,8 +99,11 @@ public class RaceLogic : MonoBehaviour {
 
 		car.onRespawn.AddListener(() => StartCoroutine(CountdownAndStart()));
 		car.onEngineStart.AddListener(FirstStart);
-		car.forceClutch = true;
-		car.forceBrake = true;
+
+		if (raceType != RaceType.HOTLAP) {
+			car.forceClutch = true;
+			car.forceBrake = true;
+		}
 	}
 
 	public void StartRecordingGhost() {
@@ -150,7 +153,6 @@ public class RaceLogic : MonoBehaviour {
 		}
 	}
 
-	// hook this up to finish line or whatever lol
 	public void OnRaceStart() {
 		finishLine.RestartTimers();
 		if (bestPlayerGhost != null) PlayGhost(bestPlayerGhost);
@@ -158,22 +160,24 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void OnRaceFinish() {
-		print("race finish");
-		// stop the car (force ebrake and neutral), show results, quit button
-		car.forceClutch = true;
-		car.forceBrake = true;
-		car.ShutoffEngine();
-		StartCoroutine(ShowResults());
 		Ghost p = StopRecordingGhost();
-		carTrackingCamera.enabled = true;
 		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
 			player.time = p.totalTime;
+			p.splits = finishLine.GetBestLapSplits();
 			bestPlayerGhost = p;
 			finishLine.SetBestLap(bestPlayerGhost);
-			p.splits = finishLine.GetLastLapSplits();
 			saver.SaveGhost(bestPlayerGhost);
 		}
-		RenderScoreboard();
+		if (raceType != RaceType.HOTLAP) {
+			carTrackingCamera.enabled = true;
+			print("race finish");
+			// stop the car (force ebrake and neutral), show results, quit button
+			car.forceClutch = true;
+			car.forceBrake = true;
+			car.ShutoffEngine();
+			StartCoroutine(ShowResults());
+			RenderScoreboard();
+		}
 	}
 
 	void RenderScoreboard() {
@@ -255,6 +259,10 @@ public class RaceLogic : MonoBehaviour {
 		carTrackingCamera.enabled = false;
 		HideResults();
 		StopCoroutine(ShowResults());
+		if (raceType == RaceType.HOTLAP) {
+			OnRaceStart();
+			yield break;
+		}
 		car.forceBrake = true;
 		car.forceClutch = true;
 		car.ChangeGear(1);

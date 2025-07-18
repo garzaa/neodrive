@@ -28,6 +28,7 @@ public class FinishLine : MonoBehaviour {
 	BinarySaver saver;
 
 	RaceType raceType = RaceType.HOTLAP;
+	bool crossedOnce = false;
 
 	void Start() {
 		StartCoroutine(WaitForSpawn());
@@ -48,10 +49,12 @@ public class FinishLine : MonoBehaviour {
 
 	public void SetBestLap(Ghost ghost) {
 		bestLapGhost = ghost;
+		print("Setting new best lasp");
 		bestLap = new LapTime(ghost);
 	}
 
 	public void OnRespawn() {
+		crossedOnce = false;
 		if (raceType == RaceType.ROUTE) {
 			raceTimer.Restart();
 			lapTimer.Restart();
@@ -102,6 +105,7 @@ public class FinishLine : MonoBehaviour {
 				} else {
 					// save the lap's ghost
 					// racelogic should eventually take care of this
+					// the splits thing is scary
 					Ghost g = raceLogic.StopRecordingGhost();
 					currentLap.totalTime = lapTimer.GetTime();
 					if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
@@ -138,8 +142,8 @@ public class FinishLine : MonoBehaviour {
 		}
 	}
 
-	public Dictionary<string, float> GetLastLapSplits() {
-		return currentLap.splits;
+	public Dictionary<string, float> GetBestLapSplits() {
+		return bestLap.splits;
 	}
 }
 
