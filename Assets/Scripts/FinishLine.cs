@@ -29,10 +29,7 @@ public class FinishLine : MonoBehaviour {
 	BinarySaver saver;
 
 	void Start() {
-		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
-		foreach (Checkpoint c in allCheckpoints) {
-			c.onPlayerEnter.AddListener(() => OnCheckpointCrossed(c));
-		}
+		StartCoroutine(WaitForSpawn());
 		raceTimer = GameObject.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = GameObject.Find("LapTimer").GetComponent<Timer>();
 		timerAlert = FindObjectOfType<TimerAlert>();
@@ -40,6 +37,14 @@ public class FinishLine : MonoBehaviour {
 		checkpointSound = GetComponent<AudioSource>();
 		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
+	}
+
+	IEnumerator WaitForSpawn() {
+		yield return new WaitForEndOfFrame();
+		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
+		foreach (Checkpoint c in allCheckpoints) {
+			c.onPlayerEnter.AddListener(() => OnCheckpointCrossed(c));
+		}
 	}
 
 	void Update() {

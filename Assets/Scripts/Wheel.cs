@@ -42,6 +42,8 @@ public class Wheel : MonoBehaviour {
 	public TrailRenderer[] fireStreaks;
 	public GameObject wheelFire;
 
+	Vector3 baseSkidPos;
+
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
 		if (settings == null) {
@@ -55,6 +57,7 @@ public class Wheel : MonoBehaviour {
 		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
 		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
 		offset = transform.localPosition.magnitude;
+		baseSkidPos = tireSkid.transform.localPosition;
 	}
 
 	void GenerateRays() {
@@ -135,6 +138,7 @@ public class Wheel : MonoBehaviour {
 		fakeGroundBump *= Mathf.Sin((Time.time+offset) * 64f) * 0.005f;
 		fakeGroundBump *= Grounded ? 1 : 0;
 
+		// TODO: lerp this slowly when going over bumpy road terrain? what's up with that
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
@@ -160,6 +164,12 @@ public class Wheel : MonoBehaviour {
 			wheelFire.SetActive(boosting);
 		}
 
+		// pin skidmarks to ground
+		if (Grounded) {
+			tireSkid.transform.position = raycastHit.point + transform.up*0.01f;
+		} else {
+			tireSkid.transform.localPosition = baseSkidPos;
+		}
 		tireSkid.emitting = Grounded && drifting;
 	}
 

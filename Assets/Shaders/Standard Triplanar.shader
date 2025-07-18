@@ -19,8 +19,11 @@ Shader "Standard Triplanar"
     SubShader
     {
         Tags { "RenderType"="Opaque" }
+        Cull Off
+
 
         CGPROGRAM
+
 
         #pragma surface surf Standard vertex:vert fullforwardshadows addshadow
 

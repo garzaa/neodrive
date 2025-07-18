@@ -8397,7 +8397,7 @@ GameObject:
   - component: {fileID: 664648654}
   - component: {fileID: 664648655}
   m_Layer: 5
-  m_Name: Level 01
+  m_Name: Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9572,8 +9572,9 @@ GameObject:
   - component: {fileID: 836561777}
   - component: {fileID: 836561776}
   - component: {fileID: 836561781}
+  - component: {fileID: 836561782}
   m_Layer: 5
-  m_Name: Level 02
+  m_Name: Speedway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9741,7 +9742,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Level 02
+  m_Text: Desert Speedway
 --- !u!222 &836561779
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9808,6 +9809,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &836561782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836561774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c943518cbe8d7704392683b826dd5534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  track:
+    sceneAsset: {fileID: 102900000, guid: a668814d356744c48837f14191a9bde3, type: 3}
+    scenePath: Assets/Scenes/Tracks/DesertTest.unity
 --- !u!1 &851151206
 GameObject:
   m_ObjectHideFlags: 0

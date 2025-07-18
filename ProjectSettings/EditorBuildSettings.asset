@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tracks/Tutorial.unity
     guid: 2c7fd0e40e7188140beba6582eab2aeb
+  - enabled: 1
+    path: Assets/Scenes/Tracks/DesertTest.unity
+    guid: a668814d356744c48837f14191a9bde3
   m_configObjects: {}
