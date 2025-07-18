@@ -41,6 +41,8 @@ public class CarSettings : ScriptableObject {
 	public bool tcs = true;
 	[Range(0, 1)]
 	public float tcsBraking = 0.2f;
+	[Range(0, 1)]
+	public float gripLimitThreshold = 0.7f;
 
 	public bool lcs = true;
 	[Tooltip("Forward/backward force the wheels can sustain before burning out/locking up")]

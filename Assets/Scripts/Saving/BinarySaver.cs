@@ -17,7 +17,7 @@ public class BinarySaver {
 
 	public List<Ghost> GetGhosts() {
 		// list all files in the ghost folder
-		string[] filenames = System.IO.Directory.GetFiles(GetGhostFolder(), "*.haunt");
+		string[] filenames = Directory.GetFiles(GetGhostFolder(), "*.haunt");
 		List<Ghost> ghosts = new();
 		foreach (string fn in filenames) {
 			Ghost g = LoadGhost(fn);

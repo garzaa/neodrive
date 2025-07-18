@@ -614,7 +614,7 @@ public class Car : MonoBehaviour {
                 tcsLight.SetOn();
             } else {
                 tcsFrac = 0;
-                if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*0.7f && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
+                if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*settings.gripLimitThreshold && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
                     timeAtEdge += Time.fixedDeltaTime;
                     if (timeAtEdge > 0.2f) {
                         Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
@@ -858,6 +858,9 @@ public class Car : MonoBehaviour {
         rb.angularVelocity = Vector3.zero;
         transform.position = startPoint;
         transform.rotation = startRotation;
+        rb.position = startPoint;
+        rb.rotation = startRotation;
+        nitroxMeter.Reset();
         currentGear = 0;
         engineRPM = engine.idleRPM;
         engineRunning = true;

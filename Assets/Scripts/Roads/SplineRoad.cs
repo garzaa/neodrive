@@ -27,6 +27,10 @@ public class SplineRoad : MonoBehaviour {
 		meshCollider = GetComponent<MeshCollider>();
 	}
 
+	void Start() {
+		BuildMesh();
+	}
+
 	void Update() {
 		if (!Application.isPlaying) BuildMesh();
 	}

@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using Rewired.Integration.UnityUI;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -25,7 +24,11 @@ public class RaceLogic : MonoBehaviour {
 	// ghosts wouldn't get out of sync, they all start when the player starts the race
 	// or actually you do need which ghost car it's linked to, damn
 	// then you might also need a list of which materials to replace with the ghost texture?
-	Dictionary<string, Ghost> playingGhosts;
+	Dictionary<string, PlayingGhost> playingGhosts;
+
+	public GhostContainer authorGhost;
+
+	BinarySaver saver;
 
 	void Start() {
 		playerCar = FindObjectOfType<Car>();
@@ -39,6 +42,9 @@ public class RaceLogic : MonoBehaviour {
 		// todo: map of name -> playing ghost ghosts
 		// unlock author ghost when getting gold
 		// 1.1, 1.2, 1/5x time. ok
+		// try to load the ghosts
+		saver = new BinarySaver(SceneManager.GetActiveScene().name);
+
 	}
 
 	public void StartRecordingGhost() {
