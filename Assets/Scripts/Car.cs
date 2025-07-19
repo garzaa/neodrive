@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
-using UnityEditorInternal;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {

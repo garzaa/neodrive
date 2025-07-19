@@ -25,10 +25,9 @@ public class FinishLine : MonoBehaviour {
 	public UnityEvent onInvalidFinish;
 
 	RaceLogic raceLogic;
-	Ghost bestLapGhost = null;
-	BinarySaver saver;
 
 	RaceType raceType = RaceType.HOTLAP;
+	bool finishedOnce = false;
 
 	void Start() {
 		StartCoroutine(WaitForSpawn());
@@ -38,7 +37,6 @@ public class FinishLine : MonoBehaviour {
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
 		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
-		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
 	}
 
@@ -48,8 +46,6 @@ public class FinishLine : MonoBehaviour {
 	}
 
 	public void SetBestLap(Ghost ghost) {
-		bestLapGhost = ghost;
-		print("Setting new best lasp by ghost " + ghost.playerName);
 		bestLap = new LapTime(ghost);
 		lapRecord.text = lapTimer.FormattedTime(ghost.totalTime);
 	}
@@ -60,10 +56,10 @@ public class FinishLine : MonoBehaviour {
 			lapTimer.Restart();
 		}
 		checkpointsCrossed.Clear();
+		finishedOnce = false;
 	}
 
 	public void SetRaceType(RaceType raceType) {
-		print("Setting race type to "+raceType);
 		this.raceType = raceType;
 		raceTimer.gameObject.SetActive(this.raceType != RaceType.ROUTE);
 	}
@@ -79,7 +75,9 @@ public class FinishLine : MonoBehaviour {
 	void OnCheckpointCrossed(Checkpoint c) {
 		float t = lapTimer.GetTime();
 		string tx = lapTimer.FormattedTime(t);
-		if (!checkpointsCrossed.Contains(c)) {
+		// don't alert if you haven't crossed the finish yet on a hot lap
+		// like if you're passing through checkpoints after spawning before starting an actual lap
+		if (!checkpointsCrossed.Contains(c) && (raceType!=RaceType.HOTLAP || finishedOnce)) {
 			currentLap.splits[c.name] = lapTimer.GetTime();
 			if (bestLap != null) {
 				float diff = t - bestLap.splits[c.name];
@@ -93,27 +91,20 @@ public class FinishLine : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
-			print("finish crossed");
+			finishedOnce = true;
 			checkpointSound.Play();
 			onFinishCross.Invoke();
 			if (checkpointsCrossed.Count == allCheckpoints.Count) {
 				if (raceType == RaceType.ROUTE) {
-					print("valid finish");
 					onValidFinish.Invoke();
 					lapTimer.Pause();
 					raceTimer.Pause();
 					currentLap = new();
 				} else {
-					// save the lap's ghost
-					// racelogic should eventually take care of this
-					// the splits thing is scary
-					Ghost g = raceLogic.StopRecordingGhost();
 					currentLap.totalTime = lapTimer.GetTime();
 					if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
-						print("new best lap: ");
 						bestLap = currentLap;
 						currentLap = new();
-						bestLapGhost = g;
 						timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
 						lapRecord.text = lapTimer.GetFormattedTime();
 					} else {
@@ -129,7 +120,6 @@ public class FinishLine : MonoBehaviour {
 				}
 			} else {
 				onInvalidFinish.Invoke();
-				Debug.Log("missed checkpoints, invalid finish");
 			}
 			if (raceType != RaceType.ROUTE) {
 				lapTimer.Restart();

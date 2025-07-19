@@ -80,7 +80,6 @@ public class RaceLogic : MonoBehaviour {
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
 		if (authorGhost != null) {
-			print("found author ghost");
 			author = new("author", authorGhost.totalTime, authorSprite);
 			gold = new("gold", authorGhost.totalTime * 1.1f, goldSprite);
 			silver = new("silver", authorGhost.totalTime * 1.2f, silverSprite);
@@ -92,7 +91,6 @@ public class RaceLogic : MonoBehaviour {
 			if (player != null) {
 				bestPlayerGhost = player;
 				this.player.time = bestPlayerGhost.totalTime;
-				print("found player ghost with time " +this.player.time);
 				finishLine.SetBestLap(bestPlayerGhost);
 			}
 		}
@@ -103,7 +101,6 @@ public class RaceLogic : MonoBehaviour {
 		car.onEngineStart.AddListener(FirstStart);
 
 		if (raceType != RaceType.HOTLAP && !skipCountdown) {
-			print("foceing clutch");
 			car.forceClutch = true;
 			car.forceBrake = true;
 		}
@@ -137,7 +134,6 @@ public class RaceLogic : MonoBehaviour {
 				pg.car.ApplySnapshot(pg.ghost.frames[pg.frameIndex].snapshot);
 				
 				if (pg.frameIndex >= pg.ghost.frames.Count-2) {
-					print("halting ghost "+ghostName);
 					expiredGhosts.Add(ghostName);
 					continue;
 				}
