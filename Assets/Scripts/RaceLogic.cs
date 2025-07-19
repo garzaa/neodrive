@@ -15,7 +15,7 @@ public class RaceLogic : MonoBehaviour {
 	float recordStart;
 	float playStart;
 	Car car;
-	GhostCar ghostCar;
+	public GhostCar playerGhostCar, authorGhostCar;
 
 	int frameIndex = 0;
 	bool ghostEnabled = true;
@@ -35,6 +35,7 @@ public class RaceLogic : MonoBehaviour {
 	BinarySaver saver;
 
 	NameTimePair bronze, silver, gold, author;
+	public Sprite bronzeSprite, silverSprite, goldSprite, authorSprite;
 
 	Ghost bestPlayerGhost;
 	Ghost currentPlayerGhost;
@@ -42,10 +43,11 @@ public class RaceLogic : MonoBehaviour {
 
 	public Transform scoreContainer;
 
-	NameTimePair player = new("player", 0);
+	NameTimePair player = new("player", 0, null);
 
 	public Animator countdownAnimator;
 	public Text countdown;
+	public bool skipCountdown;
 
 	FinishLine finishLine;
 
@@ -54,17 +56,19 @@ public class RaceLogic : MonoBehaviour {
 	struct NameTimePair {
 		public string name;
 		public float time;
+		public Sprite sprite;
 
-		public NameTimePair(string n, float t) {
+		public NameTimePair(string n, float t, Sprite s) {
 			name = n;
 			time = t;
+			sprite = s;
 		}
 	}
 
 	void Start() {
 		car = FindObjectOfType<Car>();
-		ghostCar = FindObjectOfType<GhostCar>(includeInactive: true);
-		ghostCar.gameObject.SetActive(false);
+		playerGhostCar.gameObject.SetActive(false);
+		authorGhostCar.gameObject.SetActive(false);
 		resultsCanvas.SetActive(false);
 		carTrackingCamera = GetComponentInChildren<CinemachineVirtualCamera>();
 		carTrackingCamera.m_LookAt = car.transform;
@@ -79,10 +83,10 @@ public class RaceLogic : MonoBehaviour {
 		authorGhost = saver.GetAuthorGhost();
 		if (authorGhost != null) {
 			print("found author ghost");
-			author = new("author", authorGhost.totalTime);
-			gold = new("gold", authorGhost.totalTime * 1.1f);
-			silver = new("silver", authorGhost.totalTime * 1.2f);
-			bronze = new("bronze", authorGhost.totalTime * 1.5f);
+			author = new("author", authorGhost.totalTime, authorSprite);
+			gold = new("gold", authorGhost.totalTime * 1.1f, goldSprite);
+			silver = new("silver", authorGhost.totalTime * 1.2f, silverSprite);
+			bronze = new("bronze", authorGhost.totalTime * 1.5f, bronzeSprite);
 		}
 
 		if (saver.GetGhosts().Count > 0) {
@@ -100,7 +104,8 @@ public class RaceLogic : MonoBehaviour {
 		car.onRespawn.AddListener(() => StartCoroutine(CountdownAndStart()));
 		car.onEngineStart.AddListener(FirstStart);
 
-		if (raceType != RaceType.HOTLAP) {
+		if (raceType != RaceType.HOTLAP && !skipCountdown) {
+			print("foceing clutch");
 			car.forceClutch = true;
 			car.forceBrake = true;
 		}
@@ -117,13 +122,11 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void Update() {
-		if (recording) {
-			if (Time.timeScale == 1) {
-				recordingGhost.frames.Add(new GhostFrame(
-					Time.time-recordStart,
-					car.GetSnapshot()
-				));
-			}
+		if (recording && Time.timeScale == 1) {
+			recordingGhost.frames.Add(new GhostFrame(
+				Time.time-recordStart,
+				car.GetSnapshot()
+			));
 		}
 		if (playing && Time.timeScale == 1) {
 			if (frameIndex == playingGhost.frames.Count-1) {
@@ -138,7 +141,7 @@ public class RaceLogic : MonoBehaviour {
 			) {
 				frameIndex += 1;
 			}
-			ghostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
+			playerGhostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
 		}
 
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
@@ -154,6 +157,8 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void OnRaceStart() {
+		car.forceClutch = false;
+		car.forceBrake = false;
 		finishLine.RestartTimers();
 		if (bestPlayerGhost != null) PlayGhost(bestPlayerGhost);
 		StartRecordingGhost();
@@ -165,16 +170,15 @@ public class RaceLogic : MonoBehaviour {
 			player.time = p.totalTime;
 			p.splits = finishLine.GetBestLapSplits();
 			bestPlayerGhost = p;
+			player.time = p.totalTime;
 			finishLine.SetBestLap(bestPlayerGhost);
 			saver.SaveGhost(bestPlayerGhost);
 		}
 		if (raceType != RaceType.HOTLAP) {
 			carTrackingCamera.enabled = true;
 			print("race finish");
-			// stop the car (force ebrake and neutral), show results, quit button
 			car.forceClutch = true;
 			car.forceBrake = true;
-			car.ShutoffEngine();
 			StartCoroutine(ShowResults());
 			RenderScoreboard();
 		}
@@ -202,9 +206,18 @@ public class RaceLogic : MonoBehaviour {
 				return x.time;
 			}
 		}).ToList();
-		Text[] texts = scoreContainer.GetComponentsInChildren<Text>();
-		for (int i=0; i<pairs.Count; i++) {
+		Text[] texts = scoreContainer.GetComponentsInChildren<Text>(includeInactive: true);
+		for (int i = 0; i < pairs.Count; i++) {
+			if (pairs[i].time < player.time || (pairs[i].name != player.name && player.time == 0)) {
+				print("e");
+				texts[i].transform.parent.gameObject.SetActive(false);
+			} else {
+				texts[i].transform.parent.gameObject.SetActive(true);
+			}
 			texts[i].text = pairs[i].name + "\n" + TimeSpan.FromSeconds(pairs[i].time).ToString(@"mm\:ss\.ff");
+			Image s = texts[i].transform.parent.GetComponentsInChildren<Image>()[1];
+			s.sprite = pairs[i].sprite;
+			s.enabled = pairs[i].sprite != null;
 		}
 	}
 
@@ -232,13 +245,24 @@ public class RaceLogic : MonoBehaviour {
 		playingGhost = g;
 		playing = true;
 		playStart = Time.time;
-		ghostCar.gameObject.SetActive(true);
+		playerGhostCar.gameObject.SetActive(true);
 	}
 
 	public void StopPlayingGhost() {
 		print("stopped playing ghost");
 		playing = false;
-		ghostCar.gameObject.SetActive(false);
+		playerGhostCar.gameObject.SetActive(false);
+		// disable boost/drift traills
+		playerGhostCar.ApplySnapshot(new CarSnapshot(
+			Vector3.zero,
+			Quaternion.identity,
+			0,
+			0,
+			0,
+			false,
+			false,
+			true
+		));
 	}
 
 	public void HideResults() {
@@ -259,8 +283,9 @@ public class RaceLogic : MonoBehaviour {
 		carTrackingCamera.enabled = false;
 		HideResults();
 		StopCoroutine(ShowResults());
-		if (raceType == RaceType.HOTLAP) {
+		if (raceType == RaceType.HOTLAP || skipCountdown) {
 			OnRaceStart();
+			skipCountdown = false;
 			yield break;
 		}
 		car.forceBrake = true;
@@ -276,8 +301,6 @@ public class RaceLogic : MonoBehaviour {
 		countdown.text = "1";
 		countdownAnimator.SetTrigger("Animate");
 		yield return new WaitForSeconds(0.5f);
-		car.forceClutch = false;
-		car.forceBrake = false;
 		countdown.text = "GO";
 		countdownAnimator.SetTrigger("Animate");
 		OnRaceStart();
@@ -286,6 +309,10 @@ public class RaceLogic : MonoBehaviour {
 	IEnumerator ShowResults() {
 		yield return new WaitForSeconds(0.5f);
 		resultsCanvas.SetActive(true);
+		// write the last time
+		// then the best time
+		// then display the medals for that time
+		// (if the author medal exists)
 	}
 }
 

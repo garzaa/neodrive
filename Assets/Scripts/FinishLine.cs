@@ -28,7 +28,6 @@ public class FinishLine : MonoBehaviour {
 	BinarySaver saver;
 
 	RaceType raceType = RaceType.HOTLAP;
-	bool crossedOnce = false;
 
 	void Start() {
 		StartCoroutine(WaitForSpawn());
@@ -39,7 +38,7 @@ public class FinishLine : MonoBehaviour {
 		checkpointSound = GetComponent<AudioSource>();
 		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
-		GameObject.FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
+		FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
 	}
 
 	public void RestartTimers() {
@@ -49,12 +48,12 @@ public class FinishLine : MonoBehaviour {
 
 	public void SetBestLap(Ghost ghost) {
 		bestLapGhost = ghost;
-		print("Setting new best lasp");
+		print("Setting new best lasp by ghost " + ghost.playerName);
 		bestLap = new LapTime(ghost);
+		lapRecord.text = lapTimer.FormattedTime(ghost.totalTime);
 	}
 
 	public void OnRespawn() {
-		crossedOnce = false;
 		if (raceType == RaceType.ROUTE) {
 			raceTimer.Restart();
 			lapTimer.Restart();
@@ -143,7 +142,11 @@ public class FinishLine : MonoBehaviour {
 	}
 
 	public Dictionary<string, float> GetBestLapSplits() {
-		return bestLap.splits;
+		// best lap is reset due to weird logic chaining between this
+		// and racelogic. racelogic should handle it all
+		// but until then, do this lol
+		if (bestLap != null) return bestLap.splits;
+		return currentLap.splits;
 	}
 }
 
@@ -151,9 +154,7 @@ public class LapTime {
 	public float totalTime;
 	public Dictionary<string, float> splits = new();
 
-	public LapTime() {
-
-	}
+	public LapTime() {}
 
 	public LapTime(Ghost g) {
 		totalTime = g.totalTime;

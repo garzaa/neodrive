@@ -141,7 +141,6 @@ public class Wheel : MonoBehaviour {
 		fakeGroundBump *= Mathf.Sin((Time.time+offset) * 64f) * 0.005f;
 		fakeGroundBump *= Grounded ? 1 : 0;
 
-		// TODO: lerp this slowly when going over bumpy road terrain? what's up with that
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
@@ -169,7 +168,7 @@ public class Wheel : MonoBehaviour {
 
 		// pin skidmarks to ground
 		if (Grounded) {
-			tireSkid.transform.position = raycastHit.point + transform.up*0.03f;
+			tireSkid.transform.position = raycastHit.point + transform.up*0.05f;
 		} else {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}

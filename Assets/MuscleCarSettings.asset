@@ -59,10 +59,11 @@ MonoBehaviour:
   tireSlip: 0.1
   tcs: 1
   tcsBraking: 0.7
+  gripLimitThreshold: 0.7
   lcs: 1
   burnoutThreshold: 24
   lcsLimit: 1
   driftBoost: 1
-  driftControl: 4
+  driftControl: 3
   airSpinControl: 0.7
   airPitchControl: 0.5

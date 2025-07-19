@@ -8,8 +8,7 @@ public class PhotoModeCamera : MonoBehaviour {
 
 	void OnEnable() {
 		transform.position = car.transform.position;
-		transform.position = car.transform.position + new Vector3(3, 0, 2);
-		transform.rotation = Quaternion.Euler(0, 270, 0);
+		transform.SetPositionAndRotation(car.transform.position + new Vector3(3, 0, 2), Quaternion.Euler(0, 270, 0));
 	}
 
 	public void Update() {

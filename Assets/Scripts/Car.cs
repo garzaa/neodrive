@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
+using UnityEditorInternal;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
@@ -116,6 +117,8 @@ public class Car : MonoBehaviour {
     public bool forceBrake;
 
     public ParticleSystem collisionHitmarker;
+    MaterialPropertyBlock shaderBlock;
+    MeshRenderer carMesh;
 
     public bool Drifting {
         get {
@@ -156,6 +159,9 @@ public class Car : MonoBehaviour {
         startPoint = transform.position;
         startRotation = transform.rotation;
         pointsAudio.mute = true;
+        shaderBlock = new();
+		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
+        carMesh.GetPropertyBlock(shaderBlock, 0);
     }
 
     void Update() {
@@ -251,6 +257,9 @@ public class Car : MonoBehaviour {
         // not firing when tcsFrac is 0 for some reason
         pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
         UpdateVibration();
+        carMesh.GetPropertyBlock(shaderBlock, 0);
+        shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
+        carMesh.SetPropertyBlock(shaderBlock, 0);
     }
 
     void OnCollisionEnter(Collision collision) {
@@ -258,12 +267,11 @@ public class Car : MonoBehaviour {
             gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
         }
 
-        collisionHitmarker.transform.position = collision.contacts[0].point;
-        collisionHitmarker.transform.rotation = Quaternion.FromToRotation(
+        collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(
             collisionHitmarker.transform.up,
             collision.contacts[0].normal
-        );
-        collisionHitmarker.Emit(1);
+        ));
+		collisionHitmarker.Emit(1);
     }
 
     IEnumerator Boost() {
@@ -843,7 +851,8 @@ public class Car : MonoBehaviour {
             targetSteerAngle,
             gas,
             drifting,
-            boosting
+            boosting,
+            brake > 0
         );
     }
 
@@ -874,9 +883,8 @@ public class Car : MonoBehaviour {
         }
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        transform.position = startPoint;
-        transform.rotation = startRotation;
-        rb.position = startPoint;
+        transform.SetPositionAndRotation(startPoint, startRotation);
+		rb.position = startPoint;
         rb.rotation = startRotation;
         onRespawn.Invoke();
     }

@@ -9,13 +9,14 @@ public class CarSnapshot {
 	public readonly float rpm;
 	public readonly float steerAngle;
 	public readonly float gas;
+	public readonly bool brake;
 	public readonly bool drifting;
 	public readonly bool boosting;
 
     [SerializeField] private float[] positionArray;
     [SerializeField] private float[] rotationArray;
 
-	public CarSnapshot(Vector3 p, Quaternion q, float r, float a, float g, bool d, bool b) {
+	public CarSnapshot(Vector3 p, Quaternion q, float r, float a, float g, bool d, bool b, bool brake) {
 		position = p;
 		rotation = q;
 		rpm = r;
@@ -23,6 +24,7 @@ public class CarSnapshot {
 		gas = g;
 		drifting = d;
 		boosting = b;
+		this.brake = brake;
 
 		positionArray = new float[3];
         rotationArray = new float[4];

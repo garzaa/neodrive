@@ -188,6 +188,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 48a8f6b4691e8b4429f90e02c9711562
     name: ExhaustLowPassCutoff
+  - guid: 94404e461f3df914da3feb850026197c
+    name: MasterVolume
   m_AudioMixerGroupViews:
   - guids:
     - c8b2d69dac889784d8a152f0b1804978

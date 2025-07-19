@@ -59,8 +59,7 @@ public class PauseMenu : MonoBehaviour {
 	void Pause() {
 		Time.timeScale = 0;
 		paused = true;
-		vCam.transform.position = chaseCam.transform.position;
-		vCam.transform.rotation = chaseCam.transform.rotation;
+		vCam.transform.SetPositionAndRotation(chaseCam.transform.position, chaseCam.transform.rotation);
 		vCam.SetActive(true);
 		car.SetDashboardEnabled(false);
 		ShowCanvas();

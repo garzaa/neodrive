@@ -24,9 +24,7 @@ public class Ghost {
 		}
 		splitNames = new();
 		splitVals = new();
-		Debug.Log("before serialize");
 		foreach (var kv in splits) {
-			Debug.Log(kv.Key);
 			splitNames.Add(kv.Key);
 			splitVals.Add(kv.Value);
 		}
@@ -39,7 +37,6 @@ public class Ghost {
 		splits = new();
 		// zip it back up
 		for (int i=0; i<splitNames.Count; i++) {
-			Debug.Log("split name: "+splitNames[i]);
 			splits[splitNames[i]] = splitVals[i];
 		}
 	}

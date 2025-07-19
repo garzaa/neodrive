@@ -9,12 +9,14 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: SkidStreak
   m_Shader: {fileID: 4800000, guid: be891319084e9d147b09d89e80ce60e0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_OUTLINE
   - _EMISSIVE_SIMPLE
   - _IS_ANGELRING_OFF
-  - _IS_CLIPPING_OFF
-  - _IS_OUTLINE_CLIPPING_NO
+  - _IS_CLIPPING_TRANSMODE
+  - _IS_OUTLINE_CLIPPING_YES
   - _OUTLINE_NML
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -23,9 +25,10 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     IgnoreProjection: False
-    RenderType: Opaque
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - ALWAYS
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -261,12 +264,12 @@ Material:
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
     - _ClippingMatteMode: 0
-    - _ClippingMode: 0
+    - _ClippingMode: 2
     - _Clipping_Level: 0
     - _CoatMask: 0
     - _ColorShift_Speed: 0
     - _ComposerMaskMode: 0
-    - _CullMode: 2
+    - _CullMode: 0
     - _CullModeForward: 2
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
@@ -308,7 +311,7 @@ Material:
     - _Farthest_Distance: 100
     - _FirstShadeOverridden: 0
     - _FirstShadeVisible: 1
-    - _GI_Intensity: 0
+    - _GI_Intensity: 0.7
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -334,7 +337,7 @@ Material:
     - _IsBaseMapAlphaAsClippingMask: 0
     - _Is_BLD: 0
     - _Is_BakedNormal: 0
-    - _Is_BlendAddToHiColor: 0
+    - _Is_BlendAddToHiColor: 1
     - _Is_BlendAddToMatCap: 1
     - _Is_BlendBaseColor: 0
     - _Is_ColorShift: 0
@@ -456,7 +459,7 @@ Material:
     - _Tweak_RimLightMaskLevel: 0
     - _Tweak_ShadingGradeMapLevel: 0
     - _Tweak_SystemShadowsLevel: 0
-    - _Tweak_transparency: 0
+    - _Tweak_transparency: 1
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
@@ -480,15 +483,15 @@ Material:
     - _utsVersionY: 8
     - _utsVersionZ: 5
     m_Colors:
-    - _1st_ShadeColor: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0.5882353}
-    - _2nd_ShadeColor: {r: 0, g: 0, b: 0, a: 0.5882353}
+    - _1st_ShadeColor: {r: 0.06603769, g: 0.06603769, b: 0.06603769, a: 1}
+    - _2nd_ShadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0.5882353}
+    - _BaseColor: {r: 0.13207546, g: 0.13207546, b: 0.13207546, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.13207546, g: 0.13207546, b: 0.13207546, a: 0.5882353}
+    - _Color: {r: 0.13207543, g: 0.13207543, b: 0.13207543, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}

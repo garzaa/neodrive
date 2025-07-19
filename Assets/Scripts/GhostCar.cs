@@ -19,6 +19,9 @@ public class GhostCar : MonoBehaviour {
 
 	public GameObject boostEffect;
 
+	MaterialPropertyBlock shaderBlock;
+    MeshRenderer carMesh;
+
 	void Start() {
 		engineAudio = GetComponent<EngineAudio>();
 		engineAudio.BuildSoundCache(engineSettings, engineAudioSource, bigSteps: true);
@@ -31,16 +34,15 @@ public class GhostCar : MonoBehaviour {
 		boostEffect.SetActive(false);
 
 		engineAudio.SetRPMAudio(0, 0, true);
-	}
 
-	public void SetName() {
-		//TODO: lil world space canvas with ghost name
+		shaderBlock = new();
+		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
+        carMesh.GetPropertyBlock(shaderBlock);
 	}
 
 	public void ApplySnapshot(CarSnapshot snapshot) {
 		flatSpeed = Vector3.Dot(transform.position - positionLastUpdate, transform.forward) / Time.deltaTime;
-		transform.position = snapshot.position;
-		transform.rotation = snapshot.rotation;
+		transform.SetPositionAndRotation(snapshot.position, snapshot.rotation);
 		engineAudio.SetRPMAudio(snapshot.rpm, snapshot.gas, false);
 
 		foreach (Wheel w in wheels) {
@@ -53,5 +55,8 @@ public class GhostCar : MonoBehaviour {
 		steerRotation = Quaternion.Euler(0, snapshot.steerAngle, 0);
         WheelFL.transform.localRotation = steerRotation;
         WheelFR.transform.localRotation = steerRotation;
+		carMesh.GetPropertyBlock(shaderBlock);
+        shaderBlock.SetColor("_Emissive_Color", snapshot.brake ? Color.white : Color.black);
+        carMesh.SetPropertyBlock(shaderBlock);
 	}
 }
