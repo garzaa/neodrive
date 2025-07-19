@@ -52,7 +52,6 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void Restart() {
-		print("timer restarting");
 		time = 0;
 		paused = false;
 	}

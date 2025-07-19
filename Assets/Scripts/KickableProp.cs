@@ -23,7 +23,7 @@ public class KickableProp : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.tag == "Player") {
+		if (collision.gameObject.CompareTag("Player")) {
 			gameObject.layer = LayerMask.NameToLayer("Debris");
 		}
 	}

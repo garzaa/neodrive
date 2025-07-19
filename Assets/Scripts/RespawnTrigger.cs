@@ -10,7 +10,7 @@ public class RespawnTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Player") {
+		if (other.CompareTag("Player")) {
 			car.Respawn();
 		}
 	}

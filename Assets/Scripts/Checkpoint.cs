@@ -7,7 +7,7 @@ public class Checkpoint : MonoBehaviour {
 	public UnityEvent onPlayerEnter;
 
 	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Player") {
+		if (other.CompareTag("Player")) {
 			onPlayerEnter.Invoke();
 		}
 	}

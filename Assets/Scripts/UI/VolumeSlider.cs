@@ -9,7 +9,6 @@ public class VolumeSlider : SettingsSlider {
 	// slider should be 0-10 with 5 as the default
     override public void HandleValueChanged(float val) {
         base.HandleValueChanged(val);
-		print("e");
         // 5 should map to no change, and log(1) = 0
         val /= 5;
         mixerGroup.audioMixer.SetFloat(prefName, Mathf.Log(Mathf.Max(val, 0.0001f), 10) * 20f);

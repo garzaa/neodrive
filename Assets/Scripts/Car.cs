@@ -248,7 +248,7 @@ public class Car : MonoBehaviour {
             rb.AddRelativeTorque(-125, 0, 0, ForceMode.Acceleration);
         }
 
-        if (drifting || forwardTraction < 1f) {
+        if (drifting || forwardTraction < 1f || boosting) {
             tireSkidVolume = 1f;
         } else {
             tireSkidVolume = 0f;
@@ -275,6 +275,7 @@ public class Car : MonoBehaviour {
     }
 
     IEnumerator Boost() {
+        rb.velocity -= Vector3.Project(rb.velocity, transform.right);
         gearshiftAudio.PlayOneShot(boostSound);
         nitroxMeter.OnBoost();
         StartCoroutine(GearLurch());

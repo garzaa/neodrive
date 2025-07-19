@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct PlayingGhost {
+public class PlayingGhost {
     public Ghost ghost;
     public string name;
-    public GameObject car;
+    public GhostCar car;
+    public int frameIndex;
 
-    public PlayingGhost(string name, Ghost ghost, GameObject car) {
-        this.name = name;
+    public PlayingGhost(Ghost ghost, GhostCar car) {
+        this.name = ghost.playerName;
         this.ghost = ghost;
         this.car = car;
+        frameIndex = 0;
     }
 }

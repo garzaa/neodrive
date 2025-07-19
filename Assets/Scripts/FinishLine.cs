@@ -22,6 +22,7 @@ public class FinishLine : MonoBehaviour {
 
 	public UnityEvent onFinishCross;
 	public UnityEvent onValidFinish;
+	public UnityEvent onInvalidFinish;
 
 	RaceLogic raceLogic;
 	Ghost bestLapGhost = null;
@@ -58,6 +59,7 @@ public class FinishLine : MonoBehaviour {
 			raceTimer.Restart();
 			lapTimer.Restart();
 		}
+		checkpointsCrossed.Clear();
 	}
 
 	public void SetRaceType(RaceType raceType) {
@@ -90,7 +92,7 @@ public class FinishLine : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Player") {
+		if (other.CompareTag("Player")) {
 			print("finish crossed");
 			checkpointSound.Play();
 			onFinishCross.Invoke();
@@ -126,12 +128,8 @@ public class FinishLine : MonoBehaviour {
 					onValidFinish.Invoke();
 				}
 			} else {
+				onInvalidFinish.Invoke();
 				Debug.Log("missed checkpoints, invalid finish");
-			}
-
-			if (raceType == RaceType.HOTLAP) {
-				if (bestLapGhost != null) raceLogic.PlayGhost(bestLapGhost);
-				raceLogic.StartRecordingGhost();
 			}
 			if (raceType != RaceType.ROUTE) {
 				lapTimer.Restart();

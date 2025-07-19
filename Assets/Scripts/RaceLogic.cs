@@ -9,17 +9,13 @@ using System;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
-	Ghost playingGhost;
 	bool recording = false;
-	bool playing = false;
 	float recordStart;
 	float playStart;
 	Car car;
 	public GhostCar playerGhostCar, authorGhostCar;
 
-	int frameIndex = 0;
 	bool ghostEnabled = true;
-
 
 	public RaceType raceType = RaceType.ROUTE;
 	public GameObject resultsCanvas;
@@ -30,7 +26,7 @@ public class RaceLogic : MonoBehaviour {
 	// ghosts wouldn't get out of sync, they all start when the player starts the race
 	// or actually you do need which ghost car it's linked to, damn
 	// then you might also need a list of which materials to replace with the ghost texture?
-	Dictionary<string, PlayingGhost> playingGhosts;
+	readonly Dictionary<string, PlayingGhost> playingGhosts = new();
 
 	BinarySaver saver;
 
@@ -38,7 +34,6 @@ public class RaceLogic : MonoBehaviour {
 	public Sprite bronzeSprite, silverSprite, goldSprite, authorSprite;
 
 	Ghost bestPlayerGhost;
-	Ghost currentPlayerGhost;
 	Ghost authorGhost;
 
 	public Transform scoreContainer;
@@ -52,6 +47,8 @@ public class RaceLogic : MonoBehaviour {
 	FinishLine finishLine;
 
 	CinemachineVirtualCamera carTrackingCamera;
+
+	readonly List<string> expiredGhosts = new();
 
 	struct NameTimePair {
 		public string name;
@@ -77,7 +74,8 @@ public class RaceLogic : MonoBehaviour {
 
 		finishLine = FindObjectOfType<FinishLine>();
 		finishLine.SetRaceType(raceType);
-		finishLine.onValidFinish.AddListener(OnRaceFinish);
+		finishLine.onValidFinish.AddListener(OnValidFinish);
+		finishLine.onInvalidFinish.AddListener(OnInvalidFinish);
 
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
@@ -112,9 +110,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void StartRecordingGhost() {
-		print("started recording ghost");
 		recordingGhost = new(Application.version) {
-			// eventually name this after the player
 			playerName = "player"
 		};
 		recording = true;
@@ -128,27 +124,61 @@ public class RaceLogic : MonoBehaviour {
 				car.GetSnapshot()
 			));
 		}
-		if (playing && Time.timeScale == 1) {
-			if (frameIndex == playingGhost.frames.Count-1) {
-				StopPlayingGhost();
-				return;
+		if (Time.timeScale > 0) {
+			foreach (string ghostName in playingGhosts.Keys) {
+				PlayingGhost pg = playingGhosts[ghostName];
+				float playTime = Time.time - playStart;
+				while (
+					pg.ghost.frames[pg.frameIndex].timestamp < playTime
+					&& pg.frameIndex < pg.ghost.frames.Count-1
+				) {
+					pg.frameIndex += 1;
+				}
+				pg.car.ApplySnapshot(pg.ghost.frames[pg.frameIndex].snapshot);
+				
+				if (pg.frameIndex >= pg.ghost.frames.Count-2) {
+					print("halting ghost "+ghostName);
+					expiredGhosts.Add(ghostName);
+					continue;
+				}
 			}
-
-			float playTime = Time.time - playStart;
-			while (
-				playingGhost.frames[frameIndex].timestamp < playTime
-				&& frameIndex < playingGhost.frames.Count-1
-			) {
-				frameIndex += 1;
-			}
-			playerGhostCar.ApplySnapshot(playingGhost.frames[frameIndex].snapshot);
 		}
+		foreach (string n in expiredGhosts) {
+			StopPlayingGhost(playingGhosts[n].ghost);
+			playingGhosts.Remove(n);
+		}
+		expiredGhosts.Clear();
 
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
-			if (bestPlayerGhost != null) {
+			if (authorGhost != null) {
+				authorGhost.isAuthor = true;
+				authorGhost.playerName = "author";
+				// re-save author ghosts for data migration
+				if (bestPlayerGhost != null) {
+					if (authorGhost.totalTime < bestPlayerGhost.totalTime) {
+						print("overwrote author ghost in-place");
+						saver.SaveGhost(authorGhost);
+					} else if (bestPlayerGhost.totalTime < authorGhost.totalTime) {
+						bestPlayerGhost.playerName = "author";
+						bestPlayerGhost.isAuthor = true;
+						saver.SaveGhost(bestPlayerGhost);
+						// teehee
+						bestPlayerGhost.isAuthor = false;
+						bestPlayerGhost.playerName = "player";
+						print("overwrote author with current player record");
+					}
+				} else if (bestPlayerGhost == null) {
+					print("overwrote author ghost in-place");
+					saver.SaveGhost(authorGhost);
+				} else {
+					print("didn't do anything");
+				}
+			} else if (bestPlayerGhost != null) {
 				bestPlayerGhost.playerName = "author";
+				bestPlayerGhost.isAuthor = true;
 				saver.SaveGhost(bestPlayerGhost);
 				// teehee
+				bestPlayerGhost.isAuthor = false;
 				bestPlayerGhost.playerName = "player";
 			} else {
 				print("no best lap to save");
@@ -160,11 +190,20 @@ public class RaceLogic : MonoBehaviour {
 		car.forceClutch = false;
 		car.forceBrake = false;
 		finishLine.RestartTimers();
-		if (bestPlayerGhost != null) PlayGhost(bestPlayerGhost);
+		PlayLoadedGhosts();
 		StartRecordingGhost();
 	}
 
-	public void OnRaceFinish() {
+	public void OnInvalidFinish() {
+		// should still stop and do a new ghost if you're starting a new lap
+		if (raceType == RaceType.HOTLAP) {
+			StopRecordingGhost();
+			StartRecordingGhost();
+			PlayLoadedGhosts();
+		}
+	}
+
+	void OnValidFinish() {
 		Ghost p = StopRecordingGhost();
 		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
 			player.time = p.totalTime;
@@ -176,11 +215,23 @@ public class RaceLogic : MonoBehaviour {
 		}
 		if (raceType != RaceType.HOTLAP) {
 			carTrackingCamera.enabled = true;
-			print("race finish");
 			car.forceClutch = true;
 			car.forceBrake = true;
 			StartCoroutine(ShowResults());
-			RenderScoreboard();
+		} else {
+			StartRecordingGhost();
+			PlayLoadedGhosts();
+		}
+		RenderScoreboard();
+	}
+
+	public void PlayLoadedGhosts() {
+		playStart = Time.time;
+		if (bestPlayerGhost != null) {
+			PlayGhost(bestPlayerGhost);
+			if (authorGhost != null && bestPlayerGhost.totalTime < gold.time) {
+				PlayGhost(authorGhost);
+			}
 		}
 	}
 
@@ -209,7 +260,6 @@ public class RaceLogic : MonoBehaviour {
 		Text[] texts = scoreContainer.GetComponentsInChildren<Text>(includeInactive: true);
 		for (int i = 0; i < pairs.Count; i++) {
 			if (pairs[i].time < player.time || (pairs[i].name != player.name && player.time == 0)) {
-				print("e");
 				texts[i].transform.parent.gameObject.SetActive(false);
 			} else {
 				texts[i].transform.parent.gameObject.SetActive(true);
@@ -223,37 +273,44 @@ public class RaceLogic : MonoBehaviour {
 
 	public bool ToggleGhost() {
 		if (ghostEnabled) {
-			StopPlayingGhost();
+			StopPlayingGhosts();
 		}
 		ghostEnabled = !ghostEnabled;
 		return ghostEnabled;
 	}
 
 	public Ghost StopRecordingGhost() {
-		print("stopped recording ghost");
 		recording = false;
 		recordingGhost.totalTime = Time.time - recordStart;
 		return recordingGhost;
 	}
 
-	public void PlayGhost(Ghost g) {
+	void PlayGhost(Ghost g) {
 		if (!ghostEnabled) {
 			return;
 		}
-		print("playiing ghost");
-		frameIndex = 0;
-		playingGhost = g;
-		playing = true;
-		playStart = Time.time;
-		playerGhostCar.gameObject.SetActive(true);
+		// can only have two ghost cars right now
+		playingGhosts[g.playerName] = new PlayingGhost(g, g.isAuthor ? authorGhostCar : playerGhostCar);
+		if (g.isAuthor) {
+			authorGhostCar.gameObject.SetActive(true);
+		} else {
+			playerGhostCar.gameObject.SetActive(true);
+		}
 	}
 
-	public void StopPlayingGhost() {
-		print("stopped playing ghost");
-		playing = false;
-		playerGhostCar.gameObject.SetActive(false);
-		// disable boost/drift traills
-		playerGhostCar.ApplySnapshot(new CarSnapshot(
+	void StopPlayingGhosts() {
+		foreach (PlayingGhost pg in playingGhosts.Values) {
+			HaltGhost(pg.car);
+		}
+		playingGhosts.Clear();
+	}
+
+	void StopPlayingGhost(Ghost g) {
+		HaltGhost(playingGhosts[g.playerName].car);
+	}
+
+	void HaltGhost(GhostCar gc) {
+		gc.ApplySnapshot(new CarSnapshot(
 			Vector3.zero,
 			Quaternion.identity,
 			0,
@@ -263,13 +320,14 @@ public class RaceLogic : MonoBehaviour {
 			false,
 			true
 		));
+		gc.gameObject.SetActive(false);
 	}
 
 	public void HideResults() {
 		resultsCanvas.SetActive(false);
 	}
 
-		public void FirstStart() {
+	public void FirstStart() {
 		StartCoroutine(FirstStartRoutine());
 	}
 
@@ -318,6 +376,6 @@ public class RaceLogic : MonoBehaviour {
 
 public enum RaceType {
 	ROUTE = 0,
-	LAP = 1,
+	MULTILAP = 1,
 	HOTLAP = 2
 }
