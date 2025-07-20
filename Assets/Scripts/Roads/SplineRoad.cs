@@ -68,18 +68,12 @@ public class SplineRoad : MonoBehaviour {
 		int length = leftVerts.Count;
 		float uvOffset = 0;
 		for (int i = 1; i < length; i++) {
-			// build the list of vertex indices
-			// then triangulate them
 			Vector3 p1 = leftVerts[i - 1];
 			Vector3 p2 = rightVerts[i - 1];
 			Vector3 p3 = leftVerts[i];
 			Vector3 p4 = rightVerts[i];
 
 			offset = 4 * (i - 1);
-			// triangulate the vertex indices
-			// two triangles per face/road segment
-			// eventually, need to expand on this to add road walls
-			// and other fun shit
 			// it has to be like this because of triangle winding order
 			int t1 = offset + 3;
 			int t2 = offset + 2;
@@ -104,16 +98,13 @@ public class SplineRoad : MonoBehaviour {
 		}
 
 		m.SetVertices(verts);
-		// 0 is the submesh here, can use that for a rumble strip
-		// but it stil has to use the vertex buffer up above. damn
-		// sub-meshes have different material indices
 		m.SetTriangles(tris, 0);
 		m.SetUVs(0, uvs);
 		m.Optimize();
 		m.RecalculateNormals();
+		m.RecalculateTangents();
 		m.RecalculateBounds();
 		meshFilter.sharedMesh = m;
-		// vscode doesn't like it here but unity is ok with it. why
 		meshFilter.sharedMesh.RecalculateNormals(20);
 		meshCollider.sharedMesh = m;
 	}
