@@ -17,13 +17,17 @@ public class BinarySaver {
 		baseDataPath = Application.isEditor ? Application.streamingAssetsPath : Application.persistentDataPath;
 	}
 
-	public Ghost GetAuthorGhost() {
-		string fn = Path.Combine(
+	string GetAuthorGhostPath() {
+		return Path.Combine(
 			Application.streamingAssetsPath,
 			"ghosts",
 			currentTrack,
 			"author.haunt"
 		);
+	}
+
+	public Ghost GetAuthorGhost() {
+		string fn = GetAuthorGhostPath();
 		Ghost g;
 		try {
 			g = LoadGhost(fn);
@@ -34,6 +38,29 @@ public class BinarySaver {
 			return null;
 		}
 		return g;
+	}
+
+	public void DeleteAuthorGhost() {
+		string fn = GetAuthorGhostPath();
+		try {
+			DeleteGhost(fn);
+			Debug.Log("author ghost deleted at path "+fn);
+		} catch (Exception e) {
+			Debug.Log("some error deleting author ghost " + e);
+		}
+	}
+
+	public void DeletePlayerGhost() {
+		Directory.CreateDirectory(GetGhostFolder(false));
+		string[] filenames = Directory.GetFiles(GetGhostFolder(false), "player.haunt");
+		foreach (string fn in filenames) {
+			try {
+				File.Delete(fn);
+				Debug.Log("deleted ghost "+fn);
+			} catch (Exception e) {
+				Debug.Log("error deleting ghostfile "+fn+"\n"+e);
+			}
+		}
 	}
 
 	public List<Ghost> GetGhosts() {
@@ -91,6 +118,13 @@ public class BinarySaver {
 		dataStream.Close();
 		g.OnAfterDeserialize();
 		return g;
+	}
+
+	void DeleteGhost(string path) {
+		if (!path.EndsWith(".haunt")) {
+			throw new Exception("trying to delete a non-ghost file");
+		}
+		File.Delete(path);
 	}
 
 	bool CompatibleVersions(string testVersion) {

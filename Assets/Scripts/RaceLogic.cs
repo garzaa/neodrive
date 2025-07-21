@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 using Cinemachine;
 using System;
+using NaughtyAttributes;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -367,6 +368,13 @@ public class RaceLogic : MonoBehaviour {
 		// then the best time
 		// then display the medals for that time
 		// (if the author medal exists)
+	}
+
+	[Button("Invalidate Times")]
+	void InvalidateTime() {
+		saver ??= new BinarySaver(SceneManager.GetActiveScene().name);
+		saver.DeleteAuthorGhost();
+		saver.DeletePlayerGhost();
 	}
 }
 
