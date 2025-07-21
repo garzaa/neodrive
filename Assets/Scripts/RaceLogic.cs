@@ -110,6 +110,7 @@ public class RaceLogic : MonoBehaviour {
 	void OnRespawn() {
 		StopCoroutine(nameof(CountdownAndStart));
 		StartCoroutine(CountdownAndStart());
+		StopPlayingGhosts();
 	}
 
 	public void StartRecordingGhost() {
@@ -158,6 +159,8 @@ public class RaceLogic : MonoBehaviour {
 				// re-save author ghosts for data migration
 				if (bestPlayerGhost != null) {
 					if (authorGhost.totalTime < bestPlayerGhost.totalTime) {
+						authorGhost.playerName = "author";
+						authorGhost.isAuthor = true;
 						print("overwrote author ghost in-place");
 						saver.SaveGhost(authorGhost);
 					} else if (bestPlayerGhost.totalTime < authorGhost.totalTime) {
@@ -262,7 +265,11 @@ public class RaceLogic : MonoBehaviour {
 		Text[] texts = scoreContainer.GetComponentsInChildren<Text>(includeInactive: true);
 		for (int i = 0; i < pairs.Count; i++) {
 			if (pairs[i].time < player.time || (pairs[i].name != player.name && player.time == 0)) {
-				texts[i].transform.parent.gameObject.SetActive(false);
+				if (player.time < gold.time && pairs[i].name == "author") {
+					texts[i].transform.parent.gameObject.SetActive(true);
+				} else {
+					texts[i].transform.parent.gameObject.SetActive(false);
+				}
 			} else {
 				texts[i].transform.parent.gameObject.SetActive(true);
 			}

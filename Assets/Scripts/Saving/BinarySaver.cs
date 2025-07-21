@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class BinarySaver {
 	string baseDataPath;
@@ -17,17 +18,17 @@ public class BinarySaver {
 		baseDataPath = Application.isEditor ? Application.streamingAssetsPath : Application.persistentDataPath;
 	}
 
-	string GetAuthorGhostPath() {
+	string GetAuthorGhostPath(string trackName) {
 		return Path.Combine(
 			Application.streamingAssetsPath,
 			"ghosts",
-			currentTrack,
+			trackName,
 			"author.haunt"
 		);
 	}
 
-	public Ghost GetAuthorGhost() {
-		string fn = GetAuthorGhostPath();
+	public Ghost GetAuthorGhost(string trackName = null) {
+		string fn = GetAuthorGhostPath(trackName ?? currentTrack);
 		Ghost g;
 		try {
 			g = LoadGhost(fn);
@@ -41,7 +42,7 @@ public class BinarySaver {
 	}
 
 	public void DeleteAuthorGhost() {
-		string fn = GetAuthorGhostPath();
+		string fn = GetAuthorGhostPath(currentTrack);
 		try {
 			DeleteGhost(fn);
 			Debug.Log("author ghost deleted at path "+fn);
@@ -51,8 +52,8 @@ public class BinarySaver {
 	}
 
 	public void DeletePlayerGhost() {
-		Directory.CreateDirectory(GetGhostFolder(false));
-		string[] filenames = Directory.GetFiles(GetGhostFolder(false), "player.haunt");
+		Directory.CreateDirectory(GetGhostFolder(false, currentTrack));
+		string[] filenames = Directory.GetFiles(GetGhostFolder(false, currentTrack), "player.haunt");
 		foreach (string fn in filenames) {
 			try {
 				File.Delete(fn);
@@ -63,10 +64,10 @@ public class BinarySaver {
 		}
 	}
 
-	public List<Ghost> GetGhosts() {
+	public List<Ghost> GetGhosts(string trackName = null) {
 		// list all files in the ghost folder
-		Directory.CreateDirectory(GetGhostFolder(false));
-		string[] filenames = Directory.GetFiles(GetGhostFolder(false), "player.haunt");
+		Directory.CreateDirectory(GetGhostFolder(false, trackName ?? currentTrack));
+		string[] filenames = Directory.GetFiles(GetGhostFolder(false, trackName ?? currentTrack), "player.haunt");
 		List<Ghost> ghosts = new();
 		foreach (string fn in filenames) {
 			try {
@@ -81,23 +82,23 @@ public class BinarySaver {
 		return ghosts;
 	}
 
-	string GetGhostPath(string playerName, bool author) {
+	string GetGhostPath(string playerName, bool author, string trackName) {
 		return Path.Combine(
-			GetGhostFolder(author),
+			GetGhostFolder(author, trackName),
 			playerName + ".haunt"
 		);
 	}
 
-	string GetGhostFolder(bool author) {
+	string GetGhostFolder(bool author, string trackName) {
 		return Path.Combine(
 			author ? Application.streamingAssetsPath : baseDataPath,
 			"ghosts",
-			currentTrack
+			trackName
 		);
 	}
 
 	public async void SaveGhost(Ghost g, bool author = false) {
-		string filepath = GetGhostPath(g.playerName, author);
+		string filepath = GetGhostPath(g.playerName, author, currentTrack);
 		await Task.Run(() => {
 			// have to call it manually. insane
 			g.OnBeforeSerialize();
@@ -133,4 +134,18 @@ public class BinarySaver {
 
         return saveVersion[0].Equals(currentVersion[0]);
     }
+	
+	public string GetMedalForTrack(string trackName) {
+		Ghost authorGhost = GetAuthorGhost(trackName);
+		if (authorGhost == null) return "";
+		float authorTime = authorGhost.totalTime;
+		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
+		if (ghosts.Count() == 0) return "";
+		float playerTime = ghosts.First().totalTime;
+		if (playerTime < authorTime) return "author";
+		if (playerTime < authorTime * 1.1f) return "gold";
+		if (playerTime < authorTime * 1.2f) return "silver";
+		if (playerTime < authorTime * 1.5f) return "bronze";
+		return "";
+	}
 }

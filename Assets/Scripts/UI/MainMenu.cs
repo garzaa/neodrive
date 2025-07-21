@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(TransitionManager))]
 public class MainMenu : MonoBehaviour {
 	TransitionManager tm;
+	BinarySaver saver;
 
 	void Start() {
 		tm = GetComponent<TransitionManager>();

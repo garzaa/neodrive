@@ -1,15 +1,11 @@
 // Copyright (c) 2015 Augie R. Maddox, Guavaman Enterprises. All rights reserved.
-#pragma warning disable 0219
-#pragma warning disable 0618
 #pragma warning disable 0649
 
 namespace Rewired.UI.ControlMapper {
 
     using UnityEngine;
     using UnityEditor;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using Rewired;
     using Rewired.Data;
     using Rewired.Utils;
@@ -83,6 +79,7 @@ namespace Rewired.UI.ControlMapper {
 
         private const string c_useThemeSettings = "_useThemeSettings";
         private const string c_themeSettings = "_themeSettings";
+        private const string c_showGlyphs = "_showGlyphs";
 
         private const string c_language = "_language";
 
@@ -194,6 +191,7 @@ namespace Rewired.UI.ControlMapper {
 
             AddProperty(c_useThemeSettings);
             AddProperty(c_themeSettings);
+            AddProperty(c_showGlyphs);
 
             AddProperty(c_language);
 
@@ -437,10 +435,11 @@ namespace Rewired.UI.ControlMapper {
 
             // Theme options
             using(new EditorGUILayoutSection(true, style_sectionBkg)) {
-                EditorGUILayout.LabelField(new GUIContent("Theme Options:", "UI theme options."), style_sectionLabel);
+                EditorGUILayout.LabelField(new GUIContent("Style Options:", "UI style and theme options."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_useThemeSettings]);
                 if(properties[c_useThemeSettings].boolValue) EditorGUILayout.PropertyField(properties[c_themeSettings], true);
+                EditorGUILayout.PropertyField(properties[c_showGlyphs]);
             }
 
             // Language options
