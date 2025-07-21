@@ -42,7 +42,6 @@ public class BinarySaver {
 		string[] filenames = Directory.GetFiles(GetGhostFolder(false), "player.haunt");
 		List<Ghost> ghosts = new();
 		foreach (string fn in filenames) {
-			Debug.Log("looking at ghost "+fn);
 			try {
 				Ghost g = LoadGhost(fn);
 				if (CompatibleVersions(g.version)) {

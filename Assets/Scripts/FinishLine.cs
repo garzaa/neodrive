@@ -80,9 +80,14 @@ public class FinishLine : MonoBehaviour {
 		if (!checkpointsCrossed.Contains(c) && (raceType!=RaceType.HOTLAP || finishedOnce)) {
 			currentLap.splits[c.name] = lapTimer.GetTime();
 			if (bestLap != null) {
-				float diff = t - bestLap.splits[c.name];
-				string color = (diff > 0) ? "red" : "blue";
-				tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
+				if (!bestLap.splits.ContainsKey(c.name)) {
+					// best lap can be invalid due to changing the map between editor runs
+					bestLap = null;
+				} else {
+					float diff = t - bestLap.splits[c.name];
+					string color = (diff > 0) ? "red" : "blue";
+					tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
+				}
 			}
 		}
 		checkpointsCrossed.Add(c);
