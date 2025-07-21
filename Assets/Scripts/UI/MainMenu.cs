@@ -52,4 +52,6 @@ public class MainMenu : MonoBehaviour {
 			mainMenu.GetComponentInChildren<Selectable>().Select();
 		}
 	}
+
+	// TODO: waiut a frame before selceting, jesus
 }
