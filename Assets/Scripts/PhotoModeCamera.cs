@@ -13,13 +13,12 @@ public class PhotoModeCamera : MonoBehaviour {
 
 	public void Update() {
 		float moveForwardAxis = InputManager.GetAxis("CameraMoveForward");
-		float moveVerticalAxis = InputManager.GetAxis("CameraMoveVertical");
 
 		transform.position += transform.TransformDirection(new Vector3(
 			InputManager.GetAxis(Buttons.STEER),
 			InputManager.GetAxis("CameraMoveVertical"),
 			moveForwardAxis
-		) * Time.unscaledDeltaTime * cameraSpeed);
+		) * Time.unscaledDeltaTime * cameraSpeed * (Input.GetButton(Buttons.BOOST) ? 5 : 1));
 
 		Vector3 r = transform.localRotation.eulerAngles;
 		r.y += InputManager.GetAxis(Buttons.CAM_X) * 180 * Time.unscaledDeltaTime;

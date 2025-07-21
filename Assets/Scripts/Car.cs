@@ -278,7 +278,7 @@ public class Car : MonoBehaviour {
         gearshiftAudio.PlayOneShot(boostSound);
         nitroxMeter.OnBoost();
         StartCoroutine(GearLurch());
-        rb.AddForce(transform.forward * 100 * settings.nitroxBoost, ForceMode.Impulse);
+        rb.AddForce(100 * settings.nitroxBoost * transform.forward, ForceMode.Impulse);
         boosting = true;
         automatic = true;
         yield return new WaitForSeconds(settings.boostDuration);

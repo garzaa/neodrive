@@ -98,13 +98,18 @@ public class RaceLogic : MonoBehaviour {
 
 		RenderScoreboard();
 
-		car.onRespawn.AddListener(() => StartCoroutine(CountdownAndStart()));
+		car.onRespawn.AddListener(OnRespawn);
 		car.onEngineStart.AddListener(FirstStart);
 
 		if (raceType != RaceType.HOTLAP && !skipCountdown) {
 			car.forceClutch = true;
 			car.forceBrake = true;
 		}
+	}
+
+	void OnRespawn() {
+		StopCoroutine(nameof(CountdownAndStart));
+		StartCoroutine(CountdownAndStart());
 	}
 
 	public void StartRecordingGhost() {
