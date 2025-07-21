@@ -25162,7 +25162,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: RouteRace
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3021113611666571332, guid: 353474af976ea1f4fa5277d4f3c17155, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

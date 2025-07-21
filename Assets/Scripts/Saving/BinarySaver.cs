@@ -140,14 +140,11 @@ public class BinarySaver {
     }
 	
 	public string GetMedalForTrack(string trackName) {
-		Debug.Log("getting medal for track "+trackName);
 		Ghost authorGhost = GetAuthorGhost(trackName);
 		if (authorGhost == null) return "";
-		Debug.Log("found author ghost");
 		float authorTime = authorGhost.totalTime;
 		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
 		if (ghosts.Count() == 0) return "";
-		Debug.Log("found palyer ghost");
 		float playerTime = ghosts.First().totalTime;
 		if (playerTime < authorTime) return "author";
 		if (playerTime < authorTime * 1.1f) return "gold";

@@ -95,6 +95,6 @@ public class PauseMenu : MonoBehaviour {
 
 	public void Menu() {
 		Time.timeScale = 1f;
-		GetComponent<TransitionManager>().LoadScene("Main Menu");
+		GetComponent<TransitionManager>().LoadScene("MainMenu");
 	}
 }

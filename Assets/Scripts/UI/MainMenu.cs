@@ -30,6 +30,11 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void OpenSubmenu(GameObject submenu) {
+		if (submenus.Count > 0) {
+			submenus.Peek().SetActive(false);
+		} else {
+			mainMenu.SetActive(false);
+		}
 		submenus.Push(submenu);
 		submenu.SetActive(true);
 		submenu.GetComponentInChildren<Selectable>().Select();

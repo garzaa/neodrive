@@ -1,23 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using NaughtyAttributes;
 
+// TODO: on selected, show the play button
+// and on deselect hide it. is that a thing
+// alright well just do an animator then. christ
 public class TrackLoadButton : MonoBehaviour {
 	public SceneReference track;
 	public Sprite trackImage;
-	public Image trackPreviewThumbnail;
-	public Text trackTitle;
-	
-	string trackName;
 
+	[Foldout("Internal")]
+	public Image trackPreviewThumbnail;
+	[Foldout("Internal")]
+	public Text trackTitle;
+	[Foldout("Internal")]
 	public GameObject bronze, silver, gold, author;
 
+	string trackName;
 	BinarySaver bs;
 
 	void Start() {
 		GetComponent<Button>().onClick.AddListener(() => FindObjectOfType<MainMenu>().LoadTrack(track));
 		trackName = track.ScenePath.Split("/")[^1].Split(".unity")[0];
-		print("setting trakc title to " + trackName);
 		trackTitle.text = trackName;
 		trackPreviewThumbnail.sprite = trackImage;
 
@@ -29,6 +34,18 @@ public class TrackLoadButton : MonoBehaviour {
 		PopulateMedals();
 	}
 
+	void OnValidate() {
+		if (track != null) {
+			trackName = track.ScenePath.Split("/")[^1].Split(".unity")[0];
+			trackTitle.text = trackName;
+			name = trackName;
+		}
+
+		if (trackImage != null) {
+			trackPreviewThumbnail.sprite = trackImage;
+		}
+	}
+
 	async void PopulateMedals() {
 		print("loading medals...");
 		var medalTask = new TaskCompletionSource<string>();
@@ -36,9 +53,7 @@ public class TrackLoadButton : MonoBehaviour {
 			medalTask.SetResult(bs.GetMedalForTrack(trackName));
 		});
 		medalTask.Task.ConfigureAwait(true).GetAwaiter().OnCompleted(() => {
-			print("loaded medals");
 			string medalName = medalTask.Task.Result;
-			print("medal name: "+medalName);
 			switch (medalName) {
 				case "author":
 					author.SetActive(true);
