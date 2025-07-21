@@ -12,9 +12,11 @@ using System.Linq;
 public class BinarySaver {
 	string baseDataPath;
 	string currentTrack;
+	string applicationVersion;
 
 	public BinarySaver(string currentTrack) {
 		this.currentTrack = currentTrack;
+		applicationVersion = Application.version;
 		baseDataPath = Application.isEditor ? Application.streamingAssetsPath : Application.persistentDataPath;
 	}
 
@@ -29,13 +31,15 @@ public class BinarySaver {
 
 	public Ghost GetAuthorGhost(string trackName = null) {
 		string fn = GetAuthorGhostPath(trackName ?? currentTrack);
+		Debug.Log("looking at author in path "+fn);
 		Ghost g;
 		try {
 			g = LoadGhost(fn);
 			if (!CompatibleVersions(g.version)) {
 				Debug.Log("no compatible ghost version");
 			}
-		} catch {
+		} catch (Exception e) {
+			Debug.Log("error lading author ghost: " + e);
 			return null;
 		}
 		return g;
@@ -130,17 +134,20 @@ public class BinarySaver {
 
 	bool CompatibleVersions(string testVersion) {
         string[] saveVersion = testVersion.Split('.');
-        string[] currentVersion = Application.version.Split('.');
+        string[] currentVersion = applicationVersion.Split('.');
 
         return saveVersion[0].Equals(currentVersion[0]);
     }
 	
 	public string GetMedalForTrack(string trackName) {
+		Debug.Log("getting medal for track "+trackName);
 		Ghost authorGhost = GetAuthorGhost(trackName);
 		if (authorGhost == null) return "";
+		Debug.Log("found author ghost");
 		float authorTime = authorGhost.totalTime;
 		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
 		if (ghosts.Count() == 0) return "";
+		Debug.Log("found palyer ghost");
 		float playerTime = ghosts.First().totalTime;
 		if (playerTime < authorTime) return "author";
 		if (playerTime < authorTime * 1.1f) return "gold";

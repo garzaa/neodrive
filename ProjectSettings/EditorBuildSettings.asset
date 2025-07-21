@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: e0b5fcd2563da2243ab4cefd4e2a51cc
   - enabled: 1
     path: Assets/Scenes/Tracks/TestTrack.unity
@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tracks/Rock Loop.unity
     guid: c0f0b79ff50fceb4681eff544b475888
+  - enabled: 1
+    path: Assets/Scenes/Tracks/Lakeshore Curve.unity
+    guid: 0020dad920cd5ef47b96ac78a6b1d972
   m_configObjects: {}

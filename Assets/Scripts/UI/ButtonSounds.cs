@@ -10,6 +10,7 @@ public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, 
 
 	void Awake() {
 		audioSource = gameObject.GetComponent<AudioSource>();
+		if (audioSource == null) audioSource = GetComponentInParent<AudioSource>();
 	}
 
 	public void OnSubmit(BaseEventData data) {
