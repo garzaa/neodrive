@@ -20,4 +20,12 @@ public static class Buttons {
     public static readonly string PAUSE = "Pause";
 
     public static readonly string UICANCEL = "UICancel";
+    
+    public static readonly string GEAR1 = "Gear1";
+    public static readonly string GEAR2 = "Gear2";
+    public static readonly string GEAR3 = "Gear3";
+    public static readonly string GEAR4 = "Gear4";
+    public static readonly string GEAR5 = "Gear5";
+    public static readonly string GEAR6 = "Gear6";
+    public static readonly string GEARR = "GearR";
 }

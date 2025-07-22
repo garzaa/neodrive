@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour {
 		}
 		submenus.Push(submenu);
 		submenu.SetActive(true);
-		submenu.GetComponentInChildren<Selectable>().Select();
+		StartCoroutine(SelectNextFrame(submenu));
 	}
 
 	public void CloseSubmenu() {
@@ -45,13 +45,16 @@ public class MainMenu : MonoBehaviour {
 			submenus.Pop().SetActive(false);
 			GameObject g = submenus.Pop();
 			g.SetActive(true);
-			g.GetComponentInChildren<Selectable>().Select();
+			StartCoroutine(SelectNextFrame(g));
 		} else if (submenus.Count == 1) {
 			submenus.Pop().SetActive(false);
 			mainMenu.SetActive(true);
-			mainMenu.GetComponentInChildren<Selectable>().Select();
+			StartCoroutine(SelectNextFrame(mainMenu));
 		}
 	}
 
-	// TODO: waiut a frame before selceting, jesus
+	IEnumerator SelectNextFrame(GameObject parent) {
+		yield return new WaitForEndOfFrame();
+		parent.GetComponentInChildren<Selectable>().Select();
+	}
 }
