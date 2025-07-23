@@ -16,7 +16,7 @@ public class RaceLogic : MonoBehaviour {
 	Car car;
 	public GhostCar playerGhostCar, authorGhostCar;
 
-	bool ghostEnabled = true;
+	bool ghostEnabled = false;
 
 	public RaceType raceType = RaceType.ROUTE;
 	public GameObject resultsCanvas;

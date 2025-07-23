@@ -31,7 +31,6 @@ public class BinarySaver {
 
 	public Ghost GetAuthorGhost(string trackName = null) {
 		string fn = GetAuthorGhostPath(trackName ?? currentTrack);
-		Debug.Log("looking at author in path "+fn);
 		Ghost g;
 		try {
 			g = LoadGhost(fn);

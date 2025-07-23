@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4251135026100159803}
   - component: {fileID: 4650996978004583959}
   - component: {fileID: 8358037517702207890}
+  - component: {fileID: 377593728}
   m_Layer: 0
   m_Name: Rewired Input Manager
   m_TagString: Untagged
@@ -470,7 +471,7 @@ MonoBehaviour:
     - _id: 27
       _name: UIHorizontal
       _type: 0
-      _descriptiveName: Action0
+      _descriptiveName: UI Horizontal
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -482,7 +483,7 @@ MonoBehaviour:
     - _id: 28
       _name: UIVertical
       _type: 0
-      _descriptiveName: Action0
+      _descriptiveName: UI Vertical
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -494,7 +495,7 @@ MonoBehaviour:
     - _id: 29
       _name: UISubmit
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: UI Submit
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -506,7 +507,7 @@ MonoBehaviour:
     - _id: 30
       _name: UICancel
       _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: UI Cancel
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -922,7 +923,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 31
+        _actionId: -1
         _elementType: 0
         _elementIdentifierId: 3
         _axisRange: 0
@@ -1415,7 +1416,7 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 30
         _elementType: 1
-        _elementIdentifierId: 4
+        _elementIdentifierId: 5
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -1497,7 +1498,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 6
+        _elementType: 1
+        _elementIdentifierId: 6
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 29
         _elementType: 1
         _elementIdentifierId: 6
         _axisRange: 0
@@ -1530,7 +1542,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 17
         _elementType: 1
         _elementIdentifierId: 9
         _axisRange: 0
@@ -1607,7 +1619,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 29
+        _elementType: 1
+        _elementIdentifierId: 16
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 6
         _elementType: 1
         _elementIdentifierId: 16
         _axisRange: 0
@@ -1640,7 +1663,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 17
         _elementType: 1
         _elementIdentifierId: 19
         _axisRange: 0
@@ -1838,7 +1861,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 25
+        _actionId: 9
         _elementType: 1
         _elementIdentifierId: 36
         _axisRange: 0
@@ -1849,7 +1872,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 9
+        _actionId: 25
         _elementType: 1
         _elementIdentifierId: 37
         _axisRange: 0
@@ -1882,7 +1905,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 15
         _elementType: 1
         _elementIdentifierId: 39
         _axisRange: 0
@@ -1893,7 +1916,18 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 28
+        _elementType: 1
+        _elementIdentifierId: 39
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 27
         _elementType: 1
         _elementIdentifierId: 40
         _axisRange: 0
@@ -1904,7 +1938,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 19
         _elementType: 1
         _elementIdentifierId: 41
         _axisRange: 0
@@ -1915,12 +1949,23 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: -1
+        _actionId: 28
+        _elementType: 1
+        _elementIdentifierId: 41
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 1
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 27
         _elementType: 1
         _elementIdentifierId: 42
         _axisRange: 0
         _invert: 0
-        _axisContribution: 0
+        _axisContribution: 1
         _keyboardKeyCode: 0
         _modifierKey1: 0
         _modifierKey2: 0
@@ -2084,3 +2129,15 @@ MonoBehaviour:
   loadMouseAssignments: 1
   _actionMappingSaveMode: 0
   playerPrefsKeyPrefix: RewiredSaveData
+--- !u!114 &377593728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131838972948472163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6066a4d523b2e8d4aafe23a8a2d06e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
+using Rewired;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
@@ -118,6 +119,7 @@ public class Car : MonoBehaviour {
     public ParticleSystem collisionHitmarker;
     MaterialPropertyBlock shaderBlock;
     MeshRenderer carMesh;
+    MeshCollider meshCollider;
 
     public bool Drifting {
         get {
@@ -161,6 +163,7 @@ public class Car : MonoBehaviour {
         shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
         carMesh.GetPropertyBlock(shaderBlock, 0);
+        meshCollider = GetComponentInChildren<MeshCollider>();
     }
 
     void Update() {
@@ -217,6 +220,30 @@ public class Car : MonoBehaviour {
             Respawn();
         }
 
+        if (clutch) {
+            if (InputManager.ButtonDown(Buttons.GEAR1)) {
+                ChangeGear(1, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEAR2)) {
+                ChangeGear(2, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEAR3)) {
+                ChangeGear(3, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEAR4)) {
+                ChangeGear(4, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEAR5)) {
+                ChangeGear(5, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEAR6)) {
+                ChangeGear(6, true);
+            }
+            if (InputManager.ButtonDown(Buttons.GEARR)) {
+                ChangeGear(-1, true);
+            }
+        }
+
         if (Time.timeScale > 0) {
             foreach (Wheel w in wheels) {
                 float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
@@ -262,15 +289,15 @@ public class Car : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (rb.velocity.magnitude > 5 * mph2u) {
+        if (rb.velocity.sqrMagnitude > 25 * mph2u && collision.contacts[0].thisCollider == meshCollider) {
             gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
+            // ok need ot not play this when the wheel colliders hit. howmst
+            collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(
+                collisionHitmarker.transform.up,
+                collision.contacts[0].normal
+            ));
+            collisionHitmarker.Emit(1);
         }
-
-        collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(
-            collisionHitmarker.transform.up,
-            collision.contacts[0].normal
-        ));
-		collisionHitmarker.Emit(1);
     }
 
     IEnumerator Boost() {
@@ -604,7 +631,8 @@ public class Car : MonoBehaviour {
     void UpdateSteering() {
         targetSteerAngle = steering * settings.maxSteerAngle;
         float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
-        float steeringMult = settings.steerLimitCurve.Evaluate(Mathf.Abs(forwardSpeed));
+        bool usingWheel = ReInput.controllers.GetLastActiveController().ImplementsTemplate<RacingWheelTemplate>();
+        float steeringMult = usingWheel ? 1 : settings.steerLimitCurve.Evaluate(Mathf.Abs(forwardSpeed));
         if (steering == 0) {
             targetSteerAngle = 0;
         }
@@ -702,12 +730,19 @@ public class Car : MonoBehaviour {
         }
     }
 
-    void Alert(string text) {
+    void Alert(string text, bool immediate=true) {
+        // TODO: if constant, wait for the current alert animation to finish
+        // trigger vs triggerImmediate?
+        // or actually, immediate vs not immediate if it's continuous drifting
+        // not immediate should wait for it to finish
+        // or well hmm it shouldn't wait for itself to finish
+        // maybe immediate should have its own state that has to finish. ok, that works
+        // triggerImmediate
         alertText.text = text;
         alertAnimator.SetTrigger("Trigger");
     }
 
-    public void ChangeGear(int to) {
+    public void ChangeGear(int to, bool shifter = false) {
         gearshiftAudio.PlayOneShot(engine.gearShiftNoises[Random.Range(0, engine.gearShiftNoises.Count)]);
         currentGear = to;
     }

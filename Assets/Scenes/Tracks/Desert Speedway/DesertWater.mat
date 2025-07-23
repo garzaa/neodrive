@@ -11,8 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: c8110ef7c96474f73b2ee5f90e026b10, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - SHADOWS
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - FANCY_SHADOWS
   - SAMPLE_SHADOWS
@@ -43,7 +42,7 @@ Material:
     - _DepthDensity: 0.417
     - _DistanceDensity: 0.02
     - _EdgeFoamDepth: 0.1
-    - _FancyShadows: 1
+    - _FancyShadows: 0
     - _FoamContribution: 0.471
     - _FoamNoiseScale: 0.775
     - _FoamScale: 10
@@ -73,7 +72,7 @@ Material:
     - _EdgeFoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FarColor: {r: 0.08343716, g: 0.29864755, b: 0.7075472, a: 1}
     - _SSSColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowColor: {r: 0.03551086, g: 0.30351532, b: 0.3584906, a: 1}
+    - _ShadowColor: {r: 0.047080822, g: 0.36790922, b: 0.4339623, a: 1}
     - _ShallowColor: {r: 1.1505303, g: 1.299991, b: 0.8891448, a: 1}
     - _SparkleColor: {r: 0.740566, g: 1, b: 0.9357789, a: 1}
     - _SunSpecularColor: {r: 0, g: 0, b: 0, a: 1}

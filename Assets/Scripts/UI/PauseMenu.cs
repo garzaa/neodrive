@@ -19,6 +19,9 @@ public class PauseMenu : MonoBehaviour {
 	public AudioMixerSnapshot pausedAudio;
 	public AudioMixerSnapshot unpausedAudio;
 
+	public GameObject settingsMenu;
+	bool pausedThisFrame = false;
+
 	void Start() {
 		GetComponentInChildren<Canvas>(includeInactive: true).worldCamera = Camera.current;
 		vCam.SetActive(false);
@@ -50,13 +53,27 @@ public class PauseMenu : MonoBehaviour {
 			}
 			if (Time.timeScale == 1 && !paused) {
 				Pause();
-			} else if (paused) {
+			} else if (paused && !settingsMenu.activeInHierarchy) {
 				Unpause();
 			}
 		}
+
+		if (InputManager.ButtonDown(Buttons.UICANCEL)) {
+			print("ui cancel");
+			if (paused && !pausedThisFrame) {
+				print(settingsMenu.activeInHierarchy);
+				if (settingsMenu.activeInHierarchy) {
+					HideSettings();
+				} else {
+					Unpause();
+				}
+			}
+		}
+		pausedThisFrame = false;
 	}
 
 	void Pause() {
+		pausedThisFrame = true;
 		Time.timeScale = 0;
 		paused = true;
 		vCam.transform.SetPositionAndRotation(chaseCam.transform.position, chaseCam.transform.rotation);
@@ -71,13 +88,14 @@ public class PauseMenu : MonoBehaviour {
 		paused = false;
 		vCam.SetActive(false);
 		car.SetDashboardEnabled(true);
+		HideSettings();
 		HideCanvas();
 		unpausedAudio.TransitionTo(0.1f);
 	}
 
 	void ShowCanvas() {
 		pauseUI.gameObject.SetActive(true);
-		GetComponentInChildren<Button>(includeInactive: true).Select();
+		StartCoroutine(SelectNextFrame(gameObject));
 	}
 
 	void HideCanvas() {
@@ -85,7 +103,22 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void Exit() {
+		SaveManager.WriteEternalSave();
 		Application.Quit();
+	}
+
+	public void ShowSettings() {
+		print("showing settings");
+		HideCanvas();
+		settingsMenu.SetActive(true);
+		StartCoroutine(SelectNextFrame(settingsMenu));
+	}
+
+	public void HideSettings() {
+		print("hiding settings");
+		settingsMenu.SetActive(false);
+		ShowCanvas();
+		StartCoroutine(SelectNextFrame(gameObject));
 	}
 
 	public void ToggleGhost() {
@@ -96,5 +129,10 @@ public class PauseMenu : MonoBehaviour {
 	public void Menu() {
 		Time.timeScale = 1f;
 		GetComponent<TransitionManager>().LoadScene("MainMenu");
+	}
+
+	IEnumerator SelectNextFrame(GameObject parent) {
+		yield return new WaitForEndOfFrame();
+		parent.GetComponentInChildren<Selectable>(includeInactive: true).Select();
 	}
 }

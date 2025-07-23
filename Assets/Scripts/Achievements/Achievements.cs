@@ -10,10 +10,10 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-public class Achievements : MonoBehaviour {
+public class Achievements : SavedObject {
 
 #if UNITY_EDITOR
-	[MenuItem("GameObject/Neodrive/Create Achievement")]
+	[MenuItem("GameObject/Vapor Trails/Create Achievement")]
 	public static void CreateAchievement() {
 		Achievement a = ScriptableObject.CreateInstance<Achievement>();
 		AssetDatabase.CreateAsset(a, "Assets/Resources/Runtime/Achievements/NewAchievement.asset");
@@ -39,13 +39,11 @@ public class Achievements : MonoBehaviour {
 	int unlockedCount;
 	int totalCount;
 
-	// just have the binary saver here
-	// can you serialize a hashset? probably
-    protected void LoadFromProperties() {
-        // achievements = GetHashSet<string>(nameof(achievements));
+    protected override void LoadFromProperties() {
+        achievements = GetHashSet<string>(nameof(achievements));
     }
 
-    protected void SaveToProperties(ref Dictionary<string, object> properties) {
+    protected override void SaveToProperties(ref Dictionary<string, object> properties) {
         properties[nameof(achievements)] = achievements;
     }
 
@@ -53,8 +51,8 @@ public class Achievements : MonoBehaviour {
 		return achievements.Contains(a.GetName());
 	}
 
-public void Get(Achievement a) {
-	if (!Has(a)) {
+	public void Get(Achievement a) {
+		if (!Has(a)) {
 			achievements.Add(a.GetName());
 			NotifyUnlock(a);
 		}

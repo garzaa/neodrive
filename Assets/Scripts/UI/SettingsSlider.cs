@@ -19,5 +19,6 @@ public class SettingsSlider : MonoBehaviour {
     virtual public void HandleValueChanged(float val) {
         PlayerPrefs.SetInt(prefName, (int) val);
         if (valueLabel) valueLabel.text = ((int) val).ToString();
+        // GameOptions.Load();
     }
 }

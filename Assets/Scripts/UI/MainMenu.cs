@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void LoadTrack(string track) {
-		SceneManager.LoadScene(track);
+		SaveManager.LoadScene(track);
 	}
 
 	void Update() {
