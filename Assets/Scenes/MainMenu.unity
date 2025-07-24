@@ -493,7 +493,6 @@ GameObject:
   - component: {fileID: 159648038}
   - component: {fileID: 159648037}
   - component: {fileID: 159648036}
-  - component: {fileID: 159648035}
   - component: {fileID: 159648040}
   m_Layer: 5
   m_Name: CampaignMenu
@@ -502,20 +501,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &159648035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159648034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4436fdee51aebb4db9a123047ca4f68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightSelect: {fileID: 0}
-  leftSelect: {fileID: 0}
 --- !u!114 &159648036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -989,15 +974,15 @@ PrefabInstance:
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: trackImage
       value: 
-      objectReference: {fileID: 21300000, guid: 61afe6b5f05d1cc408421eff0b709dc5, type: 3}
+      objectReference: {fileID: 21300000, guid: bb930ac2c646cfd43aa73c1232e94fa4, type: 3}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.scenePath
-      value: Assets/Scenes/Tracks/Desert Speedway.unity
+      value: Assets/Scenes/Tracks/Lakeshore Curve.unity
       objectReference: {fileID: 0}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.sceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: a668814d356744c48837f14191a9bde3, type: 3}
+      objectReference: {fileID: 102900000, guid: 0020dad920cd5ef47b96ac78a6b1d972, type: 3}
     - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1032,7 +1017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5664650587919593020, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Text
-      value: Desert Speedway
+      value: Lakeshore Curve
       objectReference: {fileID: 0}
     - target: {fileID: 6978438398408197388, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Sprite
@@ -1040,7 +1025,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 61afe6b5f05d1cc408421eff0b709dc5, type: 3}
     - target: {fileID: 7588731399802961176, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Name
-      value: Desert Speedway
+      value: Lakeshore Curve
       objectReference: {fileID: 0}
     - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1904,6 +1889,7 @@ GameObject:
   - component: {fileID: 300057767}
   - component: {fileID: 300057768}
   - component: {fileID: 300057770}
+  - component: {fileID: 300057771}
   m_Layer: 5
   m_Name: LevelGrid
   m_TagString: Untagged
@@ -1924,8 +1910,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 260838938}
-  - {fileID: 1696172579}
   - {fileID: 167987283}
+  - {fileID: 1696172579}
   - {fileID: 1252434213}
   - {fileID: 163357110}
   m_Father: {fileID: 159648039}
@@ -1967,6 +1953,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300057766}
   m_CullTransparentMesh: 1
+--- !u!114 &300057771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300057766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2389487149f9ef14f84aa04578e6370e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  columns: 5
 --- !u!1 &312283057
 GameObject:
   m_ObjectHideFlags: 0
@@ -8343,6 +8342,53 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &638953691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 638953693}
+  - component: {fileID: 638953692}
+  m_Layer: 0
+  m_Name: Options
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &638953692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638953691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96c1eb66a2d9994e884ab786e20a06e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Apply:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &638953693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638953691}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -78.77197, y: 37.19141, z: 55.085056}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &642018733
 GameObject:
   m_ObjectHideFlags: 0
@@ -12415,15 +12461,15 @@ PrefabInstance:
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: trackImage
       value: 
-      objectReference: {fileID: 21300000, guid: 16d46b6d1eda00c4e9024736af034069, type: 3}
+      objectReference: {fileID: 21300000, guid: 61afe6b5f05d1cc408421eff0b709dc5, type: 3}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.scenePath
-      value: Assets/Scenes/Tracks/Rock Loop.unity
+      value: Assets/Scenes/Tracks/Desert Speedway.unity
       objectReference: {fileID: 0}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.sceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: c0f0b79ff50fceb4681eff544b475888, type: 3}
+      objectReference: {fileID: 102900000, guid: a668814d356744c48837f14191a9bde3, type: 3}
     - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -12458,7 +12504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5664650587919593020, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Text
-      value: Rock Loop
+      value: Desert Speedway
       objectReference: {fileID: 0}
     - target: {fileID: 6978438398408197388, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Sprite
@@ -12466,7 +12512,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 16d46b6d1eda00c4e9024736af034069, type: 3}
     - target: {fileID: 7588731399802961176, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Name
-      value: Rock Loop
+      value: Desert Speedway
       objectReference: {fileID: 0}
     - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -13833,8 +13879,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 380731192}
   - {fileID: 1088453599}
+  - {fileID: 380731192}
   m_Father: {fileID: 452402552}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -17213,13 +17259,17 @@ PrefabInstance:
       value: -16
       objectReference: {fileID: 0}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: trackImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 16d46b6d1eda00c4e9024736af034069, type: 3}
+    - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.scenePath
-      value: Assets/Scenes/Tracks/Lakeshore Curve.unity
+      value: Assets/Scenes/Tracks/Rock Loop.unity
       objectReference: {fileID: 0}
     - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: track.sceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: 0020dad920cd5ef47b96ac78a6b1d972, type: 3}
+      objectReference: {fileID: 102900000, guid: c0f0b79ff50fceb4681eff544b475888, type: 3}
     - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -17252,9 +17302,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -16
       objectReference: {fileID: 0}
+    - target: {fileID: 5664650587919593020, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Text
+      value: Rock Loop
+      objectReference: {fileID: 0}
     - target: {fileID: 7588731399802961176, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_Name
-      value: Lakeshore Curve
+      value: Rock Loop
       objectReference: {fileID: 0}
     - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17458,3 +17512,4 @@ SceneRoots:
   - {fileID: 451380866}
   - {fileID: 1963372903863507312}
   - {fileID: 826074311}
+  - {fileID: 638953693}

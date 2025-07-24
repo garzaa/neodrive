@@ -26,8 +26,6 @@ public class CameraRotate : MonoBehaviour {
 
     Camera mainCam;
 
-    float startTime;
-
     GameObject photoModeCamera;
     bool photoMode = false;
     public AudioMixerSnapshot pausedAudio;
@@ -37,15 +35,17 @@ public class CameraRotate : MonoBehaviour {
 
     Quaternion rotateVelocity;
 
+    float respawnTime;
+
     void Start() {
         car = FindObjectOfType<Car>();
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
         mainCam = Camera.main;
-        startTime = Time.time;
         photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true).gameObject;
         photoModeCamera.SetActive(false);
-        car.onRespawn.AddListener(SnapToPlayer);
+        car.onRespawn.AddListener(OnRespawn);
         CycleCamera();
+        respawnTime = Time.time;
     }
 
     void CycleCamera() {
@@ -58,7 +58,8 @@ public class CameraRotate : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void LateUpdate() {
+        snapping = Time.time < respawnTime+0.5f;
         if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
             // check if something else paused it
             if (!photoMode && Time.timeScale != 1) return;
@@ -111,7 +112,7 @@ public class CameraRotate : MonoBehaviour {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
-        if (!car.grounded && car.rb.velocity.sqrMagnitude > 0) {
+        if (!car.grounded && car.rb.velocity.sqrMagnitude > 0 && !snapping) {
             // look towards velocity
             rotationAngle = Quaternion.LookRotation(car.rb.velocity, transform.up).eulerAngles.y;
         }
@@ -139,19 +140,22 @@ public class CameraRotate : MonoBehaviour {
             55f * Time.deltaTime
         );
 
+        if (snapping) {
+            rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
+        }
+
         float y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
-        if (Time.time < startTime + 0.5f || snapping) {
+        if (snapping) {
             y = rotationAngle;
         }
         ring.localRotation = Quaternion.Euler(0, y, 0);
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
-        if (Time.time < startTime + 0.5f || snapping) {
+        if (snapping) {
             transform.position = targetPos;
         }
-        snapping = false;
     }
 
-    public void SnapToPlayer() {
-        snapping = true;
+    public void OnRespawn() {
+        respawnTime = Time.time;
     }
 }

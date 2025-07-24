@@ -19,6 +19,7 @@ public class SettingsSlider : MonoBehaviour {
     virtual public void HandleValueChanged(float val) {
         PlayerPrefs.SetInt(prefName, (int) val);
         if (valueLabel) valueLabel.text = ((int) val).ToString();
+        // this can stay commented because volume is set in volumeslider
         // GameOptions.Load();
     }
 }

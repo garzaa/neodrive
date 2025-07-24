@@ -16,7 +16,7 @@ public class RaceLogic : MonoBehaviour {
 	Car car;
 	public GhostCar playerGhostCar, authorGhostCar;
 
-	bool ghostEnabled = false;
+	bool ghostEnabled = true;
 
 	public RaceType raceType = RaceType.ROUTE;
 	public GameObject resultsCanvas;
@@ -81,6 +81,7 @@ public class RaceLogic : MonoBehaviour {
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
 		if (authorGhost != null) {
+			print("found author ghost");
 			author = new("author", authorGhost.totalTime, authorSprite);
 			gold = new("gold", authorGhost.totalTime * 1.1f, goldSprite);
 			silver = new("silver", authorGhost.totalTime * 1.2f, silverSprite);
@@ -105,6 +106,8 @@ public class RaceLogic : MonoBehaviour {
 			car.forceClutch = true;
 			car.forceBrake = true;
 		}
+
+		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
 	}
 
 	void OnRespawn() {
@@ -174,6 +177,8 @@ public class RaceLogic : MonoBehaviour {
 					}
 				} else if (bestPlayerGhost == null) {
 					print("overwrote author ghost in-place");
+					authorGhost.isAuthor = true;
+					authorGhost.playerName = "author";
 					saver.SaveGhost(authorGhost);
 				} else {
 					print("didn't do anything");
@@ -233,9 +238,9 @@ public class RaceLogic : MonoBehaviour {
 	public void PlayLoadedGhosts() {
 		playStart = Time.time;
 		if (bestPlayerGhost != null) {
-			PlayGhost(bestPlayerGhost);
+			if (GameOptions.PlayerGhost) PlayGhost(bestPlayerGhost);
 			if (authorGhost != null && bestPlayerGhost.totalTime < gold.time) {
-				PlayGhost(authorGhost);
+				if (GameOptions.AuthorGhost) PlayGhost(authorGhost);
 			}
 		}
 	}
@@ -265,7 +270,7 @@ public class RaceLogic : MonoBehaviour {
 		Text[] texts = scoreContainer.GetComponentsInChildren<Text>(includeInactive: true);
 		for (int i = 0; i < pairs.Count; i++) {
 			if (pairs[i].time < player.time || (pairs[i].name != player.name && player.time == 0)) {
-				if (player.time < gold.time && pairs[i].name == "author") {
+				if (player.time != 0 && player.time < gold.time && pairs[i].name == "author") {
 					texts[i].transform.parent.gameObject.SetActive(true);
 				} else {
 					texts[i].transform.parent.gameObject.SetActive(false);
@@ -301,6 +306,7 @@ public class RaceLogic : MonoBehaviour {
 		// can only have two ghost cars right now
 		playingGhosts[g.playerName] = new PlayingGhost(g, g.isAuthor ? authorGhostCar : playerGhostCar);
 		if (g.isAuthor) {
+			print("playing author ghost car");
 			authorGhostCar.gameObject.SetActive(true);
 		} else {
 			playerGhostCar.gameObject.SetActive(true);
@@ -315,6 +321,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void StopPlayingGhost(Ghost g) {
+		if (!playingGhosts.ContainsKey(g.playerName)) return;
 		HaltGhost(playingGhosts[g.playerName].car);
 	}
 
@@ -387,6 +394,15 @@ public class RaceLogic : MonoBehaviour {
 		saver ??= new BinarySaver(SceneManager.GetActiveScene().name);
 		saver.DeleteAuthorGhost();
 		saver.DeletePlayerGhost();
+	}
+
+	void OnSettingsApply() {
+		if (!GameOptions.AuthorGhost) {
+			StopPlayingGhost(authorGhost);
+		}
+		if (!GameOptions.PlayerGhost) {
+			StopPlayingGhost(bestPlayerGhost);
+		}
 	}
 }
 

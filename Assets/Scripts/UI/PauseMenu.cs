@@ -59,7 +59,6 @@ public class PauseMenu : MonoBehaviour {
 		}
 
 		if (InputManager.ButtonDown(Buttons.UICANCEL)) {
-			print("ui cancel");
 			if (paused && !pausedThisFrame) {
 				print(settingsMenu.activeInHierarchy);
 				if (settingsMenu.activeInHierarchy) {
@@ -81,6 +80,7 @@ public class PauseMenu : MonoBehaviour {
 		car.SetDashboardEnabled(false);
 		ShowCanvas();
 		pausedAudio.TransitionTo(0.5f);
+		StartCoroutine(SelectNextFrame(gameObject));
 	}
 
 	public void Unpause() {
@@ -108,14 +108,12 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void ShowSettings() {
-		print("showing settings");
 		HideCanvas();
 		settingsMenu.SetActive(true);
 		StartCoroutine(SelectNextFrame(settingsMenu));
 	}
 
 	public void HideSettings() {
-		print("hiding settings");
 		settingsMenu.SetActive(false);
 		ShowCanvas();
 		StartCoroutine(SelectNextFrame(gameObject));
@@ -128,7 +126,7 @@ public class PauseMenu : MonoBehaviour {
 
 	public void Menu() {
 		Time.timeScale = 1f;
-		GetComponent<TransitionManager>().LoadScene("MainMenu");
+		FindObjectOfType<TransitionManager>().LoadScene("MainMenu");
 	}
 
 	IEnumerator SelectNextFrame(GameObject parent) {

@@ -3,9 +3,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using NaughtyAttributes;
 
-// TODO: on selected, show the play button
-// and on deselect hide it. is that a thing
-// alright well just do an animator then. christ
+// TODO: eventually, scroll in the scroll view. HOUGH
 public class TrackLoadButton : MonoBehaviour {
 	public SceneReference track;
 	public Sprite trackImage;
@@ -47,7 +45,6 @@ public class TrackLoadButton : MonoBehaviour {
 	}
 
 	async void PopulateMedals() {
-		print("loading medals...");
 		var medalTask = new TaskCompletionSource<string>();
 		await Task.Run(() => {
 			medalTask.SetResult(bs.GetMedalForTrack(trackName));

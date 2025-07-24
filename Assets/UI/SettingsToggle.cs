@@ -25,7 +25,7 @@ public class SettingsToggle : MonoBehaviour {
         if (!quiet) {
             audioSource.PlayOneShot(changeSound);
         }
-		// GameOptions.Load();
+		GameOptions.Load();
     }
 }
 

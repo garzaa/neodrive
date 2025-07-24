@@ -59,4 +59,10 @@ public class GhostCar : MonoBehaviour {
         shaderBlock.SetColor("_Emissive_Color", snapshot.brake ? Color.white : Color.black);
         carMesh.SetPropertyBlock(shaderBlock);
 	}
+	
+	void OnDisable() {
+		foreach (TrailRenderer t in GetComponentsInChildren<TrailRenderer>()) {
+			if (t) t.Clear();
+		}
+	}
 }

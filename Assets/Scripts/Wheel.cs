@@ -178,4 +178,10 @@ public class Wheel : MonoBehaviour {
 	public float GetWheelRPMFromSpeed(float flatSpeed) {
         return flatSpeed / (wheelRadius * 2f * Mathf.PI) * 60f;
     }
+	
+	public void ClearTrails() {
+		foreach (TrailRenderer t in GetComponentsInChildren<TrailRenderer>()) {
+			t.Clear();
+		}
+	}
 }

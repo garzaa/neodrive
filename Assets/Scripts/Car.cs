@@ -157,13 +157,13 @@ public class Car : MonoBehaviour {
             f.onFinishCross.AddListener(() => nitroxMeter.Reset());
             dashboardUI.Add(f.GetComponentInChildren<Canvas>());
         }
-        startPoint = transform.position;
-        startRotation = transform.rotation;
         pointsAudio.mute = true;
         shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
         carMesh.GetPropertyBlock(shaderBlock, 0);
         meshCollider = GetComponentInChildren<MeshCollider>();
+        startPoint = transform.position;
+        startRotation = transform.rotation;
     }
 
     void Update() {
@@ -425,7 +425,7 @@ public class Car : MonoBehaviour {
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true, false);
                 if (drifting && rb.velocity.sqrMagnitude > 1f) {
-                    rb.AddTorque(transform.up * steering * settings.maxSteerAngle * settings.driftControl);
+                    rb.AddTorque(settings.driftControl * settings.maxSteerAngle * steering * transform.up);
                 }
             }
 
@@ -823,7 +823,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble) {
             InputManager.player.StopVibration();
             return;
         }
@@ -915,12 +915,13 @@ public class Car : MonoBehaviour {
                 false,
                 false
             );
+            w.ClearTrails();
         }
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        transform.SetPositionAndRotation(startPoint, startRotation);
 		rb.position = startPoint;
         rb.rotation = startRotation;
+        transform.SetPositionAndRotation(startPoint, startRotation);
         onRespawn.Invoke();
     }
 }
