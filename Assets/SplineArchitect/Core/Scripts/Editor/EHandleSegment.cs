@@ -647,7 +647,7 @@ namespace SplineArchitect
             }
 
             //Skip if camera is too far away
-            if (distanceToCamera > 450)
+            if (distanceToCamera > GlobalSettings.GetSplineViewDistance())
                 return 0;
 
             //Skip

@@ -500,13 +500,18 @@ namespace SplineArchitect.Ui
             Rect splineWindowRect = MenuSpline.GetRect();
 
             if (spline.selectedAnchorMenu == "general")
+            {
                 anchorWindowRect.height = LibraryGUIStyle.menuItemHeight * 6 + 16;
+                anchorWindowRect.width = 285;
+            }
             if (spline.selectedAnchorMenu == "deformation")
             {
                 anchorWindowRect.height = LibraryGUIStyle.menuItemHeight * 10 + 16;
 
                 if(spline.loop && spline.normalType == Spline.NormalType.DYNAMIC && spline.selectedControlPoint == 1000)
                     anchorWindowRect.height += LibraryGUIStyle.menuItemHeight;
+
+                anchorWindowRect.width = 270;
             }
 
             //Addons
@@ -520,11 +525,6 @@ namespace SplineArchitect.Ui
                     break;
                 }
             }
-
-            if (spline.selectedAnchorMenu == "instantiate")
-                anchorWindowRect.height = LibraryGUIStyle.menuItemHeight * 8 + 16;
-
-            anchorWindowRect.width = 0;
 
             anchorWindowRect.x = (generalWindowRect.x + generalWindowRect.width + 3) + (splineWindowRect.width + 3);
             anchorWindowRect.y = generalWindowRect.y - (anchorWindowRect.height - generalWindowRect.height);
@@ -545,6 +545,11 @@ namespace SplineArchitect.Ui
             addonsDrawWindow.Add((id, DrawWindow));
             addonsButtons.Add((id, button, buttonActive));
             addonsCalcWindowSize.Add((id, calcWindowSize));
+        }
+
+        public static Rect GetRect()
+        {
+            return anchorWindowRect;
         }
     }
 }

@@ -75,6 +75,9 @@ namespace SplineArchitect
                 //SplineObject HideFlags
                 foreach (SplineObject so in spline.splineObjects)
                 {
+                    if (so == null)
+                        continue;
+
                     //Meshes HideFlags
                     if (so.type == SplineObject.Type.FOLLOWER || spline.deformationMode == DeformationMode.SAVE_IN_SCENE)
                     {

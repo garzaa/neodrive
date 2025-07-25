@@ -977,7 +977,6 @@ namespace SplineArchitect
             EHandleSegment.DeleteAndUnlinkMarked(spline, true);
         }
 
-
         private static int GetHotControlId()
         {
             if (hotControlId == 0) hotControlId = GUIUtility.GetControlID(FocusType.Passive);

@@ -469,9 +469,14 @@ namespace SplineArchitect.Ui
                     splineObjectWindowRect.height = LibraryGUIStyle.menuItemHeight * 9 + 20;
                 else
                     splineObjectWindowRect.height = LibraryGUIStyle.menuItemHeight * 7 + 20;
+
+                splineObjectWindowRect.width = 288;
             }
             else if (spline.selectedObjectMenu == "info")
+            {
                 splineObjectWindowRect.height = LibraryGUIStyle.menuItemHeight * 4 + 20;
+                splineObjectWindowRect.width = 156;
+            }
             //Addons
             else
             {

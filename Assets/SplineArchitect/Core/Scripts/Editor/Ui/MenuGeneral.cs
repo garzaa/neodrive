@@ -29,7 +29,7 @@ namespace SplineArchitect.Ui
 
         //Settings
         public const string toolName = "Spline Architect";
-        public const string versionNumber = "1.0.2";
+        public const string versionNumber = "1.0.4";
 
         //General
         public static GeneralMenu generalMenu { get; private set; }
@@ -41,6 +41,7 @@ namespace SplineArchitect.Ui
         private static string containerSnapValue = "";
         private static string containerNormalSpacing = "";
         private static string containerNormalLength = "";
+        private static string containerSplineViewDistance = "";
         private static string containerControlPointSize = "";
         private static string containerSplineLineResolution = "";
 
@@ -79,7 +80,7 @@ namespace SplineArchitect.Ui
 
         private static void DrawWindow(int windowID)
         {
-            if (!GlobalSettings.IsUiHidden())
+            if (!GlobalSettings.IsUiMinimized())
             {
                 EHandleUi.ResetGetBackgroundStyleId();
 
@@ -168,11 +169,17 @@ namespace SplineArchitect.Ui
                     EHandleUi.CreateLabelField("<b>SETTINGS</b>", LibraryGUIStyle.textSubHeader, true);
                     GUILayout.EndHorizontal();
 
-                    //Normals spacing
+                    //Spline resolution
                     EHandleUi.CreateSliderAndInputField("Spline line resolution: ", GlobalSettings.GetSplineLineResolution(), ref containerSplineLineResolution, (float newValue) =>
                     {
                         GlobalSettings.SetSplineLineResolution(newValue);
                     }, 1, 200, 125, 50);
+
+                    //Spline view distance
+                    EHandleUi.CreateSliderAndInputField("Spline view distance: ", GlobalSettings.GetSplineViewDistance(), ref containerSplineViewDistance, (float newValue) =>
+                    {
+                        GlobalSettings.SetSplineViewDistance(newValue);
+                    }, 100, 2500, 125, 50);
 
                     //Normals spacing
                     EHandleUi.CreateSliderAndInputField("Normals spacing: ", GlobalSettings.GetNormalsSpacing(), ref containerNormalSpacing, (float newValue) =>
@@ -180,7 +187,7 @@ namespace SplineArchitect.Ui
                         GlobalSettings.SetNormalsSpacing(newValue);
                     }, 1, 200, 125, 50);
 
-                    //Normals spacing
+                    //Normals length
                     EHandleUi.CreateSliderAndInputField("Normals length: ", GlobalSettings.GetNormalsLength(), ref containerNormalLength, (float newValue) =>
                     {
                         GlobalSettings.SetNormalsLength(newValue);
@@ -238,7 +245,7 @@ namespace SplineArchitect.Ui
             }
 
             //Bottom
-            if(!GlobalSettings.IsUiHidden())
+            if(!GlobalSettings.IsUiMinimized())
             {
                 EHandleUi.CreateLine();
                 GUILayout.BeginHorizontal(LibraryGUIStyle.backgroundBottomMenu);
@@ -316,9 +323,9 @@ namespace SplineArchitect.Ui
 
         public static void ToggleUi()
         {
-            GlobalSettings.ToggleUiHidden();
+            GlobalSettings.ToggleUiMinimized();
 
-            if (GlobalSettings.IsUiHidden())
+            if (GlobalSettings.IsUiMinimized())
             {
                 generalWindowRect.y += generalWindowRect.height - LibraryGUIStyle.menuItemHeight + 1;
                 UpdateRect();
@@ -348,7 +355,7 @@ namespace SplineArchitect.Ui
             }
             else if (generalMenu == GeneralMenu.SETTINGS)
             {
-                generalWindowRect.height = LibraryGUIStyle.menuItemHeight * 8 + 30;
+                generalWindowRect.height = LibraryGUIStyle.menuItemHeight * 9 + 30;
                 generalWindowRect.width = 332;
             }
             else if (generalMenu == GeneralMenu.INFO)
@@ -359,7 +366,7 @@ namespace SplineArchitect.Ui
                 generalWindowRect.width = 308;
             }
 
-            if (GlobalSettings.IsUiHidden())
+            if (GlobalSettings.IsUiMinimized())
             {
                 generalWindowRect.height = LibraryGUIStyle.menuItemHeight * 1 - 2;
                 generalWindowRect.width = 180;

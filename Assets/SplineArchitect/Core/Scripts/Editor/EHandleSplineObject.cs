@@ -275,7 +275,7 @@ namespace SplineArchitect
 
                 if(meshFilter != null)
                 {
-                    Mesh originMesh = EHandleMeshContainer.GetOriginMeshFromMeshNameId(meshFilter.sharedMesh);
+                    Mesh originMesh = ESplineObjectUtility.GetOriginMeshFromMeshNameId(meshFilter.sharedMesh);
 
                     if(originMesh == null)
                         continue;
@@ -284,7 +284,7 @@ namespace SplineArchitect
                 }
                 else if (meshCollider != null)
                 {
-                    Mesh originMesh = EHandleMeshContainer.GetOriginMeshFromMeshNameId(meshCollider.sharedMesh);
+                    Mesh originMesh = ESplineObjectUtility.GetOriginMeshFromMeshNameId(meshCollider.sharedMesh);
 
                     if (originMesh == null)
                         continue;

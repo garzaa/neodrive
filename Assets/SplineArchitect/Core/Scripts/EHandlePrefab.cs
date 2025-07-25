@@ -23,15 +23,17 @@ namespace SplineArchitect
         public static bool prefabStageOpen { get; private set; }
         public static bool prefabStageClosedLastFrame { get; private set; }
 
+        private static bool UpdatedDeformations = false;
+
         [UnityEditor.Callbacks.DidReloadScripts]
         private static void AfterAssemblyReload()
         {
             // Subscribe to the prefabStageOpened event
             PrefabStage.prefabStageOpened += OnPrefabStageOpened;
             PrefabStage.prefabStageClosing += OnPrefabStageClosing;
-#if UNITY_6000_0_OR_NEWER
-            PrefabUtility.prefabInstanceApplied += OnPrefabChange;
-#endif
+//#if UNITY_6000_0_OR_NEWER
+//            PrefabUtility.prefabInstanceApplied += OnPrefabChange;
+//#endif
             PrefabUtility.prefabInstanceReverted += OnPrefabChange;
             PrefabUtility.prefabInstanceUpdated += OnPrefabChange;
 
@@ -58,6 +60,8 @@ namespace SplineArchitect
 
         public static void Update()
         {
+            UpdatedDeformations = false;
+
             if (prefabStageClosedLastFrame)
             {
                 prefabStageClosedLastFrame = false;
@@ -97,9 +101,16 @@ namespace SplineArchitect
 
         private static void UpdatedPrefabDeformations()
         {
+            if (UpdatedDeformations)
+                return;
+
+            UpdatedDeformations = true;
+
             foreach (Spline spline in HandleRegistry.GetSplines())
             {
                 if (spline == null) continue;
+
+                Debug.Log(spline.name);
 
                 foreach (SplineObject so in spline.splineObjects)
                 {
@@ -110,6 +121,30 @@ namespace SplineArchitect
                     {
                         so.SyncInstanceMeshesFromCache();
                         HandleDeformationWorker.Deform(so, DeformationWorker.Type.EDITOR, spline);
+                    }
+                    else if (so.type == SplineObject.Type.FOLLOWER)
+                    {
+                        //Need to sync MeshContainers becouse the follower can have an instaceMesh without a MeshContainer.
+                        so.SyncMeshContainers();
+
+                        foreach(MeshContainer mc in so.meshContainers)
+                        {
+                            Mesh mesh = mc.GetInstanceMesh();
+
+                            if (mesh == null)
+                                continue;
+
+                            string assetPath = GeneralUtility.GetAssetPath(mesh);
+
+                            if (assetPath == "")
+                            {
+                                Mesh originMesh = ESplineObjectUtility.GetOriginMeshFromMeshNameId(mesh);
+                                mc.SetOriginMesh(originMesh);
+                                mc.SetInstanceMeshToOriginMesh();
+                            }
+                        }
+
+                        spline.followerUpdateList.Add(so);
                     }
                 }
             }

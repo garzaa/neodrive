@@ -134,6 +134,23 @@ namespace SplineArchitect.Utility
                 so.primitiveColliders.RemoveAt(i);
             }
         }
+
+        public static Mesh GetOriginMeshFromMeshNameId(Mesh mesh)
+        {
+            Mesh originMesh = null;
+
+            string[] data = mesh.name.Split('*');
+            if (data.Length == 3)
+            {
+                if (int.TryParse(data[1], out int id))
+                {
+                    Object obj = UnityEditor.EditorUtility.InstanceIDToObject(id);
+                    if (obj is Mesh) originMesh = (Mesh)UnityEditor.EditorUtility.InstanceIDToObject(id);
+                }
+            }
+
+            return originMesh;
+        }
     }
 }
 #endif

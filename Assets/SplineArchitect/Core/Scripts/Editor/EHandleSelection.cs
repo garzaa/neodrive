@@ -346,6 +346,9 @@ namespace SplineArchitect
             if (hoveredSpline == null)
                 return;
 
+            if (EHandleUi.MousePointerAboveAnyMenu(e))
+                return;
+
             if (multiselectActive)
             {
                 selection.Clear();
@@ -439,6 +442,9 @@ namespace SplineArchitect
                 return;
 
             if (spline == null || !spline.IsEnabled())
+                return;
+
+            if (EHandleUi.MousePointerAboveAnyMenu(e))
                 return;
 
             //Record new control point selection

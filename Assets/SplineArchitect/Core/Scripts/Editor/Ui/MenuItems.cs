@@ -16,6 +16,13 @@ namespace SplineArchitect.Ui
 {
     public static class MenuItems
     {
+        [MenuItem("Tools/Spline Architect/Toggle menus", false, 0)]
+        public static void ToggleMenus()
+        {
+            GlobalSettings.ToggleUiHidden();
+            SceneView.RepaintAll();
+        }
+
         [MenuItem("GameObject/Spline Architect/Spline", false, 100)]
         public static void CreateSpline()
         {

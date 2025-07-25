@@ -111,7 +111,7 @@ namespace SplineArchitect.Objects
             initalizedThisFrame = true;
 
             //Check for invalid meshes
-            if (splineParent.deformationMode == DeformationMode.GENERATE || EHandlePrefab.IsPartOfAnyPrefab(splineParent.gameObject))
+            if (splineParent.deformationMode == DeformationMode.GENERATE)
             {
                 foreach (MeshContainer mc in meshContainers)
                 {

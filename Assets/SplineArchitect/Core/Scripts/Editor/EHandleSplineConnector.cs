@@ -22,6 +22,9 @@ namespace SplineArchitect
         {
             foreach (SplineConnector sc in HandleRegistry.GetSplineConnectors())
             {
+                if (sc == null)
+                    continue;
+
                 bool scPosChange = sc.monitor.PosChange(true);
                 bool scRotChange = sc.monitor.RotChange(true);
                 bool mirrorChange = sc.monitor.MirrorChange(true);

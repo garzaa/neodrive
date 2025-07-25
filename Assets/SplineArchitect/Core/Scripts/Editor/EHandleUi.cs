@@ -40,6 +40,7 @@ namespace SplineArchitect
 
         private static bool initalized = false;
         private static int backgroundStyleCounter = 0;
+        private static bool blockNextMouseUp;
 
         //Options
         public static string[] optionsEasing;
@@ -85,11 +86,14 @@ namespace SplineArchitect
         {
             Init(sceneView);
 
+            if (GlobalSettings.IsUiHidden())
+                return;
+
             Handles.BeginGUI();
 
             MenuGeneral.OnSceneGUI(sceneView);
 
-            if (!GlobalSettings.IsUiHidden())
+            if (!GlobalSettings.IsUiMinimized())
             {
                 Spline spline = EHandleSelection.selectedSpline;
 
@@ -125,7 +129,48 @@ namespace SplineArchitect
                 }
             }
 
+            HandleSceneGUIBlockInput();
+
             Handles.EndGUI();
+        }
+
+        private static void HandleSceneGUIBlockInput()
+        {
+            Event e = Event.current;
+
+            if (e.type == EventType.MouseDown)
+            {
+                if (MousePointerAboveAnyMenu(e))
+                {
+                    blockNextMouseUp = true;
+                    e.Use();
+                }
+            }
+
+            if(e.type == EventType.MouseUp && blockNextMouseUp)
+            {
+                blockNextMouseUp = false;
+                e.Use();
+            }
+        }
+
+        public static bool MousePointerAboveAnyMenu(Event e)
+        {
+            if (GlobalSettings.IsUiHidden())
+                return false;
+
+            if (GlobalSettings.IsUiMinimized())
+                return false;
+
+            if (EHandleSelection.selectedSplineObject != null && MenuSplineObject.GetRect().Contains(e.mousePosition) ||
+                EHandleSelection.selectedSpline != null && MenuSpline.GetRect().Contains(e.mousePosition) ||
+                EHandleSelection.selectedSpline != null && MenuAnchor.GetRect().Contains(e.mousePosition) ||
+                EHandleSelection.selectedSpline != null && MenuTangent.GetRect().Contains(e.mousePosition))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static void CreateEasingList()

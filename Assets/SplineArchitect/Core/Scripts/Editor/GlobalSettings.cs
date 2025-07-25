@@ -43,6 +43,11 @@ namespace SplineArchitect
             return EditorPrefs.GetFloat("SplineArchitect_normalsSpacing", 50);
         }
 
+        public static float GetSplineViewDistance()
+        {
+            return EditorPrefs.GetFloat("SplineArchitect_splineViewDistance", 500);
+        }
+
         public static float GetNormalsLength()
         {
             return EditorPrefs.GetFloat("SplineArchitect_normalsLength", 1);
@@ -89,6 +94,11 @@ namespace SplineArchitect
         public static SplineHideMode GetSplineHideMode()
         {
             return (SplineHideMode)EditorPrefs.GetInt("SplineArchitect_splineHiddenMode", 0);
+        }
+
+        public static void SetSplineViewDistance(float value)
+        {
+            EditorPrefs.SetFloat("SplineArchitect_splineViewDistance", value);
         }
 
         public static void SetSplineHideMode(SplineHideMode value)
@@ -196,6 +206,10 @@ namespace SplineArchitect
             return EditorPrefs.GetBool("SplineArchitect_uiHidden", false);
         }
 
+        public static bool IsUiMinimized()
+        {
+            return EditorPrefs.GetBool("SplineArchitect_uiMinimized", false);
+        }
 
         public static void ToggleUiHidden()
         {
@@ -203,6 +217,14 @@ namespace SplineArchitect
                 EditorPrefs.SetBool("SplineArchitect_uiHidden", false);
             else
                 EditorPrefs.SetBool("SplineArchitect_uiHidden", true);
+        }
+
+        public static void ToggleUiMinimized()
+        {
+            if (EditorPrefs.GetBool("SplineArchitect_uiMinimized", false))
+                EditorPrefs.SetBool("SplineArchitect_uiMinimized", false);
+            else
+                EditorPrefs.SetBool("SplineArchitect_uiMinimized", true);
         }
 
         public static bool ShowNormals()

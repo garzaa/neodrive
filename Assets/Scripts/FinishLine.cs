@@ -29,7 +29,7 @@ public class FinishLine : MonoBehaviour {
 	RaceType raceType = RaceType.HOTLAP;
 	bool finishedOnce = false;
 
-	void Start() {
+	void Awake() {
 		StartCoroutine(WaitForSpawn());
 		raceTimer = GameObject.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = GameObject.Find("LapTimer").GetComponent<Timer>();

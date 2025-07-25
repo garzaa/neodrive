@@ -166,6 +166,13 @@ namespace SplineArchitect.Ui
 
             tangentWindowRect.x = (generalWindowRect.x + generalWindowRect.width + 3) + (splineWindowRect.width + 3);
             tangentWindowRect.y = generalWindowRect.y - (tangentWindowRect.height - generalWindowRect.height);
+
+            tangentWindowRect.width = 285;
+        }
+
+        public static Rect GetRect()
+        {
+            return tangentWindowRect;
         }
     }
 }

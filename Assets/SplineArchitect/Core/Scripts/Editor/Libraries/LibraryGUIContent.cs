@@ -233,7 +233,7 @@ namespace SplineArchitect.Libraries
             //Warning messages
             warningMsgCantCloneWithNoChildren = new GUIContent(LibraryTexture.iconWarningMsg, "No children to clone. You need to attach children to this GameObject in order to clone them. " +
                                                                                                 "If you want to clone this object, create a new empty GameObject and attach this object to it.");
-            warningMsgCanOnlyCloneWithTypeDeformation = new GUIContent(LibraryTexture.iconWarningMsg, "Cloning is only possible using ControlHandle Deformation.");
+            warningMsgCanOnlyCloneWithTypeDeformation = new GUIContent(LibraryTexture.iconWarningMsg, "Cloning is only possible when using type 'Deformation'.");
             warningMsgCanOnlyRandomizeWithTypeDeformation = new GUIContent(LibraryTexture.iconWarningMsg, "Randomizing offsets to children is only possible using ControlHandle Deformation.");
             warningMsgCantRandomizeWithNoChildren = new GUIContent(LibraryTexture.iconWarningMsg, "No children to randomize. You need to attach children to this GameObject in order to randomize them.");
             warningMsgCantDoRealtimeDeformation = new GUIContent(LibraryTexture.iconWarningMsg, "Cannot perform real-time deformations or generate the mesh in Play Mode or in a built application. " +

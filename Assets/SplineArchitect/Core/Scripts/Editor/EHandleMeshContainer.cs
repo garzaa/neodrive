@@ -97,7 +97,7 @@ namespace SplineArchitect
                         continue;
                 }
 
-                Mesh originMesh = GetOriginMeshFromMeshNameId(sharedMesh);
+                Mesh originMesh = ESplineObjectUtility.GetOriginMeshFromMeshNameId(sharedMesh);
 
                 if (originMesh != null && meshFilter != null)
                 {
@@ -158,28 +158,11 @@ namespace SplineArchitect
         public static void Update(SplineObject so, MeshContainer mc)
         {
             Mesh instanceMesh = mc.GetInstanceMesh();
-            Mesh originMesh = GetOriginMeshFromMeshNameId(instanceMesh);
+            Mesh originMesh = ESplineObjectUtility.GetOriginMeshFromMeshNameId(instanceMesh);
             mc.SetOriginMesh(originMesh == null ? instanceMesh : originMesh);
             mc.UpdateResourceKey();
             mc.SetInstanceMesh(HandleCachedResources.FetchInstanceMesh(mc));
             so.monitor.ForceUpdate();
-        }
-
-        public static Mesh GetOriginMeshFromMeshNameId(Mesh mesh)
-        {
-            Mesh originMesh = null;
-
-            string[] data = mesh.name.Split('*');
-            if (data.Length == 3)
-            {
-                if (int.TryParse(data[1], out int id))
-                {
-                    Object obj = UnityEditor.EditorUtility.InstanceIDToObject(id);
-                    if(obj is Mesh) originMesh = (Mesh)UnityEditor.EditorUtility.InstanceIDToObject(id);
-                }
-            }
-
-            return originMesh;
         }
 
         public static void RefreshInstanceMesh(SplineObject so, MeshContainer mc)
