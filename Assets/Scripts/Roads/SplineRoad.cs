@@ -1,29 +1,30 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Splines;
 using Unity.Mathematics;
+using SplineArchitect.Objects;
+using NaughtyAttributes;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(MeshCollider))]
 public class SplineRoad : MonoBehaviour {
-	public SplineContainer splineContainer;
-	MeshFilter meshFilter;
+	public Spline spline;
 	MeshCollider meshCollider;
 
 	// these will make up either edge of the road
-	List<Vector3> leftVerts = new();
-	List<Vector3> rightVerts = new();
+	readonly List<Vector3> leftVerts = new();
+	readonly List<Vector3> rightVerts = new();
 
 	[Tooltip("Amount of segments per world space unit")]
-	public int resolution = 8;
+	public int resolution = 1;
 	public float width = 5f;
 
 	public float textureScale = 1f;
 
-	float splineLength;
+	readonly Vector3[] rightUpForward = new Vector3[3];
+	Vector3 pos;
 
 	void OnEnable() {
-		meshFilter = GetComponent<MeshFilter>();
 		meshCollider = GetComponent<MeshCollider>();
 	}
 
@@ -36,27 +37,27 @@ public class SplineRoad : MonoBehaviour {
 	}
 
 	void SampleSplineWidth(float t, out Vector3 left, out Vector3 right) {
-		splineContainer.Evaluate(t, out float3 pos, out float3 forward, out float3 up);
-		float3 rightVec = Vector3.Cross(forward, up).normalized;
-		left = pos - (rightVec * width / 2f);
-		right = pos + (rightVec * width / 2f);
+		spline.GetNormalsNonAlloc(rightUpForward, t);
+		pos = spline.GetPosition(t, Space.World);
+		left = pos + (rightUpForward[0] * width / 2f);
+		right = pos - (rightUpForward[0] * width / 2f);
 	}
 
 	void GetVerts() {
 		leftVerts.Clear();
 		rightVerts.Clear();
-		splineLength = splineContainer.CalculateLength();
-		float actualResolution = resolution * splineLength;
-		float step = 1f / actualResolution;
-		for (int i = 0; i < actualResolution+1; i++) {
-			float t = step * i;
+		float actualResolution = resolution * spline.length;
+		for (int i = 0; i < actualResolution; i++) {
+			float t = i / actualResolution;
 			SampleSplineWidth(t, out Vector3 left, out Vector3 right);
 			leftVerts.Add(left);
 			rightVerts.Add(right);
 		}
 	}
 
+	[Button("Build Mesh")]
 	void BuildMesh() {
+		if (spline == null) return;
 		GetVerts();
 		// mesh filter thing has the mesh scaling weirdly
 		Mesh m = new();
@@ -86,7 +87,7 @@ public class SplineRoad : MonoBehaviour {
 			verts.AddRange(new Vector3[] { p1, p2, p3, p4 });
 			tris.AddRange(new int[] { t1, t2, t3, t4, t5, t6 });
 
-			float distance = (1f / length) * splineLength;
+			float distance = (1f / length) * spline.length;
 			float uvDistance = uvOffset + (distance / textureScale);
 			uvs.AddRange(new Vector2[] {
 				new(uvOffset, 0),
@@ -99,13 +100,10 @@ public class SplineRoad : MonoBehaviour {
 
 		m.SetVertices(verts);
 		m.SetTriangles(tris, 0);
-		m.SetUVs(0, uvs);
 		m.Optimize();
-		m.RecalculateNormals();
 		m.RecalculateTangents();
 		m.RecalculateBounds();
-		meshFilter.sharedMesh = m;
-		meshFilter.sharedMesh.RecalculateNormals(20);
 		meshCollider.sharedMesh = m;
+		gameObject.layer = LayerMask.NameToLayer("Ground");
 	}
 }

@@ -28,7 +28,8 @@ MonoBehaviour:
   drivelineFlex: 1.5
   brakeForce: 300
   launchBoost: 10
-  drag: 0.2
+  drag: 0.25
+  downforceRatio: 0.5
   maxSteerAngle: 20
   steerSpeed: 60
   steerLimitCurve:

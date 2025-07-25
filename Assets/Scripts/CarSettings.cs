@@ -29,6 +29,8 @@ public class CarSettings : ScriptableObject {
 	public float launchBoost = 10f;
 
 	public float drag = 0.3f;
+	[Tooltip("Take drag and push the car down by this much of it")]
+	public float downforceRatio = 0.5f;
 	
 	[Header("Steering")]
 	public float maxSteerAngle = 30;

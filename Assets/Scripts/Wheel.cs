@@ -78,8 +78,10 @@ public class Wheel : MonoBehaviour {
 		float minDist = float.MaxValue;
 		bool hasHit = false;
 		foreach (Vector3 rayOffset in wheelCastRays) {
+			Vector3 actualOffset = transform.TransformVector(rayOffset);
 			if (Physics.Raycast(
-				new Ray(transform.position + rayOffset + transform.up*wheelRadius, -transform.up),
+				// TODO: this needs to cast down according to the car's normal?
+				new Ray(transform.position + actualOffset + transform.up*wheelRadius, -transform.up),
 				out RaycastHit tempHit,
 				settings.suspensionTravel + wheelRadius,
 				settings.wheelRaycast
@@ -108,12 +110,21 @@ public class Wheel : MonoBehaviour {
 			suspensionCompression = 0;
 		}
 
-		suspensionForce = transform.up * (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength;
+		suspensionForce = (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength * transform.up;
 		suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
 
 		suspensionCompressionLastStep = suspensionCompression;
 		UpdateTelemetry();
 		return suspensionForce;
+	}
+
+	void OnDrawGizmosSelected() {
+		if (!Application.isPlaying) return;
+		foreach (Vector3 rayOffset in wheelCastRays) {
+			Vector3 actualOffset = transform.TransformVector(rayOffset);
+			Vector3 start = transform.position + actualOffset + transform.up*wheelRadius;
+			Debug.DrawLine(start, start - transform.up*(settings.suspensionTravel+wheelRadius));
+		};
 	}
 
 	void UpdateTelemetry() {
@@ -163,7 +174,7 @@ public class Wheel : MonoBehaviour {
 		// do not simplify this no matter how much vscode complains
 		// unity's serialization screws with the null checks
 		if (wheelFire != null) {
-			wheelFire.SetActive(boosting);
+			wheelFire.SetActive(boosting && Grounded);
 		}
 
 		// pin skidmarks to ground

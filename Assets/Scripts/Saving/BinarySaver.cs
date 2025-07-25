@@ -135,7 +135,8 @@ public class BinarySaver {
         string[] saveVersion = testVersion.Split('.');
         string[] currentVersion = applicationVersion.Split('.');
 
-        return saveVersion[0].Equals(currentVersion[0]);
+		// not semver but dont want to major version bump every time I change a track or drag coefficient
+        return saveVersion[0].Equals(currentVersion[0]) && saveVersion[1].Equals(currentVersion[1]);
     }
 	
 	public string GetMedalForTrack(string trackName) {

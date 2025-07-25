@@ -33,7 +33,6 @@ public static class NormalSolver
 
 		List<Vector3> unweldedVerticesList = new List<Vector3>();
 		int[][] unweldedSubTriangles = new int[mesh.subMeshCount][];
-		List<Vector2> unweldedUvsList = new List<Vector2>();
 		int currVertex = 0;
 
 		for (int i = 0; i < mesh.subMeshCount; i++)
@@ -41,23 +40,19 @@ public static class NormalSolver
 			int[] triangles = mesh.GetTriangles(i);
 			Vector3[] unweldedVertices = new Vector3[triangles.Length];
 			int[] unweldedTriangles = new int[triangles.Length];
-			Vector2[] unweldedUVs = new Vector2[unweldedVertices.Length];
 
 			for (int j = 0; j < triangles.Length; j++)
 			{
 				unweldedVertices[j] = vertices[triangles[j]]; //unwelded vertices are just all the vertices as they appear in the triangles array
-				unweldedUVs[j] = uvs[triangles[j]];
 				unweldedTriangles[j] = currVertex; //the unwelded triangle array will contain global progressive vertex indexes (1, 2, 3, ...)
 				currVertex++;
 			}
 
 			unweldedVerticesList.AddRange(unweldedVertices);
 			unweldedSubTriangles[i] = unweldedTriangles;
-			unweldedUvsList.AddRange(unweldedUVs);
 		}
 
 		mesh.vertices = unweldedVerticesList.ToArray();
-		mesh.uv = unweldedUvsList.ToArray();
 
 		for (int i = 0; i < mesh.subMeshCount; i++)
 		{

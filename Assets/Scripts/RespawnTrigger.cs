@@ -11,7 +11,7 @@ public class RespawnTrigger : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
-			car.Respawn();
+			StartCoroutine(car.Respawn());
 		}
 	}
 }

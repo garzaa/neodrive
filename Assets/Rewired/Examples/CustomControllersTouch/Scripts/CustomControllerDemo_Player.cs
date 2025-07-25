@@ -38,7 +38,7 @@ namespace Rewired.Demos {
                 player.GetAxis("Move Vertical")
             );
 
-            cc.Move(moveVector * speed * Time.deltaTime);
+            cc.Move(speed * Time.deltaTime * moveVector);
 
             if(player.GetButtonDown("Fire")) {
                 Vector3 offset = Vector3.Scale(new Vector3(1, 0, 0), transform.right);

@@ -35,6 +35,9 @@ public class CameraRotate : MonoBehaviour {
 
     Quaternion rotateVelocity;
 
+    int prevCam;
+    bool allowChange = true;
+
     float respawnTime;
 
     void Start() {
@@ -49,8 +52,19 @@ public class CameraRotate : MonoBehaviour {
     }
 
     void CycleCamera() {
+        if (!allowChange) return;
         for (int i=0; i<cameras.Count; i++) {
             if (i == currentCamera) {
+                cameras[i].enabled = true;
+            } else {
+                cameras[i].enabled = false;
+            }
+        }
+    }
+
+    void SetCamera(int idx) {
+        for (int i=0; i<cameras.Count; i++) {
+            if (i == idx) {
                 cameras[i].enabled = true;
             } else {
                 cameras[i].enabled = false;
@@ -157,5 +171,16 @@ public class CameraRotate : MonoBehaviour {
 
     public void OnRespawn() {
         respawnTime = Time.time;
+    }
+
+    public void ForceFirstPerson() {
+        prevCam = currentCamera;
+        allowChange = false;
+        SetCamera(1);
+    }
+
+    public void StopForcingFirstPerson() {
+        SetCamera(prevCam);
+        allowChange = true;
     }
 }

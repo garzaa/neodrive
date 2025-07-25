@@ -7,6 +7,7 @@ using System.Linq;
 using Cinemachine;
 using System;
 using NaughtyAttributes;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -321,6 +322,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void StopPlayingGhost(Ghost g) {
+		if (g == null) return;
 		if (!playingGhosts.ContainsKey(g.playerName)) return;
 		HaltGhost(playingGhosts[g.playerName].car);
 	}

@@ -77,8 +77,7 @@ public class Car : MonoBehaviour {
     Speedometer speedometer;
     NitroxMeter nitroxMeter;
     public Animator perfectShiftEffect;
-    public Animator alertAnimator;
-    Text alertText;
+    AlertText alertText;
 
     public AudioSource perfectShiftAudio;
     public int lastGear;
@@ -119,7 +118,6 @@ public class Car : MonoBehaviour {
     public ParticleSystem collisionHitmarker;
     MaterialPropertyBlock shaderBlock;
     MeshRenderer carMesh;
-    MeshCollider meshCollider;
 
     public bool Drifting {
         get {
@@ -146,7 +144,7 @@ public class Car : MonoBehaviour {
         foreach (TrailRenderer t in tireSkids) {
             t.emitting = false;
         }
-        alertText = alertAnimator.GetComponentInChildren<Text>();
+        alertText = GetComponentInChildren<AlertText>();
         tachometer = GetComponentInChildren<Tachometer>();
         speedometer = GetComponentInChildren<Speedometer>();
         nitroxMeter = GetComponentInChildren<NitroxMeter>();
@@ -161,7 +159,6 @@ public class Car : MonoBehaviour {
         shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
         carMesh.GetPropertyBlock(shaderBlock, 0);
-        meshCollider = GetComponentInChildren<MeshCollider>();
         startPoint = transform.position;
         startRotation = transform.rotation;
     }
@@ -217,8 +214,8 @@ public class Car : MonoBehaviour {
         }
 
         if (InputManager.ButtonDown(Buttons.PAUSE) && InputManager.Button(Buttons.CLUTCH)) {
-            Respawn();
-        }
+			StartCoroutine(Respawn());
+		}
 
         if (clutch) {
             if (InputManager.ButtonDown(Buttons.GEAR1)) {
@@ -289,7 +286,7 @@ public class Car : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (rb.velocity.sqrMagnitude > 25 * mph2u && collision.contacts[0].thisCollider == meshCollider) {
+        if (rb.velocity.sqrMagnitude > 5 * mph2u) {
             gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
             // ok need ot not play this when the wheel colliders hit. howmst
             collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(
@@ -383,13 +380,23 @@ public class Car : MonoBehaviour {
                 forwardForce *= forwardTraction;
                 rb.AddForceAtPosition(forwardForce, rearAxle);
 
+                if (drifting) {
+                    float lostForce = Vector3.Dot(forwardForce, -rb.velocity);
+                    // if drive force is pushing the car against its velocity
+                    // and therefore slowing it down
+                    if (lostForce > 0) {
+                        lostForce = Mathf.Abs(lostForce) + (forwardForce.magnitude / forwardTraction * settings.driftBoost);
+                        rb.AddForce(lostForce * settings.driftBoost * Vector3.Project(rb.velocity, transform.right).normalized);
+                    }
+                }
+
 				// on a burnout, push the rear end sideways
                 float sidewaysVelocity = Vector3.Project(rb.velocity, transform.right).sqrMagnitude;
                 if (sidewaysVelocity > 0.01f) {
-                    rb.AddForceAtPosition(forwardForce * (1-forwardTraction) * Mathf.Sign(sidewaysVelocity), rearAxle);
+                    rb.AddForceAtPosition((1-forwardTraction) * Mathf.Sign(sidewaysVelocity) * forwardForce, rearAxle);
                 }
             } else {
-                if (engineRunning) rb.AddForce(-Vector3.Project(rb.velocity, transform.forward) * (engineRPM/engine.redline) * engine.engineBraking);
+                if (engineRunning) rb.AddForce((engineRPM/engine.redline) * engine.engineBraking * -Vector3.Project(rb.velocity, transform.forward));
             }
         }
 
@@ -398,7 +405,7 @@ public class Car : MonoBehaviour {
             if ((flatSpeed.magnitude*u2mph) < 1) {
                 rb.velocity -= flatSpeed;
             } else {
-                rb.AddForce(-flatSpeed.normalized * brake * settings.brakeForce);
+                rb.AddForce(brake * settings.brakeForce * -flatSpeed.normalized);
             }
         }
 
@@ -439,7 +446,7 @@ public class Car : MonoBehaviour {
             tireSkid.mute = false;
             if (drifting) {
                 driftingTime += Time.fixedDeltaTime;
-                Alert("Drift\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"));
+                Alert("Drift\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
                 nitroxMeter.Add(settings.driftNitroGain * Time.fixedDeltaTime);
             } else {
                 driftingTime = 0;
@@ -450,9 +457,10 @@ public class Car : MonoBehaviour {
             driftingTime = 0;
         }
 
-        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.002f;
+        float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.1f;
         if (gas==0 || fuelCutoff) dragForce = 0;
-        rb.AddForce(-rb.velocity*dragForce, ForceMode.Force);
+        rb.AddForce((-rb.velocity.normalized)*dragForce, ForceMode.Force);
+        if (grounded) rb.AddForce(-dragForce * settings.downforceRatio * transform.up);
 
         UpdateTelemetry();
         clutchOutThisFrame = false;
@@ -464,7 +472,7 @@ public class Car : MonoBehaviour {
             5, 
             1 << LayerMask.NameToLayer("Ground")
         ) && !grounded && rb.velocity.sqrMagnitude < 2f) {
-            rb.AddTorque(transform.forward * steering * -75, ForceMode.Acceleration);
+            rb.AddTorque(-75 * steering * transform.forward, ForceMode.Acceleration);
         }
 
         if (!grounded) {
@@ -509,7 +517,7 @@ public class Car : MonoBehaviour {
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             nitroxMeter.Add(engine.maxPower*5);
                             clutchRatio = 0.5f;
-                            rb.AddForce(transform.forward*(settings.launchBoost * mph2u)*Mathf.Sign(currentGear), ForceMode.VelocityChange);
+                            rb.AddForce((settings.launchBoost * mph2u) * Mathf.Sign(currentGear) * transform.forward, ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, transform.forward) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
                         }
@@ -653,7 +661,7 @@ public class Car : MonoBehaviour {
                 if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*settings.gripLimitThreshold && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
                     timeAtEdge += Time.fixedDeltaTime;
                     if (timeAtEdge > 0.2f) {
-                        Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"));
+                        Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"), constant: true);
                         nitroxMeter.Add(settings.edgeNitroGain * Time.fixedDeltaTime);
                     }
                 } else {
@@ -703,7 +711,7 @@ public class Car : MonoBehaviour {
         rb.AddForceAtPosition(tireForce, point, ForceMode.Acceleration);
         float slowdownForce = Vector3.Project(tireForce, -flatVelocity).magnitude;
         if (drifting) {
-            Vector3 v = transform.forward*settings.driftBoost*slowdownForce * (ignition ? gas : 0);
+            Vector3 v = (ignition ? gas : 0) * settings.driftBoost * slowdownForce * transform.forward;
             v = Quaternion.AngleAxis(targetSteerAngle, transform.up) * v;
             rb.AddForceAtPosition(v, point, ForceMode.Acceleration);
         }
@@ -730,16 +738,8 @@ public class Car : MonoBehaviour {
         }
     }
 
-    void Alert(string text, bool immediate=true) {
-        // TODO: if constant, wait for the current alert animation to finish
-        // trigger vs triggerImmediate?
-        // or actually, immediate vs not immediate if it's continuous drifting
-        // not immediate should wait for it to finish
-        // or well hmm it shouldn't wait for itself to finish
-        // maybe immediate should have its own state that has to finish. ok, that works
-        // triggerImmediate
-        alertText.text = text;
-        alertAnimator.SetTrigger("Trigger");
+    void Alert(string text, bool constant=false) {
+        alertText.Alert(text, constant);
     }
 
     public void ChangeGear(int to, bool shifter = false) {
@@ -752,6 +752,10 @@ public class Car : MonoBehaviour {
         assistDisabled = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
         assistDisabled = false;
+        if (drifting && lastGear == currentGear) {
+            Alert("clutch kick\n+"+settings.driftNitroGain);
+            nitroxMeter.Add(settings.driftNitroGain);
+        }
         carBody.maxXAngle /= 2f;
     }
 
@@ -780,10 +784,10 @@ public class Car : MonoBehaviour {
             rb.AddTorque(-spin);
         }
 
-        rb.AddTorque(transform.up * steering * 50 * settings.airSpinControl);
+        rb.AddTorque(50 * settings.airSpinControl * steering * transform.up);
 
-        rb.AddTorque(transform.right * InputManager.GetAxis(Buttons.CAM_Y) * 50 * settings.airPitchControl);
-        rb.AddTorque(-transform.forward * InputManager.GetAxis(Buttons.CAM_X) * 50 * settings.airPitchControl);
+        rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_Y) * settings.airPitchControl * transform.right);
+        rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_X) * settings.airPitchControl * -transform.forward);
 
         if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
             rb.angularVelocity = Vector3.zero;
@@ -823,7 +827,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded) {
             InputManager.player.StopVibration();
             return;
         }
@@ -901,11 +905,11 @@ public class Car : MonoBehaviour {
         engineRunning = false;
     }
 
-    public void Respawn() {
+    public IEnumerator Respawn() {
         nitroxMeter.Reset();
         currentGear = 0;
         engineRPM = engine.idleRPM;
-        engineRunning = true;
+        engineRunning = false;
         drifting = false;
         boosting = false;
         foreach (Wheel w in wheels) {
@@ -922,6 +926,8 @@ public class Car : MonoBehaviour {
 		rb.position = startPoint;
         rb.rotation = startRotation;
         transform.SetPositionAndRotation(startPoint, startRotation);
+        yield return new WaitForEndOfFrame();
+        engineRunning = true;
         onRespawn.Invoke();
     }
 }
