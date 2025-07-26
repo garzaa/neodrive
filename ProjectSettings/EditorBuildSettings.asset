@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Tracks/Test Track.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Tracks/Tutorial.unity
+    path: Assets/Scenes/Tracks/Tutorial Old.unity
     guid: 2c7fd0e40e7188140beba6582eab2aeb
   - enabled: 1
     path: Assets/Scenes/Tracks/Desert Speedway.unity

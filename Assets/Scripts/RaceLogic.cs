@@ -52,6 +52,10 @@ public class RaceLogic : MonoBehaviour {
 
 	readonly List<string> expiredGhosts = new();
 
+	public Text timeContainer;
+	public GameObject medalContainer;
+	Image[] medals;
+
 	struct NameTimePair {
 		public string name;
 		public float time;
@@ -342,6 +346,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void HideResults() {
+		StopCoroutine(nameof(ShowResults));
 		resultsCanvas.SetActive(false);
 	}
 
@@ -383,7 +388,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	IEnumerator ShowResults() {
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(1f);
 		resultsCanvas.SetActive(true);
 		// write the last time
 		// then the best time
