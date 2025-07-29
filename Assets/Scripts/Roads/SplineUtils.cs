@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using SplineArchitect.Objects;
+using NaughtyAttributes;
 
 [ExecuteInEditMode]
 public class SplineUtils : MonoBehaviour {
@@ -88,7 +89,7 @@ public class SplineUtils : MonoBehaviour {
 		spline.segments[^1].zRotation = 45f;
 	}
 
-	[ContextMenu("Remove Loop")]
+	[Button("Remove Loop")]
 	public void RemoveLoop() {
 		// add more as you add more vertices
 		spline.RemoveSegment(spline.segments.Count-1);
@@ -99,7 +100,7 @@ public class SplineUtils : MonoBehaviour {
 		spline.RemoveSegment(spline.segments.Count-1);
 	}
 
-	[ContextMenu("Fix Spline LODs")]
+	[Button("Fix Spline LODs")]
 	void FixBounds() {
 		foreach (LODGroup lod in GetComponentsInChildren<LODGroup>()) {
 			lod.RecalculateBounds();

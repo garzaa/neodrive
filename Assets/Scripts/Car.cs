@@ -245,6 +245,8 @@ public class Car : MonoBehaviour {
             foreach (Wheel w in wheels) {
                 float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
                 if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
+                    // this is way too fast for some reason
+                    // wheel RPM from engine RPM is too high?
                     rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction);
                     if (!grounded) {
                         rpm = GetWheelRPMFromEngineRPM(engineRPM);

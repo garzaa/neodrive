@@ -41,7 +41,7 @@ Material:
     m_Floats:
     - _DepthDensity: 0.417
     - _DistanceDensity: 0.02
-    - _EdgeFoamDepth: 0.1
+    - _EdgeFoamDepth: 1.7
     - _FancyShadows: 0
     - _FoamContribution: 0.471
     - _FoamNoiseScale: 0.775
@@ -54,7 +54,7 @@ Material:
     - _SparkleExponent: 25000
     - _SparkleScale: 169.84
     - _SparkleSpeed: 0.02
-    - _SunSpecularExponent: 1
+    - _SunSpecularExponent: 25.38
     - _VertexNormalDelta: 0.01
     - _Wave1Amplitude: 0.01
     - _Wave1Direction: 0.382
@@ -75,5 +75,5 @@ Material:
     - _ShadowColor: {r: 0.047080822, g: 0.36790922, b: 0.4339623, a: 1}
     - _ShallowColor: {r: 1.1505303, g: 1.299991, b: 0.8891448, a: 1}
     - _SparkleColor: {r: 0.740566, g: 1, b: 0.9357789, a: 1}
-    - _SunSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SunSpecularColor: {r: 1, g: 0.5658158, b: 0.23113209, a: 1}
   m_BuildTextureStacks: []

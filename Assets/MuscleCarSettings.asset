@@ -62,7 +62,7 @@ MonoBehaviour:
   tcsBraking: 0.7
   gripLimitThreshold: 0.7
   lcs: 1
-  burnoutThreshold: 24
+  burnoutThreshold: 25
   lcsLimit: 1
   driftBoost: 1
   driftControl: 3
