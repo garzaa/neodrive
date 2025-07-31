@@ -316,6 +316,10 @@ namespace SplineArchitect.Ui
                     {
                         EHandleUi.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgSplineObjectGenerateDeformationsRuntime);
                     }
+                    else if(so.gameObject.isStatic && so.componentMode != ComponentMode.REMOVE_FROM_BUILD)
+                    {
+                        EHandleUi.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgStaticSplineObject);
+                    }
                     else EHandleUi.CreateInfoMessageIcon(LibraryGUIContent.infoMsgACOComponentMode);
                     EHandleUi.CreatePopupField("Component:", 70, (int)so.componentMode, componentModeOptions, (int newValue) =>
                     {

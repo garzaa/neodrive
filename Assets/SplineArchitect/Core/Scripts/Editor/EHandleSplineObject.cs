@@ -77,23 +77,6 @@ namespace SplineArchitect
             detachList.Clear();
         }
 
-        public static void OnHierarchyChange()
-        {
-            SplineObject selectedSplineObject = EHandleSelection.selectedSplineObject;
-
-            if (selectedSplineObject == null)
-                return;
-
-            ESplineObjectUtility.CleanPrimitiveColliders(selectedSplineObject);
-            ESplineObjectUtility.TryAttachPrimitiveColliders(selectedSplineObject);
-
-            foreach(SplineObject selectedSplineObject2 in EHandleSelection.selectedSplineObjects)
-            {
-                ESplineObjectUtility.CleanPrimitiveColliders(selectedSplineObject2);
-                ESplineObjectUtility.TryAttachPrimitiveColliders(selectedSplineObject2);
-            }
-        }
-
         public static void UpdateInfo(SplineObject so)
         {
             meshCountContainer.Clear();
@@ -310,7 +293,7 @@ namespace SplineArchitect
                     childSo.SetInstanceMeshesToOriginMesh();
                     childSo.transform.localPosition = childSo.localSplinePosition;
                     childSo.transform.localRotation = childSo.localSplineRotation;
-                    childSo.CalculatePrimitiveCollidersForDeformation(true);
+                    childSo.UpdateExternalComponents(true);
                     Object.DestroyImmediate(childSo);
                 }
             }
@@ -320,7 +303,7 @@ namespace SplineArchitect
             spline.followerUpdateList.Add(so);
             DeformationUtility.UpdateFollowers(spline);
             EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-            so.CalculatePrimitiveCollidersForDeformation(true);
+            so.UpdateExternalComponents(true);
         }
 
         public static void ConvertToDeformation(Spline spline, SplineObject so, SplineObject.Type oldType)

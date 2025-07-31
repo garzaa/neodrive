@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Assertions.Must;
 
 public class Wheel : MonoBehaviour {
 	CarSettings settings;
@@ -194,5 +195,10 @@ public class Wheel : MonoBehaviour {
 		foreach (TrailRenderer t in GetComponentsInChildren<TrailRenderer>()) {
 			t.Clear();
 		}
+	}
+
+	public void ApplyCustomWheel(CustomWheel w) {
+		normalMesh.material = w.defaultMaterial;
+		speedMesh.material = w.spinningMaterial;
 	}
 }

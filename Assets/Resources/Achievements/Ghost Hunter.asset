@@ -17,3 +17,4 @@ MonoBehaviour:
   rare: 1
   secret: 0
   titleOverride: 
+  wheelUnlock: {fileID: 11400000, guid: 3c6dda4ac6e7e0d4785805644b79b5f0, type: 2}

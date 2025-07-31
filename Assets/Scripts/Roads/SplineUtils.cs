@@ -12,14 +12,14 @@ public class SplineUtils : MonoBehaviour {
 
 	void Start() {
 		GetSpline();
-		FixBounds();
+		// FixBounds();
 	}
 
 	void GetSpline() {
 		if (spline == null) spline = GetComponent<Spline>();
 	}
 
-	[ContextMenu("Add Loop")]
+	[Button("Add Loop")]
 	public void AddLoop() {
 		// three segments. look at the tangent direction of the last segment
 		GetSpline();

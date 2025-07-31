@@ -175,7 +175,7 @@ namespace SplineArchitect.Objects
                     completeAction.Invoke(so, mc, vertices);
                 }
 
-                so.CalculatePrimitiveCollidersForDeformation();
+                so.UpdateExternalComponents();
             }
 
             DeformationUtility.DisposeDeformJob(deformJob);

@@ -47,7 +47,7 @@ namespace SplineArchitect
         public static void AddSpline(Spline spline)
         {
 #if UNITY_EDITOR
-            if (EHandlePrefab.IsOwnedByPrefab(spline.gameObject))
+            if (EHandlePrefab.IsPartOfActivePrefabStage(spline.gameObject))
             {
                 registrySplinesPrefabStage.Add(spline);
                 return;
@@ -90,7 +90,7 @@ namespace SplineArchitect
         public static void AddSplineConnector(SplineConnector sc)
         {
 #if UNITY_EDITOR
-            if (EHandlePrefab.IsOwnedByPrefab(sc.gameObject))
+            if (EHandlePrefab.IsPartOfActivePrefabStage(sc.gameObject))
             {
                 registrySplineConnectorsPrefabStage.Add(sc);
                 return;

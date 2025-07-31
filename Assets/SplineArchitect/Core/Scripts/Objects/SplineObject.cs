@@ -89,8 +89,6 @@ namespace SplineArchitect.Objects
         [HideInInspector]
         public List<MeshContainer> meshContainers;
         [HideInInspector]
-        public List<Collider> primitiveColliders;
-        [HideInInspector]
         public ComponentMode componentMode = ComponentMode.REMOVE_FROM_BUILD;
 
         //Runtime data
@@ -188,12 +186,13 @@ namespace SplineArchitect.Objects
             if (meshContainers == null) 
                 meshContainers = new List<MeshContainer>();
 
-            if (primitiveColliders == null) 
-                primitiveColliders = new List<Collider>();
-
             if (type == Type.DEFORMATION)
             {
 #if UNITY_EDITOR
+                //Turn of static when playing in the editor for all deformations. Else the static batached mesh will be offseted (only in editor playmode).
+                if (Application.isPlaying && gameObject.isStatic)
+                    gameObject.isStatic = false;
+
                 //Important to wait after EHandleEvents.sceneIsLoadedPlaymodeduring Playmode in the editor. Else we cant access vertices on meshes with isReadable = false;
                 if (!Application.isPlaying || EHandleEvents.sceneIsLoadedPlaymode)
                 {
@@ -377,41 +376,6 @@ namespace SplineArchitect.Objects
         public bool ContainsMeshContainer(MeshContainer mc)
         {
             return meshContainers.Contains(mc);
-        }
-
-        /// <summary>
-        /// Adds a primitive collider to the SplineObject's list of colliders.
-        /// </summary>
-        /// <param name="collider">The primitive collider to add (Box, Sphere, or Capsule).</param>
-        public void AddPrimitiveCollider(Collider collider)
-        {
-            if (!(collider is BoxCollider) && !(collider is SphereCollider) && !(collider is CapsuleCollider))
-                return;
-
-            if (primitiveColliders.Contains(collider))
-                return;
-
-            primitiveColliders.Add(collider);
-        }
-
-        /// <summary>
-        /// Removes a primitive collider from the SplineObject's list of colliders.
-        /// </summary>
-        /// <param name="collider">The collider to remove.</param>
-        public void RemovePrimitiveCollider(Collider collider)
-        {
-            if (primitiveColliders.Contains(collider))
-                primitiveColliders.Remove(collider);
-        }
-
-        /// <summary>
-        /// Checks if the SplineObject contains the specified primitive collider.
-        /// </summary>
-        /// <param name="collider">The collider to check.</param>
-        /// <returns>True if the collider exists, otherwise false.</returns>
-        public bool ContainsPrimitiveCollider(Collider collider)
-        {
-            return primitiveColliders.Contains(collider);
         }
 
         /// <summary>
@@ -614,7 +578,7 @@ namespace SplineArchitect.Objects
                 monitor.UpdateParent();
             }
 
-            CalculatePrimitiveCollidersForDeformation(true);
+            UpdateExternalComponents(true);
         }
 
         /// <summary>
@@ -631,7 +595,7 @@ namespace SplineArchitect.Objects
             transform.localPosition = localSplinePosition;
             transform.localRotation = localSplineRotation;
 
-            CalculatePrimitiveCollidersForDeformation(true);
+            UpdateExternalComponents(true);
         }
 
         /// <summary>
@@ -645,39 +609,70 @@ namespace SplineArchitect.Objects
             Destroy(this);
         }
 
-        /// <summary>
-        /// Calculates and updates the properties of primitive colliders (Box, Sphere, Capsule) in the SplineObject based on its mesh localBounds for deformations.
-        /// </summary>
-        public void CalculatePrimitiveCollidersForDeformation(bool useOriginMesh = false)
+        public void UpdateExternalComponents(bool useOriginMesh = false)
         {
-            if (meshContainers.Count == 0)
-                return;
-
-            Mesh mesh = meshContainers[0].GetInstanceMesh();
-
-            if (useOriginMesh)
-                mesh = meshContainers[0].GetOriginMesh();
-
-            foreach (Collider collider in primitiveColliders)
+            for(int i = 0; i < gameObject.GetComponentCount(); i++)
             {
-                if (collider is BoxCollider)
+                Component component = gameObject.GetComponentAtIndex(i);
+
+                if (component == null)
+                    continue;
+
+                //Update primitive colliders
+                if (component is Collider)
                 {
-                    BoxCollider boxCollider = collider as BoxCollider;
-                    boxCollider.center = mesh.bounds.center;
-                    boxCollider.size = mesh.bounds.size;
+                    Mesh mesh = null;
+
+                    if(meshContainers != null && meshContainers.Count > 0)
+                    {
+                        mesh = meshContainers[0].GetInstanceMesh();
+
+                        if (useOriginMesh)
+                            mesh = meshContainers[0].GetOriginMesh();
+                    }
+
+                    Collider collider = component as Collider;
+
+                    if (collider is BoxCollider)
+                    {
+                        BoxCollider boxCollider = collider as BoxCollider;
+                        if(mesh == null) boxCollider.center = transform.InverseTransformPoint(splineParent.SplinePositionToWorldPosition(splinePosition));
+                        else
+                        {
+                            boxCollider.center = mesh.bounds.center;
+                            boxCollider.size = mesh.bounds.size;
+                        }
+                    }
+                    else if (collider is SphereCollider)
+                    {
+                        SphereCollider sphereCollider = collider as SphereCollider;
+                        if (mesh == null) sphereCollider.center = transform.InverseTransformPoint(splineParent.SplinePositionToWorldPosition(splinePosition));
+                        else
+                        {
+                            sphereCollider.center = mesh.bounds.center;
+                            sphereCollider.radius = Mathf.Max(mesh.bounds.extents.x, mesh.bounds.extents.y, mesh.bounds.extents.z);
+                        }
+                    }
+                    else if (collider is CapsuleCollider)
+                    {
+                        CapsuleCollider capsuleCollider = collider as CapsuleCollider;
+                        if (mesh == null) capsuleCollider.center = transform.InverseTransformPoint(splineParent.SplinePositionToWorldPosition(splinePosition));
+                        else
+                        {
+                            capsuleCollider.center = mesh.bounds.center;
+                            capsuleCollider.radius = Mathf.Max(mesh.bounds.extents.x, mesh.bounds.extents.z);
+                            capsuleCollider.height = Mathf.Max(mesh.bounds.size.y, capsuleCollider.radius);
+                        }
+                    }
                 }
-                else if (collider is SphereCollider)
+                //Update LODGroup
+                else if(component is LODGroup)
                 {
-                    SphereCollider sphereCollider = collider as SphereCollider;
-                    sphereCollider.center = mesh.bounds.center;
-                    sphereCollider.radius = Mathf.Max(mesh.bounds.extents.x, mesh.bounds.extents.y, mesh.bounds.extents.z);
-                }
-                else if (collider is CapsuleCollider)
-                {
-                    CapsuleCollider capsuleCollider = collider as CapsuleCollider;
-                    capsuleCollider.center = mesh.bounds.center;
-                    capsuleCollider.radius = Mathf.Max(mesh.bounds.extents.x, mesh.bounds.extents.z);
-                    capsuleCollider.height = Mathf.Max(mesh.bounds.size.y, capsuleCollider.radius);
+                    LODGroup lodGroup = component as LODGroup;
+                    lodGroup.RecalculateBounds();
+
+                    if (lodGroup.animateCrossFading && type == Type.DEFORMATION)
+                        Debug.LogWarning("Using Animate Cross-fading on a Deformation may have undesired consequences.");
                 }
             }
         }

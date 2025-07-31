@@ -29,7 +29,7 @@ namespace SplineArchitect.Ui
 
         //Settings
         public const string toolName = "Spline Architect";
-        public const string versionNumber = "1.0.4";
+        public const string versionNumber = "1.0.6";
 
         //General
         public static GeneralMenu generalMenu { get; private set; }

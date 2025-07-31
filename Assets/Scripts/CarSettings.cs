@@ -67,4 +67,7 @@ public class CarSettings : ScriptableObject {
 		// it can push the car left and right in a straight line
 		return tireSlip;
 	}
+
+	[Header("Cosmetics")]
+	public CustomWheel customWheel;
 }

@@ -175,6 +175,10 @@ namespace SplineArchitect
                         so.transform.localPosition = so.localSplinePosition;
                         so.transform.localRotation = so.localSplineRotation;
                         so.monitor.UpdateSplineLength(spline.length);
+                        EActionToUpdate.Add(() => 
+                        {
+                            so.UpdateExternalComponents();
+                        }, EActionToUpdate.Type.LATE);
                         continue;
                     }
 

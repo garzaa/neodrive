@@ -83,7 +83,7 @@ namespace SplineArchitect
             return PrefabUtility.GetPrefabAssetType(go);
         }
 
-        public static bool IsOwnedByPrefab(GameObject go)
+        public static bool IsPartOfActivePrefabStage(GameObject go)
         {
             if (PrefabStageUtility.GetPrefabStage(go) != null)
                 return true;
@@ -108,9 +108,11 @@ namespace SplineArchitect
 
             foreach (Spline spline in HandleRegistry.GetSplines())
             {
-                if (spline == null) continue;
+                if (spline == null) 
+                    continue;
 
-                Debug.Log(spline.name);
+                if (!IsPartOfAnyPrefab(spline.gameObject) && !IsPartOfActivePrefabStage(spline.gameObject))
+                    return;
 
                 foreach (SplineObject so in spline.splineObjects)
                 {

@@ -59,7 +59,7 @@ namespace SplineArchitect
 
         private static void OnHierarchyChange()
         {
-            EHandleSplineObject.OnHierarchyChange();
+
         }
 
         private static void OnSelectionChange()

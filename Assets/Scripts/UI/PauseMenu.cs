@@ -60,7 +60,6 @@ public class PauseMenu : MonoBehaviour {
 
 		if (InputManager.ButtonDown(Buttons.UICANCEL)) {
 			if (paused && !pausedThisFrame) {
-				print(settingsMenu.activeInHierarchy);
 				if (settingsMenu.activeInHierarchy) {
 					HideSettings();
 				} else {

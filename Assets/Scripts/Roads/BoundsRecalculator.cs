@@ -13,6 +13,7 @@ public class BoundsRecalculator : MonoBehaviour {
 	[Button("Fix Spline LODs")]
 	void FixBounds() {
 		foreach (LODGroup lod in GetComponentsInChildren<LODGroup>()) {
+			print("recalcualted bounds on "+lod.name);
 			lod.RecalculateBounds();
 		}
 	}

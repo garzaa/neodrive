@@ -101,37 +101,10 @@ namespace SplineArchitect.Utility
                     return;
 
                 newSo.monitor.ForceUpdate();
-                TryAttachPrimitiveColliders(newSo);
 
                 //Auto set type to FOLLOWER if no mesh containers are present
                 if (newSo.meshContainers.Count == 0 && newSo.gameObject.GetComponentCount() > 2)
                     newSo.type = SplineObject.Type.FOLLOWER;
-            }
-        }
-
-        static public void TryAttachPrimitiveColliders(SplineObject so)
-        {
-            for (int i = 0; i < so.gameObject.GetComponentCount(); i++)
-            {
-                Component c = so.gameObject.GetComponentAtIndex(i);
-
-                if (!(c is Collider))
-                    continue;
-
-                so.AddPrimitiveCollider(c as Collider);
-            }
-        }
-
-        static public void CleanPrimitiveColliders(SplineObject so)
-        {
-            for (int i = so.primitiveColliders.Count - 1; i >= 0; i--)
-            {
-                Collider collider = so.primitiveColliders[i];
-
-                if (collider != null)
-                    continue;
-
-                so.primitiveColliders.RemoveAt(i);
             }
         }
 

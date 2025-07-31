@@ -9,13 +9,13 @@
 
 using System.Collections.Generic;
 
-using UnityEngine;
-using Unity.Jobs;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEngine;
 
-using SplineArchitect.Objects;
 using SplineArchitect.Jobs;
+using SplineArchitect.Objects;
 
 namespace SplineArchitect.Utility
 {

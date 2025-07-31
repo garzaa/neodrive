@@ -161,13 +161,17 @@ public class Car : MonoBehaviour {
         carMesh.GetPropertyBlock(shaderBlock, 0);
         startPoint = transform.position;
         startRotation = transform.rotation;
+
+        if (settings.customWheel) {
+            foreach (Wheel w in wheels) {
+                w.ApplyCustomWheel(settings.customWheel);
+            }
+        }
     }
 
     void Update() {
-        gas = InputManager.GetAxis(Buttons.GAS);
-        brake = InputManager.GetAxis(Buttons.BRAKE);
-        if (forceBrake) brake = 1;
-        steering = InputManager.GetAxis(Buttons.STEER);
+        UpdateInputs();
+
         bool currentClutch = InputManager.Button(Buttons.CLUTCH) || forceClutch;
         if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
@@ -175,7 +179,55 @@ public class Car : MonoBehaviour {
         }
         clutch = currentClutch;
 
-        if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
+        if (Time.timeScale > 0) {
+            foreach (Wheel w in wheels) {
+                float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
+                if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
+                    // this is way too fast for some reason
+                    // wheel RPM from engine RPM is too high?
+                    rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction);
+                    if (!grounded) {
+                        rpm = GetWheelRPMFromEngineRPM(engineRPM);
+                    }
+                }
+
+                bool wheelBoost = false;
+                if (w == WheelRR || w == WheelRL) {
+                    wheelBoost = boosting;
+                }
+                w.UpdateWheelVisuals(
+                    Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
+                    rpm,
+                    wheelBoost,
+                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
+                );
+            }
+        }
+
+        boostEffect.SetActive(boosting);
+
+        if (drifting || forwardTraction < 1f || boosting) {
+            tireSkidVolume = 1f;
+        } else {
+            tireSkidVolume = 0f;
+        }
+        tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
+        // not firing when tcsFrac is 0 for some reason
+        pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
+        UpdateVibration();
+        carMesh.GetPropertyBlock(shaderBlock, 0);
+        shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
+        carMesh.SetPropertyBlock(shaderBlock, 0);
+    }
+
+    void UpdateInputs() {
+        if (Time.timeScale == 0) return;
+        gas = InputManager.GetAxis(Buttons.GAS);
+        brake = InputManager.GetAxis(Buttons.BRAKE);
+        if (forceBrake) brake = 1;
+        steering = InputManager.GetAxis(Buttons.STEER);
+
+         if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
             gearshiftAudio.PlayOneShot(engine.clutchSound);
         }
 
@@ -241,50 +293,10 @@ public class Car : MonoBehaviour {
             }
         }
 
-        if (Time.timeScale > 0) {
-            foreach (Wheel w in wheels) {
-                float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
-                if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
-                    // this is way too fast for some reason
-                    // wheel RPM from engine RPM is too high?
-                    rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction);
-                    if (!grounded) {
-                        rpm = GetWheelRPMFromEngineRPM(engineRPM);
-                    }
-                }
-
-                bool wheelBoost = false;
-                if (w == WheelRR || w == WheelRL) {
-                    wheelBoost = boosting;
-                }
-                w.UpdateWheelVisuals(
-                    Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
-                    rpm,
-                    wheelBoost,
-                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
-                );
-            }
-        }
-
-        boostEffect.SetActive(boosting);
-
         if (settings.enableNitrox && InputManager.ButtonDown(Buttons.BOOST) && nitroxMeter.Ready()) {
             StartCoroutine(Boost());
             rb.AddRelativeTorque(-125, 0, 0, ForceMode.Acceleration);
         }
-
-        if (drifting || forwardTraction < 1f || boosting) {
-            tireSkidVolume = 1f;
-        } else {
-            tireSkidVolume = 0f;
-        }
-        tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
-        // not firing when tcsFrac is 0 for some reason
-        pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
-        UpdateVibration();
-        carMesh.GetPropertyBlock(shaderBlock, 0);
-        shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
-        carMesh.SetPropertyBlock(shaderBlock, 0);
     }
 
     void OnCollisionEnter(Collision collision) {
@@ -931,5 +943,11 @@ public class Car : MonoBehaviour {
         yield return new WaitForEndOfFrame();
         engineRunning = true;
         onRespawn.Invoke();
+    }
+
+    public void ApplyWheel(CustomWheel c) {
+        foreach (Wheel w in wheels) {
+            w.ApplyCustomWheel(c);
+        }
     }
 }

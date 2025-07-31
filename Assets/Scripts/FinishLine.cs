@@ -40,6 +40,12 @@ public class FinishLine : MonoBehaviour {
 		FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
 	}
 
+	// TODO: append checkpoints with their lap numbers
+	// and then track player splits based on that
+	// need to rework it if it's a lap time
+
+	// also the splits are fucked up for the canyon bends track
+
 	public void RestartTimers() {
 		raceTimer.Restart();
 		lapTimer.Restart();

@@ -388,11 +388,11 @@ Material:
     - _Parallax: 0.02
     - _ReceivesSSR: 1
     - _RefractionModel: 0
-    - _RimLight: 0
+    - _RimLight: 1
     - _RimLightOverridden: 0
     - _RimLightVisible: 1
     - _RimLight_FeatherOff: 0
-    - _RimLight_InsideMask: 0.315
+    - _RimLight_InsideMask: 0.493
     - _RimLight_Power: 0.1
     - _Rotate_EmissiveUV: 0
     - _Rotate_MatCapUV: 0
@@ -481,8 +481,8 @@ Material:
     - _utsVersionY: 8
     - _utsVersionZ: 5
     m_Colors:
-    - _1st_ShadeColor: {r: 0.28502136, g: 0.29368836, b: 0.3301887, a: 1}
-    - _2nd_ShadeColor: {r: 0.23909755, g: 0.24556077, b: 0.254717, a: 1}
+    - _1st_ShadeColor: {r: 0.5529412, g: 0.5686275, b: 0.6431373, a: 1}
+    - _2nd_ShadeColor: {r: 0.38039216, g: 0.4, b: 0.4509804, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}

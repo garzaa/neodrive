@@ -105,6 +105,7 @@ namespace SplineArchitect.Libraries
         //Error messages
         public static GUIContent errorMsgSplineGenerateDeformationsRuntime { get; private set; }
         public static GUIContent errorMsgSplineObjectGenerateDeformationsRuntime { get; private set; }
+        public static GUIContent errorMsgStaticSplineObject { get; private set; }
 
         //Texts
         public static GUIContent textDeformTerrain { get; private set; }
@@ -244,6 +245,7 @@ namespace SplineArchitect.Libraries
             errorMsgSplineGenerateDeformationsRuntime = new GUIContent(LibraryTexture.iconErrorMsg, "Can’t use 'Remove from build' when generating deformed meshes at runtime.");
             errorMsgSplineObjectGenerateDeformationsRuntime = new GUIContent(LibraryTexture.iconErrorMsg, "Can’t use 'Remove from build' when generating the deformed meshe at runtime. " +
                                                                                                  "You need to change the 'Deformations' option on the spline to something else then 'Generate'.");
+            errorMsgStaticSplineObject = new GUIContent(LibraryTexture.iconErrorMsg, "A static deformation needs to ne 'Removed from build'.");
 
             //Texts
             textDeformTerrain = new GUIContent("Deform terrain");

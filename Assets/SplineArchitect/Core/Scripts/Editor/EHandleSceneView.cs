@@ -40,7 +40,10 @@ namespace SplineArchitect
             mousePos.y = sceneView.position.height - mousePos.y;
 
             if (sceneDrawingArea.Contains(mousePos))
+            {
                 activeSceneView = sceneView;
+                SceneView.RepaintAll();
+            }
         }
 
         public static bool IsValid(SceneView sceneView)

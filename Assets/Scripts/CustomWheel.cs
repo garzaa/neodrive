@@ -6,4 +6,12 @@ using System.Collections.Generic;
 public class CustomWheel : ScriptableObject {
 	public Material defaultMaterial;
 	public Material spinningMaterial;
+	public string nameOverride;
+
+	public string GetName() {
+		if (string.IsNullOrEmpty(nameOverride)) {
+			return name;
+		}
+		return nameOverride;
+	}
 }
