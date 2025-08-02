@@ -47,9 +47,9 @@ public class Car : MonoBehaviour {
 
     public Text gearTelemetry;
     bool fuelCutoff = false;
-    int currentGear = 0;
+    public int currentGear { get; private set; }
     bool engineStarting = false;
-    bool engineRunning = false;
+    public bool engineRunning { get; private set; }
     bool engineStalling = false;
     
     Camera mainCamera;
@@ -132,6 +132,7 @@ public class Car : MonoBehaviour {
     EngineAudio engineAudio;
 
     void Start() {
+        currentGear = 0;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfGravity.transform.localPosition;
         wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};

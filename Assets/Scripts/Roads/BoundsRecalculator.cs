@@ -13,8 +13,15 @@ public class BoundsRecalculator : MonoBehaviour {
 	[Button("Fix Spline LODs")]
 	void FixBounds() {
 		foreach (LODGroup lod in GetComponentsInChildren<LODGroup>()) {
-			print("recalcualted bounds on "+lod.name);
 			lod.RecalculateBounds();
+		}
+	}
+
+	[Button("Fix Checkpoint Names")]
+	public void FixCheckpoints() {
+		Checkpoint[] checkpoints = GetComponentsInChildren<Checkpoint>();
+		for (int i=0; i<checkpoints.Length; i++) {
+			checkpoints[i].name = "Checkpoint " + i;
 		}
 	}
 }

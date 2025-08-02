@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 3350790220314625743}
   - component: {fileID: 310234173190458240}
   - component: {fileID: 1708586953230524495}
+  - component: {fileID: 6270987035268790567}
   m_Layer: 0
   m_Name: RaceFenceLOD0
   m_TagString: Untagged
@@ -146,6 +147,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6270987035268790567
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7470255113678607340}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1238546068742215796, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
 --- !u!1 &8860147685068746229
 GameObject:
   m_ObjectHideFlags: 0
