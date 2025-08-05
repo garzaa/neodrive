@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b827a413960ad74b85102be0254af71, type: 3}
   m_Name: Peak Power
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  description: Perform a perfect launch.
+  icon: {fileID: 21300000, guid: 6d0e8ab8ed931d349b0bd8818c7fe34e, type: 3}
+  description: Build nitrox by performing a perfect launch.
   rare: 0
   secret: 0
   titleOverride: 
+  wheelUnlock: {fileID: 0}

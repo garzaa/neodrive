@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 using UnityEngine.Events;
 using Cinemachine;
 using Rewired;
@@ -118,6 +117,8 @@ public class Car : MonoBehaviour {
     public ParticleSystem collisionHitmarker;
     MaterialPropertyBlock shaderBlock;
     MeshRenderer carMesh;
+    
+    Achievements achievements;
 
     public bool Drifting {
         get {
@@ -131,11 +132,20 @@ public class Car : MonoBehaviour {
 
     EngineAudio engineAudio;
 
+    void Awake() {
+        wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
+        if (settings.customWheel) {
+            foreach (Wheel w in wheels) {
+                w.ApplyCustomWheel(settings.customWheel);
+            }
+        }
+    }
+
     void Start() {
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfGravity.transform.localPosition;
-        wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
+        
         engineAnimator = GetComponent<Animator>();
         engineAudio = GetComponent<EngineAudio>();
         engineAudio.BuildSoundCache(engine, engineAudioSource);
@@ -162,12 +172,7 @@ public class Car : MonoBehaviour {
         carMesh.GetPropertyBlock(shaderBlock, 0);
         startPoint = transform.position;
         startRotation = transform.rotation;
-
-        if (settings.customWheel) {
-            foreach (Wheel w in wheels) {
-                w.ApplyCustomWheel(settings.customWheel);
-            }
-        }
+        achievements = FindObjectOfType<Achievements>();
     }
 
     void Update() {
@@ -240,7 +245,7 @@ public class Car : MonoBehaviour {
             if (InputManager.Button(Buttons.SHIFTALT)) {
                 currentGear = -1;
                 if (Vector3.Dot(rb.velocity, transform.forward) > 60*mph2u) {
-                    // R For Racing achievement
+                    achievements.Get("R For Racing");
                     StallEngine();
                 }
             } else {
@@ -530,6 +535,7 @@ public class Car : MonoBehaviour {
                             // keep the clutch ratio soft to avoid a money shift on launch
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
+                            achievements.Get("Peak Power");
                             nitroxMeter.Add(engine.maxPower*5);
                             clutchRatio = 0.5f;
                             rb.AddForce((settings.launchBoost * mph2u) * Mathf.Sign(currentGear) * transform.forward, ForceMode.VelocityChange);
@@ -597,6 +603,7 @@ public class Car : MonoBehaviour {
                     ChangeGear(currentGear + 1);
                 } else if (!boosting) {
                     // Money Shift achievement
+                    achievements.Get("Money Shift");
                     // actually throw the car forwards
                     rb.AddRelativeTorque(160, 0, 0, ForceMode.Acceleration);
                     transmissionTemp.Flash();
@@ -737,12 +744,15 @@ public class Car : MonoBehaviour {
         if (lastGear == currentGear) return;
         if (engineRPM + rpmDiff > engine.redline+500) return;
         perfectShiftEffect.SetTrigger("Trigger");
-        perfectShiftAudio.pitch = 1 + UnityEngine.Random.Range(-0.15f, 0.15f);
+        perfectShiftAudio.pitch = 1 + Random.Range(-0.15f, 0.15f);
         perfectShiftAudio.Play();
         rpmDiff = Mathf.RoundToInt(rpmDiff);
         string t = "";
         if (lastGear > currentGear) {
             t = "revmatched downshift";
+            if (brake > 0) {
+                achievements.Get("Heel And Toe");
+            }
         } else if (lastGear < currentGear) {
             t = "revmatched upshift";
         }
@@ -775,6 +785,7 @@ public class Car : MonoBehaviour {
     }
 
     void StallEngine() {
+        achievements.Get("Needs More Gas");
         StartCoroutine(StallRock());
         engineAudioSource.PlayOneShot(engine.stallNoise);
         impulseSource.GenerateImpulseWithVelocity(impulseSource.m_DefaultVelocity * 3f);

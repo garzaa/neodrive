@@ -8753,6 +8753,9 @@ MonoBehaviour:
   scoreContainer: {fileID: 2659004176569007274}
   countdownAnimator: {fileID: 4498440058686385053}
   countdown: {fileID: 8382966118586217135}
+  skipCountdown: 0
+  timeContainer: {fileID: 0}
+  medalContainer: {fileID: 0}
 --- !u!114 &339599407323317557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8770,6 +8773,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onValidFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvalidFinish:
     m_PersistentCalls:
       m_Calls: []
 --- !u!82 &5108305248992882481
@@ -9294,7 +9300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6719916383505856228
 Transform:
   m_ObjectHideFlags: 0

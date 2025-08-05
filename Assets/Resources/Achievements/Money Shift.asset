@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b827a413960ad74b85102be0254af71, type: 3}
   m_Name: Money Shift
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  description: Shift into a gear that requires a higher RPM at a specific wheel speed
-    than the engine can handle.
-  rare: 0
+  icon: {fileID: 21300000, guid: ad4414c4580ce294d983f07d627745e6, type: 3}
+  description: Over-rev the engine so hard you break it.
   secret: 0
   titleOverride: 
+  wheelUnlock: {fileID: 0}

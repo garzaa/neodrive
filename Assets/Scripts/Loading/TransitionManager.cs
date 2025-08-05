@@ -12,6 +12,7 @@ public class TransitionManager : MonoBehaviour {
 	}
 
 	public void LoadScene(string sceneName) {
+		SaveManager.TransitionPrep();
 		SceneManager.LoadScene(sceneName);
 	}
 }

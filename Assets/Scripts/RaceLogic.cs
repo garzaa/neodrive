@@ -371,6 +371,7 @@ public class RaceLogic : MonoBehaviour {
 		}
 		car.forceBrake = true;
 		car.forceClutch = true;
+		countdownAnimator.gameObject.SetActive(true);
 		car.ChangeGear(1);
 		yield return new WaitForSeconds(0.25f);
 		countdown.text = "3";

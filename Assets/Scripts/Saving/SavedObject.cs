@@ -29,7 +29,7 @@ public abstract class SavedObject : MonoBehaviour {
 
 	public void SyncToRuntime() {
 		SaveToProperties(ref properties);
-		foreach (String s in properties.Keys.ToArray()) {
+		foreach (string s in properties.Keys.ToArray()) {
 			if (properties[s] is Vector3) {
 				SanitizeVector3(s);
 			}

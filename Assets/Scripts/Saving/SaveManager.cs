@@ -34,6 +34,7 @@ public class SaveManager : MonoBehaviour {
 		jsonSaver = new JsonSaver(Application.persistentDataPath);
 		appVersion = Application.version;
 		savedObjects = FindObjectsOfType<SavedObject>(includeInactive: true);
+		Application.quitting += WriteEternalSave;
 	}
 
 	public static int GetSlot() {
@@ -102,7 +103,6 @@ public class SaveManager : MonoBehaviour {
 		yield return new WaitForSeconds(0.5f);
 		instance.save = jsonSaver.LoadFile(slot);
 		foreach (SavedObject o in FindObjectsOfType<SavedObject>(includeInactive: true)) {
-			// when loading something like playerposition, if it's enabled don't jerk camera around
 			o.AfterDiskLoad();
 		}
 	}
@@ -123,7 +123,7 @@ public class SaveManager : MonoBehaviour {
 		jsonSaver.SaveFile(instance.eternalSave, eternalNum);
 	}
 
-	static void TransitionPrep() {
+	public static void TransitionPrep() {
 		foreach (SavedObject o in instance.savedObjects) {
 			o.SyncToRuntime();
 		}
