@@ -49,7 +49,7 @@ public class Wheel : MonoBehaviour {
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
 		if (settings == null) {
-			settings = GetComponentInParent<GhostCar>().settings;
+			settings = GetComponentInParent<GhostCar>()?.settings;
 		}
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
@@ -60,7 +60,7 @@ public class Wheel : MonoBehaviour {
 		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
 		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
 		offset = transform.localPosition.magnitude;
-		baseSkidPos = tireSkid.transform.localPosition;
+		if (tireSkid) baseSkidPos = tireSkid.transform.localPosition;
 	}
 
 	void GenerateRays() {
@@ -81,7 +81,6 @@ public class Wheel : MonoBehaviour {
 		foreach (Vector3 rayOffset in wheelCastRays) {
 			Vector3 actualOffset = transform.TransformVector(rayOffset);
 			if (Physics.Raycast(
-				// TODO: this needs to cast down according to the car's normal?
 				new Ray(transform.position + actualOffset + transform.up*wheelRadius, -transform.up),
 				out RaycastHit tempHit,
 				settings.suspensionTravel + wheelRadius,
@@ -121,6 +120,7 @@ public class Wheel : MonoBehaviour {
 
 	void OnDrawGizmosSelected() {
 		if (!Application.isPlaying) return;
+		if (!settings) return;
 		foreach (Vector3 rayOffset in wheelCastRays) {
 			Vector3 actualOffset = transform.TransformVector(rayOffset);
 			Vector3 start = transform.position + actualOffset + transform.up*wheelRadius;
@@ -172,15 +172,13 @@ public class Wheel : MonoBehaviour {
 			r.emitting = boosting;
 		}
 
-		// do not simplify this no matter how much vscode complains
-		// unity's serialization screws with the null checks
 		if (wheelFire != null) {
 			wheelFire.SetActive(boosting && Grounded);
 		}
 
 		// pin skidmarks to ground
 		if (Grounded) {
-			tireSkid.transform.position = raycastHit.point + transform.up*0.05f;
+			tireSkid.transform.position = raycastHit.point + transform.up*0.06f;
 		} else {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}

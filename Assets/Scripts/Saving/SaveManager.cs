@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using NaughtyAttributes;
 
 public class SaveManager : MonoBehaviour {
 	Save save = new();
@@ -34,7 +35,6 @@ public class SaveManager : MonoBehaviour {
 		jsonSaver = new JsonSaver(Application.persistentDataPath);
 		appVersion = Application.version;
 		savedObjects = FindObjectsOfType<SavedObject>(includeInactive: true);
-		Application.quitting += WriteEternalSave;
 	}
 
 	public static int GetSlot() {
@@ -111,6 +111,7 @@ public class SaveManager : MonoBehaviour {
         return jsonSaver.GetFolderPath(slot);
     }
 
+	[Button("Force Wipe Save")]
 	public static void WipeSave() {
 		instance.save.Wipe();
 	}

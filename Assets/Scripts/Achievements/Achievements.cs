@@ -21,6 +21,13 @@ public class Achievements : SavedObject {
 #endif
 
 	HashSet<string> achievements = new();
+	// TODO: if there's only one track left to get bronze/silver/gold/author on, save its name?
+	// what if the tracks get updated
+	// although hmm, ok. just repopoulate this in the main menu, ez
+	string lastBronze;
+	string lastSilver;
+	string lastGold;
+	string lastAuthor;
 	Achievement[] loadedAchievements = null;
 	Dictionary<string, Achievement> stringNames = new();
 
@@ -42,12 +49,10 @@ public class Achievements : SavedObject {
 
     protected override void LoadFromProperties() {
         achievements = GetHashSet<string>(nameof(achievements));
-		print("loaded size: "+achievements.Count);
 		ListAchievements();
     }
 
     protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		print("synced size: "+achievements.Count);
         properties[nameof(achievements)] = achievements;
     }
 
@@ -91,12 +96,10 @@ public class Achievements : SavedObject {
 		Text[] textObjects = g.GetComponentsInChildren<Text>();
 		Image[] images = g.GetComponentsInChildren<Image>();
 		textObjects[0].text = a.GetName();
-		print("ach name: "+a.GetName());
 		textObjects[1].text = a.Description;
 		images[2].sprite = a.Icon;
 		totalCount++;
 		if (Has(a)) {
-			print("has "+a.name);
 			unlockedCount++;
 			g.transform.SetParent(unlockedContainer, worldPositionStays: false);
 		} else {

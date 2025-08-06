@@ -8,7 +8,6 @@ public class Achievement : ScriptableObject {
 	[SerializeField][TextArea] string description;
 	[SerializeField] bool secret = true;
 	[SerializeField] string titleOverride;
-	[SerializeField] CustomWheel wheelUnlock;
 
 	public Sprite Icon => icon;
 	public string Description => description;

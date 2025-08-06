@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e12969caa07d944b920450e745bcc49, type: 3}
-  m_Name: Pumpkin Head
+  m_Name: LockedWheel
   m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: 0926c7539db679f4b81109ae4def08f3, type: 2}
-  spinningMaterial: {fileID: 2100000, guid: 91534a18a8410ce4e88c09e81a6aee7a, type: 2}
-  nameOverride: 
-  achievement: {fileID: 11400000, guid: 8f1d990e1e9988e47a80501717b9d400, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: d85473331c09f4548bfb367d6ee6be34, type: 2}
+  spinningMaterial: {fileID: 2100000, guid: d85473331c09f4548bfb367d6ee6be34, type: 2}
+  nameOverride: LOCKED
+  achievement: {fileID: 0}

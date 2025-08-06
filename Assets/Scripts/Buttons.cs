@@ -20,6 +20,8 @@ public static class Buttons {
     public static readonly string PAUSE = "Pause";
 
     public static readonly string UICANCEL = "UICancel";
+    public static readonly string UILEFT = "UILeft";
+    public static readonly string UIRIGHT = "UIRight";
     
     public static readonly string GEAR1 = "Gear1";
     public static readonly string GEAR2 = "Gear2";

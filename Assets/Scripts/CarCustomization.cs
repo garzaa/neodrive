@@ -3,20 +3,57 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CarCustomization : SavedObject {
-	// just wheels for now
-	public CustomWheel wheel;
+	CustomWheel wheel;
+	Car car;
 
-	public CustomWheel LoadWheel(string wheelName) {
+	// for main menu and whatever else
+	public Wheel[] extraWheels;
+
+	protected override void Initialize() {
+		car = FindObjectOfType<Car>();
+	}
+
+	public CustomWheel LoadWheelObject(string wheelName) {
 		return Resources.Load<CustomWheel>("Wheels/"+wheelName);
 	}
 
 	protected override void LoadFromProperties() {
-		wheel = LoadWheel(Get<string>("wheelName"));
-		GetComponent<Car>().ApplyWheel(wheel);
+		string savedWheel;
+		try {
+			savedWheel = Get<string>("wheelName");
+		} catch {
+			savedWheel = "437 Special";
+		}
+		SetWheel(LoadWheelObject(savedWheel));
+	}
+
+	protected override bool ForceLoadIfNoProperties() {
+		return true;
+	}
+
+	private void ApplyWheel() {
+		if (car) car.ApplyWheel(wheel);
+		foreach (Wheel w in extraWheels) {
+			w.ApplyCustomWheel(wheel);
+		}
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		properties["wheelName"] = wheel.GetName();
+		properties["wheelName"] = wheel.name;
 	}
 
+	public void SetWheel(CustomWheel newWheel) {
+		wheel = newWheel;
+		ApplyWheel();
+	}
+
+	public void SetWheelLocked(CustomWheel lockedWheel) {
+		foreach (Wheel w in extraWheels) {
+			w.ApplyCustomWheel(lockedWheel);
+		}
+	}
+
+	public CustomWheel GetWheel() {
+		return wheel;
+	}
 }

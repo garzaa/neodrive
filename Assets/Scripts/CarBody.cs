@@ -47,11 +47,6 @@ public class CarBody : MonoBehaviour {
 
         // Store the initial local rotation of this object
         initialLocalRotation = transform.localRotation;
-
-        if (parentRigidbody == null)
-        {
-            Debug.LogWarning("RockingObject: No Rigidbody found on parent or higher in the hierarchy. This script requires a parent Rigidbody to function.", this);
-        }
     }
 
 	public void StartWobbling() {

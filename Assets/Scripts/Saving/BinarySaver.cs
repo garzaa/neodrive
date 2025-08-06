@@ -38,7 +38,7 @@ public class BinarySaver {
 				Debug.Log("no compatible ghost version");
 			}
 		} catch (Exception e) {
-			Debug.Log("error lading author ghost: " + e);
+			Debug.Log("error loading author ghost: " + e);
 			return null;
 		}
 		return g;

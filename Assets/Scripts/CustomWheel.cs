@@ -7,6 +7,7 @@ public class CustomWheel : ScriptableObject {
 	public Material defaultMaterial;
 	public Material spinningMaterial;
 	public string nameOverride;
+	public Achievement achievement;
 
 	public string GetName() {
 		if (string.IsNullOrEmpty(nameOverride)) {

@@ -15,3 +15,4 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: b5360686d0803034b9ee0a9e2318b571, type: 2}
   spinningMaterial: {fileID: 2100000, guid: 920b5aa5b49ad7742b3c8a9c3615260d, type: 2}
   nameOverride: 
+  achievement: {fileID: 11400000, guid: 6e0a1d71a66ca8d42b3904aeb7f34b3f, type: 2}

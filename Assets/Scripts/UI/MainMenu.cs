@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void Exit() {
+		SaveManager.WriteEternalSave();
 		Application.Quit();
 	}
 
@@ -43,7 +44,7 @@ public class MainMenu : MonoBehaviour {
 	public void CloseSubmenu() {
 		if (submenus.Count > 1) {
 			submenus.Pop().SetActive(false);
-			GameObject g = submenus.Pop();
+			GameObject g = submenus.Peek();
 			g.SetActive(true);
 			StartCoroutine(SelectNextFrame(g));
 		} else if (submenus.Count == 1) {
