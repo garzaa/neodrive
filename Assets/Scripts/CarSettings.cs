@@ -63,7 +63,6 @@ public class CarSettings : ScriptableObject {
 	public float airPitchControl = 0.5f;
 
 	public float GetTireSlip(float lateralSpeed) {
-		if (lateralSpeed < 1) return 0;
 		return tireSlip;
 	}
 

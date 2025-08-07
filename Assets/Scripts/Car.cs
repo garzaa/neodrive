@@ -543,7 +543,7 @@ public class Car : MonoBehaviour {
                         if (Random.Range(0f, 1f) < 0.8f) {
                             exhaustAnimator.SetTrigger("Backfire");
                         }
-                        if (rpmDiff > 700) {
+                        if (rpmDiff > 1000) {
                             clutchRatio = 0.5f;
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
