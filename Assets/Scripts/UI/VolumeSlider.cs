@@ -13,5 +13,8 @@ public class VolumeSlider : SettingsSlider {
         // attenuation between -10f / +10f
         // 5 should map to no change, starts at 0
         mixerGroup.audioMixer.SetFloat(prefName, val-10f);
+        if (val == 0) {
+            mixerGroup.audioMixer.SetFloat(prefName, 0f);
+        }
     }
 }

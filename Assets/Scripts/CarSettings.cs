@@ -63,8 +63,7 @@ public class CarSettings : ScriptableObject {
 	public float airPitchControl = 0.5f;
 
 	public float GetTireSlip(float lateralSpeed) {
-		// don't do anything based on lateral speed
-		// it can push the car left and right in a straight line
+		if (lateralSpeed < 1) return 0;
 		return tireSlip;
 	}
 

@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Needs More Gas
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: f81e6e1c2d58cd54e9381f4d336e9059, type: 3}
-  description: Stall the engine for the first time. Probably not your last.
-  rare: 0
+  description: Stall the engine for the first time.
   secret: 0
   titleOverride: 
-  wheelUnlock: {fileID: 11400000, guid: e88bdd50258df27489b556449a3e65bc, type: 2}

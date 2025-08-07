@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Peak Power
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 6d0e8ab8ed931d349b0bd8818c7fe34e, type: 3}
-  description: Build nitrox by performing a perfect launch.
-  rare: 0
+  description: Build nitrox by launching near the top of the engine's power band.
   secret: 0
   titleOverride: 
-  wheelUnlock: {fileID: 0}

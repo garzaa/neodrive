@@ -15,7 +15,7 @@ MonoBehaviour:
   redline: 8000
   fuelCutoff: 0.6
   engineBraking: 0.7
-  diffRatio: 3
+  diffRatio: 6
   powerCurve:
     serializedVersion: 2
     m_Curve:
@@ -53,7 +53,7 @@ MonoBehaviour:
   startupNoise: {fileID: 8300000, guid: 9fa3dcaa969bc244da44aae426010932, type: 3}
   stallNoise: {fileID: 8300000, guid: 7041cc6f1fd128b4d87cba386f7afdd3, type: 3}
   idleRPM: 2000
-  stallRPM: 1500
+  stallRPM: 900
   throttleResponse: 12000
   rpmPoints:
   - rpm: 1800
@@ -128,7 +128,7 @@ MonoBehaviour:
     throttleOffAudio: {fileID: 0}
   gearRatios:
   - 2.5
-  - 1.8
+  - 2
   - 1.5
   - 1.2
   - 1

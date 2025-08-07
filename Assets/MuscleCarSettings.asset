@@ -18,7 +18,7 @@ MonoBehaviour:
   wheelRaycast:
     serializedVersion: 2
     m_Bits: 8
-  gearShiftTime: 0.2
+  gearShiftTime: 0.5
   enableNitrox: 1
   maxNitrox: 3000
   nitroxBoost: 2
@@ -62,8 +62,8 @@ MonoBehaviour:
   tcsBraking: 0.7
   gripLimitThreshold: 0.7
   lcs: 1
-  burnoutThreshold: 25
-  lcsLimit: 1
+  burnoutThreshold: 23
+  lcsLimit: 2
   driftBoost: 1
   driftControl: 3
   airSpinControl: 0.7

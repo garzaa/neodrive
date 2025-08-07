@@ -134,11 +134,6 @@ public class Car : MonoBehaviour {
 
     void Awake() {
         wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
-        if (settings.customWheel) {
-            foreach (Wheel w in wheels) {
-                w.ApplyCustomWheel(settings.customWheel);
-            }
-        }
     }
 
     void Start() {
@@ -184,31 +179,6 @@ public class Car : MonoBehaviour {
             clutchOutTime = Time.time;
         }
         clutch = currentClutch;
-
-        if (Time.timeScale > 0) {
-            foreach (Wheel w in wheels) {
-                float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
-                if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
-                    // this is way too fast for some reason
-                    // wheel RPM from engine RPM is too high?
-                    rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction);
-                    if (!grounded) {
-                        rpm = GetWheelRPMFromEngineRPM(engineRPM);
-                    }
-                }
-
-                bool wheelBoost = false;
-                if (w == WheelRR || w == WheelRL) {
-                    wheelBoost = boosting;
-                }
-                w.UpdateWheelVisuals(
-                    Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
-                    rpm,
-                    wheelBoost,
-                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
-                );
-            }
-        }
 
         boostEffect.SetActive(boosting);
 
@@ -370,8 +340,31 @@ public class Car : MonoBehaviour {
         rearAxle = (WheelRL.transform.position + WheelRR.transform.position) / 2f;
 
         UpdateEngine();
+        if (Time.timeScale > 0) {
+            foreach (Wheel w in wheels) {
+                float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
+                if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
+                    float a = GetWheelRPMFromEngineRPM(engineRPM);
+                    rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction*clutchRatio);
+                    if (!grounded) {
+                        rpm = GetWheelRPMFromEngineRPM(engineRPM);
+                    }
+                }
 
-        forwardTraction = 1f;
+                bool wheelBoost = false;
+                if (w == WheelRR || w == WheelRL) {
+                    wheelBoost = boosting;
+                }
+                w.UpdateWheelVisuals(
+                    Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
+                    rpm,
+                    wheelBoost,
+                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
+                );
+            }
+        }
+
+        forwardTraction = Mathf.MoveTowards(forwardTraction, 1, 0.5f * Time.fixedDeltaTime);
         lcsLight.SetOff();
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
@@ -385,7 +378,7 @@ public class Car : MonoBehaviour {
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
                     bool lcsBreak = (wantedAccel-settings.burnoutThreshold) > settings.lcsLimit;
-                    if (!assistDisabled && !lcsBreak && settings.lcs && !boosting && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
+                    if (forwardTraction == 1 && !assistDisabled && !lcsBreak && settings.lcs && !boosting && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
                         lcsLight.SetOn();
                         gas = GetWantedGas(settings.burnoutThreshold * 0.9f);
                     } else {
@@ -504,7 +497,8 @@ public class Car : MonoBehaviour {
     float GetEngineRPMFromSpeed(float flatSpeed) {
         return WheelFL.GetWheelRPMFromSpeed(flatSpeed)
             * Mathf.Sign(currentGear)
-            * engine.diffRatio * engine.gearRatios[Mathf.Abs(currentGear)-1];
+            * engine.diffRatio
+            * engine.gearRatios[Mathf.Abs(currentGear)-1];
     }
 
     float GetWheelRPMFromEngineRPM(float engineRPM) {
@@ -512,7 +506,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateEngine() {
-        float flatSpeed = u2mph*Vector3.Dot(rb.velocity, transform.forward);
+        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
         if (!engineRunning) {
             engineRPM = Mathf.MoveTowards(engineRPM, 0, (engine.engineBraking*(engineRPM/engine.redline)+8000f) * Time.fixedDeltaTime);
             if (engineStarting) {
@@ -527,18 +521,21 @@ public class Car : MonoBehaviour {
                 if (clutchOutThisFrame) {
                     float rpmDiff = engineRPMFromSpeed - engineRPM;
                     if (rpmDiff < 0) {
-                        if (rpmDiff < -700 && currentGear > 1  && lastGear<currentGear) {
-                            clutchRatio = 0.5f;
+                        // you can shift bad from first gear if you're at max power
+                        if (rpmDiff < -700 && (currentGear != 1 || !engine.PeakPower(idealEngineRPM))) {
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
+                            clutchRatio = 0f;
+                            if (currentGear == 1) forwardTraction = 0.1f;
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, transform.forward) * u2mph < 5f) {
+                            // this is the max power shift launch
                             // keep the clutch ratio soft to avoid a money shift on launch
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             achievements.Get("Peak Power");
                             nitroxMeter.Add(engine.maxPower*5);
-                            clutchRatio = 0.5f;
-                            rb.AddForce((settings.launchBoost * mph2u) * Mathf.Sign(currentGear) * transform.forward, ForceMode.VelocityChange);
+                            clutchRatio = 1f;
+                            rb.AddForce(settings.launchBoost * mph2u * Mathf.Sign(currentGear) * transform.forward, ForceMode.VelocityChange);
                         } else if (currentGear > 1 && Vector3.Dot(rb.velocity, transform.forward) * u2mph > 1f) {
                             PerfectShift(rpmDiff);
                         }
@@ -546,8 +543,8 @@ public class Car : MonoBehaviour {
                         if (Random.Range(0f, 1f) < 0.8f) {
                             exhaustAnimator.SetTrigger("Backfire");
                         }
-                        if (rpmDiff > 1000) {
-                            clutchRatio = 0f;
+                        if (rpmDiff > 700) {
+                            clutchRatio = 0.5f;
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
                         } else if (idealEngineRPM < engine.redline+500) {
@@ -559,7 +556,8 @@ public class Car : MonoBehaviour {
                 engineRPM = Mathf.Lerp(
                     idealEngineRPM,
                     engineRPMFromSpeed,
-                    grounded ? clutchRatio : idealEngineRPM);
+                    grounded ? clutchRatio : idealEngineRPM
+                );
 
                 // then if there's wheelspin, move more towards what the engine actually wants
                 engineRPM = Mathf.Lerp(
@@ -774,13 +772,14 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
-        assistDisabled = true;
-        yield return new WaitForSeconds(settings.gearShiftTime);
-        assistDisabled = false;
-        if (drifting && lastGear == currentGear) {
+        if (!drifting && lastGear == currentGear) {
+            // clutch kick should initiate a drift
             Alert("clutch kick\n+"+settings.driftNitroGain);
             nitroxMeter.Add(settings.driftNitroGain);
         }
+        assistDisabled = true;
+        yield return new WaitForSeconds(settings.gearShiftTime);
+        assistDisabled = false;
         carBody.maxXAngle /= 2f;
     }
 

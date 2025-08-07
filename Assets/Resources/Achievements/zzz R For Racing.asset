@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: zzz R For Racing
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: cbfd728c7560579419556f04d6cef9ec, type: 3}
-  description: Shift into reverse at high speed. This kills the car.
+  description: Shift into reverse at high speed.
   secret: 1
   titleOverride: R For Racing
-  wheelUnlock: {fileID: 11400000, guid: e88bdd50258df27489b556449a3e65bc, type: 2}
