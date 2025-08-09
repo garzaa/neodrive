@@ -438,6 +438,17 @@ public class Car : MonoBehaviour {
         }
         
         if (grounded) {
+            if (Drifting) {
+                // steering should also rotate the car's velocity
+                float angleOffForward = Vector3.SignedAngle(rb.velocity, transform.forward, transform.up);
+                // you can countersteer to avoid rotation
+                angleOffForward *= Mathf.Clamp01(targetSteerAngle/settings.maxSteerAngle * Mathf.Sign(angleOffForward));
+                float driftVelocityChange = Mathf.Clamp01(angleOffForward * settings.driftBoost);
+                // but if no gas, slide completely sideways
+                driftVelocityChange *= gas;
+                rb.velocity = Quaternion.AngleAxis(driftVelocityChange, transform.up) * rb.velocity;
+            }
+
             if (WheelRL.Grounded || WheelRR.Grounded) {
                 AddLateralForce(rearAxle, transform.right, false, true);
             }
@@ -445,6 +456,7 @@ public class Car : MonoBehaviour {
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true, false);
                 if (drifting && rb.velocity.sqrMagnitude > 1f) {
+                    // mass * distance / time^2
                     rb.AddTorque(settings.driftControl * settings.maxSteerAngle * steering * transform.up);
                 }
             }

@@ -65,7 +65,4 @@ public class CarSettings : ScriptableObject {
 	public float GetTireSlip(float lateralSpeed) {
 		return tireSlip;
 	}
-
-	[Header("Cosmetics")]
-	public CustomWheel customWheel;
 }

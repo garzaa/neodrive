@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Turbine Climb.unity
     guid: f88a18a42f8d8814e97e428c6ef8cfda
+  - enabled: 1
+    path: Assets/Tracks/Tutorial.unity
+    guid: 6a12f89841b7ea64dbb7a1206010b739
+  - enabled: 1
+    path: Assets/Tracks/Canyon Bends.unity
+    guid: 6dc7eea45a793a94aabc66de8356e431
   m_configObjects: {}
