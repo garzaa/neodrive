@@ -44,8 +44,6 @@ public class FinishLine : MonoBehaviour {
 	// and then track player splits based on that
 	// need to rework it if it's a lap time
 
-	// also the splits are fucked up for the canyon bends track
-
 	public void RestartTimers() {
 		raceTimer.Restart();
 		lapTimer.Restart();
@@ -106,27 +104,28 @@ public class FinishLine : MonoBehaviour {
 			checkpointSound.Play();
 			onFinishCross.Invoke();
 			if (checkpointsCrossed.Count == allCheckpoints.Count) {
+				currentLap.totalTime = lapTimer.GetTime();
+				if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
+					bestLap = currentLap;
+					currentLap = new();
+					timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
+					lapRecord.text = lapTimer.GetFormattedTime();
+				} else {
+					string tx = lapTimer.FormattedTime(lapTimer.GetTime());
+					if (bestLap != null) {
+						float diff = lapTimer.GetTime() - bestLap.totalTime;
+						string color = (diff > 0) ? "red" : "blue";
+						tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
+					}
+					timerAlert.Alert(tx);
+				}
+				
 				if (raceType == RaceType.ROUTE) {
 					onValidFinish.Invoke();
 					lapTimer.Pause();
 					raceTimer.Pause();
 					currentLap = new();
 				} else {
-					currentLap.totalTime = lapTimer.GetTime();
-					if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
-						bestLap = currentLap;
-						currentLap = new();
-						timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
-						lapRecord.text = lapTimer.GetFormattedTime();
-					} else {
-						string tx = lapTimer.FormattedTime(lapTimer.GetTime());
-						if (bestLap != null) {
-							float diff = lapTimer.GetTime() - bestLap.totalTime;
-							string color = (diff > 0) ? "red" : "blue";
-							tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
-						}
-						timerAlert.Alert(tx);
-					}
 					onValidFinish.Invoke();
 				}
 			} else {

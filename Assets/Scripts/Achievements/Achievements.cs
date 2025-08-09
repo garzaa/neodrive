@@ -84,8 +84,9 @@ public class Achievements : SavedObject {
 		UtilityMethods.ClearUIList(unlockedContainer);
 		unlockedCount = achievements.Count;
 		totalCount = loadedAchievements.Length;
-		numUnlocked.text = $"Unlocked: {unlockedCount}/{totalCount}";
+		numUnlocked.text = "Achievements"; // $"Unlocked: {unlockedCount}/{totalCount}";
 		foreach (Achievement a in loadedAchievements) {
+			if (a.hidden) continue;
 			AddUIPrefab(a);
 			stringNames[a.GetName()] = a;
 		}

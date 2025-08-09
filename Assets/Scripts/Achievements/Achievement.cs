@@ -12,6 +12,7 @@ public class Achievement : ScriptableObject {
 	public Sprite Icon => icon;
 	public string Description => description;
 	public bool Secret => secret;
+	public bool hidden = false;
 
 	public void Get() {
 #if (STEAM || EDITOR_STEAM)

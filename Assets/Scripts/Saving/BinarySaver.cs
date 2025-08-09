@@ -146,7 +146,7 @@ public class BinarySaver {
 		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
 		if (ghosts.Count() == 0) return "";
 		float playerTime = ghosts.First().totalTime;
-		if (playerTime < authorTime) return "author";
+		if (playerTime <= authorTime) return "author";
 		if (playerTime < authorTime * 1.1f) return "gold";
 		if (playerTime < authorTime * 1.2f) return "silver";
 		if (playerTime < authorTime * 1.5f) return "bronze";
