@@ -25,8 +25,9 @@ public class JsonSaver {
             // Debug.Log("Writing remote Steam file at path "+filePath);
             Steamworks.SteamRemoteStorage.FileWrite(filePath, Encoding.UTF8.GetBytes(saveString));
         #else
-            using StreamWriter jsonWriter = new StreamWriter(filePath, append: false);
-		    jsonWriter.Write(saveString);
+            using (StreamWriter jsonWriter = new StreamWriter(filePath, append: false)) {
+		        jsonWriter.Write(saveString);
+            }
         #endif
         await Task.Yield();
 	}

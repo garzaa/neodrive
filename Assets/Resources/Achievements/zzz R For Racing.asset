@@ -16,3 +16,4 @@ MonoBehaviour:
   description: Shift into reverse at high speed.
   secret: 1
   titleOverride: R For Racing
+  hidden: 0

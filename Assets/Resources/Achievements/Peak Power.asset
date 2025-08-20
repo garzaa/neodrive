@@ -16,3 +16,4 @@ MonoBehaviour:
   description: Build nitrox by launching near the top of the engine's power band.
   secret: 0
   titleOverride: 
+  hidden: 0

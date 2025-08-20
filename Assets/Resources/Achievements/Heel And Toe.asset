@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Rev-match a downshift while continuously braking.
   secret: 0
   titleOverride: 
-  wheelUnlock: {fileID: 0}
+  hidden: 0

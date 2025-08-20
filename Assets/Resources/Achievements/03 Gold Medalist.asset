@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Get all gold medals.
   secret: 0
   titleOverride: Gold Medalist
-  wheelUnlock: {fileID: 0}
+  hidden: 1

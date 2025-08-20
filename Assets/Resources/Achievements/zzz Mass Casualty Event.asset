@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Hit the grandstands at over 100mph.
   secret: 1
   titleOverride: Mass Casualty Event
-  wheelUnlock: {fileID: 0}
+  hidden: 1

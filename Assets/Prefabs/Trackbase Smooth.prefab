@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4628231302170855435}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 2903224078509831638, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
 --- !u!23 &394075749590519148
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   normalType: 0
   tangentType: 0
   splineParent: {fileID: 0}
-  soParent: {fileID: 833899978194325264}
+  soParent: {fileID: 0}
   meshContainers:
   - meshFilter: {fileID: 4096845433816486071}
     meshCollider: {fileID: 0}
@@ -143,7 +143,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6974423657915898930}
   - component: {fileID: 4093061543672120644}
-  - component: {fileID: 833899978194325264}
   m_Layer: 3
   m_Name: Trackbase Smooth
   m_TagString: Untagged
@@ -195,51 +194,7 @@ LODGroup:
     fadeTransitionWidth: 0.3
     renderers:
     - renderer: {fileID: 394075749590519148}
-  m_Enabled: 1
---- !u!114 &833899978194325264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5314915554754224083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
-  cloneUseFixedAmount: 0
-  cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
-  cloneOffset: {x: 0, y: 0, z: 49}
-  cloneDirection: 0
-  originClones: []
-  mirrorDeformation: 0
-  localSplinePosition: {x: 0, y: 0, z: 0}
-  localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
-  followAxels: {x: 1, y: 1, z: 1}
-  lockPosition: 0
-  snapMode: 0
-  snapLengthStart: 1
-  snapLengthEnd: 1
-  snapOffsetStart: 0
-  snapOffsetEnd: 0
-  type: 0
-  normalType: 0
-  tangentType: 0
-  splineParent: {fileID: 0}
-  soParent: {fileID: 0}
-  meshContainers: []
-  componentMode: 0
-  hasPrimitiveCollider: 0
-  autoType: 0
-  canUpdateSelection: 1
+  m_Enabled: 0
 --- !u!1 &5910094213026849068
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +236,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5910094213026849068}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 513351740331369189, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
 --- !u!23 &3814422647305822484
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -363,7 +318,7 @@ MonoBehaviour:
   normalType: 0
   tangentType: 0
   splineParent: {fileID: 0}
-  soParent: {fileID: 833899978194325264}
+  soParent: {fileID: 0}
   meshContainers:
   - meshFilter: {fileID: 7533323834306717153}
     meshCollider: {fileID: 0}
@@ -415,7 +370,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8767005063588957043}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -530795163270215139, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
 --- !u!23 &296236469952635621
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -480,7 +435,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -1652001975995332469, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
 --- !u!114 &3874657617870998788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +474,7 @@ MonoBehaviour:
   normalType: 0
   tangentType: 0
   splineParent: {fileID: 0}
-  soParent: {fileID: 833899978194325264}
+  soParent: {fileID: 0}
   meshContainers:
   - meshFilter: {fileID: 1345195969431521134}
     meshCollider: {fileID: 0}

@@ -378,7 +378,10 @@ public class Car : MonoBehaviour {
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
                     bool lcsBreak = (wantedAccel-settings.burnoutThreshold) > settings.lcsLimit;
-                    if (forwardTraction == 1 && !assistDisabled && !lcsBreak && settings.lcs && !boosting && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
+                    // don't disable LCS on disabling assists
+                    // just to make a the car a little easier to drive
+                    // maybe expose that in settings later on
+                    if (forwardTraction == 1 && !lcsBreak && settings.lcs && !boosting && !drifting && !InputManager.Button(Buttons.HANDBRAKE)) {
                         lcsLight.SetOn();
                         gas = GetWantedGas(settings.burnoutThreshold * 0.9f);
                     } else {
@@ -439,10 +442,11 @@ public class Car : MonoBehaviour {
         
         if (grounded) {
             if (Drifting) {
-                // steering should also rotate the car's velocity
+                // steering should also rotate the car's velocity when drifting
                 float angleOffForward = Vector3.SignedAngle(rb.velocity, transform.forward, transform.up);
                 // you can countersteer to avoid rotation
                 angleOffForward *= Mathf.Clamp01(targetSteerAngle/settings.maxSteerAngle * Mathf.Sign(angleOffForward));
+                // this should be drift control but we need something 0-1 bounded
                 float driftVelocityChange = Mathf.Clamp01(angleOffForward * settings.driftBoost);
                 // but if no gas, slide completely sideways
                 driftVelocityChange *= gas;
@@ -677,6 +681,9 @@ public class Car : MonoBehaviour {
             targetSteerAngle = 0;
         }
         targetSteerAngle *= steeringMult;
+        // keep assists off for half a second after tapping handbrake
+        // user might tap handbrake without being at full lock/drift inducing steering angle
+        // so this extra 0.5s allows them to "buffer" a drift
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
         if (settings.tcs && !assistDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);

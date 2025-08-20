@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Get all bronze medals.
   secret: 0
   titleOverride: Bronze Medalist
-  wheelUnlock: {fileID: 0}
+  hidden: 1

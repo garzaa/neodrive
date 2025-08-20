@@ -8272,6 +8272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2475806745965643693}
   - component: {fileID: 2475806745965643692}
+  - component: {fileID: 7005486034442154288}
   m_Layer: 0
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -8315,6 +8316,20 @@ MonoBehaviour:
   pausedAudio: {fileID: 577379905291820991, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
   unpausedAudio: {fileID: 24500006, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
   settingsMenu: {fileID: 374441001066523841}
+--- !u!114 &7005486034442154288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475806745965643694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7782f3487530db47a45f2487557f72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredUIComparison: 8
+  uiElementsToApplyTo: []
 --- !u!1 &2475806745970144235
 GameObject:
   m_ObjectHideFlags: 0

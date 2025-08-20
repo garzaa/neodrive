@@ -16,3 +16,4 @@ MonoBehaviour:
   description: Stall the engine for the first time.
   secret: 0
   titleOverride: 
+  hidden: 0
