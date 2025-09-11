@@ -9,7 +9,6 @@ public class Ghost {
 	public string playerName;
 	public float totalTime;
 	public string version;
-	public bool isAuthor = false;
 	[System.NonSerialized] public Dictionary<string, float> splits;
 
 	[SerializeField] private List<string> splitNames;

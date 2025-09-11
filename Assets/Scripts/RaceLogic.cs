@@ -164,27 +164,22 @@ public class RaceLogic : MonoBehaviour {
 
 		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
 			if (authorGhost != null) {
-				authorGhost.isAuthor = true;
 				authorGhost.playerName = "author";
 				// re-save author ghosts for data migration
 				if (bestPlayerGhost != null) {
 					if (authorGhost.totalTime < bestPlayerGhost.totalTime) {
 						authorGhost.playerName = "author";
-						authorGhost.isAuthor = true;
 						print("overwrote author ghost in-place");
 						saver.SaveGhost(authorGhost);
 					} else if (bestPlayerGhost.totalTime < authorGhost.totalTime) {
 						bestPlayerGhost.playerName = "author";
-						bestPlayerGhost.isAuthor = true;
 						saver.SaveGhost(bestPlayerGhost);
 						// teehee
-						bestPlayerGhost.isAuthor = false;
 						bestPlayerGhost.playerName = "player";
 						print("overwrote author with current player record");
 					}
 				} else if (bestPlayerGhost == null) {
 					print("overwrote author ghost in-place");
-					authorGhost.isAuthor = true;
 					authorGhost.playerName = "author";
 					saver.SaveGhost(authorGhost);
 				} else {
@@ -192,10 +187,8 @@ public class RaceLogic : MonoBehaviour {
 				}
 			} else if (bestPlayerGhost != null) {
 				bestPlayerGhost.playerName = "author";
-				bestPlayerGhost.isAuthor = true;
 				saver.SaveGhost(bestPlayerGhost);
 				// teehee
-				bestPlayerGhost.isAuthor = false;
 				bestPlayerGhost.playerName = "player";
 			} else {
 				print("no best lap to save");
@@ -274,10 +267,11 @@ public class RaceLogic : MonoBehaviour {
 
 	public void PlayLoadedGhosts() {
 		playStart = Time.time;
+		authorGhost.playerName = "author";
 		if (bestPlayerGhost != null) {
-			if (GameOptions.PlayerGhost) PlayGhost(bestPlayerGhost);
+			if (GameOptions.PlayerGhost) PlayGhost(bestPlayerGhost, isAuthor: false);
 			if (authorGhost != null && bestPlayerGhost.totalTime < gold.time) {
-				if (GameOptions.AuthorGhost) PlayGhost(authorGhost);
+				if (GameOptions.AuthorGhost) PlayGhost(authorGhost, isAuthor: true);
 			}
 		}
 	}
@@ -336,14 +330,13 @@ public class RaceLogic : MonoBehaviour {
 		return recordingGhost;
 	}
 
-	void PlayGhost(Ghost g) {
+	void PlayGhost(Ghost g, bool isAuthor) {
 		if (!ghostEnabled) {
 			return;
 		}
 		// can only have two ghost cars right now
-		playingGhosts[g.playerName] = new PlayingGhost(g, g.isAuthor ? authorGhostCar : playerGhostCar);
-		if (g.isAuthor) {
-			print("playing author ghost car");
+		playingGhosts[g.playerName] = new PlayingGhost(g, isAuthor ? authorGhostCar : playerGhostCar);
+		if (isAuthor) {
 			authorGhostCar.gameObject.SetActive(true);
 		} else {
 			playerGhostCar.gameObject.SetActive(true);
