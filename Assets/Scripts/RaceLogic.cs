@@ -7,7 +7,6 @@ using System.Linq;
 using Cinemachine;
 using System;
 using NaughtyAttributes;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -21,6 +20,8 @@ public class RaceLogic : MonoBehaviour {
 
 	public RaceType raceType = RaceType.ROUTE;
 	public GameObject resultsCanvas;
+
+	public Text medalText;
 
 	// this should be info about a playing ghost, not the ghost itself
 	// need timestamps and all that
@@ -53,7 +54,6 @@ public class RaceLogic : MonoBehaviour {
 	readonly List<string> expiredGhosts = new();
 
 	public Text timeContainer;
-	public GameObject medalContainer;
 	Image[] medals;
 
 	struct NameTimePair {
@@ -113,12 +113,14 @@ public class RaceLogic : MonoBehaviour {
 		}
 
 		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
+		medalText.gameObject.SetActive(false);
 	}
 
 	void OnRespawn() {
 		StopCoroutine(nameof(CountdownAndStart));
 		StartCoroutine(CountdownAndStart());
 		StopPlayingGhosts();
+		medalText.gameObject.SetActive(false);
 	}
 
 	public void StartRecordingGhost() {
@@ -238,6 +240,34 @@ public class RaceLogic : MonoBehaviour {
 			PlayLoadedGhosts();
 		}
 		RenderScoreboard();
+
+		medalText.gameObject.SetActive(true);
+		Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
+		medalText.text = resultData.Item1;
+		if (resultData.Item2 == null) {
+			medalText.GetComponentInChildren<Image>().enabled = false;
+		} else {
+			var i = medalText.GetComponentInChildren<Image>();
+			i.enabled = true;
+			i.sprite = resultData.Item2;
+		}
+	}
+
+	public Tuple<string, Sprite> GetBestMedal(float playerTime) {
+		if (playerTime <= author.time) {
+			return new Tuple<string, Sprite>("Author Medal", author.sprite);
+	}
+		if (playerTime <= gold.time) {
+			return new Tuple<string, Sprite>("Gold Medal", gold.sprite);
+		}
+		if (playerTime <= silver.time) {
+			return new Tuple<string, Sprite>("Silver Medal", silver.sprite);
+		}
+		if (playerTime <= bronze.time) {
+			return new Tuple<string, Sprite>("Bronze Medal", bronze.sprite);
+		}
+
+		return new Tuple<string, Sprite>("No Medal", null);
 	}
 
 	public void PlayLoadedGhosts() {

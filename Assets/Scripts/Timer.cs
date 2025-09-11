@@ -10,9 +10,16 @@ public class Timer : MonoBehaviour {
 
 	bool paused = true;
 
+	float startTime;
+
+	void Start() {
+		startTime = realTime ? Time.unscaledTime : Time.time;
+	}
+
 	void Update() {
 		if (paused) return;
-		time += realTime ? Time.unscaledDeltaTime : Time.deltaTime;
+		float currentTime = realTime ? Time.unscaledTime : Time.time;
+		time = currentTime - startTime;
 		if (timerLabel) timerLabel.text = FormattedTime(time);
 	}
 
@@ -53,6 +60,7 @@ public class Timer : MonoBehaviour {
 
 	public void Restart() {
 		time = 0;
+		startTime = realTime ? Time.unscaledTime : Time.time;
 		paused = false;
 	}
 
