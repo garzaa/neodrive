@@ -63,7 +63,7 @@ public class Car : MonoBehaviour {
     float driftingTime = 0;
     public float forwardTraction = 1f;
     bool clutch = false;
-    bool clutchOutThisFrame = false;
+    bool clutchOutThisFrame, clutchInThisFrame;
     float clutchOutTime = 0;
     public float clutchRatio = 1f;
 
@@ -177,6 +177,8 @@ public class Car : MonoBehaviour {
         if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
             clutchOutTime = Time.time;
+        } else if (!clutch && currentClutch) {
+            clutchInThisFrame = true;
         }
         clutch = currentClutch;
 
@@ -211,7 +213,11 @@ public class Car : MonoBehaviour {
             lastGear = currentGear;
         }
 
-        if (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch) {
+        if (
+            (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch)
+            // this is to allow buffering of a shift input if the player slightly mistimes it
+            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARDOWN) > ReInput.time.unscaledTime-0.2f))
+        ) {
             if (InputManager.Button(Buttons.SHIFTALT)) {
                 currentGear = -1;
                 if (Vector3.Dot(rb.velocity, transform.forward) > 60*mph2u) {
@@ -223,7 +229,10 @@ public class Car : MonoBehaviour {
                     ChangeGear(currentGear - 1);
                 }
             }
-        } else if (InputManager.ButtonDown(Buttons.GEARUP) && clutch) {
+        } else if (
+            (InputManager.ButtonDown(Buttons.GEARUP) && clutch)
+            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARUP) > ReInput.time.unscaledTime-0.2f))
+        ) {
             if (currentGear < engine.gearRatios.Count) {
                 ChangeGear(currentGear+1);
             }
@@ -493,6 +502,7 @@ public class Car : MonoBehaviour {
 
         UpdateTelemetry();
         clutchOutThisFrame = false;
+        clutchInThisFrame = false;
 
         // right the car if upside down
         if (Physics.Raycast(

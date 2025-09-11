@@ -241,15 +241,17 @@ public class RaceLogic : MonoBehaviour {
 		}
 		RenderScoreboard();
 
-		medalText.gameObject.SetActive(true);
-		Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
-		medalText.text = resultData.Item1;
-		if (resultData.Item2 == null) {
-			medalText.GetComponentInChildren<Image>().enabled = false;
-		} else {
-			var i = medalText.GetComponentInChildren<Image>();
-			i.enabled = true;
-			i.sprite = resultData.Item2;
+		if (raceType == RaceType.ROUTE) {
+			medalText.gameObject.SetActive(true);
+			Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
+			medalText.text = resultData.Item1;
+			if (resultData.Item2 == null) {
+				medalText.GetComponentInChildren<Image>().enabled = false;
+			} else {
+				var i = medalText.GetComponentInChildren<Image>();
+				i.enabled = true;
+				i.sprite = resultData.Item2;
+			}
 		}
 	}
 
