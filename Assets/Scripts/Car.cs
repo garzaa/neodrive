@@ -216,7 +216,7 @@ public class Car : MonoBehaviour {
         if (
             (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch)
             // this is to allow buffering of a shift input if the player slightly mistimes it
-            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARDOWN) > ReInput.time.unscaledTime-0.2f))
+            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARDOWN) > ReInput.time.unscaledTime-0.25f))
         ) {
             if (InputManager.Button(Buttons.SHIFTALT)) {
                 currentGear = -1;
@@ -231,7 +231,7 @@ public class Car : MonoBehaviour {
             }
         } else if (
             (InputManager.ButtonDown(Buttons.GEARUP) && clutch)
-            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARUP) > ReInput.time.unscaledTime-0.2f))
+            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARUP) > ReInput.time.unscaledTime-0.25f))
         ) {
             if (currentGear < engine.gearRatios.Count) {
                 ChangeGear(currentGear+1);
