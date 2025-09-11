@@ -833,10 +833,10 @@ public class Car : MonoBehaviour {
         rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_Y) * settings.airPitchControl * transform.right);
         rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_X) * settings.airPitchControl * -transform.forward);
 
-        if (InputManager.ButtonDown(Buttons.HANDBRAKE)) {
+        if (InputManager.ButtonDown(Buttons.HANDBRAKE) && !forceBrake) {
             rb.angularVelocity = Vector3.zero;
         }
-        if (Time.time > handbrakeDown + 0.25f) {
+        if (Time.time > handbrakeDown + 0.25f && !forceBrake) {
             rb.AddForce(-Vector3.Project(rb.velocity, Vector3.up)*0.2f);
         }
     }

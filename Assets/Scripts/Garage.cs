@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Garage : MonoBehaviour {
 	// render wheel options
@@ -23,7 +24,9 @@ public class Garage : MonoBehaviour {
 	public CustomWheel lockedWheel;
 
 	void Awake() {
-		wheels = Resources.LoadAll<CustomWheel>("Wheels");
+		wheels = Resources.LoadAll<CustomWheel>("Wheels")
+			.Where(x => x.achievement != null || !x.achievement.hidden)
+			.ToArray();
 		achievements = FindObjectOfType<Achievements>();
 		carCustomization = FindObjectOfType<CarCustomization>();
 	}

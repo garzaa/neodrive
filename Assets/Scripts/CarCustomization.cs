@@ -6,6 +6,8 @@ public class CarCustomization : SavedObject {
 	CustomWheel wheel;
 	Car car;
 
+	public CustomWheel wheelOverride;
+
 	// for main menu and whatever else
 	public Wheel[] extraWheels;
 
@@ -32,6 +34,7 @@ public class CarCustomization : SavedObject {
 	}
 
 	private void ApplyWheel() {
+		if (wheelOverride != null) wheel = wheelOverride;
 		if (car) car.ApplyWheel(wheel);
 		foreach (Wheel w in extraWheels) {
 			w.ApplyCustomWheel(wheel);
