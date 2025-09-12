@@ -16,9 +16,11 @@ namespace SplineArchitect.Utility
 {
     public class EActionDelayed
     {
-        public enum ActionType : byte
+        public enum Type : byte
         {
-            unspecified
+            DELAY,
+            FRAMES,
+            BOTH
         }
 
         private static double lastTimeSinceStartup;
@@ -27,49 +29,48 @@ namespace SplineArchitect.Utility
 
         public Action action;
         public double delay;
-        public ActionType actionType { get; private set; }
-        public bool stop { get; private set; }
+        public int frames;
+        public Type actionType { get; private set; }
 
-        public EActionDelayed(Action action, double delay, ActionType actionType)
+        public EActionDelayed(Action action, double delay, int frames, Type actionType)
         {
             this.action = action;
             this.delay = delay;
+            this.frames = frames;
             this.actionType = actionType;
-            stop = false;
         }
 
-        public static void Update()
+        public static void UpdateGlobal()
         {
             editorDeltaTime = EditorApplication.timeSinceStartup - lastTimeSinceStartup;
             lastTimeSinceStartup = EditorApplication.timeSinceStartup;
 
             for (int i = delayedActions.Count - 1; i >= 0; i--)
             {
-                if (delayedActions[i].delay <= 0 || delayedActions[i].stop)
-                {
-                    if (!delayedActions[i].stop)
-                        delayedActions[i].action();
+                EActionDelayed da = delayedActions[i];
 
-                    delayedActions.Remove(delayedActions[i]);
+                if ((da.actionType == Type.DELAY || da.actionType == Type.BOTH) && da.delay <= 0)
+                {
+                    da.action();
+                    delayedActions.Remove(da);
                     continue;
                 }
 
-                delayedActions[i].delay -= editorDeltaTime;
+                if ((da.actionType == Type.FRAMES || da.actionType == Type.BOTH) && da.frames <= 0)
+                {
+                    da.action();
+                    delayedActions.Remove(da);
+                    continue;
+                }
+
+                da.frames--;
+                da.delay -= editorDeltaTime;
             }
         }
 
-        public static void Stop(ActionType actionType)
+        public static void Add(Action action, double timeDelay, int frames, Type actionType)
         {
-            foreach (EActionDelayed ad in delayedActions)
-            {
-                if (ad.actionType == actionType)
-                    ad.stop = true;
-            }
-        }
-
-        public static void Add(Action action, double timeDelay, ActionType actionType = ActionType.unspecified)
-        {
-            delayedActions.Add(new EActionDelayed(action, timeDelay, actionType));
+            delayedActions.Add(new EActionDelayed(action, timeDelay, frames, actionType));
         }
     }
 }

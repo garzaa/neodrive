@@ -14,54 +14,56 @@ namespace SplineArchitect
 {
     public class EHandleSceneView
     {
-        public static bool mouseInsideSceneView { get; private set; } = false;
-        private static SceneView activeSceneView = null;
+        public static bool mouseInsideSceneView { get; private set; }
+        public static bool mouseDragEnabled { get; private set; }
         private static Rect sceneDrawingArea = new Rect();
 
-        public static void BeforeSceneGUIGlobal(Event e)
+        public static void BeforeSceneGUIGlobal(SceneView sceneView, Event e)
         {
             if(e.type == EventType.Repaint)
             {
-                bool mouseInSceneView = sceneDrawingArea.Contains(e.mousePosition);
-                mouseInsideSceneView = mouseInSceneView;
+                float toolbarHeight = EditorStyles.toolbar.fixedHeight;
+                sceneDrawingArea.Set(0, toolbarHeight, sceneView.position.width, sceneView.position.height - toolbarHeight);
+                mouseInsideSceneView = sceneDrawingArea.Contains(e.mousePosition);
             }
 
             if (e.type == EventType.MouseEnterWindow)
             {
                 EHandleTool.UpdateOrientationForPositionTool();
             }
-        }
 
-        public static void TryUpdate(SceneView sceneView)
-        {
-            Vector2 mousePos = Event.current.mousePosition;
-            float toolbarHeight = EditorStyles.toolbar.fixedHeight;
-            sceneDrawingArea.Set(0, toolbarHeight, sceneView.position.width, sceneView.position.height - toolbarHeight);
-            mousePos.y = sceneView.position.height - mousePos.y;
-
-            if (sceneDrawingArea.Contains(mousePos))
+            if(e.type == EventType.MouseDrag)
             {
-                activeSceneView = sceneView;
-                SceneView.RepaintAll();
+                mouseDragEnabled = true;
+            }
+
+            if (e.type == EventType.MouseUp)
+            {
+                mouseDragEnabled = false;
             }
         }
 
         public static bool IsValid(SceneView sceneView)
         {
-            if (activeSceneView == sceneView)
+            if (SceneView.lastActiveSceneView == sceneView)
                 return true;
 
             return false;
         }
 
-        public static SceneView GetSceneView()
+        public static void RepaintCurrent()
         {
-            if (activeSceneView)
-                return activeSceneView;
-            else if (SceneView.currentDrawingSceneView)
-                return SceneView.currentDrawingSceneView;
-            else
-                return SceneView.lastActiveSceneView;
+            GetCurrent().Repaint();
+        }
+
+        public static Camera GetCamera()
+        {
+            return GetCurrent().camera;
+        }
+
+        public static SceneView GetCurrent()
+        {
+            return SceneView.lastActiveSceneView;
         }
     }
 }

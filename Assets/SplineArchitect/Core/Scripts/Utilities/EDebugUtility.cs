@@ -8,7 +8,12 @@
 // -----------------------------------------------------------------------------
 
 #if UNITY_EDITOR
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 using SplineArchitect.Objects;
 
@@ -16,6 +21,22 @@ namespace SplineArchitect.Utility
 {
     public class EDebugUtility
     {
+        private static Dictionary<int, Stopwatch> stopWatches = new Dictionary<int, Stopwatch>();
+
+        public static void StartTimer(int id = 0)
+        {
+            if(!stopWatches.ContainsKey(id))
+                stopWatches.Add(id, new Stopwatch());
+
+            stopWatches[id].Restart();
+        }
+
+        public static void LogElapsed(string message, int id = 0, bool stop = false)
+        {
+            Debug.Log($"[EDebugUtility] {message}: {stopWatches[id].ElapsedMilliseconds} ms");
+            if (stop) stopWatches[id].Stop();
+        }
+
         public static void DrawBounds(Transform transform, Bounds bounds, Color color, float duration)
         {
             DrawBounds(GeneralUtility.TransformBoundsToWorldSpace(bounds, transform), color, duration);

@@ -24,36 +24,48 @@ namespace SplineArchitect
 {
     public class EHandleGrid
     {
-        public static void DrawGridAndLabels(Spline spline)
+        public static Bounds GetGridBounds(Vector3 anchor, Vector3 tangentA, Vector3 tangentB, bool in2DMode)
         {
-            if (!GlobalSettings.GetGridVisibility())
-                return;
+            const int extraSize = 3;
 
-            Bounds gridBounds = GetGridBounds(spline);
-            DrawGrid(spline.transform, gridBounds, GlobalSettings.GetGridSize());
-            DrawLabels(spline);
-        }
-
-        public static Bounds GetGridBounds(Spline spline, Vector3 point, bool keepLocal = true)
-        {
             float gridSize = GlobalSettings.GetGridSize();
-            point = spline.transform.InverseTransformPoint(point);
+            float lowestX = 99999;
+            float highestX = -99999;
+            float lowestY = 99999;
+            float highestY = -99999;
+            float lowestZ = 99999;
+            float highestZ = -99999;
 
-            float lowestX = point.x;
-            float highestX = point.x;
-            float lowestZ = point.z;
-            float highestZ = point.z;
+            if (anchor.x < lowestX) lowestX = anchor.x;
+            if (anchor.x > highestX) highestX = anchor.x;
+            if (tangentA.x < lowestX) lowestX = tangentA.x;
+            if (tangentA.x > highestX) highestX = tangentA.x;
+            if (tangentB.x < lowestX) lowestX = tangentB.x;
+            if (tangentB.x > highestX) highestX = tangentB.x;
 
-            int extraSize = 2;
+            if (anchor.y < lowestY) lowestY = anchor.y;
+            if (anchor.y > highestY) highestY = anchor.y;
+            if (tangentA.y < lowestY) lowestY = tangentA.y;
+            if (tangentA.y > highestY) highestY = tangentA.y;
+            if (tangentB.y < lowestY) lowestY = tangentB.y;
+            if (tangentB.y > highestY) highestY = tangentB.y;
+
+            if (anchor.z < lowestZ) lowestZ = anchor.z;
+            if (anchor.z > highestZ) highestZ = anchor.z;
+            if (tangentA.z < lowestZ) lowestZ = tangentA.z;
+            if (tangentA.z > highestZ) highestZ = tangentA.z;
+            if (tangentB.z < lowestZ) lowestZ = tangentB.z;
+            if (tangentB.z > highestZ) highestZ = tangentB.z;
+
             lowestX -= gridSize * extraSize;
             highestX += gridSize * extraSize;
+            lowestY -= gridSize * extraSize;
+            highestY += gridSize * extraSize;
             lowestZ -= gridSize * extraSize;
             highestZ += gridSize * extraSize;
 
-            Vector3 min = spline.transform.TransformPoint(new Vector3(lowestX, spline.gridCenterPoint.y, lowestZ));
-            min = SnapPoint(spline, min, true);
-            Vector3 max = spline.transform.TransformPoint(new Vector3(highestX, spline.gridCenterPoint.y, highestZ));
-            max = SnapPoint(spline, max, true);
+            Vector3 min = in2DMode ? new Vector3(lowestX, lowestY, anchor.z) : new Vector3(lowestX, anchor.y, lowestZ);
+            Vector3 max = in2DMode ? new Vector3(highestX, highestY, anchor.z) : new Vector3(highestX, anchor.y, highestZ);
 
             Bounds bounds = new Bounds();
             bounds.SetMinMax(min, max);
@@ -63,10 +75,14 @@ namespace SplineArchitect
 
         public static Bounds GetGridBounds(Spline spline)
         {
+            const int extraSize = 3;
+
             float gridSize = GlobalSettings.GetGridSize();
 
             float lowestX = 99999;
             float highestX = -99999;
+            float lowestY = 99999;
+            float highestY = -99999;
             float lowestZ = 99999;
             float highestZ = -99999;
 
@@ -83,6 +99,13 @@ namespace SplineArchitect
                 if (tangentB.x < lowestX) lowestX = tangentB.x;
                 if (tangentB.x > highestX) highestX = tangentB.x;
 
+                if (anchor.y < lowestY) lowestY = anchor.y;
+                if (anchor.y > highestY) highestY = anchor.y;
+                if (tangentA.y < lowestY) lowestY = tangentA.y;
+                if (tangentA.y > highestY) highestY = tangentA.y;
+                if (tangentB.y < lowestY) lowestY = tangentB.y;
+                if (tangentB.y > highestY) highestY = tangentB.y;
+
                 if (anchor.z < lowestZ) lowestZ = anchor.z;
                 if (anchor.z > highestZ) highestZ = anchor.z;
                 if (tangentA.z < lowestZ) lowestZ = tangentA.z;
@@ -91,15 +114,18 @@ namespace SplineArchitect
                 if (tangentB.z > highestZ) highestZ = tangentB.z;
             }
 
-            int extraSize = 2;
             lowestX -= gridSize * extraSize;
             highestX += gridSize * extraSize;
+            lowestY -= gridSize * extraSize;
+            highestY += gridSize * extraSize;
             lowestZ -= gridSize * extraSize;
             highestZ += gridSize * extraSize;
 
             Vector3 min = spline.transform.TransformPoint(new Vector3(lowestX, spline.gridCenterPoint.y, lowestZ));
+            if(spline.normalType == Spline.NormalType.STATIC_2D) min = spline.transform.TransformPoint(new Vector3(lowestX, lowestY, spline.gridCenterPoint.z));
             min = SnapPoint(spline, min, true);
             Vector3 max = spline.transform.TransformPoint(new Vector3(highestX, spline.gridCenterPoint.y, highestZ));
+            if (spline.normalType == Spline.NormalType.STATIC_2D) max = spline.transform.TransformPoint(new Vector3(highestX, highestY, spline.gridCenterPoint.z));
             max = SnapPoint(spline, max, true);
 
             Bounds bounds = new Bounds();
@@ -110,34 +136,52 @@ namespace SplineArchitect
 
         public static void DrawLabels(Spline spline)
         {
+            bool drawGridDistanceLabels = GlobalSettings.GetDrawGridDistanceLabels();
             Handles.color = Color.black;
             Segment.ControlHandle selectedType = SplineUtility.GetControlPointType(spline.selectedControlPoint);
+            bool in2DMode = EHandleSceneView.GetCurrent().in2DMode;
 
-            foreach (Segment s in spline.segments)
+            for (int i = 0; i < spline.segments.Count; i++)
             {
+                Segment s = spline.segments[i];
+                Segment.ControlHandle hoveredControlHandle = EHandleSelection.IsHovering(i);
+
+                bool isPrimarySelection = EHandleSelection.IsPrimiarySelection(s);
+                Segment.ControlHandle primarySelectedlHandle = isPrimarySelection ? SplineUtility.GetControlPointType(spline.selectedControlPoint) : Segment.ControlHandle.NONE;
+                bool isSecondarySelection = EHandleSelection.IsSecondarySelection(s);
+
                 Vector3 anchor = s.GetPosition(Segment.ControlHandle.ANCHOR, Space.Self);
                 Vector3 tangentA = s.GetPosition(Segment.ControlHandle.TANGENT_A, Space.Self);
                 Vector3 tangentB = s.GetPosition(Segment.ControlHandle.TANGENT_B, Space.Self);
 
                 Vector3 labelPointAnchor = new Vector3(anchor.x, spline.gridCenterPoint.y, anchor.z);
+                if (spline.normalType == Spline.NormalType.STATIC_2D) labelPointAnchor = new Vector3(anchor.x, anchor.y, spline.gridCenterPoint.z);
                 Vector3 worldLabelPointAnchor = spline.transform.TransformPoint(labelPointAnchor);
                 Vector3 worldAnchor = spline.transform.TransformPoint(anchor);
 
                 Vector3 labelPointTangentA = new Vector3(tangentA.x, spline.gridCenterPoint.y, tangentA.z);
+                if (spline.normalType == Spline.NormalType.STATIC_2D) labelPointTangentA = new Vector3(tangentA.x, tangentA.y, spline.gridCenterPoint.z);
                 Vector3 worldLabelPointTangentA = spline.transform.TransformPoint(labelPointTangentA);
                 Vector3 worldTangentA = spline.transform.TransformPoint(tangentA);
 
                 Vector3 labelPointTangentB = new Vector3(tangentB.x, spline.gridCenterPoint.y, tangentB.z);
+                if(spline.normalType == Spline.NormalType.STATIC_2D) labelPointTangentB = new Vector3(tangentB.x, tangentB.y, spline.gridCenterPoint.z);
                 Vector3 worldLabelPointTangentB = spline.transform.TransformPoint(labelPointTangentB);
                 Vector3 worldTangentB = spline.transform.TransformPoint(tangentB);
 
                 bool skipDraw = selectedType != Segment.ControlHandle.ANCHOR && (GeneralUtility.IsEqual(labelPointAnchor, labelPointTangentB) || GeneralUtility.IsEqual(labelPointAnchor, labelPointTangentA));
-
-                if (!GeneralUtility.IsEqual(labelPointAnchor, anchor) && !skipDraw)
+                if (!GeneralUtility.IsEqual(labelPointAnchor, anchor, 0.01f) && !skipDraw)
                 {
-                    float value = Mathf.Round((anchor.y - labelPointAnchor.y) * 100) / 100;
                     Handles.DrawLine(worldLabelPointAnchor, worldAnchor);
-                    Handles.Label(worldLabelPointAnchor, value.ToString(), LibraryGUIStyle.textSceneView);
+
+                    float value = Mathf.Round((anchor.y - labelPointAnchor.y) * 100) / 100;
+                    bool labelSelectionCheck = true;
+                    if (spline.normalType == Spline.NormalType.STATIC_2D)
+                    {
+                        value = Mathf.Round((anchor.z - labelPointAnchor.z) * 100) / 100;
+                        if (in2DMode) labelSelectionCheck = hoveredControlHandle != Segment.ControlHandle.ANCHOR && !isSecondarySelection && primarySelectedlHandle != Segment.ControlHandle.ANCHOR;
+                    }
+                    if (drawGridDistanceLabels && labelSelectionCheck) Handles.Label(worldLabelPointAnchor, value.ToString(), LibraryGUIStyle.textSceneView);
                 }
 
                 if(s.GetInterpolationType() == Segment.InterpolationType.SPLINE)
@@ -146,43 +190,66 @@ namespace SplineArchitect
 
                     if (!GeneralUtility.IsEqual(labelPointTangentA, tangentA) && !skipDraw)
                     {
-                        float value = Mathf.Round((tangentA.y - labelPointTangentA.y) * 100) / 100;
                         Handles.DrawLine(worldLabelPointTangentA, worldTangentA);
-                        Handles.Label(worldLabelPointTangentA, value.ToString(), LibraryGUIStyle.textSceneView);
+
+                        float value = Mathf.Round((tangentA.y - labelPointTangentA.y) * 100) / 100;
+                        bool labelSelectionCheck = true;
+                        if (spline.normalType == Spline.NormalType.STATIC_2D)
+                        {
+                            value = Mathf.Round((tangentA.z - labelPointTangentA.z) * 100) / 100;
+                            if (in2DMode) labelSelectionCheck = hoveredControlHandle != Segment.ControlHandle.TANGENT_A && primarySelectedlHandle != Segment.ControlHandle.TANGENT_A;
+                        }
+                        if (drawGridDistanceLabels && labelSelectionCheck) Handles.Label(worldLabelPointTangentA, value.ToString(), LibraryGUIStyle.textSceneView);
                     }
 
                     skipDraw = selectedType != Segment.ControlHandle.TANGENT_B && (GeneralUtility.IsEqual(labelPointTangentB, labelPointAnchor) || GeneralUtility.IsEqual(labelPointTangentB, labelPointTangentA));
 
                     if (!GeneralUtility.IsEqual(labelPointTangentB, tangentB) && !skipDraw)
                     {
-                        float value = Mathf.Round((tangentB.y - labelPointTangentB.y) * 100) / 100;
                         Handles.DrawLine(worldLabelPointTangentB, worldTangentB);
-                        Handles.Label(worldLabelPointTangentB, value.ToString(), LibraryGUIStyle.textSceneView);
+
+                        float value = Mathf.Round((tangentB.y - labelPointTangentB.y) * 100) / 100;
+                        bool labelSelectionCheck = true;
+                        if (spline.normalType == Spline.NormalType.STATIC_2D)
+                        {
+                            value = Mathf.Round((tangentB.z - labelPointTangentB.z) * 100) / 100;
+                            if(in2DMode) labelSelectionCheck = hoveredControlHandle != Segment.ControlHandle.TANGENT_B && primarySelectedlHandle != Segment.ControlHandle.TANGENT_B;
+                        }
+                        if (drawGridDistanceLabels && labelSelectionCheck) Handles.Label(worldLabelPointTangentB, value.ToString(), LibraryGUIStyle.textSceneView);
                     }
                 }
             }
         }
 
-        public static void DrawGrid(Transform originTransform, Bounds bounds, float size)
+        public static void DrawGrid(Transform originTransform, Bounds bounds, float size, bool space2D = false)
         {
-            float increment = bounds.min.x;
             int count = 0;
-            int colorType = GlobalSettings.GetGridColorType();
+            bool is2D = EHandleSceneView.GetCurrent().in2DMode;
 
-            Color color1 = new Color(1, 1, 1, 1);
-            if (colorType == 1)
-                color1 = new Color(0.5f, 0.5f, 0.5f, 1);
-            else if (colorType == 2)
-                color1 = new Color(0, 0, 0, 1);
-
+            Color color1 = GlobalSettings.GetGridColor();
             Color color2 = new Color(color1.r, color1.g, color1.b, 0.33f);
 
-            Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+            if(GlobalSettings.GetGridOccluded())
+                Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+            else
+                Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
 
-            while (increment < bounds.max.x + size)
+            float increment = bounds.min.x;
+            if (space2D) increment = bounds.min.y;
+
+            float length = bounds.max.x + size;
+            if (space2D) length = bounds.max.y + size;
+
+            while (increment < length)
             {
                 Vector3 point1 = new Vector3(increment, bounds.max.y, bounds.min.z);
                 Vector3 point2 = new Vector3(increment, bounds.max.y, bounds.max.z);
+
+                if(space2D)
+                {
+                    point1 = new Vector3(bounds.min.x, increment, bounds.min.z);
+                    point2 = new Vector3(bounds.max.x, increment, bounds.max.z);
+                }
 
                 if(originTransform != null)
                 {
@@ -198,7 +265,7 @@ namespace SplineArchitect
                 else
                 {
                     Handles.color = color1;
-                    Handles.DrawLine(point1, point2);
+                    Handles.DrawLine(point1, point2, is2D ? 2 : 1);
                 }
                 increment += size;
 
@@ -206,12 +273,25 @@ namespace SplineArchitect
                 else count++;
             }
 
+            //Increment
             increment = bounds.min.z;
+            if (space2D) increment = bounds.min.x;
+
+            //Length
+            length = bounds.max.z + size;
+            if (space2D) length = bounds.max.x + size;
+
             count = 0;
-            while (increment < bounds.max.z + size)
+            while (increment < length)
             {
                 Vector3 point1 = new Vector3(bounds.min.x, bounds.max.y, increment);
                 Vector3 point2 = new Vector3(bounds.max.x, bounds.max.y, increment);
+
+                if (space2D)
+                {
+                    point1 = new Vector3(increment, bounds.min.y, bounds.min.z);
+                    point2 = new Vector3(increment, bounds.max.y, bounds.max.z);
+                }
 
                 if (originTransform != null)
                 {
@@ -227,7 +307,7 @@ namespace SplineArchitect
                 else
                 {
                     Handles.color = color1;
-                    Handles.DrawLine(point1, point2);
+                    Handles.DrawLine(point1, point2, is2D ? 2 : 1);
                 }
                 increment += size;
 
@@ -249,6 +329,11 @@ namespace SplineArchitect
             }
 
             return gridPoint;
+        }
+
+        public static Vector3 SnapPoint(Vector3 worldPoint)
+        {
+            return GeneralUtility.RoundToClosest(worldPoint, GlobalSettings.GetGridSize());
         }
 
         public static void AlignGrid(Spline primary, Spline secondary)

@@ -30,7 +30,7 @@ namespace SplineArchitect
                 folderPath = RetriveFolderPath();
 
             if (string.IsNullOrEmpty(folderPath))
-                Debug.LogError($"Could not retrvice {MenuGeneral.toolName} main folder!");
+                Debug.LogError($"Could not retrvice {WindowInfo.toolName} main folder!");
 
             return folderPath;
         }

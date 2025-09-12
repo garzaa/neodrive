@@ -21,33 +21,32 @@ namespace SplineArchitect.Libraries
     public class LibraryGUIContent
     {
         //Icons
+        public static GUIContent iconCreateSpline { get; private set; }
+        public static GUIContent iconCreateSplineLight { get; private set; }
+        public static GUIContent iconMaximize { get; private set; }
+        public static GUIContent iconMinimize { get; private set; }
+        public static GUIContent iconMenuControlPanel { get; private set; }
+        public static GUIContent iconMenuSettings { get; private set; }
+        public static GUIContent iconMenuInfo { get; private set; }
         public static GUIContent iconConstrained { get; private set; }
         public static GUIContent iconNotConstrained { get; private set; }
         public static GUIContent iconGrid { get; private set; }
-        public static GUIContent iconGridActive { get; private set; }
         public static GUIContent iconGeneral { get; private set; }
         public static GUIContent iconGeneralActive { get; private set; }
         public static GUIContent iconMirrorDeformation { get; private set; }
         public static GUIContent iconMirrorDeformationActive { get; private set; }
         public static GUIContent iconMirrorConnector { get; private set; }
         public static GUIContent iconMirrorConnectorActive { get; private set; }
-        public static GUIContent iconSpline { get; private set; }
-        public static GUIContent iconSplineActive { get; private set; }
+        public static GUIContent iconCurve { get; private set; }
+        public static GUIContent iconCurveActive { get; private set; }
         public static GUIContent iconLoop { get; private set; }
         public static GUIContent iconLoopActive { get; private set; }
         public static GUIContent iconNormals { get; private set; }
-        public static GUIContent iconNormalsActive { get; private set; }
         public static GUIContent iconHide { get; private set; }
-        public static GUIContent iconHideActive { get; private set; }
-        public static GUIContent iconHideActive2 { get; private set; }
         public static GUIContent iconAdd { get; private set; }
-        public static GUIContent iconAddActive { get; private set; }
-        public static GUIContent iconTerrain { get; private set; }
-        public static GUIContent iconTerrainActive { get; private set; }
         public static GUIContent iconInfo { get; private set; }
         public static GUIContent iconInfoActive { get; private set; }
         public static GUIContent iconSettings { get; private set; }
-        public static GUIContent iconSettingsActive { get; private set; }
         public static GUIContent iconReverse { get; private set; }
         public static GUIContent iconFlatten { get; private set; }
         public static GUIContent iconToCenter { get; private set; }
@@ -66,12 +65,12 @@ namespace SplineArchitect.Libraries
         public static GUIContent iconNoise { get; private set; }
         public static GUIContent iconNoiseActive { get; private set; }
         public static GUIContent iconDefault { get; private set; }
-        public static GUIContent iconX { get; private set; }
+        public static GUIContent iconRemove { get; private set; }
+        public static GUIContent iconClose { get; private set; }
         public static GUIContent iconCenterGrid { get; private set; }
         public static GUIContent iconUpArrow { get; private set; }
         public static GUIContent iconDownArrow { get; private set; }
         public static GUIContent iconExport { get; private set; }
-        public static GUIContent iconMinimize { get; private set; }
         public static GUIContent iconCopy { get; private set; }
         public static GUIContent iconPaste { get; private set; }
         public static GUIContent iconAlignTangents { get; private set; }
@@ -137,10 +136,13 @@ namespace SplineArchitect.Libraries
         public static GUIContent empty { get; private set; }
         public static List<GUIContent> noiseTypes = new List<GUIContent>();
 
-        public static void Initalize()
+        public static void Init()
         {
             //Icons
-            iconMove = new GUIContent(LibraryTexture.iconMove, "Move window");
+            iconCreateSpline = new GUIContent(LibraryTexture.iconCreateSpline, "Spline Architect - Create Spline or Control Point on selected spline");
+            iconCreateSplineLight = new GUIContent(LibraryTexture.iconCreateSplineLight, "Spline Architect - Create Spline or Control Point on selected spline");
+            iconMaximize = new GUIContent(LibraryTexture.iconPlus, "Maximize");
+            iconMove = new GUIContent(LibraryTexture.iconMove, "Move activeInstance");
             iconSplit = new GUIContent(LibraryTexture.iconSplit, "Split spline");
             iconJoin = new GUIContent(LibraryTexture.iconJoin, "Join selected splines");
             iconLink = new GUIContent(LibraryTexture.iconLink, "LinkToAnchor to closest control point");
@@ -152,7 +154,6 @@ namespace SplineArchitect.Libraries
             iconSelectLayer = new GUIContent(LibraryTexture.iconSelectSpline, "Select layer");
             iconToCenter = new GUIContent(LibraryTexture.iconToCenter, "To center");
             iconGrid = new GUIContent(LibraryTexture.iconGrid, "Enable grid");
-            iconGridActive = new GUIContent(LibraryTexture.iconGridActive, "Disable grid");
             iconGeneral = new GUIContent(LibraryTexture.iconGeneral, "General");
             iconGeneralActive = new GUIContent(LibraryTexture.iconGeneralActive, "General");
             iconMirrorDeformation = new GUIContent(LibraryTexture.iconMirror, "Enable mirror deformation");
@@ -162,30 +163,24 @@ namespace SplineArchitect.Libraries
             iconLoop = new GUIContent(LibraryTexture.iconLoop, "Enable loop");
             iconLoopActive = new GUIContent(LibraryTexture.iconLoopActive, "Disable loop");
             iconNormals = new GUIContent(LibraryTexture.iconNormals, "Show normals");
-            iconNormalsActive = new GUIContent(LibraryTexture.iconNormalsActive, "Hide normals");
             iconHide = new GUIContent(LibraryTexture.iconHide, "Hide all unselected splines");
-            iconHideActive = new GUIContent(LibraryTexture.iconHideActive, "Hide all unselected splines (occluded by objects)");
-            iconHideActive2 = new GUIContent(LibraryTexture.iconHideActive2, "Show all splines");
-            iconAdd = new GUIContent(LibraryTexture.iconAdd, "Enable create mode");
-            iconAddActive = new GUIContent(LibraryTexture.iconAddActive, "Disable create mode");
+            iconAdd = new GUIContent(LibraryTexture.iconPlus, "Add");
             iconNoise = new GUIContent(LibraryTexture.iconNoise, "Noise effects");
             iconNoiseActive = new GUIContent(LibraryTexture.iconNoiseActive, "Noise effects");
             iconDefault = new GUIContent(LibraryTexture.iconDefault, "Set to default value");
-            iconTerrain = new GUIContent(LibraryTexture.iconTerrain, "Terrain");
-            iconTerrainActive = new GUIContent(LibraryTexture.iconTerrainActive, "Terrain");
             iconInfo = new GUIContent(LibraryTexture.iconInfo, "Info");
             iconInfoActive = new GUIContent(LibraryTexture.iconInfoActive, "Info");
             iconSettings = new GUIContent(LibraryTexture.iconSettings, "Settings");
-            iconSettingsActive = new GUIContent(LibraryTexture.iconSettingsActive, "Settings");
-            iconSpline = new GUIContent(LibraryTexture.iconSpline, "Deformation");
-            iconSplineActive = new GUIContent(LibraryTexture.iconSplineActive, "Deformation");
+            iconCurve = new GUIContent(LibraryTexture.iconCurve, "Deformation");
+            iconCurveActive = new GUIContent(LibraryTexture.iconCurveActive, "Deformation");
             iconReverse = new GUIContent(LibraryTexture.iconReverse, "Reverse control points");
             iconFlatten = new GUIContent(LibraryTexture.iconFlatten, "Flatten control points");
             iconConstrained = new GUIContent(LibraryTexture.iconConstrined, "Disabled constrained");
             iconNotConstrained = new GUIContent(LibraryTexture.iconNotConstrined, "Enable constrained");
             iconAlignGrid = new GUIContent(LibraryTexture.iconAlignGrid, "Align grids");
             iconAlign = new GUIContent(LibraryTexture.iconAlign, "Align control points");
-            iconX = new GUIContent(LibraryTexture.iconX, "Remove");
+            iconRemove= new GUIContent(LibraryTexture.iconX, "Remove");
+            iconClose = new GUIContent(LibraryTexture.iconX, "Close");
             iconCenterGrid = new GUIContent(LibraryTexture.iconCenterGrid, "Center grid");
             iconUpArrow = new GUIContent(LibraryTexture.iconUpArrow, "Move up");
             iconDownArrow = new GUIContent(LibraryTexture.iconDownArrow, "Move down");
@@ -272,8 +267,6 @@ namespace SplineArchitect.Libraries
             textPasteLayers = new GUIContent("Paste layers");
 
             //Other
-            minimize = new GUIContent(LibraryTexture.minimize, "");
-            maximize = new GUIContent(LibraryTexture.maximize, "");
             empty = new GUIContent(LibraryTexture.empty, "");
 
             noiseTypes.Clear();

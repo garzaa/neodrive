@@ -35,7 +35,8 @@ namespace SplineArchitect.Objects
 
         public enum NormalType : byte
         {
-            STATIC,
+            STATIC_3D,
+            STATIC_2D,
             DYNAMIC
         }
 
@@ -150,6 +151,9 @@ namespace SplineArchitect.Objects
                             {
                                 Segment linkedSegment2 = linkedSegment.links[i2];
 
+                                if (linkedSegment2.links.Count <= i2)
+                                    continue;
+
                                 if (linkedSegment2 == segment)
                                 {
                                     linkedSegment2.links.RemoveAt(i2);
@@ -166,6 +170,11 @@ namespace SplineArchitect.Objects
 
         private void Start()
         {
+#if UNITY_EDITOR
+            if (EHandleEvents.dragActive)
+                return;
+#endif
+
             EstablishLinks();
 
             if (Application.isPlaying) 
@@ -254,16 +263,22 @@ namespace SplineArchitect.Objects
         /// <param name="force">If true, re-establishes all links even if already initialized.</param>
         public void EstablishLinks()
         {
-
 #if UNITY_EDITOR
             if (initalizedLinks)
                 return;
 
             initalizedLinks = true;
+            FixUnityPrefabBoundsCase();
 #endif
-
+            int count = -1;
             foreach (Segment s in segments)
             {
+                count++;
+#if UNITY_EDITOR
+                s.oldLinkTarget = s.linkTarget;
+
+                if(!Application.isPlaying) s.linkCreatedThisFrameOnly = true;
+#endif
                 if (s.linkTarget == Segment.LinkTarget.ANCHOR)
                 {
                     //Has allready been established by another spline during Start.
@@ -271,6 +286,12 @@ namespace SplineArchitect.Objects
                         continue;
 
                     s.LinkToAnchor(s.GetPosition(Segment.ControlHandle.ANCHOR), false);
+
+                    if (s.links != null && s.links.Count < 2)
+                    {
+                        s.linkTarget = Segment.LinkTarget.NONE;
+                        s.links.Clear();
+                    }
                 }
                 else if (s.linkTarget == Segment.LinkTarget.SPLINE_CONNECTOR)
                 {
@@ -278,10 +299,15 @@ namespace SplineArchitect.Objects
                         continue;
 
                     s.LinkToConnector(s.GetPosition(Segment.ControlHandle.ANCHOR));
+
+                    if (s.splineConnector == null)
+                    {
+                        s.linkTarget = Segment.LinkTarget.NONE;
+                    }
                 }
 
 #if UNITY_EDITOR
-            s.oldLinkTarget = s.linkTarget;
+                if (!Application.isPlaying) s.linkCreatedThisFrameOnly = false;
 #endif
             }
         }
@@ -718,18 +744,18 @@ namespace SplineArchitect.Objects
 
             if (segments.Count == 1)
             {
-                normals[1] = transform.up;
+                normals[1] = normalType == NormalType.STATIC_2D ? -transform.forward : transform.up;
                 normals[2] = segments[0].GetDirection();
                 normals[0] = Vector3.Cross(normals[2], -normals[1]).normalized;
                 return;
             }
 
-            if (normalType == NormalType.STATIC)
+            if (normalType != NormalType.DYNAMIC)
             {
                 //Z
                 normals[2] = GetDirection(fixedTime, false, space);
                 //X
-                normals[0] = Vector3.Cross(normals[2], -transform.up).normalized;
+                normals[0] = Vector3.Cross(normals[2], normalType == NormalType.STATIC_2D ? transform.forward : -transform.up).normalized;
                 //Y
                 normals[1] = Vector3.Cross(normals[2], normals[0]).normalized;
 
@@ -900,22 +926,22 @@ namespace SplineArchitect.Objects
         /// Attempts to find link crossings based on the provided spline positions.
         /// </summary>
         /// <param name="splinePosition">The current position of the spline.</param>
-        /// <param name="oldSplinePosition">The previous position of the spline.</param>
+        /// <param name="previousSplinePosition">The previous position of the spline.</param>
         /// <param name="linkFlags">Flags used determine rules for what links to look for.</param>
         /// <param name="currentSegment">The fromSegment where a link crossing is found, if any.</param>
         /// <returns>A list of links at the crossing fromSegment, or an empty list if none are found.</returns>
-        public void FindLinkCrossingsNonAlloc(List<Segment> links, Vector3 splinePosition, Vector3 oldSplinePosition, LinkFlags linkFlags, out Segment currentSegment)
+        public void FindLinkCrossingsNonAlloc(List<Segment> links, Vector3 splinePosition, Vector3 previousSplinePosition, LinkFlags linkFlags, out Segment currentSegment)
         {
             //Handle loop
             if (loop && splinePosition.z > length)
             {
                 int loops = Mathf.FloorToInt(splinePosition.z / length);
                 splinePosition.z -= length * loops;
-                oldSplinePosition.z -= length * loops;
+                previousSplinePosition.z -= length * loops;
             }
 
-            float minZ = Mathf.Min(oldSplinePosition.z, splinePosition.z);
-            float maxZ = Mathf.Max(oldSplinePosition.z, splinePosition.z);
+            float minZ = Mathf.Min(previousSplinePosition.z, splinePosition.z);
+            float maxZ = Mathf.Max(previousSplinePosition.z, splinePosition.z);
             currentSegment = null;
 
             for (int i = 0; i < segments.Count; i++)
@@ -961,9 +987,9 @@ namespace SplineArchitect.Objects
             }
         }
 
-        public void FindLinkCrossingsNonAlloc(List<Segment> links, Vector3 splinePosition, Vector3 oldSplinePosition)
+        public void FindLinkCrossingsNonAlloc(List<Segment> links, Vector3 splinePosition, Vector3 previousSplinePosition)
         {
-            FindLinkCrossingsNonAlloc(links, splinePosition, oldSplinePosition, LinkFlags.NONE, out _);
+            FindLinkCrossingsNonAlloc(links, splinePosition, previousSplinePosition, LinkFlags.NONE, out _);
         }
 
         public float CalculateLinkCrossingZPosition(Vector3 splinePosition, Segment fromSegment, Segment toSegment)

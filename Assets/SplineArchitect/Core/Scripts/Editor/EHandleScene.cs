@@ -62,7 +62,7 @@ namespace SplineArchitect
             sceneIsClosing = true;
         }
 
-        public static void OnSceneSaving(Scene scene, string path)
+        private static void OnSceneSaving(Scene scene, string path)
         {
             foreach (Spline spline in HandleRegistry.GetSplines())
             {
@@ -107,6 +107,8 @@ namespace SplineArchitect
             //SplineConnectors HideFlags
             foreach (SplineConnector sc in HandleRegistry.GetSplineConnectors())
             {
+                if (sc == null) continue;
+
                 sc.hideFlags = HideFlags.DontSaveInBuild;
 
                 foreach (Segment s in sc.connections)

@@ -7,35 +7,50 @@
 // (C) 2023 Mikael Danielsson. All rights reserved.
 // -----------------------------------------------------------------------------
 
+using SplineArchitect.Objects;
 using UnityEditor;
 using UnityEngine;
+using static SplineArchitect.GlobalSettings;
 
 namespace SplineArchitect
 {
     public static class GlobalSettings
     {
-        public enum SplineHideMode
-        {
-            NONE,
-            SELECTED,
-            SELECTED_OCCLUDED
-        }
-
         //Containers
         private static Vector2 generalWindowPosition;
 
-        public static float GetSnapIncrement(bool forceNoShift = false)
-        {
-            float snapIncrement = EditorPrefs.GetFloat("SplineArchitect_snapIncrement", 0.25f);
-            if (!forceNoShift && Event.current != null && Event.current.shift && Event.current.alt)
-                return snapIncrement * 10;
+        //Cached data
+        private static Color gridColor;
+        private static bool gridOccluded;
+        private static bool drawGridDistanceLabels;
+        private static bool showNormals;
+        private static SplineHideMode splineHideMode;
+        private static bool controlPanelWindowMinimized;
+        private static bool extendedWindowMinimized;
+        private static bool windowHorizontalOrder;
+        private static float gridSize;
+        private static bool gridVisibility;
 
-            return snapIncrement;
+        //General
+        private static bool gridColorInit;
+        private static bool gridOccludedInit;
+        private static bool drawGridDistanceLabelsInit;
+        private static bool showNormalsInit;
+        private static bool splineHideModeInit;
+        private static bool controlPanelWindowMinimizedInit;
+        private static bool extendedWindowMinimizedInit;
+        private static bool windowHorizontalOrderInit;
+        private static bool gridSizeInit;
+        private static bool gridVisibilityInit;
+
+        public static HandleType GetHandleType()
+        {
+            return (HandleType)EditorPrefs.GetInt("SplineArchitect_handleType", 0);
         }
 
-        public static int GetSegementMovementType()
+        public static void SetHandleType(HandleType handleType)
         {
-            return EditorPrefs.GetInt("SplineArchitect_segementMovementType", 0);
+            EditorPrefs.SetInt("SplineArchitect_handleType", (int)handleType);
         }
 
         public static float GetNormalsSpacing()
@@ -58,14 +73,148 @@ namespace SplineArchitect
             return EditorPrefs.GetFloat("SplineArchitect_splineLineResolution", 100);
         }
 
-        public static float GetGridSize()
+        public static bool GetControlPanelWindowMinimized()
         {
-            return EditorPrefs.GetFloat("SplineArchitect_gridSize", 1);
+            if (!controlPanelWindowMinimizedInit)
+            {
+                controlPanelWindowMinimizedInit = true;
+                controlPanelWindowMinimized = EditorPrefs.GetBool("SplineArchitect_controlPanelWindowMinimized", false);
+            }
+
+            return controlPanelWindowMinimized;
         }
 
-        public static int GetGridColorType()
+        public static void SetControlPanelWindowMinimized(bool value)
         {
-            return EditorPrefs.GetInt("SplineArchitect_gridColorType", 1);
+            EditorPrefs.SetBool("SplineArchitect_controlPanelWindowMinimized", value);
+            controlPanelWindowMinimized = value;
+        }
+
+        public static void SetWindowHorizontalOrder(bool value)
+        {
+            EditorPrefs.SetBool("SplineArchitect_windowHorizontalOrder", value);
+            windowHorizontalOrder = value;
+        }
+
+        public static bool GetWindowHorizontalOrder()
+        {
+            if (!windowHorizontalOrderInit)
+            {
+                windowHorizontalOrderInit = true;
+                windowHorizontalOrder = EditorPrefs.GetBool("SplineArchitect_windowHorizontalOrder", true);
+            }
+
+            return windowHorizontalOrder;
+        }
+
+        public static bool GetExtendedWindowMinimized()
+        {
+            if (!extendedWindowMinimizedInit)
+            {
+                extendedWindowMinimizedInit = true;
+                extendedWindowMinimized = EditorPrefs.GetBool("SplineArchitect_extendedWindowMinimized", false);
+            }
+
+            return extendedWindowMinimized;
+        }
+
+        public static void SetExtendedWindowMinimized(bool value)
+        {
+            EditorPrefs.SetBool("SplineArchitect_extendedWindowMinimized", value);
+            extendedWindowMinimized = value;
+        }
+
+        public static bool GetDrawGridDistanceLabels()
+        {
+            if (!drawGridDistanceLabelsInit)
+            {
+                drawGridDistanceLabelsInit = true;
+                drawGridDistanceLabels = EditorPrefs.GetBool("SplineArchitect_drawGridDistanceLabels", false);
+            }
+
+            return drawGridDistanceLabels;
+        }
+
+        public static void SetDrawGridDistanceLabels(bool value)
+        {
+            EditorPrefs.SetBool("SplineArchitect_drawGridDistanceLabels", value);
+            drawGridDistanceLabels = value;
+        }
+
+        public static bool GetGridOccluded()
+        {
+            if(!gridOccludedInit)
+            {
+                gridOccludedInit = true;
+                gridOccluded = EditorPrefs.GetBool("SplineArchitect_gridOccluded", true);
+            }
+
+            return gridOccluded;
+        }
+
+        public static void SetGridOccluded(bool value)
+        {
+            EditorPrefs.SetBool("SplineArchitect_gridOccluded", value);
+            gridOccluded = value;
+        }
+
+        public static SplineHideMode GetSplineHideMode()
+        {
+            if(!splineHideModeInit)
+            {
+                splineHideModeInit = true;
+                splineHideMode = (SplineHideMode)EditorPrefs.GetInt("SplineArchitect_splineHiddenMode", 0);
+            }
+
+            return splineHideMode;
+        }
+
+        public static void SetSplineHideMode(SplineHideMode value)
+        {
+            EditorPrefs.SetInt("SplineArchitect_splineHiddenMode", (int)value);
+            splineHideMode = value;
+        }
+
+        public static float GetGridSize()
+        {
+            if (!gridSizeInit)
+            {
+                gridSizeInit = true;
+                gridSize = EditorPrefs.GetFloat("SplineArchitect_gridSize", 1);
+            }
+
+            return gridSize;
+        }
+
+        public static void SetGridSize(float value)
+        {
+            if (value < 0.05f)
+                value = 0.05f;
+
+            EditorPrefs.SetFloat("SplineArchitect_gridSize", value);
+            gridSize = value;
+        }
+
+        public static Color GetGridColor()
+        {
+            if(!gridColorInit)
+            {
+                gridColorInit = true;
+                gridColor = new Color(EditorPrefs.GetFloat("SplineArchitect_gridColorR", 1),
+                                      EditorPrefs.GetFloat("SplineArchitect_gridColorG", 1),
+                                      EditorPrefs.GetFloat("SplineArchitect_gridColorB", 1),
+                                      1);
+            }
+    
+            return gridColor;
+        }
+
+        public static void SetGridColor(Color value)
+        {
+            EditorPrefs.SetFloat("SplineArchitect_gridColorR", value.r);
+            EditorPrefs.SetFloat("SplineArchitect_gridColorG", value.g);
+            EditorPrefs.SetFloat("SplineArchitect_gridColorB", value.b);
+            gridColor = new Color(value.r, value.g, value.b, 1);
         }
 
         public static float GetControlPointSize()
@@ -80,7 +229,19 @@ namespace SplineArchitect
 
         public static bool GetGridVisibility()
         {
-            return EditorPrefs.GetBool("SplineArchitect_gridVisibility", false);
+            if (!gridVisibilityInit)
+            {
+                gridVisibilityInit = true;
+                gridVisibility = EditorPrefs.GetBool("SplineArchitect_gridVisibility", false);
+            }
+
+            return gridVisibility;
+        }
+
+        public static void SetGridVisibility(bool value)
+        {
+            EditorPrefs.SetBool("SplineArchitect_gridVisibility", value);
+            gridVisibility = value;
         }
 
         public static Vector2 GetGeneralWindowPosition()
@@ -91,32 +252,9 @@ namespace SplineArchitect
             return generalWindowPosition;
         }
 
-        public static SplineHideMode GetSplineHideMode()
-        {
-            return (SplineHideMode)EditorPrefs.GetInt("SplineArchitect_splineHiddenMode", 0);
-        }
-
         public static void SetSplineViewDistance(float value)
         {
             EditorPrefs.SetFloat("SplineArchitect_splineViewDistance", value);
-        }
-
-        public static void SetSplineHideMode(SplineHideMode value)
-        {
-            EditorPrefs.SetInt("SplineArchitect_splineHiddenMode", (int)value);
-        }
-
-        public static void SetSnapIncrement(float value)
-        {
-            EditorPrefs.SetFloat("SplineArchitect_snapIncrement", value);
-        }
-
-        public static void SetSnapIncrement(string value)
-        {
-            if (float.TryParse(value, out float result))
-            {
-                SetSnapIncrement(result);
-            }
         }
 
         public static void SetGeneralWindowPosition(float x, float y)
@@ -128,16 +266,6 @@ namespace SplineArchitect
         public static void SetGeneralAtWindowBottom(bool value)
         {
             EditorPrefs.SetBool("SplineArchitect_generalAtWindowBottom", value);
-        }
-
-        public static void SetGridVisibility(bool value)
-        {
-            EditorPrefs.SetBool("SplineArchitect_gridVisibility", value);
-        }
-
-        public static void SetShowNormals(bool value)
-        {
-            EditorPrefs.SetBool("SplineArchitect_showNormals", value);
         }
 
         public static void SetNormalsSpacing(float value)
@@ -164,11 +292,6 @@ namespace SplineArchitect
             EditorPrefs.SetFloat("SplineArchitect_splineLineResolution", value);
         }
 
-        public static void SetSgementMovementType(EHandleSegment.SegmentMovementType movementType)
-        {
-            EditorPrefs.SetInt("SplineArchitect_segementMovementType", (int)movementType);
-        }
-
         public static void SetInfoIconsVisibility(bool value)
         {
             EditorPrefs.SetBool("SplineArchitect_infoMessages", value);
@@ -182,54 +305,21 @@ namespace SplineArchitect
             EditorPrefs.SetFloat("SplineArchitect_controlPointSize", value);
         }
 
-        public static void SetGridSize(float value)
+        public static bool GetShowNormals()
         {
-            if (value < 0.05f)
-                value = 0.05f;
+            if (!showNormalsInit)
+            {
+                showNormalsInit = true;
+                showNormals = EditorPrefs.GetBool("SplineArchitect_showNormals", false);
+            }
 
-            EditorPrefs.SetFloat("SplineArchitect_gridSize", value);
+            return showNormals;
         }
 
-        public static void SetGridColorType(int value)
+        public static void SetShowNormals(bool value)
         {
-            EditorPrefs.SetInt("SplineArchitect_gridColorType", value);
-        }
-
-
-        public static bool IsGeneralWindowAtBottom()
-        {
-            return EditorPrefs.GetBool("SplineArchitect_generalAtWindowBottom", true);
-        }
-
-        public static bool IsUiHidden()
-        {
-            return EditorPrefs.GetBool("SplineArchitect_uiHidden", false);
-        }
-
-        public static bool IsUiMinimized()
-        {
-            return EditorPrefs.GetBool("SplineArchitect_uiMinimized", false);
-        }
-
-        public static void ToggleUiHidden()
-        {
-            if (EditorPrefs.GetBool("SplineArchitect_uiHidden", false))
-                EditorPrefs.SetBool("SplineArchitect_uiHidden", false);
-            else
-                EditorPrefs.SetBool("SplineArchitect_uiHidden", true);
-        }
-
-        public static void ToggleUiMinimized()
-        {
-            if (EditorPrefs.GetBool("SplineArchitect_uiMinimized", false))
-                EditorPrefs.SetBool("SplineArchitect_uiMinimized", false);
-            else
-                EditorPrefs.SetBool("SplineArchitect_uiMinimized", true);
-        }
-
-        public static bool ShowNormals()
-        {
-            return EditorPrefs.GetBool("SplineArchitect_showNormals", false);
+            showNormals = value;
+            EditorPrefs.SetBool("SplineArchitect_showNormals", value);
         }
     }
 }

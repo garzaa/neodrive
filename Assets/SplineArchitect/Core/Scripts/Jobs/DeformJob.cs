@@ -120,7 +120,7 @@ namespace SplineArchitect.Jobs
             else splinePoint = SplineUtilityNative.GetPositionFast(positionMap, nativeSegments, splineResolution, fixedTime);
 
             //Static normals
-            if (normalType == Spline.NormalType.STATIC)
+            if (normalType != Spline.NormalType.DYNAMIC)
             {
                 //Get spline direction
                 zDirection = SplineUtilityNative.GetDirection(nativeSegments, fixedTime);

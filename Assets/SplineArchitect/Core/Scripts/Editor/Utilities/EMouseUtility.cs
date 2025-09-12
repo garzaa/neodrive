@@ -16,13 +16,13 @@ namespace SplineArchitect.Utility
     {
         public static Ray GetMouseRay(Vector2 mousePosition)
         {
-            if (EHandleSceneView.GetSceneView().orthographic)
+            if (EHandleSceneView.GetCurrent().orthographic)
             {
                 Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
-                Vector3 cameraPos = EHandleSceneView.GetSceneView().camera.transform.position;
+                Vector3 cameraPos = EHandleSceneView.GetCurrent().camera.transform.position;
                 Vector3 direction = (cameraPos - ray.origin).normalized;
                 float distance = Vector3.Distance(ray.origin, cameraPos);
-                return new Ray(cameraPos - (direction * distance), EHandleSceneView.GetSceneView().camera.transform.forward);
+                return new Ray(cameraPos - (direction * distance), EHandleSceneView.GetCurrent().camera.transform.forward);
             }
             else
                 return HandleUtility.GUIPointToWorldRay(mousePosition);

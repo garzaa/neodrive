@@ -43,6 +43,40 @@ namespace SplineArchitect.Utility
             return true;
         }
 
+        public static bool IsEqual(Color a, Color b, float epsilon = 0.0001f)
+        {
+            if (Math.Abs(a.r - b.r) > epsilon)
+                return false;
+
+            if (Math.Abs(a.g - b.g) > epsilon)
+                return false;
+
+            if (Math.Abs(a.b - b.b) > epsilon)
+                return false;
+
+            if (Math.Abs(a.a - b.a) > epsilon)
+                return false;
+
+            return true;
+        }
+
+        public static bool IsEqual(Rect a, Rect b, float epsilon = 0.0001f)
+        {
+            if (Math.Abs(a.x - b.x) > epsilon)
+                return false;
+
+            if (Math.Abs(a.y - b.y) > epsilon)
+                return false;
+
+            if (Math.Abs(a.width - b.width) > epsilon)
+                return false;
+
+            if (Math.Abs(a.height - b.height) > epsilon)
+                return false;
+
+            return true;
+        }
+
         public static bool IsEqual(Vector3 a, Vector3 b, float epsilon = 0.0001f)
         {
             if (!IsEqual(a.x, b.x, epsilon))

@@ -52,6 +52,14 @@ namespace SplineArchitect.Utility
             else if (type == Type.LATE && !lateActions.Exists(item => id >= 0 && item.Item1 == id))
                 lateActions.Add((id, action));
         }
+
+        public static void Insert(Action action, Type type, int id = -1)
+        {
+            if (type == Type.EARLY && !earlyActions.Exists(item => id >= 0 && item.Item1 == id))
+                earlyActions.Insert(0, (id, action));
+            else if (type == Type.LATE && !lateActions.Exists(item => id >= 0 && item.Item1 == id))
+                lateActions.Insert(0, (id, action));
+        }
     }
 }
 #endif

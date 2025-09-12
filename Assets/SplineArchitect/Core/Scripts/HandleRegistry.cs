@@ -25,6 +25,9 @@ namespace SplineArchitect
         private static HashSet<int> registryInstanceIds = new HashSet<int>();
         private static HashSet<Spline> registrySplinesPrefabStage = new HashSet<Spline>();
         private static HashSet<SplineConnector> registrySplineConnectorsPrefabStage = new HashSet<SplineConnector>();
+
+        private static HashSet<Spline> registrySplinesThisFrame = new HashSet<Spline>();
+        private static HashSet<SplineConnector> registrySplineConnectorsThisFrame = new HashSet<SplineConnector>();
 #endif
 
         /// <summary>
@@ -47,6 +50,8 @@ namespace SplineArchitect
         public static void AddSpline(Spline spline)
         {
 #if UNITY_EDITOR
+            registrySplinesThisFrame.Add(spline);
+
             if (EHandlePrefab.IsPartOfActivePrefabStage(spline.gameObject))
             {
                 registrySplinesPrefabStage.Add(spline);
@@ -90,6 +95,8 @@ namespace SplineArchitect
         public static void AddSplineConnector(SplineConnector sc)
         {
 #if UNITY_EDITOR
+            registrySplineConnectorsThisFrame.Add(sc);
+
             if (EHandlePrefab.IsPartOfActivePrefabStage(sc.gameObject))
             {
                 registrySplineConnectorsPrefabStage.Add(sc);
@@ -130,6 +137,22 @@ namespace SplineArchitect
         }
 
 #if UNITY_EDITOR
+        public static HashSet<Spline> GetSplinesRegistredThisFrame()
+        {
+            return registrySplinesThisFrame;
+        }
+
+        public static HashSet<SplineConnector> GetSplineConnectorsRegistredThisFrame()
+        {
+            return registrySplineConnectorsThisFrame;
+        }
+
+        public static void UpdateGlobal()
+        {
+            registrySplinesThisFrame.Clear();
+            registrySplineConnectorsThisFrame.Clear();
+        }
+
         public static void ClearScene(string name)
         {
             clearContainer.Clear();

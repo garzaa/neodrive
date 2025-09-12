@@ -234,6 +234,22 @@ namespace SplineArchitect.Objects
                     segment.SetInterpolationMode(Segment.InterpolationType.LINE);
             }
         }
+
+        private void FixUnityPrefabBoundsCase()
+        {
+            // Bounds are calculated using the wrong transform.position during OnEnable
+            // when opening a prefab. They are calculated as if the spline's transform.localPosition were
+            // the world position, completely ignoring any parent transforms.
+            //
+            // This issue seems to be fixed in later Unity versions.
+            if (EHandlePrefab.IsPrefabStageActive())
+            {
+                foreach (Spline spline in HandleRegistry.GetSplines())
+                {
+                    if (spline != null) spline.CalculateControlpointBounds();
+                }
+            }
+        }
 #endif
     }
 }

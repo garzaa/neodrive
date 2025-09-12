@@ -91,10 +91,10 @@ namespace SplineArchitect.CustomTools
             supportGlobal = _supportGlobal;
         }
 
-        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, Vector3 cameraPosition, Vector3 newForwardDirection, Vector3 newUpDirection, bool _supportGlobal = true, bool _switchXYDirections = false, bool _locked = false)
+        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, Vector3 cameraPosition, Vector3 newForwardDirection, Vector3 newUpDirection, bool _supportGlobal = true, bool _locked = false)
         {
             ActivateAndSetPosition(type, newPosition, _supportGlobal, _locked);
-            UpdateOrientation(cameraPosition, newForwardDirection, newUpDirection, _switchXYDirections);
+            UpdateOrientation(cameraPosition, newForwardDirection, newUpDirection);
         }
 
         public static void UpdateHoveredData(Event e, Ray mouseRay)
@@ -119,7 +119,7 @@ namespace SplineArchitect.CustomTools
             if (oldIsSurfaceDotHovered != isSurfaceDotHovered)
             {
                 oldIsSurfaceDotHovered = isSurfaceDotHovered;
-                SceneView.RepaintAll();
+                EHandleSceneView.RepaintCurrent();
             }
         }
 
@@ -151,13 +151,23 @@ namespace SplineArchitect.CustomTools
             Vector3 yClosest = Utility.LineUtility.GetNearestPointOnLineFromLine(handlePosition, yDirection, mouseRay.origin, mouseRay.direction);
             Vector3 zClosest = Utility.LineUtility.GetNearestPointOnLineFromLine(handlePosition, zDirection, mouseRay.origin, mouseRay.direction);
 
-            activePart = Part.NONE;
-            active = false;
-
             Vector3? tri1 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, xRectangel[2], xRectangel[3], xRectangel[1]);
             Vector3? tri2 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, xRectangel[0], xRectangel[3], xRectangel[1]);
 
-            if(tri1 != null || tri2 != null)
+            SceneView sceneView = EHandleSceneView.GetCurrent();
+            Camera editorCamera = EHandleSceneView.GetCamera();
+            Vector3Int disable = Vector3Int.zero;
+            if (sceneView != null && editorCamera != null)
+            {
+                disable.x = Vector3.Dot(xDirection, editorCamera.transform.forward) > 0.98f ? 1 : 0;
+                disable.y = Vector3.Dot(yDirection, editorCamera.transform.forward) > 0.98f ? 1 : 0;
+                disable.z = Vector3.Dot(zDirection, editorCamera.transform.forward) > 0.98f ? 1 : 0;
+            }
+
+            activePart = Part.NONE;
+            active = false;
+
+            if (disable.y == 0  && disable.z == 0 && (tri1 != null || tri2 != null))
             {
                 activePart = Part.YZ_AXEL;
                 active = true;
@@ -169,7 +179,7 @@ namespace SplineArchitect.CustomTools
             tri1 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, zRectangel[2], zRectangel[1], zRectangel[3]);
             tri2 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, zRectangel[0], zRectangel[1], zRectangel[3]);
 
-            if (tri1 != null || tri2 != null)
+            if (disable.x == 0 && disable.y == 0 && (tri1 != null || tri2 != null))
             {
                 activePart = Part.XY_AXEL;
                 active = true;
@@ -181,7 +191,7 @@ namespace SplineArchitect.CustomTools
             tri1 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, yRectangel[2], yRectangel[1], yRectangel[3]);
             tri2 = EMeshUtility.RayIntersectedWithTriangle(mouseRay.direction, mouseRay.origin, yRectangel[0], yRectangel[1], yRectangel[3]);
 
-            if (tri1 != null || tri2 != null)
+            if (disable.x == 0 && disable.z == 0 && (tri1 != null || tri2 != null))
             {
                 activePart = Part.XZ_AXEL;
                 active = true;
@@ -192,7 +202,7 @@ namespace SplineArchitect.CustomTools
 
             //X
             float distanceCheck = EMouseUtility.MouseDistanceToPoint(xPosition, mouseRay);
-            if (distanceCheck < pressSize * HandleUtility.GetHandleSize(xPosition))
+            if (disable.x == 0 && distanceCheck < pressSize * HandleUtility.GetHandleSize(xPosition))
             {
                 deltaPressPosition = handlePosition - xClosest;
                 activePart = Part.X_AXEL;
@@ -202,7 +212,7 @@ namespace SplineArchitect.CustomTools
 
             //Y
             distanceCheck = EMouseUtility.MouseDistanceToPoint(yPosition, mouseRay);
-            if (distanceCheck < pressSize * HandleUtility.GetHandleSize(yPosition))
+            if (disable.y == 0 && distanceCheck < pressSize * HandleUtility.GetHandleSize(yPosition))
             {
                 deltaPressPosition = handlePosition - yClosest;
                 activePart = Part.Y_AXEL;
@@ -212,7 +222,7 @@ namespace SplineArchitect.CustomTools
 
             //Z
             distanceCheck = EMouseUtility.MouseDistanceToPoint(zPosition, mouseRay);
-            if (distanceCheck < pressSize * HandleUtility.GetHandleSize(zPosition))
+            if (disable.z == 0 && distanceCheck < pressSize * HandleUtility.GetHandleSize(zPosition))
             {
                 deltaPressPosition = handlePosition - zClosest;
                 activePart = Part.Z_AXEL;
@@ -320,7 +330,7 @@ namespace SplineArchitect.CustomTools
                 //Set active part to none
                 activePart = Part.NONE;
 
-                SceneView.RepaintAll();
+                EHandleSceneView.RepaintCurrent();
                 return false;
             }
 
@@ -392,7 +402,7 @@ namespace SplineArchitect.CustomTools
                 //Set active part to none
                 activePart = Part.NONE;
 
-                SceneView.RepaintAll();
+                EHandleSceneView.RepaintCurrent();
                 return false;
             }
 
@@ -610,7 +620,7 @@ namespace SplineArchitect.CustomTools
             }
         }
 
-        public static void UpdateOrientation(Vector3 position, Vector3 newForwardDirection, Vector3 newUpDirection, bool switchXYDirection = false)
+        public static void UpdateOrientation(Vector3 position, Vector3 newForwardDirection, Vector3 newUpDirection)
         {
             if(supportGlobal && Tools.pivotRotation == PivotRotation.Global)
             {
@@ -629,13 +639,6 @@ namespace SplineArchitect.CustomTools
             zDirection = newForwardDirection;
             xDirection = Vector3.Cross(newUpDirection, zDirection).normalized;
             yDirection = Vector3.Cross(zDirection, xDirection).normalized;
-
-            if(switchXYDirection)
-            {
-                Vector3 newUp = xDirection;
-                xDirection = yDirection;
-                yDirection = newUp;
-            }
 
             float distance = 999999;
             Vector3 position1 = handlePosition + (xDirection + zDirection).normalized;

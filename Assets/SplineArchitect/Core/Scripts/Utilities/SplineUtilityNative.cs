@@ -175,25 +175,22 @@ namespace SplineArchitect.Utility
         public static float GetNearestTimeRough(NativeArray<NativeSegment> sgements,
                                   NativeList<Vector3> positionMap,
                                   float splineResolution,
-                                  NativeList<float> distanceMap,
                                   bool loop,
                                   Vector3 point,
-                                  float stepSize,
+                                  float fixedStep,
                                   bool ignoreYAxel = false)
         {
             float timeValue = -1;
             float distance = 999999;
 
-            for (float t = 0; t < 1; t += stepSize)
+            for (float t = 0; t < 1; t += fixedStep)
             {
-                //Even out big spaces by using fixed time instead.
-                float fixedT = TimeToFixedTime(distanceMap, splineResolution, t, loop);
-                Vector3 bezierPoint = GetPositionFast(positionMap, sgements, splineResolution, fixedT);
+                Vector3 bezierPoint = GetPositionFast(positionMap, sgements, splineResolution, t);
                 float d2 = ignoreYAxel ? Vector2.Distance(new Vector2(bezierPoint.x, bezierPoint.z), new Vector2(point.x, point.z)) : Vector3.Distance(bezierPoint, point);
 
                 if (d2 < distance)
                 {
-                    timeValue = fixedT;
+                    timeValue = t;
                     distance = d2;
                 }
             }
@@ -204,7 +201,6 @@ namespace SplineArchitect.Utility
         public static float GetNearestTime(NativeArray<NativeSegment> segments,
                                         NativeList<Vector3> positionMap,
                                         float resolution,
-                                        NativeList<float> distanceMap,
                                         float splineLength,
                                         bool loop,
                                         Vector3 point,
@@ -212,17 +208,18 @@ namespace SplineArchitect.Utility
                                         float steps = 5,
                                         bool ignoreYAxel = false)
         {
-            steps = 100 / splineLength / steps;
-            if (steps > 0.2f) steps = 0.2f;
-            if (steps < 0.0001f) steps = 0.0001f;
-            float timeValue = GetNearestTimeRough(segments, positionMap, resolution, distanceMap, loop, point, steps, ignoreYAxel);
+            float fixedStep = 100f / splineLength / steps;
+            if (fixedStep > 0.2f) fixedStep = 0.2f;
+            if (fixedStep < 0.0001f) fixedStep = 0.0001f;
+
+            float timeValue = GetNearestTimeRough(segments, positionMap, resolution, loop, point, fixedStep, ignoreYAxel);
 
             for (int i = precision; i > 0; i--)
             {
-                //Needs to be lower then 1.999f here. Cant get fixedTime to work, likely dont work in this case. Thats why 1.999f cant be used. 1.35f - 1.66f seems to work good with extreme splines.
-                steps = steps / 1.66f;
-                float timeForwards = timeValue + steps;
-                float timeBackwards = timeValue - steps;
+                //Needs to be lower then 1.999f here.
+                fixedStep = fixedStep / 1.66f;
+                float timeForwards = timeValue + fixedStep;
+                float timeBackwards = timeValue - fixedStep;
                 timeForwards = SplineUtility.GetValidatedTime(timeForwards, loop);
                 timeBackwards = SplineUtility.GetValidatedTime(timeBackwards, loop);
 

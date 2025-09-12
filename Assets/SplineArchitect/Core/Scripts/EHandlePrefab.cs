@@ -22,55 +22,42 @@ namespace SplineArchitect
     {
         public static bool prefabStageOpen { get; private set; }
         public static bool prefabStageClosedLastFrame { get; private set; }
+        public static bool prefabStageOpenedLastFrame { get; private set; }
 
-        private static bool UpdatedDeformations = false;
-
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void AfterAssemblyReload()
+        public static void OnPrefabChange(GameObject instance)
         {
-            // Subscribe to the prefabStageOpened event
-            PrefabStage.prefabStageOpened += OnPrefabStageOpened;
-            PrefabStage.prefabStageClosing += OnPrefabStageClosing;
-//#if UNITY_6000_0_OR_NEWER
-//            PrefabUtility.prefabInstanceApplied += OnPrefabChange;
-//#endif
-            PrefabUtility.prefabInstanceReverted += OnPrefabChange;
-            PrefabUtility.prefabInstanceUpdated += OnPrefabChange;
-
-            EditorApplication.update += Update;
-        }
-
-        private static void OnPrefabChange(GameObject instance)
-        {
-            UpdatedPrefabDeformations();
+            UpdatedPrefabDeformations(false);
         }
 
         public static void OnPrefabStageOpened(PrefabStage prefabStage)
         {
-            UpdatedPrefabDeformations();
+            //Closing a prefab stage while discarding changes will trigger an OnPrefabStageOpened for some reason. We need to handle that case and skip deformations.
+            if (!prefabStageOpen) UpdatedPrefabDeformations(false);
             prefabStageOpen = true;
+            prefabStageOpenedLastFrame = true;
         }
 
         public static void OnPrefabStageClosing(PrefabStage prefabStage)
         {
-            UpdatedPrefabDeformations();
+            UpdatedPrefabDeformations(true);
             prefabStageOpen = false;
             prefabStageClosedLastFrame = true;
         }
 
-        public static void Update()
+        public static void UpdateGlobal()
         {
-            UpdatedDeformations = false;
-
-            if (prefabStageClosedLastFrame)
-            {
-                prefabStageClosedLastFrame = false;
-            }
+            prefabStageClosedLastFrame = false;
+            prefabStageOpenedLastFrame = false;
         }
 
         public static bool IsPartOfAnyPrefab(GameObject go)
         {
             return PrefabUtility.IsPartOfAnyPrefab(go);
+        }
+
+        public static PrefabStage GetCurrentPrefabStage()
+        {
+            return PrefabStageUtility.GetCurrentPrefabStage();
         }
 
         public static bool IsPrefabStageActive()
@@ -89,6 +76,10 @@ namespace SplineArchitect
                 return true;
 
             //Will be true when creating new spline:s inside prefabs.
+            if (go.transform != null && PrefabStageUtility.GetPrefabStage(go.transform.gameObject) && IsPrefabStageActive())
+                return true;
+
+            //Will be true when creating new spline:s inside prefabs.
             if (go.transform.parent != null && PrefabStageUtility.GetPrefabStage(go.transform.parent.gameObject) && IsPrefabStageActive())
                 return true;
 
@@ -99,24 +90,23 @@ namespace SplineArchitect
             return false;
         }
 
-        private static void UpdatedPrefabDeformations()
+        private static void UpdatedPrefabDeformations(bool closing)
         {
-            if (UpdatedDeformations)
-                return;
-
-            UpdatedDeformations = true;
-
             foreach (Spline spline in HandleRegistry.GetSplines())
             {
-                if (spline == null) 
+                if (spline == null)
                     continue;
 
                 if (!IsPartOfAnyPrefab(spline.gameObject) && !IsPartOfActivePrefabStage(spline.gameObject))
-                    return;
+                    continue;
 
                 foreach (SplineObject so in spline.splineObjects)
                 {
                     if (so == null || so.transform == null)
+                        continue;
+
+                    //We dont want to deform deformations wihtin the prefab stage after its closed.Will get errors.
+                    if (closing && IsPartOfActivePrefabStage(so.gameObject))
                         continue;
 
                     if (so.type == SplineObject.Type.DEFORMATION && so.meshContainers != null && so.meshContainers.Count > 0)

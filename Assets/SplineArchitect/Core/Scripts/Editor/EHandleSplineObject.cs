@@ -121,9 +121,28 @@ namespace SplineArchitect
 
         public static void ToSplineCenter(SplineObject so)
         {
-            so.localSplinePosition = new Vector3(0, 0, GeneralUtility.RoundToClosest(so.localSplinePosition.z, GlobalSettings.GetSnapIncrement()));
+            so.localSplinePosition = new Vector3(0, 0, GeneralUtility.RoundToClosest(so.localSplinePosition.z, EditorSnapSettings.move.z));
             so.activationPosition = so.localSplinePosition;
             so.localSplineRotation.eulerAngles = new Vector3(0, 0, 0);
+        }
+
+        public static Vector3 SnapPosition(Vector3 position)
+        {
+            float snapValue = EditorSnapSettings.move.x + EditorSnapSettings.move.y + EditorSnapSettings.move.z;
+
+#if UNITY_6000_0_OR_NEWER
+            if (EditorSnapSettings.snapEnabled && snapValue > 0)
+            {
+#else
+            if (EditorSnapSettings.gridSnapEnabled && snapValue > 0)
+            {
+#endif
+                position.x = GeneralUtility.RoundToClosest(position.x, EditorSnapSettings.move.x);
+                position.y = GeneralUtility.RoundToClosest(position.y, EditorSnapSettings.move.y);
+                position.z = GeneralUtility.RoundToClosest(position.z, EditorSnapSettings.move.z);
+            }
+
+            return position;
         }
 
         public static bool CanBeDeformed(SplineObject so)
@@ -302,7 +321,7 @@ namespace SplineArchitect
             so.type = SplineObject.Type.FOLLOWER;
             spline.followerUpdateList.Add(so);
             DeformationUtility.UpdateFollowers(spline);
-            EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
+            EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
             so.UpdateExternalComponents(true);
         }
 
@@ -329,7 +348,7 @@ namespace SplineArchitect
             so.transform.localPosition = so.localSplinePosition;
             so.transform.localRotation = so.localSplineRotation;
             so.monitor.ForceUpdate();
-            EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
+            EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
         }
 
         public static void ConvertToNone(Spline spline, SplineObject so, SplineObject.Type oldType)

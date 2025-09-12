@@ -7,26 +7,18 @@
 // (C) 2023 Mikael Danielsson. All rights reserved.
 // -----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEditor;
-
 using SplineArchitect.Objects;
 using SplineArchitect.Utility;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using UnityEditor;
+using UnityEngine;
 
 namespace SplineArchitect
 {
     public class EHandleSegment
     {
-        public enum SegmentMovementType
-        {
-            CONTINUOUS,
-            MIRRORED,
-            BROKEN,
-        }
-
         public struct SegmentIndicatorData
         {
             public Vector3 anchor;
@@ -42,12 +34,11 @@ namespace SplineArchitect
 
         private static List<int> markedSegments = new List<int>();
         private static Plane projectionPlane = new Plane(Vector3.up, Vector3.zero);
-        private static Vector3 hitPoint = Vector3.zero;
         private static Vector3[] normalsContainer = new Vector3[3];
 
         public static void HandleDeletion(Spline spline, Event e)
         {
-            if (e.keyCode == KeyCode.Delete && e.type == EventType.KeyUp)
+            if (EHandleModifier.DeleteActive(e))
             {
                 MarkForDeletion(SplineUtility.ControlPointIdToSegmentIndex(spline.selectedControlPoint));
 
@@ -61,9 +52,16 @@ namespace SplineArchitect
                 e.Use();
             }
 
+
             //Dont delete Selection.activeTransform if controlHandle is selected.
             if (spline.selectedControlPoint > 0 && e.type == EventType.KeyDown && e.keyCode == KeyCode.Delete)
                 e.Use();
+
+#if UNITY_EDITOR_OSX
+            //Dont delete Selection.activeTransform if controlHandle is selected.
+            if (spline.selectedControlPoint > 0 && e.command && e.keyCode == KeyCode.Backspace && e.type == EventType.KeyDown)
+                e.Use();
+#endif
         }
 
         public static void MarkForDeletion(int segement)
@@ -78,6 +76,10 @@ namespace SplineArchitect
             for (int i = markedSegments.Count - 1; i >= 0; i--)
             {
                 int segmentIndex = markedSegments[i];
+
+                if (segmentIndex < 0 || segmentIndex >= spline.segments.Count)
+                    continue;
+
                 Segment s = spline.segments[segmentIndex];
 
                 if(s.links != null)
@@ -158,6 +160,9 @@ namespace SplineArchitect
                 {
                     s.oldLinkTarget = s.linkTarget;
 
+                    //In unity 2022 when appying changes to a prefab, the spline parent will be null.
+                    s.splineParent = spline;
+
                     if (s.linkTarget == Segment.LinkTarget.ANCHOR)
                     {
                         s.LinkToAnchor(s.GetPosition(Segment.ControlHandle.ANCHOR));
@@ -226,10 +231,13 @@ namespace SplineArchitect
 
         public static void SegmentMovement(Spline spline, Segment segment, Segment.ControlHandle controlHandle, Vector3 newPosition)
         {
-            SegmentMovementType segementMovementType = (SegmentMovementType)GlobalSettings.GetSegementMovementType();
+            //In some cases when working with prefabs the spline parent can be null. So we set it here before handling the segment.
+            segment.splineParent = spline;
+
+            HandleType handleType = GlobalSettings.GetHandleType();
             spline.monitor.UpdateSegement();
 
-            if (segementMovementType == SegmentMovementType.CONTINUOUS)
+            if (handleType == HandleType.CONTINUOUS)
             {
                 if (controlHandle == Segment.ControlHandle.ANCHOR)
                 {
@@ -245,7 +253,7 @@ namespace SplineArchitect
                     segment.SetContinuousPosition(controlHandle, newPosition);
                 }
             }
-            else if (segementMovementType == SegmentMovementType.MIRRORED)
+            else if (handleType == HandleType.MIRRORED)
             {
                 if (controlHandle == Segment.ControlHandle.ANCHOR)
                 {
@@ -261,7 +269,7 @@ namespace SplineArchitect
                     segment.SetMirroredPosition(controlHandle, newPosition);
                 }
             }
-            else if (segementMovementType == SegmentMovementType.BROKEN)
+            else if (handleType == HandleType.BROKEN)
             {
                 if (controlHandle == Segment.ControlHandle.ANCHOR)
                 {
@@ -277,24 +285,30 @@ namespace SplineArchitect
             }
         }
 
-        public static void UpdateSegmentIndicatorDataGrid(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
+        public static void UpdateIndicator3DGrid(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
         {
-            Ray mouseRay = EMouseUtility.GetMouseRay(e.mousePosition);
-            projectionPlane.SetNormalAndPosition(spline.transform.up, spline.transform.position);
+            Vector3 direction = Vector3.forward;
+            Vector3 anchor = Vector3.zero;
+            Vector3 tangent = Vector3.zero;
+            bool start = false;
 
+            Ray mouseRay = EMouseUtility.GetMouseRay(e.mousePosition);
+
+            projectionPlane.SetNormalAndPosition(spline.transform.up, spline.transform.TransformPoint(spline.gridCenterPoint));
             if (projectionPlane.Raycast(mouseRay, out float enter))
             {
                 Vector3 point = mouseRay.GetPoint(enter);
 
-                Vector3 direction = -spline.segments[spline.segments.Count - 1].GetDirection();
-                Vector3 anchor = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
-                Vector3 tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A);
+                direction = -spline.segments[spline.segments.Count - 1].GetDirection();
+                anchor = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
+                tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A);
 
                 float distanceToStart = Vector3.Distance(spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) + direction, point);
                 float distanceToEnd = Vector3.Distance(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR) - direction, point);
-                bool start = distanceToStart < distanceToEnd;
+                start = distanceToStart < distanceToEnd;
 
-                if (spline.segments.Count == 1) start = !start;
+                if (spline.segments.Count == 1)
+                    start = !start;
 
                 if (start)
                 {
@@ -302,8 +316,13 @@ namespace SplineArchitect
                     anchor = spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR);
                     tangent = spline.segments[0].GetPosition(Segment.ControlHandle.TANGENT_B);
                 }
+            }
 
-                point = new Vector3(point.x, anchor.y, point.z);
+            projectionPlane.SetNormalAndPosition(spline.transform.up, anchor);
+            if (projectionPlane.Raycast(mouseRay, out float enter2))
+            {
+                Vector3 point = mouseRay.GetPoint(enter2);
+
                 point = EHandleGrid.SnapPoint(spline, point);
 
                 Vector3 direction90 = Vector3.Cross(direction, spline.transform.up);
@@ -320,13 +339,25 @@ namespace SplineArchitect
 
                 if (GeneralUtility.IsEqual(closestPoint, point, 0.1f))
                 {
-                    segementIndicatorData.newTangentA = point + direction * Vector3.Distance(anchor, tangent);
-                    segementIndicatorData.newTangentB = point - direction * Vector3.Distance(anchor, tangent);
+                    Vector3 newTa = point + direction * Vector3.Distance(anchor, tangent);
+                    newTa = EHandleGrid.SnapPoint(spline, newTa);
+
+                    Vector3 newTb = point - direction * Vector3.Distance(anchor, tangent);
+                    newTb = EHandleGrid.SnapPoint(spline, newTb);
+
+                    segementIndicatorData.newTangentA = newTa;
+                    segementIndicatorData.newTangentB = newTb;
                 }
                 else
                 {
-                    segementIndicatorData.newTangentA = point + direction90 * Vector3.Distance(anchor, tangent);
-                    segementIndicatorData.newTangentB = point - direction90 * Vector3.Distance(anchor, tangent);
+                    Vector3 newTa = point + direction90 * Vector3.Distance(anchor, tangent);
+                    newTa = EHandleGrid.SnapPoint(spline, newTa);
+
+                    Vector3 newTb = point - direction90 * Vector3.Distance(anchor, tangent);
+                    newTb = EHandleGrid.SnapPoint(spline, newTb);
+
+                    segementIndicatorData.newTangentA = newTa;
+                    segementIndicatorData.newTangentB = newTb;
                 }
 
                 if ((start && spline.segments[0].GetInterpolationType() == Segment.InterpolationType.LINE) ||
@@ -339,36 +370,44 @@ namespace SplineArchitect
             }
         }
 
-        public static void UpdateSegmentIndicatorData(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
+        public static void UpdateIndicator3D(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
         {
-            //Need to get direction with :GetSegmentDirection. Becouse a Spline can have one segement.
-            float disBetweenTangents = 12.5f;
+            //Data
+            float disBetweenTangents = 10f;
             Vector3 direction = -spline.segments[spline.segments.Count - 1].GetDirection();
             Vector3 anchor = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
-            Vector3 tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A) + direction * DistanceModifier(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A));
+            Vector3 tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A) + direction * DistanceModifier(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A), disBetweenTangents);
 
+            //Try hit terrain
+            Vector3 anchorHitPoint = Vector3.zero;
+            bool hitTerrain = false;
             RaycastHit hit;
             Ray mouseRay = EMouseUtility.GetMouseRay(e.mousePosition);
-            bool hitTerrain = false;
-
             if (Physics.Raycast(mouseRay, out hit))
             {
-                hitPoint = hit.point;
+                anchorHitPoint = hit.point;
                 hitTerrain = true;
             }
             else
             {
-                if (projectionPlane.Raycast(mouseRay, out float enter))
-                    hitPoint = mouseRay.GetPoint(enter);
+                Vector3 center = spline.GetCenter();
+                projectionPlane.SetNormalAndPosition(Vector3.up, new Vector3(0, center.y, 0));
+                if (!hitTerrain && projectionPlane.Raycast(mouseRay, out float enter))
+                    anchorHitPoint = mouseRay.GetPoint(enter);
             }
 
-            float disLastSegement = Vector3.Distance(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR) + direction, hitPoint);
-            float disFirstSegement = Vector3.Distance(spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) - direction, hitPoint);
+            //Closest to start or end
+            float disLastSegement = Vector3.Distance(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR) + direction, anchorHitPoint);
+            float disFirstSegement = Vector3.Distance(spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) - direction, anchorHitPoint);
             bool start = disLastSegement > disFirstSegement;
 
+            //Get y height of start or end for project plane
             Vector3 planPos = start ? spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) : spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
             projectionPlane.SetNormalAndPosition(Vector3.up, new Vector3(0, planPos.y, 0));
+            if (!hitTerrain && projectionPlane.Raycast(mouseRay, out float enter2))
+                anchorHitPoint = mouseRay.GetPoint(enter2);
 
+            //If start switch data direction
             if (start)
             {
                 direction = -spline.segments[0].GetDirection();
@@ -376,18 +415,42 @@ namespace SplineArchitect
                 tangent = spline.segments[0].GetPosition(Segment.ControlHandle.TANGENT_B) - direction * DistanceModifier(spline.segments[0].GetPosition(Segment.ControlHandle.TANGENT_B), disBetweenTangents);
             }
 
-            Vector3 newAnchor = hitPoint;
+            //Set control point data
+            Vector3 newAnchor = anchorHitPoint;
             Vector3 cubicLerpPos1 = BezierUtility.CubicLerp(anchor, tangent, newAnchor, newAnchor, 0.99f);
             Vector3 cubicLerpPos2 = BezierUtility.CubicLerp(anchor, tangent, newAnchor, newAnchor, 1);
             Vector3 newEndDirection = (cubicLerpPos1 - cubicLerpPos2).normalized;
-            if (!hitTerrain) newEndDirection = (new Vector3(cubicLerpPos1.x, newAnchor.y, cubicLerpPos1.z) - new Vector3(cubicLerpPos2.x, newAnchor.y, cubicLerpPos2.z)).normalized;
+            Vector3 newFlatEndDirection = (new Vector3(cubicLerpPos1.x, newAnchor.y, cubicLerpPos1.z) - new Vector3(cubicLerpPos2.x, newAnchor.y, cubicLerpPos2.z)).normalized;
 
-            Vector3 newTangentA = newAnchor + newEndDirection * (DistanceModifier(newAnchor, disBetweenTangents) * (start ? 1 : -1));
-            Vector3 newTangentB = newAnchor + newEndDirection * (DistanceModifier(newAnchor, disBetweenTangents) * (start ? -1 : 1));
+            //Set tangents
+            float tangentDistance = DistanceModifier(newAnchor, disBetweenTangents);
+            Vector3 newTangentA = newAnchor + newFlatEndDirection * (tangentDistance * (start ? 1 : -1));
+            Vector3 newTangentB = newAnchor + newFlatEndDirection * (tangentDistance * (start ? -1 : 1));
 
-            if(EHandleModifier.CtrlActive(e))
+            if (hitTerrain)
             {
-                Spline closest = SplineUtility.GetClosest(hitPoint, HandleRegistry.GetSplines(), 20 * DistanceModifier(hitPoint), out float time, out _);
+                Vector3 editorCameraPosition = EHandleSceneView.GetCurrent().camera.transform.position;
+                Vector3 origin = newAnchor + newFlatEndDirection * tangentDistance;
+                Ray tangentRay = new Ray(new Vector3(origin.x, editorCameraPosition.y, origin.z), -Vector3.up);
+                if (Physics.Raycast(tangentRay, out hit))
+                {
+                    if (start)
+                    {
+                        newTangentA = hit.point;
+                        newTangentB = newAnchor + (newAnchor - newTangentA).normalized * tangentDistance;
+                    }
+                    else
+                    {
+                        newTangentB = hit.point;
+                        newTangentA = newAnchor + (newAnchor - newTangentB).normalized * tangentDistance;
+                    }
+                }
+            }
+
+            //Set segment to closest spline direction
+            if (EHandleModifier.CtrlActive(e))
+            {
+                Spline closest = SplineUtility.GetClosest(anchorHitPoint, HandleRegistry.GetSplines(), 20 * DistanceModifier(anchorHitPoint), out float time, out _);
 
                 if (closest != null)
                 {
@@ -406,6 +469,7 @@ namespace SplineArchitect
                 }
             }
 
+            //Set indicator data
             segementIndicatorData.anchor = anchor;
             segementIndicatorData.tangent = tangent;
             segementIndicatorData.newAnchor = newAnchor;
@@ -413,13 +477,210 @@ namespace SplineArchitect
             segementIndicatorData.newTangentB = newTangentB;
             segementIndicatorData.originFromStart = start;
 
-            //If lIne
+            //If line
             if((start && spline.segments[0].GetInterpolationType() == Segment.InterpolationType.LINE) ||
                (!start && spline.segments[spline.segments.Count - 1].GetInterpolationType() == Segment.InterpolationType.LINE))
             {
                 segementIndicatorData.tangent = anchor;
                 segementIndicatorData.newTangentA = newAnchor;
                 segementIndicatorData.newTangentB = newAnchor;
+            }
+        }
+
+        public static void UpdateIndicator2D(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
+        {
+            float disBetweenTangents = 10f;
+            Vector3 direction = Vector3.forward;
+            Vector3 anchor = Vector3.zero;
+            Vector3 tangent = Vector3.zero;
+            bool start = false;
+
+            Ray mouseRay = EMouseUtility.GetMouseRay(e.mousePosition);
+
+            Vector3 center = (spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) + spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR)) / 2;
+            projectionPlane.SetNormalAndPosition(-spline.transform.forward, center);
+            if (projectionPlane.Raycast(mouseRay, out float enter))
+            {
+                Vector3 point = mouseRay.GetPoint(enter);
+
+                direction = -spline.segments[spline.segments.Count - 1].GetDirection();
+                anchor = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
+                tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A);
+
+                float distanceToStart = Vector3.Distance(spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) + direction, point);
+                float distanceToEnd = Vector3.Distance(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR) - direction, point);
+                start = distanceToStart < distanceToEnd;
+
+                if (spline.segments.Count == 1)
+                    start = !start;
+
+                if (start)
+                {
+                    direction = -spline.segments[0].GetDirection();
+                    anchor = spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR);
+                    tangent = spline.segments[0].GetPosition(Segment.ControlHandle.TANGENT_B);
+                }
+            }
+
+            Vector3 anchorHitPoint = Vector3.zero;
+            projectionPlane.SetNormalAndPosition(-spline.transform.forward, anchor);
+            if (projectionPlane.Raycast(mouseRay, out float enter2))
+                anchorHitPoint = mouseRay.GetPoint(enter2);
+
+            //Set control point data
+            Vector3 newAnchor = anchorHitPoint;
+            Vector3 cubicLerpPos1 = BezierUtility.CubicLerp(anchor, tangent, newAnchor, newAnchor, 0.99f);
+            Vector3 cubicLerpPos2 = BezierUtility.CubicLerp(anchor, tangent, newAnchor, newAnchor, 1);
+            Vector3 newEndDirection = (cubicLerpPos1 - cubicLerpPos2).normalized;
+
+            newAnchor = SnapPointToSplinePlane(newAnchor, spline.transform);
+            newEndDirection = SnapDirToSplinePlane(newEndDirection, spline.transform);
+
+            //Set tangents
+            float tangentDistance = DistanceModifier(newAnchor, disBetweenTangents);
+            Vector3 newTangentA = newAnchor + newEndDirection * (tangentDistance * (start ? 1 : -1));
+            Vector3 newTangentB = newAnchor + newEndDirection * (tangentDistance * (start ? -1 : 1));
+
+            newTangentA = SnapPointToSplinePlane(newTangentA, spline.transform);
+            newTangentB = SnapPointToSplinePlane(newTangentB, spline.transform);
+
+            //Set segment to closest spline direction
+            if (EHandleModifier.CtrlActive(e))
+            {
+                Spline closest = SplineUtility.GetClosest(anchorHitPoint, HandleRegistry.GetSplines(), DistanceModifier(anchorHitPoint) * 20, out float time, out _);
+
+                if (closest != null)
+                {
+                    closest.GetNormalsNonAlloc(normalsContainer, time);
+                    float dot = Vector3.Dot(normalsContainer[2], newEndDirection);
+                    if (dot < 0)
+                    {
+                        newTangentA = newAnchor - normalsContainer[2] * DistanceModifier(newAnchor, disBetweenTangents);
+                        newTangentB = newAnchor + normalsContainer[2] * DistanceModifier(newAnchor, disBetweenTangents);
+                    }
+                    else
+                    {
+                        newTangentA = newAnchor + normalsContainer[2] * DistanceModifier(newAnchor, disBetweenTangents);
+                        newTangentB = newAnchor - normalsContainer[2] * DistanceModifier(newAnchor, disBetweenTangents);
+                    }
+                }
+            }
+
+            //Set indicator data
+            segementIndicatorData.anchor = anchor;
+            segementIndicatorData.tangent = tangent;
+            segementIndicatorData.newAnchor = newAnchor;
+            segementIndicatorData.newTangentA = newTangentA;
+            segementIndicatorData.newTangentB = newTangentB;
+            segementIndicatorData.originFromStart = start;
+
+            //If line
+            if ((start && spline.segments[0].GetInterpolationType() == Segment.InterpolationType.LINE) ||
+               (!start && spline.segments[spline.segments.Count - 1].GetInterpolationType() == Segment.InterpolationType.LINE))
+            {
+                segementIndicatorData.tangent = anchor;
+                segementIndicatorData.newTangentA = newAnchor;
+                segementIndicatorData.newTangentB = newAnchor;
+            }
+
+            Vector3 SnapPointToSplinePlane(Vector3 worldPoint, Transform t)
+            {
+                var lp = t.InverseTransformPoint(worldPoint);
+                lp.z = 0f;
+                return t.TransformPoint(lp);
+            }
+
+            Vector3 SnapDirToSplinePlane(Vector3 worldDir, Transform t)
+            {
+                var ld = t.InverseTransformDirection(worldDir);
+                ld.z = 0f;
+                ld.Normalize();
+                return t.TransformDirection(ld);
+            }
+        }
+
+        public static void UpdateIndicator2DGrid(Spline spline, Event e, ref SegmentIndicatorData segementIndicatorData)
+        {
+            Vector3 direction = Vector3.forward;
+            Vector3 anchor = Vector3.zero;
+            Vector3 tangent = Vector3.zero;
+            bool start = false;
+
+            Ray mouseRay = EMouseUtility.GetMouseRay(e.mousePosition);
+
+            projectionPlane.SetNormalAndPosition(-spline.transform.forward, spline.transform.TransformPoint(spline.gridCenterPoint));
+            if (projectionPlane.Raycast(mouseRay, out float enter))
+            {
+                Vector3 point = mouseRay.GetPoint(enter);
+
+                direction = -spline.segments[spline.segments.Count - 1].GetDirection();
+                anchor = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR);
+                tangent = spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.TANGENT_A);
+
+                float distanceToStart = Vector3.Distance(spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR) + direction, point);
+                float distanceToEnd = Vector3.Distance(spline.segments[spline.segments.Count - 1].GetPosition(Segment.ControlHandle.ANCHOR) - direction, point);
+                start = distanceToStart < distanceToEnd;
+
+                if (spline.segments.Count == 1)
+                    start = !start;
+
+                if (start)
+                {
+                    direction = -spline.segments[0].GetDirection();
+                    anchor = spline.segments[0].GetPosition(Segment.ControlHandle.ANCHOR);
+                    tangent = spline.segments[0].GetPosition(Segment.ControlHandle.TANGENT_B);
+                }
+            }
+
+            projectionPlane.SetNormalAndPosition(-spline.transform.forward, anchor);
+            if (projectionPlane.Raycast(mouseRay, out float enter2))
+            {
+                Vector3 point = mouseRay.GetPoint(enter2);
+
+                point = EHandleGrid.SnapPoint(spline, point);
+
+                Vector3 direction90 = Vector3.Cross(direction, spline.transform.forward);
+                Vector3 closestPoint = Utility.LineUtility.GetNearestPoint(anchor, direction, point, out _);
+                Utility.LineUtility.GetNearestPoint(anchor, direction90, point, out float time);
+                float sign = Mathf.Sign(time) * (start ? -1 : 1);
+                direction90 = direction90 * sign;
+
+                segementIndicatorData.gridSpline = spline;
+                segementIndicatorData.anchor = anchor;
+                segementIndicatorData.tangent = tangent;
+                segementIndicatorData.newAnchor = point;
+                segementIndicatorData.originFromStart = start;
+
+                if (GeneralUtility.IsEqual(closestPoint, point, 0.1f))
+                {
+                    Vector3 newTa = point + direction * Vector3.Distance(anchor, tangent);
+                    newTa = EHandleGrid.SnapPoint(spline, newTa);
+
+                    Vector3 newTb = point - direction * Vector3.Distance(anchor, tangent);
+                    newTb = EHandleGrid.SnapPoint(spline, newTb);
+
+                    segementIndicatorData.newTangentA = newTa;
+                    segementIndicatorData.newTangentB = newTb;
+                }
+                else
+                {
+                    Vector3 newTa = point + direction90 * Vector3.Distance(anchor, tangent);
+                    newTa = EHandleGrid.SnapPoint(spline, newTa);
+
+                    Vector3 newTb = point - direction90 * Vector3.Distance(anchor, tangent);
+                    newTb = EHandleGrid.SnapPoint(spline, newTb);
+
+                    segementIndicatorData.newTangentA = newTa;
+                    segementIndicatorData.newTangentB = newTb;
+                }
+
+                if ((start && spline.segments[0].GetInterpolationType() == Segment.InterpolationType.LINE) ||
+                    (!start && spline.segments[spline.segments.Count - 1].GetInterpolationType() == Segment.InterpolationType.LINE))
+                {
+                    segementIndicatorData.tangent = anchor;
+                    segementIndicatorData.newTangentA = point;
+                    segementIndicatorData.newTangentB = point;
+                }
             }
         }
 
@@ -444,7 +705,7 @@ namespace SplineArchitect
             }
         }
 
-        public static void CreateSegmentWithAutoSmooth(Spline spline, int segementId, float time)
+        public static void CreateWithAutoSmooth(Spline spline, int segementId, float time)
         {
             if (segementId < 1 || segementId >= spline.segments.Count)
             {
@@ -471,7 +732,7 @@ namespace SplineArchitect
             });
         }
 
-        public static void CreateSegmentFromWorldPoint(Spline spline, SegmentIndicatorData segementIndicatorData)
+        public static void CreateFromWorldPoint(Spline spline, SegmentIndicatorData segementIndicatorData)
         {
             int segementId = 0;
             if (!segementIndicatorData.originFromStart)
@@ -487,7 +748,7 @@ namespace SplineArchitect
                 spline.segments[1].SetPosition(Segment.ControlHandle.TANGENT_B, segementIndicatorData.tangent);
         }
 
-        public static void CreateExtendedSegment(Spline spline, bool createAtStart)
+        public static void CreateExtended(Spline spline, bool createAtStart)
         {
             if (createAtStart)
             {
@@ -522,7 +783,7 @@ namespace SplineArchitect
 
         public static void CreateSegmentsFromEditorCameraDirection(Spline spline)
         {
-            Transform editorCamera = EHandleSceneView.GetSceneView().camera.transform;
+            Transform editorCamera = EHandleSceneView.GetCurrent().camera.transform;
 
             spline.transform.position = editorCamera.position + editorCamera.forward * 50;
             Vector3 anchor1 = spline.transform.position + editorCamera.transform.right * 12;
@@ -544,7 +805,7 @@ namespace SplineArchitect
 
             //Deformation
             spline.segments[spline.segments.Count - 1].scale = spline.segments[0].scale;
-            if (spline.normalType == Spline.NormalType.STATIC)
+            if (spline.normalType != Spline.NormalType.DYNAMIC)
                 spline.segments[spline.segments.Count - 1].zRotation = spline.segments[0].zRotation;
             spline.segments[spline.segments.Count - 1].saddleSkew = spline.segments[0].saddleSkew;
             spline.segments[spline.segments.Count - 1].SetNoise(spline.segments[0].noise);
@@ -580,7 +841,7 @@ namespace SplineArchitect
 
         public static float DistanceModifier(Vector3 position, float strength = 1)
         {
-            SceneView sceneView = EHandleSceneView.GetSceneView();
+            SceneView sceneView = EHandleSceneView.GetCurrent();
             if (sceneView == null) return 1;
 
             if (sceneView.orthographic)
@@ -610,7 +871,7 @@ namespace SplineArchitect
             const int testRange = 10;
 
             //General
-            SceneView sceneView = EHandleSceneView.GetSceneView();
+            SceneView sceneView = EHandleSceneView.GetCurrent();
             Camera editorCamera = sceneView.camera;
             Vector3 cameraPoint = editorCamera.transform.position;
 

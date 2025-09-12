@@ -143,6 +143,9 @@ namespace SplineArchitect.Utility
 
             foreach (Spline spline in activeSplines)
             {
+                if (spline == null)
+                    continue;
+
                 if (!spline.IsEnabled())
                     continue;
 

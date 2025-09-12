@@ -22,7 +22,7 @@ namespace SplineArchitect
         public static int scaleHandleID = -99999;
         private static Vector3[] normalsContainer = new Vector3[3];
 
-        public static void BeforeSceneGUIGlobal(Event e, SceneView sceneView)
+        public static void BeforeSceneGUIGlobal(SceneView sceneView, Event e)
         {
             if (e.type == EventType.MouseDown)
             {
@@ -78,7 +78,7 @@ namespace SplineArchitect
         public static void Update(Spline spline)
         {
             if (spline.monitor.PosRotChange())
-                UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
+                UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
         }
 
         public static void OnUndoGlobal()
@@ -87,7 +87,7 @@ namespace SplineArchitect
 
             //Need to run last, else it will update before positions has changed and will get the wrong position.
             EActionToUpdate.Add(() => {
-                UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), EHandleSelection.selectedSpline);
+                UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), EHandleSelection.selectedSpline);
             }, EActionToUpdate.Type.LATE);
 
             EHandleSelection.UpdatedSelectedSplineObjects((selected) =>
@@ -98,7 +98,7 @@ namespace SplineArchitect
 
         public static void OnPivotRotationChanged()
         {
-            UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), EHandleSelection.selectedSpline);
+            UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), EHandleSelection.selectedSpline);
         }
 
         private static void HideOrUnhideTools()
@@ -143,13 +143,13 @@ namespace SplineArchitect
             {
                 Vector3 scaledDif = new Vector3(dif.x / combinedParentScale.x, dif.y / combinedParentScale.y, dif.z / combinedParentScale.z);
                 scaledDif = Vector3.Scale(so.transform.localScale, scaledDif);
-                Vector3 newPosition = selected.activationPosition + scaledDif;
+                Vector3 newPosition;
+                newPosition = selected.activationPosition + scaledDif;
                 selected.localSplinePosition.x = Mathf.Round(newPosition.x * 100) / 100;
                 selected.localSplinePosition.y = Mathf.Round(newPosition.y * 100) / 100;
                 selected.localSplinePosition.z = Mathf.Round(newPosition.z * 100) / 100;
 
-                if (GlobalSettings.GetSnapIncrement() > 0)
-                    selected.localSplinePosition = GeneralUtility.RoundToClosest(newPosition, GlobalSettings.GetSnapIncrement());
+                selected.localSplinePosition = EHandleSplineObject.SnapPosition(selected.localSplinePosition);
 
             }, "Moved object");
         }
@@ -225,32 +225,31 @@ namespace SplineArchitect
             Segment.ControlHandle type = SplineUtility.GetControlPointType(spline.selectedControlPoint);
             Vector3 newControlPointPos;
             bool toolActive;
+            bool isMouseUp = Event.current.type == EventType.MouseUp && Event.current.button == 0;
 
             if (PositionTool.activePart == PositionTool.Part.SURFACE)
                 toolActive = PositionTool.DragUsingSurface(out newControlPointPos);
             else
                 toolActive = PositionTool.DragUsingPos(out newControlPointPos);
 
-            if (toolActive)
+            if (toolActive || isMouseUp)
             {
-                if (GlobalSettings.GetGridVisibility())
+                if (GlobalSettings.GetGridVisibility() && isMouseUp)
                 {
                     newControlPointPos = EHandleGrid.SnapPoint(spline, newControlPointPos);
-                    PositionTool.ActivationType activationType = PositionTool.ActivationType.ANCHOR;
-                    if (type == Segment.ControlHandle.TANGENT_A || type == Segment.ControlHandle.TANGENT_B) activationType = PositionTool.ActivationType.TANGENT;
-                    PositionTool.ActivateAndSetPosition(activationType, newControlPointPos);
                 }
 
                 EHandleUndo.RecordNow(spline, "Move control point: " + spline.selectedControlPoint);
                 EHandleSegment.SegmentMovement(spline, segment, type, newControlPointPos);
-                if (type == Segment.ControlHandle.ANCHOR)
-                    EHandleSegment.LinkMovement(segment);
+                if (type == Segment.ControlHandle.ANCHOR) EHandleSegment.LinkMovement(segment);
+
+                if(isMouseUp) ActivatePositionToolForControlPoint(spline);
             }
         }
 
         public static void UpdateOrientationForPositionTool()
         {
-            UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), EHandleSelection.selectedSpline);
+            UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), EHandleSelection.selectedSpline);
         }
 
         public static void UpdateOrientationForPositionTool(SceneView sceneView, Spline spline)
@@ -267,9 +266,12 @@ namespace SplineArchitect
                 if (segementId >= spline.segments.Count)
                     segementId = spline.segments.Count - 1;
 
-                Vector3 forwardDirection = GetForwardDirectionForControlPoint(spline, spline.segments[segementId].GetPosition(Segment.ControlHandle.ANCHOR), spline.segments[segementId].GetPosition(Segment.ControlHandle.TANGENT_B));
-                Vector3 upDirection = GetUpDirectionForControlPoint(spline, forwardDirection, out bool switchXYDirections);
-                PositionTool.UpdateOrientation(sceneView.camera.transform.position, forwardDirection, upDirection, switchXYDirections);
+                (Vector3, Vector3) directions = GetForwardDirectionForControlPoint(spline,
+                                                                                  spline.segments[segementId].GetPosition(Segment.ControlHandle.ANCHOR),
+                                                                                  spline.segments[segementId].GetPosition(Segment.ControlHandle.TANGENT_A),
+                                                                                  spline.segments[segementId].GetPosition(Segment.ControlHandle.TANGENT_B),
+                                                                                  SplineUtility.GetControlPointType(spline.selectedControlPoint));
+                PositionTool.UpdateOrientation(sceneView.camera.transform.position, directions.Item1, directions.Item2);
             }
             else if (selectedSo != null)
                 ActivatePositionToolForSplineObject(spline, selectedSo);
@@ -283,7 +285,7 @@ namespace SplineArchitect
             if (so.transform.parent == null)
                 return;
 
-            SceneView sceneView = EHandleSceneView.GetSceneView();
+            SceneView sceneView = EHandleSceneView.GetCurrent();
 
             float time = so.splinePosition.z / spline.length;
             float fixedTime = spline.TimeToFixedTime(time);
@@ -336,52 +338,38 @@ namespace SplineArchitect
 
             Segment.ControlHandle segementType = SplineUtility.GetControlPointType(spline.selectedControlPoint);
             Vector3 position = segment.GetPosition(segementType);
+            (Vector3, Vector3) directions = GetForwardDirectionForControlPoint(spline,
+                                                                          spline.segments[segementId].GetPosition(Segment.ControlHandle.ANCHOR),
+                                                                          spline.segments[segementId].GetPosition(Segment.ControlHandle.TANGENT_A),
+                                                                          spline.segments[segementId].GetPosition(Segment.ControlHandle.TANGENT_B),
+                                                                          segementType);
 
-            Vector3 forwardDirection = GetForwardDirectionForControlPoint(spline, segment.GetPosition(Segment.ControlHandle.ANCHOR), segment.GetPosition(Segment.ControlHandle.TANGENT_B));
-            Vector3 upDirection = GetUpDirectionForControlPoint(spline, forwardDirection, out bool switchXYDirections);
             PositionTool.ActivationType activationType = PositionTool.ActivationType.ANCHOR;
             Segment.ControlHandle type = SplineUtility.GetControlPointType(spline.selectedControlPoint);
             if (type == Segment.ControlHandle.TANGENT_A || type == Segment.ControlHandle.TANGENT_B) activationType = PositionTool.ActivationType.TANGENT;
             PositionTool.ActivateAndSetPosition(activationType,
                                                 position,
-                                                EHandleSceneView.GetSceneView().camera.transform.position,
-                                                forwardDirection,
-                                                upDirection,
+                                                EHandleSceneView.GetCurrent().camera.transform.position,
+                                                directions.Item1,
+                                                directions.Item2,
                                                 true,
-                                                switchXYDirections,
                                                 segment.linkTarget == Segment.LinkTarget.SPLINE_CONNECTOR);
         }
 
-        private static Vector3 GetForwardDirectionForControlPoint(Spline spline, Vector3 anchorPoint, Vector3 tangentPoint)
+        private static (Vector3, Vector3) GetForwardDirectionForControlPoint(Spline spline, Vector3 anchor, Vector3 tangentA, Vector3 tangentB, Segment.ControlHandle tangentType)
         {
-            Vector3 forwardDirection = (anchorPoint - tangentPoint).normalized;
-            if (GeneralUtility.IsZero(forwardDirection))return spline.transform.forward;
-            return forwardDirection;
-        }
-
-        private static Vector3 GetUpDirectionForControlPoint(Spline spline, Vector3 forwardDirection, out bool switchXYDirection)
-        {
-            float dif = Mathf.Abs(Vector3.Angle(forwardDirection, spline.transform.up) - 90);
-            float degrees = dif;
             Vector3 upDirection = spline.transform.up;
-            switchXYDirection = false;
+            Vector3 forwardDirection = (tangentA - anchor).normalized;
+            if (tangentType == Segment.ControlHandle.TANGENT_B) forwardDirection = (anchor - tangentB).normalized;
 
-            dif = Mathf.Abs(Vector3.Angle(forwardDirection, spline.transform.right) - 90);
-            if (dif < degrees)
-            {
-                degrees = dif;
-                upDirection = spline.transform.right;
-                switchXYDirection = true;
-            }
-
-            dif = Mathf.Abs(Vector3.Angle(forwardDirection, spline.transform.forward) - 90);
-            if (dif < degrees)
-            {
+            float dot = Vector3.Dot(forwardDirection, spline.transform.up);
+            if (Mathf.Abs(dot) > 0.99f)
+            { 
                 upDirection = spline.transform.forward;
-                switchXYDirection = true;
             }
 
-            return upDirection;
+            if (GeneralUtility.IsZero(forwardDirection)) return (spline.transform.forward, upDirection);
+            return (forwardDirection, upDirection);
         }
     }
 }

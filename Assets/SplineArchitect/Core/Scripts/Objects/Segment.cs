@@ -98,9 +98,18 @@ namespace SplineArchitect.Objects
         public SplineConnector splineConnector;
         [NonSerialized]
         private List<Segment> closestSegmentContainer;
+        [HideInInspector]
+        public float oldDisTangentA = 3;
+        [HideInInspector]
+        public float oldDisTangentB = 3;
+        [HideInInspector]
+        public Vector3 oldDirTangentA = Vector3.right;
+        [HideInInspector]
+        public Vector3 oldDirTangentB = -Vector3.right;
 #if UNITY_EDITOR
         [NonSerialized]
         public LinkTarget oldLinkTarget;
+        public bool linkCreatedThisFrameOnly { private get; set; }
 #endif
 
         private const float ContrastMin = -50f;
@@ -218,7 +227,8 @@ namespace SplineArchitect.Objects
             }
             else if (controlHandle == ControlHandle.TANGENT_A || controlHandle == ControlHandle.TANGENT_B)
             {
-                float distance = Vector3.Distance(GetPosition(controlHandle, space), GetPosition(ControlHandle.ANCHOR, space));
+                float distance = Vector3.Distance(newPosition, GetPosition(ControlHandle.ANCHOR, space));
+
                 Vector3 direction = (newPosition - GetPosition(ControlHandle.ANCHOR, space)).normalized;
                 SetPosition(SplineUtility.GetOppositeTangentType(controlHandle), GetPosition(ControlHandle.ANCHOR) - direction * distance, space);
                 SetPosition(controlHandle, newPosition, space);
@@ -287,6 +297,14 @@ namespace SplineArchitect.Objects
             if (splineParent == null)
                 return;
 
+            if (this.interpolationType == InterpolationType.SPLINE && interpolationMode == InterpolationType.LINE)
+            {
+                oldDisTangentA = Vector3.Distance(anchor, tangentA);
+                oldDisTangentB = Vector3.Distance(anchor, tangentB);
+                oldDirTangentA = (tangentA - anchor).normalized;
+                oldDirTangentB = (tangentB - anchor).normalized;
+            }
+
             this.interpolationType = interpolationMode;
 
             if (splineParent.segments.Count == 1)
@@ -340,8 +358,16 @@ namespace SplineArchitect.Objects
             }
             else
             {
-                tangentA = anchor + direction * 2.5f;
-                tangentB = anchor - direction * 2.5f;
+                if (GeneralUtility.IsZero(oldDirTangentA) || GeneralUtility.IsZero(oldDirTangentB) || oldDisTangentA < 0.5f || oldDisTangentB < 0.5f)
+                {
+                    tangentA = anchor + direction * 3f;
+                    tangentB = anchor - direction * 3f;
+                }
+                else
+                {
+                    tangentA = anchor + oldDirTangentA * oldDisTangentA;
+                    tangentB = anchor + oldDirTangentB * oldDisTangentB;
+                }
             }
         }
 
@@ -362,7 +388,11 @@ namespace SplineArchitect.Objects
             if (closestSegmentContainer == null)
                 closestSegmentContainer = new();
 
+#if UNITY_EDITOR
+            SplineUtility.GetSegmentsAtPointNoAlloc(closestSegmentContainer, linkCreatedThisFrameOnly ? HandleRegistry.GetSplinesRegistredThisFrame() : HandleRegistry.GetSplines(), linkPoint);
+#else
             SplineUtility.GetSegmentsAtPointNoAlloc(closestSegmentContainer, HandleRegistry.GetSplines(), linkPoint);
+#endif
             bool sucessfullLink = closestSegmentContainer.Count > 1;
 
             if (sucessfullLink) linkTarget = LinkTarget.ANCHOR;
@@ -394,7 +424,13 @@ namespace SplineArchitect.Objects
 
         public bool LinkToConnector(Vector3 linkPoint)
         {
-            SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint);
+
+#if UNITY_EDITOR
+            SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint, linkCreatedThisFrameOnly ? HandleRegistry.GetSplineConnectorsRegistredThisFrame() :
+                                                                                                              HandleRegistry.GetSplineConnectors());
+#else
+            SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint, HandleRegistry.GetSplineConnectors());
+#endif
             bool sucessfullLink = closest != null;
 
             if (sucessfullLink)
@@ -490,6 +526,12 @@ namespace SplineArchitect.Objects
 
         private void TryUpdateLoopData(Space space = Space.World)
         {
+            if(splineParent == null)
+            {
+                Debug.LogError("splineParent is null!");
+                return;
+            }
+
             if (!splineParent.loop || this != splineParent.segments[0])
                 return;
 

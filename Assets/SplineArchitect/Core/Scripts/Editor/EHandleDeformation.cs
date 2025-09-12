@@ -52,6 +52,9 @@ namespace SplineArchitect
 
                     Mesh mesh = mc.GetInstanceMesh();
 
+                    if (mesh == null)
+                        return;
+
                     //Internally, this makes the Mesh use "dynamic buffers" in the underlying graphics API, which are more efficient when Mesh data changes often.
                     //However does not seem to make any difference for performence.
                     mesh.MarkDynamic();

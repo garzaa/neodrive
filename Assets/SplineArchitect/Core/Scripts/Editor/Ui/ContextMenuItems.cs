@@ -1,0 +1,36 @@
+// -----------------------------------------------------------------------------
+// SplineArchitect
+// Filename: ContextMenuItems.cs
+//
+// Author: Mikael Danielsson
+// Date Created: 31-01-2023
+// (C) 2023 Mikael Danielsson. All rights reserved.
+// -----------------------------------------------------------------------------
+
+using UnityEngine;
+using UnityEditor;
+
+using SplineArchitect.Objects;
+
+namespace SplineArchitect.Ui
+{
+    public static class ContextMenuItems
+    {
+        [MenuItem("GameObject/Spline Architect/Spline", false, 100)]
+        public static void CreateSpline()
+        {
+            Spline spline = EHandleSpline.CreatedForContext(new GameObject());
+            Selection.activeTransform = spline.transform;
+
+            EHandleUndo.RecordNow(spline);
+            if(EHandleSceneView.GetCurrent().in2DMode) spline.normalType = Spline.NormalType.STATIC_2D;
+        }
+
+        [MenuItem("GameObject/Spline Architect/Spline Connector", false, 101)]
+        public static void CreateSplineConnector()
+        {
+            SplineConnector splineConnector = EHandleSplineConnector.CreatedForContext(new GameObject());
+            Selection.activeTransform = splineConnector.transform;
+        }
+    }
+}

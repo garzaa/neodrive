@@ -40,7 +40,7 @@ namespace SplineArchitect.PostProcessing
             EHandleEvents.buildRunning = false;
         }
 
-        public static void Update()
+        public static void UpdateGlobal()
         {
             if(report != null)
             {

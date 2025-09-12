@@ -9,6 +9,7 @@
 
 using UnityEngine;
 using UnityEditor.ShortcutManagement;
+using UnityEditor;
 
 using SplineArchitect.Objects;
 using SplineArchitect.Utility;
@@ -18,22 +19,41 @@ namespace SplineArchitect
 {
     public class EHandleShortcuts
     {
-        [Shortcut("Spline Architect/Hide ui", KeyCode.H, ShortcutModifiers.Alt)]
+        //Ids
+        public const string hideUiId = "Spline Architect/Hide ui";
+        public const string toggleGridVisibilityId = "Spline Architect/Toggle grid visibility";
+        public const string toggleNormalsId = "Spline Architect/Toggle normals";
+
+        [Shortcut(hideUiId, KeyCode.H, ShortcutModifiers.Alt)]
         public static void HideUi()
         {
-            MenuGeneral.ToggleUi();
+            SceneView sceneView = EHandleSceneView.GetCurrent();
+
+            foreach (ToolbarToggleBase ttb in ToolbarToggleBase.instances)
+            {
+                ToolbarToggleControlPanel ttcp = ttb as ToolbarToggleControlPanel;
+
+                if (ttcp == null)
+                    continue;
+
+                if (ttcp.currentSceneView == null)
+                    continue;
+
+                if(ttcp.currentSceneView == sceneView)
+                    ttcp.ToggleWindow();
+            }
         }
 
-        [Shortcut("Spline Architect/Toggle grid visibility")]
+        [Shortcut(toggleGridVisibilityId)]
         public static void ToggleGridVisibility()
         {
             GlobalSettings.SetGridVisibility(!GlobalSettings.GetGridVisibility());
         }
 
-        [Shortcut("Spline Architect/Toggle normals")]
+        [Shortcut(toggleNormalsId)]
         public static void ToggleNormals()
         {
-            GlobalSettings.SetShowNormals(!GlobalSettings.ShowNormals());
+            GlobalSettings.SetShowNormals(!GlobalSettings.GetShowNormals());
         }
 
         [Shortcut("Spline Architect/Toggle splines")]
@@ -42,7 +62,7 @@ namespace SplineArchitect
             int value = (int)GlobalSettings.GetSplineHideMode() + 1;
             if (value > 2) value = 0;
 
-            GlobalSettings.SetSplineHideMode((GlobalSettings.SplineHideMode)value);
+            GlobalSettings.SetSplineHideMode((SplineHideMode)value);
         }
 
         [Shortcut("Spline Architect/Toggle creation mode")]
@@ -68,9 +88,9 @@ namespace SplineArchitect
             EHandleSelection.SelectSecondaryAnchors(spline, anchors);
             EHandleSelection.SelectPrimaryControlPoint(spline, 1000);
 
-            EActionToLateSceneGUI.Add(() => {
-                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-            }, EventType.Layout);
+            EActionToSceneGUI.Add(() => {
+                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+            }, EActionToSceneGUI.Type.LATE, EventType.Layout);
         }
 
         [Shortcut("Spline Architect/Next control point", KeyCode.Period, ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
@@ -86,9 +106,9 @@ namespace SplineArchitect
             EHandleUndo.RecordNow(spline, "Next control point");
             EHandleSelection.SelectPrimaryControlPoint(spline, EHandleSpline.GetNextControlPoint(spline));
 
-            EActionToLateSceneGUI.Add(() => {
-                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-            }, EventType.Layout);
+            EActionToSceneGUI.Add(() => {
+                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+            }, EActionToSceneGUI.Type.LATE, EventType.Layout);
         }
          
         [Shortcut("Spline Architect/Prev control point", KeyCode.Comma, ShortcutModifiers.Alt | ShortcutModifiers.Shift)]
@@ -104,9 +124,9 @@ namespace SplineArchitect
             EHandleUndo.RecordNow(spline, "Prev control point");
             EHandleSelection.SelectPrimaryControlPoint(spline, EHandleSpline.GetNextControlPoint(spline, true));
 
-            EActionToLateSceneGUI.Add(() => {
-                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-            }, EventType.Layout);
+            EActionToSceneGUI.Add(() => {
+                EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+            }, EActionToSceneGUI.Type.LATE, EventType.Layout);
         }
 
         [Shortcut("Spline Architect/Flatten control points")]
@@ -123,9 +143,9 @@ namespace SplineArchitect
                     EHandleSpline.FlattenControlPoints(spline, selected);
                 }, "Flatten control points");
 
-                EActionToLateSceneGUI.Add(() => {
-                    EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-                }, EventType.Layout);
+                EActionToSceneGUI.Add(() => {
+                    EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+                }, EActionToSceneGUI.Type.LATE, EventType.Layout);
             }
             else
             {
@@ -134,9 +154,9 @@ namespace SplineArchitect
                     EHandleSpline.FlattenControlPoints(selected);
                 }, "Flatten control points");
 
-                EActionToLateSceneGUI.Add(() => {
-                    EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetSceneView(), spline);
-                }, EventType.Layout);
+                EActionToSceneGUI.Add(() => {
+                    EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+                }, EActionToSceneGUI.Type.LATE, EventType.Layout);
             }
         }
     }

@@ -89,7 +89,7 @@ namespace SplineArchitect
 
         public static void RecordOnLateSceneGUI(Object target, Action beforeAction, Action action, string name = null, int id = -1, RecordType recordType = RecordType.RECORD_OBJECT)
         {
-            EActionToLateSceneGUI.Add(() => {
+            EActionToSceneGUI.Insert(() => {
                 if (beforeAction != null)
                     beforeAction.Invoke();
 
@@ -97,7 +97,7 @@ namespace SplineArchitect
 
                 action.Invoke();
 
-            }, EventType.Repaint, id, true);
+            }, EActionToSceneGUI.Type.LATE, EventType.Repaint, id);
         }
 
         public static void RecordNow(Object target, string name = null, RecordType recordType = RecordType.RECORD_OBJECT)

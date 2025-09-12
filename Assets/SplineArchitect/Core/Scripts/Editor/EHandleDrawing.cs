@@ -7,16 +7,15 @@
 // (C) 2023 Mikael Danielsson. All rights reserved.
 // -----------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
+using SplineArchitect.CustomTools;
+using SplineArchitect.Libraries;
 using SplineArchitect.Objects;
 using SplineArchitect.Utility;
-using SplineArchitect.Libraries;
-using SplineArchitect.CustomTools;
 
 namespace SplineArchitect
 {
@@ -24,15 +23,31 @@ namespace SplineArchitect
     {
         private static Vector3[] triangle = new Vector3[4];
         private static Vector3[] normalsContainer = new Vector3[3];
+        private static List<Spline> allSelectedSplines = new List<Spline>();
 
         public static void OnSceneGUIGlobal(HashSet<Spline> splines, Event e)
         {
             if (e.type != EventType.Repaint)
                 return;
 
-            GlobalSettings.SplineHideMode hideMode = GlobalSettings.GetSplineHideMode();
-            SceneView sceneView = EHandleSceneView.GetSceneView();
+            SplineHideMode hideMode = GlobalSettings.GetSplineHideMode();
+            SceneView sceneView = EHandleSceneView.GetCurrent();
 
+            allSelectedSplines.Clear();
+            EHandleSelection.GetAllSelectedSplinesNonAlloc(allSelectedSplines);
+
+            //First
+            foreach (Spline spline in allSelectedSplines)
+            {
+                if (!spline.IsEnabled()) continue;
+                if (!sceneView.drawGizmos) continue;
+                if (!EHandleSelection.IsPrimiarySelection(spline) && !EHandleSelection.IsSecondarySelection(spline)) continue;
+
+                if (GlobalSettings.GetGridVisibility())
+                    EHandleGrid.DrawGrid(spline.transform, EHandleGrid.GetGridBounds(spline), GlobalSettings.GetGridSize(), spline.normalType == Spline.NormalType.STATIC_2D);
+            }
+
+            //Second
             foreach (Spline spline in splines)
             {
                 if (!spline.IsEnabled())
@@ -44,131 +59,46 @@ namespace SplineArchitect
                 bool primiarySelection = EHandleSelection.IsPrimiarySelection(spline);
                 bool secondarySelection = EHandleSelection.IsSecondarySelection(spline);
 
-                if (hideMode != GlobalSettings.SplineHideMode.NONE && !primiarySelection && !secondarySelection)
+                if (hideMode != SplineHideMode.NONE && !primiarySelection && !secondarySelection)
                     continue;
 
                 DrawSpline(spline, primiarySelection, secondarySelection, hideMode);
-                DrawLinkPreviewDots(spline, hideMode);
             }
 
-            foreach (Spline spline in splines)
+            //Third
+            if (EHandleSelection.selectedSpline != null && EHandleSelection.selectedSpline.IsEnabled())
             {
-                if (!spline.IsEnabled())
-                    continue;
-
-                bool isSecondarySelection = EHandleSelection.IsSecondarySelection(spline);
-                bool isPrimiarySelection = EHandleSelection.IsPrimiarySelection(spline);
-
-                if (isPrimiarySelection)
+                if (sceneView.drawGizmos)
                 {
-                    if (sceneView.drawGizmos)
-                    {
-                        DrawControlPointsOnSelected(spline, hideMode);
-                        DrawNormals(spline);
-                    }
+                    DrawControlPoints(EHandleSelection.selectedSpline, hideMode);
+                    DrawNormals(EHandleSelection.selectedSpline);
 
-                    PositionTool.Draw(e);
-                }
+                    if (GlobalSettings.GetGridVisibility())
+                        EHandleGrid.DrawLabels(EHandleSelection.selectedSpline);
 
-                if (sceneView.drawGizmos && (isPrimiarySelection || isSecondarySelection))
-                {
-                    EHandleGrid.DrawGridAndLabels(spline);
+                    if(EHandleSpline.controlPointCreationActive)
+                        DrawSegmentIndicator(e, EHandleSelection.selectedSpline);
                 }
             }
 
-            DrawSplineConnectorPreviewDots(hideMode);
-        }
-
-        public static void DebugDrawSplineSpace(Spline spline)
-        {
-            Handles.color = Color.yellow;
-            Handles.DrawLine(spline.transform.position, spline.transform.position + spline.transform.forward * spline.length);
-
-            Handles.color = LibraryColor.white_RGB80_A100;
-            for (int i = 0; i < spline.length; i += 10)
+            //Fourth, none selected control point creation
+            if (EHandleSpline.controlPointCreationActive)
             {
-                Handles.DotHandleCap(0, spline.transform.position + spline.transform.forward * i, Quaternion.identity, 0.1f, EventType.Repaint);
-            }
+                if (PositionTool.activePart != PositionTool.Part.NONE)
+                    return;
 
-            Handles.color = Color.blue;
-            if (EHandleSelection.selectedSplineObject != null)
-            {
-                SplineObject selection = EHandleSelection.selectedSplineObject;
-                Handles.DotHandleCap(0, spline.transform.TransformPoint(selection.splinePosition), Quaternion.identity, 0.25f, EventType.Repaint);
-
-                Handles.color = Color.red;
-                for (int i = 0; i < selection.transform.childCount; i++)
+                if (EHandleSelection.selectedSpline == null)
                 {
-                    SplineObject acoChild = selection.transform.GetChild(i).GetComponent<SplineObject>();
-
-                    if (acoChild != null)
-                        Handles.DotHandleCap(0, spline.transform.TransformPoint(acoChild.splinePosition), Quaternion.identity, 0.25f, EventType.Repaint);
+                    if (GlobalSettings.GetGridVisibility()) DrawIndicatorGrid(e);
+                    else DrawIndicator(e);
                 }
             }
+
+            DrawLinkPreviewDots(splines, hideMode);
+            PositionTool.Draw(e);
         }
 
-        public static void DrawSegmentIndicator(Event e, Spline spline, EHandleSegment.SegmentIndicatorData segmentIndicatorData)
-        {
-            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
-            Handles.color = Color.white;
-            float size = EHandleSegment.GetControlPointSize(spline.indicatorPosition);
-
-            if (spline.indicatorDistanceToSpline < EHandleSpline.GetIndicatorActivationDistance(spline))
-            {
-                Handles.DotHandleCap(0, spline.indicatorPosition, Quaternion.identity, size, EventType.Repaint);
-            }
-            else if (!spline.loop)
-            {
-                int precision = EHandleSegment.GetDrawLinesCount(segmentIndicatorData.anchor,
-                                                                 segmentIndicatorData.tangent,
-                                                                 segmentIndicatorData.newAnchor,
-                                                                 segmentIndicatorData.newTangentB,
-                                                                 25);
-                DrawSegement(segmentIndicatorData.anchor,
-                                           segmentIndicatorData.tangent,
-                                           segmentIndicatorData.originFromStart ? segmentIndicatorData.newTangentA : segmentIndicatorData.newTangentB,
-                                           segmentIndicatorData.newAnchor,
-                                           precision,
-                                           2.5f);
-
-                Handles.DotHandleCap(0, segmentIndicatorData.newAnchor, Quaternion.identity, size, EventType.Repaint);
-                Handles.DotHandleCap(0, segmentIndicatorData.newTangentA, Quaternion.identity, size, EventType.Repaint);
-                Handles.DotHandleCap(0, segmentIndicatorData.newTangentB, Quaternion.identity, size, EventType.Repaint);
-            }
-
-            if (e.type == EventType.Repaint)
-                SceneView.RepaintAll();
-        }
-
-        public static void DrawIndicatorGrid(Event e, EHandleSegment.SegmentIndicatorData segmentIndicatorData)
-        {
-            float size = EHandleSegment.GetControlPointSize(segmentIndicatorData.newAnchor);
-
-            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
-
-            if (segmentIndicatorData.gridSpline != null)
-            {
-                Bounds bounds = EHandleGrid.GetGridBounds(segmentIndicatorData.gridSpline, segmentIndicatorData.newAnchor);
-
-                Handles.color = Color.white;
-                EHandleGrid.DrawGrid(segmentIndicatorData.gridSpline.transform, bounds, GlobalSettings.GetGridSize());
-            }
-
-            Handles.color = Color.yellow;
-
-            Handles.DrawLine(segmentIndicatorData.newAnchor, segmentIndicatorData.newTangentA, 1);
-            Handles.DrawLine(segmentIndicatorData.newAnchor, segmentIndicatorData.newTangentB, 1);
-
-            Handles.color = Color.white;
-            Handles.DotHandleCap(0, segmentIndicatorData.newAnchor, Quaternion.identity, size, EventType.Repaint);
-            Handles.DotHandleCap(0, segmentIndicatorData.newTangentA, Quaternion.identity, size, EventType.Repaint);
-            Handles.DotHandleCap(0, segmentIndicatorData.newTangentB, Quaternion.identity, size, EventType.Repaint);
-
-            if (e.type == EventType.Repaint)
-                SceneView.RepaintAll();
-        }
-
-        private static void DrawSpline(Spline spline, bool primiarySelection, bool secondarySelection, GlobalSettings.SplineHideMode hideMode)
+        private static void DrawSpline(Spline spline, bool primiarySelection, bool secondarySelection, SplineHideMode hideMode)
         {
             if (spline.segments.Count < 2)
                 return;
@@ -185,7 +115,7 @@ namespace SplineArchitect
                 Vector3 tangent2B = segmentTo.GetPosition(Segment.ControlHandle.TANGENT_B);
                 Vector3 anchor2 = segmentTo.GetPosition(Segment.ControlHandle.ANCHOR);
 
-                if (primiarySelection && hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED)
+                if (primiarySelection && hideMode != SplineHideMode.SELECTED_OCCLUDED)
                 {
                     Handles.color = LibraryColor.black_A70;
                     Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
@@ -210,7 +140,7 @@ namespace SplineArchitect
             }
         }
 
-        public static void DrawSegement(Vector3 anchorA, Vector3 tangnetA, Vector3 tangentB, Vector3 anchorB, int lines, float size)
+        private static void DrawSegement(Vector3 anchorA, Vector3 tangnetA, Vector3 tangentB, Vector3 anchorB, int lines, float size)
         {
             for (int i = 0; i < lines; i++)
             {
@@ -224,7 +154,7 @@ namespace SplineArchitect
             }
         }
 
-        private static void DrawTriangleOnSegment(Spline spline, Segment segment, bool selected, GlobalSettings.SplineHideMode hideMode)
+        private static void DrawTriangleOnSegment(Spline spline, Segment segment, bool selected, SplineHideMode hideMode)
         {
             float time = (segment.zPosition + segment.length * 0.5f) / spline.length;
             float fixedTime = spline.TimeToFixedTime(time);
@@ -239,7 +169,7 @@ namespace SplineArchitect
 
             Handles.color = Color.white;
 
-            if (selected && hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED)
+            if (selected && hideMode != SplineHideMode.SELECTED_OCCLUDED)
             {
                 Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
                 Handles.DrawSolidRectangleWithOutline(triangle, LibraryColor.grey_RGB20_A50, Color.yellow);
@@ -251,92 +181,107 @@ namespace SplineArchitect
             }
         }
 
-        private static void DrawSplineConnectorPreviewDots(GlobalSettings.SplineHideMode hideMode)
+        private static void DrawLinkPreviewDots(HashSet<Spline> splines, SplineHideMode hideMode)
         {
-            Spline selected = EHandleSelection.selectedSpline;
-
-            if (selected == null)
-                return;
-
-            if (selected.selectedControlPoint == 0)
-                return;
+            Vector3 closestPoint = Vector3.zero;
+            Spline closestSpline = null;
+            SplineConnector closestConnector = null;
+            float closestDistance = 999999;
 
             if (PositionTool.activePart == PositionTool.Part.NONE)
                 return;
 
-            int segmentIndex = SplineUtility.ControlPointIdToSegmentIndex(selected.selectedControlPoint);
-            Segment selectedSegment = selected.segments[segmentIndex];
-            Vector3 selectedPos = selectedSegment.GetPosition(Segment.ControlHandle.ANCHOR);
-            float controlDistance = 100 * EHandleSegment.DistanceModifier(selectedPos);
-
-            foreach (SplineConnector sc in HandleRegistry.GetSplineConnectors())
-            {
-                if (Vector3.Distance(sc.transform.position, selectedPos) > controlDistance)
-                    continue;
-
-                float size = EHandleSegment.GetControlPointSize(sc.transform.position) * 0.55f;
-
-                if (hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED)
-                    Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
-                else
-                    Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
-
-                Handles.color = LibraryColor.orange_A100;
-
-                Handles.DotHandleCap(0, sc.transform.position, Quaternion.identity, size, EventType.Repaint);
-            }
-        }
-
-        private static void DrawLinkPreviewDots(Spline spline, GlobalSettings.SplineHideMode hideMode)
-        {
             Spline selected = EHandleSelection.selectedSpline;
 
             if (selected == null || SplineUtility.GetControlPointType(selected.selectedControlPoint) != Segment.ControlHandle.ANCHOR)
                 return;
 
-            if (PositionTool.activePart == PositionTool.Part.NONE)
+            if (selected.selectedAnchors.Count > 0)
                 return;
 
-            if (selected == spline)
-                return;
+            int selectedSegmentId = SplineUtility.ControlPointIdToSegmentIndex(selected.selectedControlPoint);
+            Vector3 selectedAnchorPos = selected.segments[selectedSegmentId].GetPosition(Segment.ControlHandle.ANCHOR);
+            float controlDistance = 75 * EHandleSegment.DistanceModifier(selectedAnchorPos);
 
-            int dontDrawLastIfLoop = 0;
-            if (spline.loop)
-                dontDrawLastIfLoop = 1;
+            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
 
-            int segmentIndex = SplineUtility.ControlPointIdToSegmentIndex(selected.selectedControlPoint);
-            Vector3 selectedPos = selected.segments[segmentIndex].GetPosition(Segment.ControlHandle.ANCHOR);
-            float controlDistance = 100 * EHandleSegment.DistanceModifier(selectedPos);
-
-            //Skip if to far away.
-            if (Vector3.Distance(spline.controlPointsBounds.ClosestPoint(selectedPos), selectedPos) > controlDistance)
-                return;
-
-            for (int i = 0; i < spline.segments.Count - dontDrawLastIfLoop; i++)
+            //Preview control points
+            foreach (Spline spline in splines)
             {
-                Segment s = spline.segments[i];
-                Vector3 anchorPosition = s.GetPosition(Segment.ControlHandle.ANCHOR);
+                int dontDrawLastIfLoop = 0;
+                if (spline.loop) dontDrawLastIfLoop = 1;
 
-                if (Vector3.Distance(anchorPosition, selectedPos) > controlDistance)
+                //Skip if to far away.
+                if (Vector3.Distance(spline.controlPointsBounds.ClosestPoint(selectedAnchorPos), selectedAnchorPos) > controlDistance)
                     continue;
 
-                if (GeneralUtility.IsEqual(selectedPos, anchorPosition))
+                for (int i = 0; i < spline.segments.Count - dontDrawLastIfLoop; i++)
+                {
+                    Segment s = spline.segments[i];
+
+                    if (selected.segments[selectedSegmentId] == s)
+                        continue;
+
+                    Vector3 anchorPos = s.GetPosition(Segment.ControlHandle.ANCHOR);
+                    float distance = Vector3.Distance(anchorPos, selectedAnchorPos);
+
+                    if (distance > controlDistance)
+                        continue;
+
+                    if (GeneralUtility.IsEqual(selectedAnchorPos, anchorPos))
+                        continue;
+
+                    Handles.color = spline.color;
+                    if(spline != selected) Handles.DotHandleCap(0, anchorPos, Quaternion.identity, EHandleSegment.GetControlPointSize(anchorPos) * 0.55f, EventType.Repaint);
+
+                    if(closestDistance > distance)
+                    {
+                        closestDistance = distance;
+                        closestSpline = spline;
+                        closestPoint = anchorPos;
+                        closestConnector = null;
+                    }
+                }
+            }
+
+            //Preview spline connectors
+            foreach (SplineConnector sc in HandleRegistry.GetSplineConnectors())
+            {
+                float distance = Vector3.Distance(sc.transform.position, selectedAnchorPos);
+
+                if (distance > controlDistance)
                     continue;
 
-                float size = EHandleSegment.GetControlPointSize(anchorPosition) * 0.55f;
+                float size = EHandleSegment.GetControlPointSize(sc.transform.position) * 0.55f;
+                Handles.color = LibraryColor.orange_A100;
+                Handles.DotHandleCap(0, sc.transform.position, Quaternion.identity, size, EventType.Repaint);
 
-                if(hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED)
-                    Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
-                else
-                    Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+                if (closestDistance > distance)
+                {
+                    closestDistance = distance;
+                    closestSpline = null;
+                    closestPoint = sc.transform.position;
+                    closestConnector = sc;
+                }
+            }
 
-                Handles.color = spline.color;
-
-                Handles.DotHandleCap(0, anchorPosition, Quaternion.identity, size, EventType.Repaint);
+            if (closestSpline != null)
+            {
+                Handles.color = closestSpline.color;
+                Handles.DotHandleCap(0, closestPoint, Quaternion.identity, EHandleSegment.GetControlPointSize(closestPoint) * 0.9f, EventType.Repaint);
+                Handles.color = Color.white;
+                Handles.DotHandleCap(0, closestPoint, Quaternion.identity, EHandleSegment.GetControlPointSize(closestPoint) * 0.45f, EventType.Repaint);
+            }
+            else if(closestConnector != null)
+            {
+                Handles.color = LibraryColor.orange_A100;
+                Handles.DotHandleCap(0, closestPoint, Quaternion.identity, EHandleSegment.GetControlPointSize(closestPoint) * 0.9f, EventType.Repaint);
+                Handles.color = Color.white;
+                Handles.DotHandleCap(0, closestPoint, Quaternion.identity, EHandleSegment.GetControlPointSize(closestPoint) * 0.45f, EventType.Repaint);
             }
         }
 
-        private static void DrawControlPointsOnSelected(Spline spline, GlobalSettings.SplineHideMode hideMode)
+        private static void DrawControlPoints(Spline spline, SplineHideMode hideMode)
         {
             int dontDrawLastIfLoop = 0;
             if (spline.loop)
@@ -383,7 +328,7 @@ namespace SplineArchitect
                 Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
                 Handles.color = LibraryColor.black_A50;
 
-                if (hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED)
+                if (hideMode != SplineHideMode.SELECTED_OCCLUDED)
                 {
                     //Shadow controlpoints
                     Handles.DotHandleCap(0, segment.GetPosition(Segment.ControlHandle.ANCHOR), Quaternion.identity, anchorSize * 1.3f, EventType.Repaint);
@@ -418,7 +363,7 @@ namespace SplineArchitect
                     bool isAnchorSelected = spline.selectedAnchors.Contains(anchorId);
 
                     Handles.color = Color.yellow;
-                    if(isAnchorSelected && hideMode != GlobalSettings.SplineHideMode.SELECTED_OCCLUDED) Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
+                    if(isAnchorSelected && hideMode != SplineHideMode.SELECTED_OCCLUDED) Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
                     else Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
                     Handles.DotHandleCap(0, segment.GetPosition(Segment.ControlHandle.ANCHOR), Quaternion.identity, anchorSize * size, EventType.Repaint);
 
@@ -446,7 +391,7 @@ namespace SplineArchitect
                     }
                 }
 
-                if(segment.linkTarget != Segment.LinkTarget.NONE)
+                if(segment.linkTarget != Segment.LinkTarget.NONE && PositionTool.activePart == PositionTool.Part.NONE)
                 {
                     Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
                     Handles.color = segment.linkTarget == Segment.LinkTarget.ANCHOR ? Color.yellow : LibraryColor.orange_A100;
@@ -457,7 +402,7 @@ namespace SplineArchitect
 
         private static void DrawNormals(Spline spline)
         {
-            if (GlobalSettings.ShowNormals() == false)
+            if (GlobalSettings.GetShowNormals() == false)
                 return;
 
             if (spline.segments.Count < 2)
@@ -492,6 +437,131 @@ namespace SplineArchitect
 
             Handles.color = Color.green;
             Handles.DrawLine(c1, c1 + normalsContainer[1] * length);
+        }
+
+        private static void DrawIndicator(Event e)
+        {
+            Vector3 anchor = EHandleSpline.segementIndicatorData.newAnchor;
+            Vector3 tangentA = EHandleSpline.segementIndicatorData.newTangentA;
+            Vector3 tangentB = EHandleSpline.segementIndicatorData.newTangentB;
+
+            float size = EHandleSegment.GetControlPointSize(anchor);
+
+            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
+            Handles.color = Color.yellow;
+
+            Handles.DrawLine(anchor, tangentA, 1);
+            Handles.DrawLine(anchor, tangentB, 1);
+
+            Handles.color = Color.white;
+            Handles.DotHandleCap(0, anchor, Quaternion.identity, size, EventType.Repaint);
+            Handles.DotHandleCap(0, tangentA, Quaternion.identity, size, EventType.Repaint);
+            Handles.DotHandleCap(0, tangentB, Quaternion.identity, size, EventType.Repaint);
+
+            if (e.type == EventType.Repaint)
+                EHandleSceneView.RepaintCurrent();
+        }
+
+        private static void DrawIndicatorGrid(Event e)
+        {
+            Vector3 anchor = EHandleSpline.segementIndicatorData.newAnchor;
+            Vector3 tangentA = EHandleSpline.segementIndicatorData.newTangentA;
+            Vector3 tangentB = EHandleSpline.segementIndicatorData.newTangentB;
+
+            bool in2DMode = EHandleSceneView.GetCurrent().in2DMode;
+            float size = EHandleSegment.GetControlPointSize(anchor);
+            Bounds bounds = EHandleGrid.GetGridBounds(anchor, tangentA, tangentB, in2DMode);
+
+            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
+            Handles.color = Color.white;
+            EHandleGrid.DrawGrid(null, bounds, GlobalSettings.GetGridSize(), in2DMode);
+
+            Handles.color = Color.yellow;
+            Handles.DrawLine(anchor, tangentA, 1);
+            Handles.DrawLine(anchor, tangentB, 1);
+
+            Handles.color = Color.white;
+            Handles.DotHandleCap(0, anchor, Quaternion.identity, size, EventType.Repaint);
+            Handles.DotHandleCap(0, tangentA, Quaternion.identity, size, EventType.Repaint);
+            Handles.DotHandleCap(0, tangentB, Quaternion.identity, size, EventType.Repaint);
+
+            if (e.type == EventType.Repaint)
+                EHandleSceneView.RepaintCurrent();
+        }
+
+        private static void DrawSegmentIndicator(Event e, Spline spline)
+        {
+            Vector3 anchor = EHandleSpline.segementIndicatorData.anchor;
+            Vector3 tangent = EHandleSpline.segementIndicatorData.tangent;
+            Vector3 tangentA = EHandleSpline.segementIndicatorData.newTangentA;
+            Vector3 tangentB = EHandleSpline.segementIndicatorData.newTangentB;
+            Vector3 newAnchor = EHandleSpline.segementIndicatorData.newAnchor;
+            Vector3 newTangentA = EHandleSpline.segementIndicatorData.newTangentA;
+            Vector3 newTangentB = EHandleSpline.segementIndicatorData.newTangentB;
+            bool originFromStart = EHandleSpline.segementIndicatorData.originFromStart;
+
+            Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
+            Handles.color = Color.white;
+            float size = EHandleSegment.GetControlPointSize(spline.indicatorPosition);
+
+            if (spline.indicatorDistanceToSpline < EHandleSpline.GetIndicatorActivationDistance(spline))
+            {
+                Handles.DotHandleCap(0, spline.indicatorPosition, Quaternion.identity, size, EventType.Repaint);
+            }
+            else if (!spline.loop)
+            {
+                int precision = EHandleSegment.GetDrawLinesCount(anchor,
+                                                                 tangent,
+                                                                 newAnchor,
+                                                                 newTangentB,
+                                                                 75);
+                DrawSegement(anchor,
+                             tangent,
+                             originFromStart ? newTangentA : newTangentB,
+                             newAnchor,
+                             precision,
+                             2.5f);
+
+                Handles.DotHandleCap(0, newAnchor, Quaternion.identity, size * 1.2f, EventType.Repaint);
+                Handles.DotHandleCap(0, newTangentA, Quaternion.identity, size, EventType.Repaint);
+                Handles.DotHandleCap(0, newTangentB, Quaternion.identity, size, EventType.Repaint);
+
+                Handles.color = Color.black;
+                Handles.DotHandleCap(0, newAnchor, Quaternion.identity, size * 0.8f, EventType.Repaint);
+                Handles.DotHandleCap(0, newTangentA, Quaternion.identity, size * 0.6f, EventType.Repaint);
+                Handles.DotHandleCap(0, newTangentB, Quaternion.identity, size * 0.6f, EventType.Repaint);
+            }
+
+            if (e.type == EventType.Repaint)
+                EHandleSceneView.RepaintCurrent();
+        }
+
+        public static void DebugDrawSplineSpace(Spline spline)
+        {
+            Handles.color = Color.yellow;
+            Handles.DrawLine(spline.transform.position, spline.transform.position + spline.transform.forward * spline.length);
+
+            Handles.color = LibraryColor.white_RGB80_A100;
+            for (int i = 0; i < spline.length; i += 10)
+            {
+                Handles.DotHandleCap(0, spline.transform.position + spline.transform.forward * i, Quaternion.identity, 0.1f, EventType.Repaint);
+            }
+
+            Handles.color = Color.blue;
+            if (EHandleSelection.selectedSplineObject != null)
+            {
+                SplineObject selection = EHandleSelection.selectedSplineObject;
+                Handles.DotHandleCap(0, spline.transform.TransformPoint(selection.splinePosition), Quaternion.identity, 0.25f, EventType.Repaint);
+
+                Handles.color = Color.red;
+                for (int i = 0; i < selection.transform.childCount; i++)
+                {
+                    SplineObject acoChild = selection.transform.GetChild(i).GetComponent<SplineObject>();
+
+                    if (acoChild != null)
+                        Handles.DotHandleCap(0, spline.transform.TransformPoint(acoChild.splinePosition), Quaternion.identity, 0.25f, EventType.Repaint);
+                }
+            }
         }
     }
 }

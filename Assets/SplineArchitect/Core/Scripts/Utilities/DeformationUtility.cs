@@ -57,7 +57,7 @@ namespace SplineArchitect.Utility
                     GeneralUtility.IsZero(combinedScale.z))
                     return;
 
-                //If not valid for runtime let the editor deformation process will catch and deform it.
+                //If not valid for runtime let the editor deformation process catch and deform it.
                 //If readablility is set to false, the mesh can still be deformed during the editor deformation process.
                 if (!so.ValidForRuntimeDeformation())
                     continue;
@@ -173,7 +173,7 @@ namespace SplineArchitect.Utility
                 localSpaces = localSpaces,
                 verticesMap = verticesMap,
                 mirrorMap = mirrorMap,
-                splineUpDirection = Vector3.up,
+                splineUpDirection = spline.normalType == Spline.NormalType.STATIC_2D ? -Vector3.forward : Vector2.up,
                 nativeSegments = nativeSegments,
                 noises = spline.nativeNoises,
                 splineLength = spline.length,
@@ -214,6 +214,10 @@ namespace SplineArchitect.Utility
             deformJob.forwardDir.Dispose();
             deformJob.upDir.Dispose();
             deformJob.rightDir.Dispose();
+
+#if UNITY_EDITOR
+            EHandleEvents.InvokeDisposeDeformJob();
+#endif
         }
 
         /// <summary>

@@ -35,5 +35,18 @@ namespace SplineArchitect
         {
             return e.alt;
         }
+
+        public static bool DeleteActive(Event e)
+        {
+            if (e.keyCode == KeyCode.Delete && e.type == EventType.KeyUp)
+                return true;
+
+#if UNITY_EDITOR_OSX
+            if (e.command && e.keyCode == KeyCode.Backspace && e.type == EventType.KeyDown)
+                return true;
+#endif
+
+            return false;
+        }
     }
 }

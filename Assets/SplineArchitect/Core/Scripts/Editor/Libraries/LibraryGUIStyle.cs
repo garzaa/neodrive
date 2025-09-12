@@ -10,20 +10,17 @@
 using UnityEngine;
 using UnityEditor;
 
+using SplineArchitect.Ui;
+
 namespace SplineArchitect.Libraries
 {
     public static class LibraryGUIStyle
     {
-        //Settings
-        public const float menuItemHeight = 22;
-
         //General
         public static GUIStyle specificX { get; private set; }
         public static GUIStyle specificYZ { get; private set; }
         public static GUIStyle specificFromToX { get; private set; }
         public static GUIStyle specificFromToYZ { get; private set; }
-        public static GUIStyle sliderDefault { get; private set; }
-        public static GUIStyle sliderThumbDefault { get; private set; }
         public static GUIStyle popUpFieldSmallText { get; private set; }
         public static GUIStyle separatorWhite { get; private set; }
         public static GUIStyle infoIcon { get; private set; }
@@ -55,16 +52,17 @@ namespace SplineArchitect.Libraries
         public static GUIStyle textSceneView { get; private set; }
 
         //Lines
-        public static GUIStyle lineGrey { get; private set; }
         public static GUIStyle lineWhite { get; private set; }
         public static GUIStyle lineYellowThick { get; private set; }
         public static GUIStyle lineBlackThick { get; private set; }
         public static GUIStyle lineYellow { get; private set; }
         public static GUIStyle lineBlack { get; private set; }
+        public static GUIStyle lineGrey { get; private set; }
 
         //Backgrounds
         public static GUIStyle backgroundHeader { get; private set; }
         public static GUIStyle backgroundBottomMenu { get; private set; }
+        public static GUIStyle backgroundNoSplineSelected { get; private set; }
         public static GUIStyle backgroundToolbar { get; private set; }
         public static GUIStyle backgroundSubHeader { get; private set; }
         public static GUIStyle backgroundItem2 { get; private set; }
@@ -74,7 +72,7 @@ namespace SplineArchitect.Libraries
         public static GUIStyle backgroundMainLayerButtons { get; private set; }
 
         //Need to instalize like this. LibraryGUIStyle is dependent on different textures that needs to be created first.
-        public static void Initalize()
+        public static void Init()
         {
             //General
             specificX = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 13, 15);
@@ -86,27 +84,27 @@ namespace SplineArchitect.Libraries
             separatorWhite = CreateBoxStyle(LibraryTexture.gScale80_100, 16, 4, new RectOffset(0, 0, 3, 0));
 
             //Backgrounds
-            backgroundHeader = CreateBackgroundStyle(LibraryTexture.gScale95_100, menuItemHeight);
+            backgroundHeader = CreateBackgroundStyle(LibraryTexture.gScale95_100, 18);
             backgroundSubHeader = CreateBackgroundStyle(LibraryTexture.gScale95_100, 12);
             backgroundToolbar = CreateBackgroundStyle(LibraryTexture.gScale40_100, 23);
             backgroundBottomMenu = CreateBackgroundStyle(LibraryTexture.gScale15_100, 18);
-            backgroundItem1 = CreateBackgroundStyle(LibraryTexture.gScale10_100, menuItemHeight);
-            backgroundItem2 = CreateBackgroundStyle(LibraryTexture.gScale7_100, menuItemHeight);
-            backgroundSelectedLayerHeader = CreateBackgroundStyle(LibraryTexture.yellow100, menuItemHeight);
-            backgroundSelectedLayer = CreateBackgroundStyle(LibraryTexture.gScale15_100, menuItemHeight);
-            backgroundMainLayerButtons = CreateBackgroundStyle(LibraryTexture.gScale30_100, menuItemHeight);
+            backgroundItem1 = CreateBackgroundStyle(LibraryTexture.gScale10_100, WindowBase.menuItemHeight);
+            backgroundItem2 = CreateBackgroundStyle(LibraryTexture.gScale7_100, WindowBase.menuItemHeight);
+            backgroundSelectedLayerHeader = CreateBackgroundStyle(LibraryTexture.yellow100, WindowBase.menuItemHeight);
+            backgroundSelectedLayer = CreateBackgroundStyle(LibraryTexture.gScale15_100, WindowBase.menuItemHeight);
+            backgroundMainLayerButtons = CreateBackgroundStyle(LibraryTexture.gScale30_100, WindowBase.menuItemHeight);
 
             //Lines
-            lineGrey = CreateBoxStyle(LibraryTexture.gScale0_100, 1, 0, new RectOffset(0, 0, 0, 0));
-            lineWhite = CreateBoxStyle(LibraryTexture.gScale95_100, 1, 0, new RectOffset(0, 0, 0, 0));
+            lineWhite = CreateBoxStyle(LibraryTexture.gScale95_100, 0, 0, new RectOffset(0, 0, 0, 0));
             lineYellowThick = CreateBackgroundStyle(LibraryTexture.yellow100, 4);
             lineBlackThick = CreateBackgroundStyle(LibraryTexture.gScale5_100, 4);
-            lineYellow = CreateBoxStyle(LibraryTexture.yellow100, 1, 0, new RectOffset(0, 0, 0, 0));
-            lineBlack = CreateBoxStyle(LibraryTexture.gScale0_100, 1, 0, new RectOffset(0, 0, 0, 0));
+            lineYellow = CreateBoxStyle(LibraryTexture.yellow100, 0, 0, new RectOffset(0, 0, 0, 0));
+            lineBlack = CreateBoxStyle(LibraryTexture.gScale0_100, 0, 0, new RectOffset(0, 0, 0, 0));
+            lineGrey = CreateBoxStyle(LibraryTexture.gScale80_100, 0, 0, new RectOffset(0, 0, 0, 0));
 
             //Texts
-            textHeader = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 13);
-            textHeaderBlack = CreateTextStyle(Color.black, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 12);
+            textHeader = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 12);
+            textHeaderBlack = CreateTextStyle(Color.black, new RectOffset(6, 4, -5, 0), new RectOffset(0, 0, 0, 0), 12);
             textSubHeader = CreateTextStyle(new Color(0, 0, 0, 1), new RectOffset(6, 4, -10, 0), new RectOffset(0, 0, 0, 0), 9);
             textDefault = CreateTextStyle(Color.white, new RectOffset(6, 4, 0, 2), new RectOffset(0, 0, 0, 0), 12);
             textDefaultBlack = CreateTextStyle(Color.black, new RectOffset(6, 4, 0, 2), new RectOffset(0, 0, 0, 0), 12);
@@ -118,9 +116,7 @@ namespace SplineArchitect.Libraries
             textFieldVerySmall = CreateTextField(26, 18, new RectOffset(2, 2, 2, 2));
             textSceneView = CreateSceneViewText(18, new RectOffset(2, 1, 2, 3));
 
-            //Sliders
-            sliderDefault = CreateSlider();
-            sliderThumbDefault = CreateSliderThumb();
+            //Others
             popUpFieldSmallText = CreatePopUpFiled();
             infoIcon = CreateInfoMsgIcon();
 
@@ -184,23 +180,6 @@ namespace SplineArchitect.Libraries
             return style;
         }
 
-        private static GUIStyle CreateSliderThumb()
-        {
-            GUIStyle style = new GUIStyle(GUI.skin.horizontalSliderThumb);
-            style.margin = new RectOffset(0, 0, 0, 0);
-
-            return style;
-        }
-
-        private static GUIStyle CreateSlider()
-        {
-            GUIStyle style = new GUIStyle(GUI.skin.horizontalSlider);
-            style.normal.background = LibraryTexture.slider;
-            style.margin = new RectOffset(0, 0, 6, 0);
-
-            return style;
-        }
-
         private static GUIStyle CreateBackgroundStyle(Texture2D texture, float size)
         {
             GUIStyle style = new GUIStyle();
@@ -228,7 +207,7 @@ namespace SplineArchitect.Libraries
             if(elementWidth != 0)
                 textStyle.fixedWidth = elementWidth;
 
-            textStyle.fixedHeight = menuItemHeight;
+            textStyle.fixedHeight = WindowBase.menuItemHeight;
             textStyle.richText = true;
             textStyle.padding = padding;
             textStyle.margin = margin;
@@ -301,7 +280,7 @@ namespace SplineArchitect.Libraries
             textStyle.fixedWidth = 13;
             textStyle.fixedHeight = 13;
             textStyle.padding = new RectOffset(0, 0, 0, 0);
-            textStyle.margin = new RectOffset(5, 3, 4, 0);
+            textStyle.margin = new RectOffset(5, 3, 3, 0);
             textStyle.alignment = TextAnchor.MiddleCenter;
 
             return textStyle;

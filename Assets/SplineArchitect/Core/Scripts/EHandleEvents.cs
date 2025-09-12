@@ -43,6 +43,7 @@ namespace SplineArchitect
         public static event Action<Spline> OnCopiedSpline;
         public static event Action<Spline> OnUpdateLoopEndData;
         public static event Action<Spline, SplineObject> OnSplineObjectSCeneGUI;
+        public static event Action OnDisposeDeformJob;
 
         public static void InitAfterDrag(SceneView sceneView)
         {
@@ -76,6 +77,11 @@ namespace SplineArchitect
                 InitalizeAfterDragSplines.Clear();
                 InitalizeAfterDragSplineObjects.Clear();
             }
+        }
+
+        public static void InvokeDisposeDeformJob()
+        {
+            OnDisposeDeformJob?.Invoke();
         }
 
         public static void InvokeFirstUpdate()

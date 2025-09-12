@@ -7,6 +7,9 @@
 // (C) 2023 Mikael Danielsson. All rights reserved.
 // -----------------------------------------------------------------------------
 
+using System.IO;
+using System.Collections.Generic;
+
 using UnityEditor;
 using UnityEngine;
 
@@ -14,12 +17,9 @@ namespace SplineArchitect.Libraries
 {
     public class LibraryTexture
     {
-        const string path = "/Core/Textures/";
+        private static List<Texture2D> preloadedTextures = new List<Texture2D>();
 
         //Others
-        public static Texture2D slider { get; private set; }
-        public static Texture2D minimize { get; private set; }
-        public static Texture2D maximize { get; private set; }
         public static Texture2D inputField { get; private set; }
         public static Texture2D inputFieldActive { get; private set; }
         public static Texture2D popUpField { get; private set; }
@@ -37,34 +37,44 @@ namespace SplineArchitect.Libraries
         public static Texture2D buttonDefaultGreenPressed { get; private set; }
 
         //Icons
+        public static Texture2D iconSpline { get; private set; }
+        public static Texture2D iconSplineLight { get; private set; }
+        public static Texture2D iconCreateSpline { get; private set; }
+        public static Texture2D iconCreateSplineLight { get; private set; }
+        public static Texture2D iconMinimize { get; private set; }
+        public static Texture2D iconPlus { get; private set; }
+        public static Texture2D iconHandleMirrored { get; private set; }
+        public static Texture2D iconHandleMirroredLight { get; private set; }
+        public static Texture2D iconHandleContinuous { get; private set; }
+        public static Texture2D iconHandleContinuousLight { get; private set; }
+        public static Texture2D iconHandleBroken { get; private set; }
+        public static Texture2D iconHandleBrokenLight { get; private set; }
+        public static Texture2D iconMenuControlPanel { get; private set; }
+        public static Texture2D iconMenuControlPanelLight { get; private set; }
+        public static Texture2D iconMenuSettings { get; private set; }
+        public static Texture2D iconMenuSettingsLight { get; private set; }
+        public static Texture2D iconMenuInfo { get; private set; }
+        public static Texture2D iconMenuInfoLight { get; private set; }
         public static Texture2D iconConstrined { get; private set; }
         public static Texture2D iconNotConstrined { get; private set; }
         public static Texture2D iconJoin { get; private set; }
         public static Texture2D iconGrid { get; private set; }
-        public static Texture2D iconGridActive { get; private set; }
+        public static Texture2D iconGridLight { get; private set; }
         public static Texture2D iconGeneral { get; private set; }
         public static Texture2D iconGeneralActive { get; private set; }
         public static Texture2D iconMirror { get; private set; }
         public static Texture2D iconMirrorActive { get; private set; }
-        public static Texture2D iconRuntime { get; private set; }
-        public static Texture2D iconRuntimeActive { get; private set; }
-        public static Texture2D iconSpline { get; private set; }
-        public static Texture2D iconSplineActive { get; private set; }
+        public static Texture2D iconCurve { get; private set; }
+        public static Texture2D iconCurveActive { get; private set; }
         public static Texture2D iconLoop { get; private set; }
         public static Texture2D iconLoopActive { get; private set; }
         public static Texture2D iconNormals { get; private set; }
-        public static Texture2D iconNormalsActive { get; private set; }
+        public static Texture2D iconNormalsLight { get; private set; }
         public static Texture2D iconHide { get; private set; }
-        public static Texture2D iconHideActive { get; private set; }
-        public static Texture2D iconHideActive2 { get; private set; }
-        public static Texture2D iconAdd { get; private set; }
-        public static Texture2D iconAddActive { get; private set; }
-        public static Texture2D iconTerrain { get; private set; }
-        public static Texture2D iconTerrainActive { get; private set; }
+        public static Texture2D iconHideLight { get; private set; }
         public static Texture2D iconInfo { get; private set; }
         public static Texture2D iconInfoActive { get; private set; }
         public static Texture2D iconSettings { get; private set; }
-        public static Texture2D iconSettingsActive { get; private set; }
         public static Texture2D iconReverse { get; private set; }
         public static Texture2D iconFlatten { get; private set; }
         public static Texture2D iconToCenter { get; private set; }
@@ -87,7 +97,6 @@ namespace SplineArchitect.Libraries
         public static Texture2D iconUpArrow { get; private set; }
         public static Texture2D iconDownArrow { get; private set; }
         public static Texture2D iconExport { get; private set; }
-        public static Texture2D iconMinimize { get; private set; }
         public static Texture2D iconCopy { get; private set; }
         public static Texture2D iconPaste { get; private set; }
         public static Texture2D iconAlignTangents { get; private set; }
@@ -121,108 +130,148 @@ namespace SplineArchitect.Libraries
 
         public static Texture2D empty { get; private set; }
 
-        public static void Initalize()
+        public static string textureFolderPath = $"{EHandleMainFolder.GetFolderPath()}/Core/Textures/";
+
+        public static void Init()
         {
-            string mainFolderPath = EHandleMainFolder.GetFolderPath();
+            gScale95_100 = LoadImage("gScale95_100.png");
+            gScale90_100 = LoadImage("gScale90_100.png");
+            gScale80_100 = LoadImage("gScale80_100.png");
+            gScale60_100 = LoadImage("gScale60_100.png");
+            gScale40_100 = LoadImage("gScale40_100.png");
+            gScale40_90 = LoadImage("gScale40_90.png");
+            gScale30_100 = LoadImage("gScale30_100.png");
+            gScale20_100 = LoadImage("gScale20_100.png");
+            gScale20_80 = LoadImage("gScale20_80.png");
+            gScale15_100 = LoadImage("gScale15_100.png");
+            gScale10_100 = LoadImage("gScale10_100.png");
+            gScale10_80 = LoadImage("gScale10_80.png");
+            gScale7_100 = LoadImage("gScale7_100.png");
+            gScale5_100 = LoadImage("gScale5_100.png");
+            gScale3_100 = LoadImage("gScale3_100.png");
+            gScale0_100 = LoadImage("gScale0_100.png");
+            gScale0_80 = LoadImage("gScale0_80.png");
+            gScale0_50 = LoadImage("gScale0_50.png");
+            yellow100 = LoadImage("yellow100.png");
 
-            gScale95_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale95_100.png");
-            gScale90_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale90_100.png");
-            gScale80_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale80_100.png");
-            gScale60_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale60_100.png");
-            gScale40_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale40_100.png");
-            gScale40_90 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale40_90.png");
-            gScale30_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale30_100.png");
-            gScale20_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale20_100.png");
-            gScale20_80 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale20_80.png");
-            gScale15_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale15_100.png");
-            gScale10_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale10_100.png");
-            gScale10_80 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale10_80.png");
-            gScale7_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale7_100.png");
-            gScale5_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale5_100.png");
-            gScale3_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale3_100.png");
-            gScale0_100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale0_100.png");
-            gScale0_80 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale0_80.png");
-            gScale0_50 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gScale0_50.png");
-            yellow100 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}yellow100.png");
+            iconSpline = LoadImage("splineIcon.png");
+            iconSplineLight = LoadImage("splineLightIcon.png");
+            iconCreateSpline = LoadImage("createSplineIcon.png");
+            iconCreateSplineLight = LoadImage("createSplineLightIcon.png");
+            iconPlus = LoadImage("plusIcon.png");
+            iconHandleMirrored = LoadImage("handleMirroredIcon.png");
+            iconHandleMirroredLight = LoadImage("handleMirroredLightIcon.png");
+            iconHandleContinuous = LoadImage("handleContinuousIcon.png");
+            iconHandleContinuousLight = LoadImage("handleContinuousLightIcon.png");
+            iconHandleBroken = LoadImage("handleBrokenIcon.png");
+            iconHandleBrokenLight = LoadImage("handleBrokenLightIcon.png");
+            iconMenuControlPanel = LoadImage("menuControlPanelIcon.png");
+            iconMenuControlPanelLight = LoadImage("menuControlPanelLightIcon.png");
+            iconMenuSettings = LoadImage("menuSettingsIcon.png");
+            iconMenuSettingsLight = LoadImage("menuSettingsLightIcon.png");
+            iconMenuInfo = LoadImage("menuInfoIcon.png");
+            iconMenuInfoLight = LoadImage("menuInfoLightIcon.png");
+            iconConstrined = LoadImage("constrainedIcon.png");
+            iconNotConstrined = LoadImage("notConstrainedIcon.png");
+            iconErrorMsg = LoadImage("errorMsgIcon.png");
+            iconWarningMsg = LoadImage("warningMsgIcon.png");
+            iconInfoMsg = LoadImage("infoMsgIcon.png");
+            iconMove = LoadImage("moveIcon.png");
+            iconNextControlPoint = LoadImage("nextControlPointIcon.png");
+            iconPrevControlPoint = LoadImage("prevControlPointIcon.png");
+            iconSelectSpline = LoadImage("selectCurveIcon.png");
+            iconSelectAll = LoadImage("selectAllIcon.png");
+            iconToCenter = LoadImage("toCenterIcon.png");
+            iconJoin = LoadImage("joinIcon.png");
+            iconGrid = LoadImage("gridIcon.png");
+            iconGridLight = LoadImage("gridLightIcon.png");
+            iconGeneral = LoadImage("generalIcon.png");
+            iconGeneralActive = LoadImage("generalIcon_active.png");
+            iconMirror = LoadImage("mirrorIcon.png");
+            iconMirrorActive = LoadImage("mirrorIcon_active.png");
+            iconCurve = LoadImage("curveIcon.png");
+            iconCurveActive = LoadImage("curveIcon_active.png");
+            iconNoise = LoadImage("noiseIcon.png");
+            iconNoiseActive = LoadImage("noiseIcon_active.png");
+            iconLoop = LoadImage("loopIcon.png");
+            iconLoopActive = LoadImage("loopIcon_active.png");
+            iconNormals = LoadImage("normalsIcon.png");
+            iconNormalsLight = LoadImage("normalsLightIcon.png");
+            iconHide = LoadImage("hideIcon.png");
+            iconHideLight = LoadImage("hideLightIcon.png");
+            iconInfo = LoadImage("infoIcon.png");
+            iconSettings = LoadImage("settingsIcon.png");
+            iconInfoActive = LoadImage("infoIcon_active.png");
+            iconReverse = LoadImage("reverseIcon.png");
+            iconFlatten = LoadImage("flattenIcon.png");
+            iconSplit = LoadImage("splitIcon.png");
+            iconLink = LoadImage("linkIcon.png");
+            iconUnlink = LoadImage("unlinkIcon.png");
+            iconAlignGrid = LoadImage("alignGridIcon.png");
+            iconAlign = LoadImage("alignIcon.png");
+            iconX = LoadImage("xIcon.png");
+            iconExternalLink = LoadImage("externalLinkIcon.png");
+            iconCenterGrid = LoadImage("centerGridIcon.png");
+            iconDefault = LoadImage("defaultIcon.png");
+            iconUpArrow = LoadImage("upArrowIcon.png");
+            iconDownArrow = LoadImage("downArrowIcon.png");
+            iconExport = LoadImage("exportIcon.png");
+            iconMinimize = LoadImage("minimizeIcon.png");
+            iconCopy = LoadImage("copyIcon.png");
+            iconPaste = LoadImage("pasteIcon.png");
+            iconAlignTangents = LoadImage("alignTangentsIcon.png");
+            iconMagnet = LoadImage("magnetIcon.png");
+            iconMagnetActive = LoadImage("magnetIcon_active.png");
+            iconMagnetActive2 = LoadImage("magnetIcon_active2.png");
 
-            empty = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}empty.png");
+            buttonDefault = LoadImage("defaultButton9s.png");
+            buttonDefaultActive = LoadImage("defaultButton_active9s.png");
+            buttonDefaultPressed = LoadImage("defaultButton_pressed9s.png");
+            buttonSubMenu = LoadImage("subMenuButton9s.png");
+            buttonSubMenuActive = LoadImage("subMenuButton_active9s.png");
+            buttonSubMenuPressed = LoadImage("subMenuButton_pressed9s.png");
+            buttonDefaultRed = LoadImage("defaultButtonRed9s.png");
+            buttonDefaultRedPressed = LoadImage("defaultButtonRed_pressed9s.png");
+            buttonDefaultGreen = LoadImage("defaultButtonGreen9s.png");
+            buttonDefaultGreenPressed = LoadImage("defaultButtonGreen_pressed9s.png");
 
-            minimize = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}minimize.png");
-            maximize = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}maximize.png");
-            iconConstrined = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}constrainedIcon.png");
-            iconNotConstrined = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}notConstrainedIcon.png");
-            iconErrorMsg = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}errorMsgIcon.png");
-            iconWarningMsg = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}warningMsgIcon.png");
-            iconInfoMsg = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}infoMsgIcon.png");
-            iconMove = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}moveIcon.png");
-            iconNextControlPoint = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}nextControlPointIcon.png");
-            iconPrevControlPoint = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}prevControlPointIcon.png");
-            iconSelectSpline = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}selectCurveIcon.png");
-            iconSelectAll = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}selectAllIcon.png");
-            iconToCenter = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}toCenterIcon.png");
-            iconJoin = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}joinIcon.png");
-            iconGrid = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gridIcon.png");
-            iconGridActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}gridIcon_active.png");
-            iconGeneral = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}generalIcon.png");
-            iconGeneralActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}generalIcon_active.png");
-            iconMirror = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}mirrorIcon.png");
-            iconMirrorActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}mirrorIcon_active.png");
-            iconRuntime = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}runtimeIcon.png");
-            iconRuntimeActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}runtimeIcon_active.png");
-            iconSpline = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}curveIcon.png");
-            iconSplineActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}curveIcon_active.png");
-            iconNoise = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}noiseIcon.png");
-            iconNoiseActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}noiseIcon_active.png");
-            iconLoop = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}loopIcon.png");
-            iconLoopActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}loopIcon_active.png");
-            iconNormals = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}normalsIcon.png");
-            iconNormalsActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}normalsIcon_active.png");
-            iconHide = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}hideIcon.png");
-            iconHideActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}hideIcon_active.png");
-            iconHideActive2 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}hideIcon_active2.png");
-            iconAdd = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}addIcon.png");
-            iconAddActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}addIcon_active.png");
-            iconTerrain = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}terrainIcon.png");
-            iconInfo = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}infoIcon.png");
-            iconSettings = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}settingsIcon.png");
-            iconTerrainActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}terrainIcon_active.png");
-            iconInfoActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}infoIcon_active.png");
-            iconSettingsActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}settingsIcon_active.png");
-            iconReverse = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}reverseIcon.png");
-            iconFlatten = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}flattenIcon.png");
-            iconSplit = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}splitIcon.png");
-            iconLink = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}linkIcon.png");
-            iconUnlink = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}unlinkIcon.png");
-            iconAlignGrid = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}alignGridIcon.png");
-            iconAlign = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}alignIcon.png");
-            iconX = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}xIcon.png");
-            iconExternalLink = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}externalLinkIcon.png");
-            iconCenterGrid = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}centerGridIcon.png");
-            iconDefault = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultIcon.png");
-            slider = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}slider.png");
-            iconUpArrow = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}upArrowIcon.png");
-            iconDownArrow = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}downArrowIcon.png");
-            iconExport = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}exportIcon.png");
-            iconMinimize = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}minimizeIcon.png");
-            iconCopy = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}copyIcon.png");
-            iconPaste = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}pasteIcon.png");
-            buttonDefault = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButton9s.png");
-            buttonDefaultActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButton_active9s.png");
-            buttonDefaultPressed = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButton_pressed9s.png");
-            buttonSubMenu = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}subMenuButton9s.png");
-            buttonSubMenuActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}subMenuButton_active9s.png");
-            buttonSubMenuPressed = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}subMenuButton_pressed9s.png");
-            inputField = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}inputField9s.png");
-            inputFieldActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}inputField_active9s.png");
-            popUpField = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}popUpField9s.png");
-            buttonDefaultRed = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButtonRed9s.png");
-            buttonDefaultRedPressed = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButtonRed_pressed9s.png");
-            buttonDefaultGreen = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButtonGreen9s.png");
-            buttonDefaultGreenPressed = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}defaultButtonGreen_pressed9s.png");
-            iconAlignTangents = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}alignTangentsIcon.png");
-            iconMagnet = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}magnetIcon.png");
-            iconMagnetActive = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}magnetIcon_active.png");
-            iconMagnetActive2 = AssetDatabase.LoadAssetAtPath<Texture2D>($"{mainFolderPath}{path}magnetIcon_active2.png");
+            inputField = LoadImage("inputField9s.png");
+            inputFieldActive = LoadImage("inputField_active9s.png");
+
+            empty = LoadImage("empty.png");
+
+            popUpField = LoadImage("popUpField9s.png");
+        }
+
+        private static Texture2D LoadImage(string imageName)
+        {
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>($"{textureFolderPath}{imageName}");
+
+            if (texture != null) 
+                return texture;
+
+            //When the user imports the package for the first time the AssetDatabase is not loaded and we need to preload the image.
+            string dataPath = Application.dataPath.Substring(0, Application.dataPath.Length - 6);
+            byte[] bytes = File.ReadAllBytes($"{dataPath}{textureFolderPath}{imageName}");
+            texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            ImageConversion.LoadImage(texture, bytes, markNonReadable: true);
+            preloadedTextures.Add(texture);
+            texture.hideFlags = HideFlags.HideAndDontSave;
+            return texture;
+        }
+
+        public static void DestroyPreloadedTextures()
+        {
+            foreach(Texture2D tex in preloadedTextures) Object.DestroyImmediate(tex);
+            preloadedTextures.Clear();
+        }
+
+        public static int GetPreloadedTextureCount()
+        {
+            if (preloadedTextures == null)
+                return 0;
+
+            return preloadedTextures.Count;
         }
     }
 }

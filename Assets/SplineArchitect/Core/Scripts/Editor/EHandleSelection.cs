@@ -12,12 +12,12 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 using SplineArchitect.Objects;
 using SplineArchitect.CustomTools;
 using SplineArchitect.Utility;
-using Object = UnityEngine.Object;
-using System.Linq;
+using SplineArchitect.Ui;
 
 namespace SplineArchitect
 {
@@ -45,8 +45,12 @@ namespace SplineArchitect
         private static bool assemblyReload = true;
         private static bool markForForceUpdate = false;
 
-        public static void BeforeSceneGUIGlobal(HashSet<Spline> splines, SceneView sceneView, Event e)
+        public static void BeforeSceneGUIGlobal(SceneView sceneView, Event e)
         {
+            //Need to check this in unity 2022, else we get errors only while creating splines in 2D.
+            if (EHandleSpline.controlPointCreationActive)
+                return;
+
             PositionTool.UpdateHoveredData(e, EMouseUtility.GetMouseRay(e.mousePosition));
 
             if (e.type == EventType.MouseDown && e.button == 0 && !EHandleModifier.AltActive(e))
@@ -66,7 +70,7 @@ namespace SplineArchitect
                 if (TryUpdateHoveredControlPoint(e, selectedSpline, sceneView))
                     hovering = true;
 
-                if (!hovering && TryUpdateHoveredSpline(e, splines, EHandleModifier.CtrlActive(e)))
+                if (!hovering && TryUpdateHoveredSpline(e, HandleRegistry.GetSplines(), EHandleModifier.CtrlActive(e)))
                     hovering = true;
             }
             else
@@ -79,9 +83,6 @@ namespace SplineArchitect
             {
                 TrySelectHoveredControlPoint(selectedSpline, e, EHandleModifier.CtrlActive(e));
                 TrySelectHoveredSpline(e, EHandleModifier.CtrlActive(e));
-
-                //Does not seem to be needed. OnSelectionChagne will also run.
-                //ForceUpdate();
             }
 
             if (e.type == EventType.Layout)
@@ -143,6 +144,11 @@ namespace SplineArchitect
                         spline.selectedAnchors.Clear();
                         spline.selectedControlPoint = 0;
                     }
+
+                    EActionDelayed.Add(() =>
+                    {
+                        WindowBase.RepaintAll();
+                    }, 0, 0, EActionDelayed.Type.FRAMES);
                 }
             }
             else if(Event.current != null && Event.current.type == EventType.DragPerform)
@@ -163,6 +169,8 @@ namespace SplineArchitect
 
         private static void UpdateSelection(Transform newSelection)
         {
+            WindowBase.RepaintAll();
+
             if (stopNextUpdateSelection)
             {
                 stopNextUpdateSelection = false;
@@ -220,7 +228,7 @@ namespace SplineArchitect
                 selectedSpline = spline;
                 selectedSplineObject = so;
 
-                //Needs to deslect becouse if the user select an object in the hirarcy window.
+                //Needs to deslect becouse if the user select an object in the hirarcy menu.
                 EHandleUndo.RecordNow(spline, "Selected spline object");
                 spline.selectedAnchors.Clear();
                 spline.selectedControlPoint = 0;
@@ -324,7 +332,7 @@ namespace SplineArchitect
                 }
             }
 
-            if (closestDistance < EHandleSegment.DistanceModifier(mousePoint) * 0.5f)
+            if (closestDistance < EHandleSegment.DistanceModifier(mousePoint) * 0.66f)
             {
                 hoveredSpline = hovered;
             }
@@ -332,7 +340,7 @@ namespace SplineArchitect
             if (oldHoveredSpline != hoveredSpline)
             {
                 oldHoveredSpline = hoveredSpline;
-                SceneView.RepaintAll();
+                EHandleSceneView.RepaintCurrent();
             }
 
             if (hoveredSpline != null)
@@ -344,9 +352,6 @@ namespace SplineArchitect
         private static void TrySelectHoveredSpline(Event e, bool multiselectActive)
         {
             if (hoveredSpline == null)
-                return;
-
-            if (EHandleUi.MousePointerAboveAnyMenu(e))
                 return;
 
             if (multiselectActive)
@@ -427,7 +432,7 @@ namespace SplineArchitect
             {
                 oldHoveredCp = hoveredCp;
                 hoveredSpline = null;
-                SceneView.RepaintAll();
+                EHandleSceneView.RepaintCurrent();
             }
 
             if (hoveredCp != 0)
@@ -442,9 +447,6 @@ namespace SplineArchitect
                 return;
 
             if (spline == null || !spline.IsEnabled())
-                return;
-
-            if (EHandleUi.MousePointerAboveAnyMenu(e))
                 return;
 
             //Record new control point selection
@@ -477,6 +479,8 @@ namespace SplineArchitect
             e.Use();
 
             EHandleTool.ActivatePositionToolForControlPoint(spline);
+
+            WindowBase.RepaintAll();
         }
 
         public static Transform TryGetSelectionTransform()
@@ -522,6 +526,43 @@ namespace SplineArchitect
             }
         }
 
+        public static bool IsPrimiarySelection(Segment segment)
+        {
+            if (segment == null)
+                return false;
+
+            if (selectedSpline == null)
+                return false;
+
+            if (selectedSpline.selectedControlPoint == 0)
+                return false;
+
+            Segment selectedSegment = selectedSpline.segments[SplineUtility.ControlPointIdToSegmentIndex(selectedSpline.selectedControlPoint)];
+
+            return selectedSegment == segment;
+        }
+
+        public static bool IsSecondarySelection(Segment segment)
+        {
+            if (segment == null)
+                return false;
+
+            if (selectedSpline == null)
+                return false;
+
+            if (selectedSpline.selectedAnchors.Count <= 0)
+                return false;
+
+            foreach (int segmentIndex in selectedSpline.selectedAnchors)
+            {
+                Segment selectedSegment = selectedSpline.segments[SplineUtility.ControlPointIdToSegmentIndex(segmentIndex)];
+                if (selectedSegment == segment)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool IsPrimiarySelection(Spline spline)
         {
             if (spline == selectedSpline)
@@ -536,6 +577,18 @@ namespace SplineArchitect
                 return true;
 
             return false;
+        }
+
+        public static Segment.ControlHandle IsHovering(int segmentIndex)
+        {
+            if(SplineUtility.SegmentIndexToControlPointId(segmentIndex, Segment.ControlHandle.ANCHOR) == hoveredCp)
+                return Segment.ControlHandle.ANCHOR;
+            else if (SplineUtility.SegmentIndexToControlPointId(segmentIndex, Segment.ControlHandle.TANGENT_A) == hoveredCp)
+                return Segment.ControlHandle.TANGENT_A;
+            else if (SplineUtility.SegmentIndexToControlPointId(segmentIndex, Segment.ControlHandle.TANGENT_B) == hoveredCp)
+                return Segment.ControlHandle.TANGENT_B;
+
+            return Segment.ControlHandle.NONE;
         }
 
         public static void UpdatedSelectedSplinesRecordUndo(Action<Spline> action, string recordName, EHandleUndo.RecordType recordType = EHandleUndo.RecordType.RECORD_OBJECT)
@@ -604,6 +657,15 @@ namespace SplineArchitect
             action.Invoke(spline.segments[SplineUtility.ControlPointIdToSegmentIndex(spline.selectedControlPoint)]);
             foreach (int i in spline.selectedAnchors)
                 action.Invoke(spline.segments[SplineUtility.ControlPointIdToSegmentIndex(i)]);
+        }
+
+        public static void GetAllSelectedSplinesNonAlloc(List<Spline> allSplines)
+        {
+            if(selectedSpline != null)
+                allSplines.Add(selectedSpline);
+
+            if (selectedSplines != null && selectedSplines.Count > 0)
+                allSplines.AddRange(selectedSplines);
         }
     }
 }
