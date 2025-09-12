@@ -3,8 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EngineAudio : MonoBehaviour {
+
 	float maxEngineVolume;
 	List<RPMPoint> rpmPoints = new();
+
+    bool mute = false;
+
+    void Start() {
+        GetComponent<Car>().onRespawn.AddListener(OnCarRespawn);
+    }
+    
+    void OnCarRespawn() {
+        CancelInvoke(nameof(Unmute));
+        mute = true;
+        Invoke(nameof(Unmute), 0.1f);
+    }
+
+    void Unmute() {
+        mute = false;
+    }
 
 	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudioSource, bool bigSteps = false) {
 		maxEngineVolume = engineAudioSource.volume;
@@ -74,7 +91,7 @@ public class EngineAudio : MonoBehaviour {
             rpmPoints[i].throttleOffAudio.volume = 0;
         }
 
-        if (rpm == 0) {
+        if (rpm == 0 || mute) {
             return;
         }
 
