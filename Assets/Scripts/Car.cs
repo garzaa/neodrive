@@ -662,12 +662,12 @@ public class Car : MonoBehaviour {
     float GetWantedAccel(float sa, Vector3 flatVelocity) {
         float theta = 90f + sa + Vector3.SignedAngle(flatVelocity, transform.forward, transform.up);
         float manualDot = flatVelocity.magnitude * Mathf.Cos(theta*Mathf.Deg2Rad);
-        float wantedAccel = manualDot * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.right)) / Time.fixedDeltaTime;
+        float wantedAccel = manualDot * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward)) / Time.fixedDeltaTime;
         return wantedAccel * -1;
     }
 
     float GetWantedSteeringAngle(float wantedAccel, Vector3 flatVelocity) {
-        float manualDot = wantedAccel * Time.fixedDeltaTime / settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.right));
+        float manualDot = wantedAccel * Time.fixedDeltaTime / settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward));
         if (flatVelocity.magnitude < Mathf.Epsilon) return 0;
         float cosThetaRad = manualDot / flatVelocity.magnitude;
         cosThetaRad = Mathf.Clamp(cosThetaRad, -1f, 1f);
@@ -755,7 +755,7 @@ public class Car : MonoBehaviour {
             return 0;
         }
         float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
-        float wantedAccel = -lateralSpeed * settings.GetTireSlip(lateralSpeed) / Time.fixedDeltaTime;
+        float wantedAccel = -lateralSpeed * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward)) / Time.fixedDeltaTime;
         if (steeringAxle) {
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
                 drifting = true;
