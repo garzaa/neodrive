@@ -161,8 +161,15 @@ namespace SplineArchitect
 
             //Normals
             float time = so.splinePosition.z / spline.length;
+            if (so.alignToEnd) time = (spline.length - so.splinePosition.z) / spline.length;
             float fixedTime = spline.TimeToFixedTime(time);
             spline.GetNormalsNonAlloc(normalsContainer, fixedTime);
+
+            if (so.alignToEnd)
+            {
+                normalsContainer[0] = -normalsContainer[0];
+                normalsContainer[2] = -normalsContainer[2];
+            }
 
             //Rotations
             Quaternion parentRotations = SplineObjectUtility.GetCombinedParentRotations(so.soParent);
@@ -171,7 +178,7 @@ namespace SplineArchitect
             Quaternion handleRotation = combinedRotations * so.localSplineRotation;
 
             //Pivot
-            Vector3 pivot = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent));
+            Vector3 pivot = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent), so.alignToEnd);
 
             //Tool handle
             rotationHandleID = GUIUtility.GetControlID("RotationHandle".GetHashCode(), FocusType.Passive) + 1;
@@ -195,8 +202,15 @@ namespace SplineArchitect
 
             //Normals
             float time = so.splinePosition.z / spline.length;
+            if (so.alignToEnd) time = (spline.length - so.splinePosition.z) / spline.length;
             float fixedTime = spline.TimeToFixedTime(time);
             spline.GetNormalsNonAlloc(normalsContainer, fixedTime);
+
+            if (so.alignToEnd)
+            {
+                normalsContainer[0] = -normalsContainer[0];
+                normalsContainer[2] = -normalsContainer[2];
+            }
 
             //Handle rotation
             Quaternion parentRotations = SplineObjectUtility.GetCombinedParentRotations(so.soParent);
@@ -204,7 +218,7 @@ namespace SplineArchitect
             Quaternion handleRotation = localSplineRotation * so.splineRotation;
 
             //Pivot
-            Vector3 pivot = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent));
+            Vector3 pivot = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent), so.alignToEnd);
 
             //Tool handle
             scaleHandleID = GUIUtility.GetControlID("ScaleHandle".GetHashCode(), FocusType.Passive) + 1;
@@ -225,25 +239,25 @@ namespace SplineArchitect
             Segment.ControlHandle type = SplineUtility.GetControlPointType(spline.selectedControlPoint);
             Vector3 newControlPointPos;
             bool toolActive;
-            bool isMouseUp = Event.current.type == EventType.MouseUp && Event.current.button == 0;
 
             if (PositionTool.activePart == PositionTool.Part.SURFACE)
                 toolActive = PositionTool.DragUsingSurface(out newControlPointPos);
             else
                 toolActive = PositionTool.DragUsingPos(out newControlPointPos);
 
-            if (toolActive || isMouseUp)
+            if (toolActive || PositionTool.released)
             {
-                if (GlobalSettings.GetGridVisibility() && isMouseUp)
+                if (GlobalSettings.GetGridVisibility() && PositionTool.released)
                 {
                     newControlPointPos = EHandleGrid.SnapPoint(spline, newControlPointPos);
+                    ActivatePositionToolForControlPoint(spline);
                 }
 
                 EHandleUndo.RecordNow(spline, "Move control point: " + spline.selectedControlPoint);
                 EHandleSegment.SegmentMovement(spline, segment, type, newControlPointPos);
                 if (type == Segment.ControlHandle.ANCHOR) EHandleSegment.LinkMovement(segment);
 
-                if(isMouseUp) ActivatePositionToolForControlPoint(spline);
+                if(PositionTool.released) ActivatePositionToolForControlPoint(spline);
             }
         }
 
@@ -288,6 +302,7 @@ namespace SplineArchitect
             SceneView sceneView = EHandleSceneView.GetCurrent();
 
             float time = so.splinePosition.z / spline.length;
+            if(so.alignToEnd) time = (spline.length - so.splinePosition.z) / spline.length;
             float fixedTime = spline.TimeToFixedTime(time);
             spline.GetNormalsNonAlloc(normalsContainer, fixedTime);
             Quaternion splineRotation = Quaternion.LookRotation(normalsContainer[2], normalsContainer[1]);
@@ -297,7 +312,13 @@ namespace SplineArchitect
             normalsContainer[1] = combinedRotation * Vector3.up;
             normalsContainer[2] = combinedRotation * Vector3.forward;
 
-            Vector3 position = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent));
+            if (so.alignToEnd)
+            {
+                normalsContainer[0] = -normalsContainer[0];
+                normalsContainer[2] = -normalsContainer[2];
+            }
+
+            Vector3 position = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent), so.alignToEnd);
             PositionTool.ActivateAndSetPosition(PositionTool.ActivationType.SPLINE_OBJECT, position, sceneView.camera.transform.position, normalsContainer[2], normalsContainer[1], false);
             so.activationPosition = so.localSplinePosition;
         }

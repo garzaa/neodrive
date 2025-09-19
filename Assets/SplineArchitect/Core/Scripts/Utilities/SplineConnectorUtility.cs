@@ -24,7 +24,8 @@ namespace SplineArchitect.Utility
 
             foreach (SplineConnector sc in splineConnectors)
             {
-                if(sc == null) continue;
+                if(sc == null) 
+                    continue;
 
                 float distance = Vector3.Distance(worldPoint, sc.transform.position);
 
@@ -36,6 +37,24 @@ namespace SplineArchitect.Utility
             }
 
             return closest;
+        }
+
+        public static SplineConnector GetFirstConnectorAtPoint(Vector3 worldPoint, HashSet<SplineConnector> splineConnectors, float epsilon = 0.001f)
+        {
+            foreach (SplineConnector sc in splineConnectors)
+            {
+                if (sc == null)
+                    continue;
+
+                float d = Vector3.Distance(sc.transform.position, worldPoint);
+
+                if (GeneralUtility.IsZero(d, epsilon))
+                {
+                    return sc;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -7,13 +7,15 @@
 // (C) 2023 Mikael Danielsson. All rights reserved.
 // -----------------------------------------------------------------------------
 
-using SplineArchitect.Objects;
-using SplineArchitect.Utility;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+
 using UnityEditor;
 using UnityEngine;
+
+using SplineArchitect.Objects;
+using SplineArchitect.Utility;
+using SplineArchitect.Ui;
 
 namespace SplineArchitect
 {
@@ -102,6 +104,8 @@ namespace SplineArchitect
                 //In this case the Spline should be deleted.
                 if (spline.segments.Count > 1 && segmentIndex >= 0)
                 {
+                    EHandleEvents.InvokeOnSegmentDeleted(s);
+
                     EHandleUndo.RecordNow(spline, "Delete segement: " + segmentIndex);
                     if (segmentIndex > spline.segments.Count - 1)
                         spline.RemoveSegment(spline.segments.Count - 1);
@@ -147,6 +151,7 @@ namespace SplineArchitect
                 }
             }
 
+            WindowBase.RepaintAll();
             markedSegments.Clear();
         }
 
@@ -207,7 +212,7 @@ namespace SplineArchitect
 
                 if (s2.localSpace == null)
                 {
-                    Debug.LogWarning("Segment has no local space set.");
+                    Debug.LogWarning("[Spline Architect] Segment has no local space set.");
                     continue;
                 }
 
@@ -709,7 +714,7 @@ namespace SplineArchitect
         {
             if (segementId < 1 || segementId >= spline.segments.Count)
             {
-                Debug.LogError("Segment id outside range!");
+                Debug.LogError("[Spline Architect] Segment id outside range!");
                 return;
             }
 

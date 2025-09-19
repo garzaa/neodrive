@@ -174,7 +174,7 @@ namespace SplineArchitect
             so.monitor.ForceUpdate();
 
             if (orginMesh.isReadable != newInstanceMesh.isReadable)
-                Debug.LogError("Redable status dif error!");
+                Debug.LogError("[Spline Architect] Redable status dif error!");
         }
     }
 }

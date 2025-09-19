@@ -37,6 +37,8 @@ namespace SplineArchitect.Libraries
         public static Texture2D buttonDefaultGreenPressed { get; private set; }
 
         //Icons
+        public static Texture2D iconAuto { get; private set; }
+        public static Texture2D iconAutoActive { get; private set; }
         public static Texture2D iconSpline { get; private set; }
         public static Texture2D iconSplineLight { get; private set; }
         public static Texture2D iconCreateSpline { get; private set; }
@@ -154,6 +156,8 @@ namespace SplineArchitect.Libraries
             gScale0_50 = LoadImage("gScale0_50.png");
             yellow100 = LoadImage("yellow100.png");
 
+            iconAuto = LoadImage("autoIcon.png");
+            iconAutoActive = LoadImage("autoIcon_active.png");
             iconSpline = LoadImage("splineIcon.png");
             iconSplineLight = LoadImage("splineLightIcon.png");
             iconCreateSpline = LoadImage("createSplineIcon.png");

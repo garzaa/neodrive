@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour {
 
     void Start() {
         player = ReInput.players.GetPlayer(0);
+        player.controllers.hasKeyboard = true;
     }
 
     public static float GetAxis(string axisName) {

@@ -9,6 +9,8 @@ public class CarSettings : ScriptableObject {
 	public float springDamper = 1000f;
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
+	[Tooltip("Max RPM diff when shifting before lurching/breaking TCS")]
+	public int maxRPMDiff = 1200;
 
 	public bool enableNitrox = true;
 	public float maxNitrox = 40000;

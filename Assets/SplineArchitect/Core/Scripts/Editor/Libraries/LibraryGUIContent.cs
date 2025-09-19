@@ -21,6 +21,8 @@ namespace SplineArchitect.Libraries
     public class LibraryGUIContent
     {
         //Icons
+        public static GUIContent iconAuto { get; private set; }
+        public static GUIContent iconAutoActive { get; private set; }
         public static GUIContent iconCreateSpline { get; private set; }
         public static GUIContent iconCreateSplineLight { get; private set; }
         public static GUIContent iconMaximize { get; private set; }
@@ -139,6 +141,8 @@ namespace SplineArchitect.Libraries
         public static void Init()
         {
             //Icons
+            iconAuto = new GUIContent(LibraryTexture.iconAuto, "Auto type - Automatically switch between types follower and deformation");
+            iconAutoActive = new GUIContent(LibraryTexture.iconAutoActive, "Auto type - Automatically switch between types follower and deformation");
             iconCreateSpline = new GUIContent(LibraryTexture.iconCreateSpline, "Spline Architect - Create Spline or Control Point on selected spline");
             iconCreateSplineLight = new GUIContent(LibraryTexture.iconCreateSplineLight, "Spline Architect - Create Spline or Control Point on selected spline");
             iconMaximize = new GUIContent(LibraryTexture.iconPlus, "Maximize");

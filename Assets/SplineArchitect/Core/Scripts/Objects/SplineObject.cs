@@ -67,6 +67,8 @@ namespace SplineArchitect.Objects
         [HideInInspector]
         public bool lockPosition;
         [HideInInspector]
+        public bool alignToEnd;
+        [HideInInspector]
         public SnapMode snapMode;
         [HideInInspector]
         public float snapLengthStart = 1;
@@ -175,7 +177,7 @@ namespace SplineArchitect.Objects
 #if UNITY_EDITOR
             if (splineParent == null)
             {
-                Debug.LogError($"Found SplineObject ({name}) outside it's spline! You should remove it.");
+                Debug.LogError($"[Spline Architect] Found SplineObject ({name}) outside it's spline! You should remove it.");
                 return;
             }
 #endif
@@ -494,7 +496,7 @@ namespace SplineArchitect.Objects
         {
             if (type == Type.FOLLOWER)
             {
-                Debug.LogWarning("Spline object is allready a follower!");
+                Debug.LogWarning("[Spline Architect] Spline object is allready a follower!");
                 return;
             }
 
@@ -518,7 +520,7 @@ namespace SplineArchitect.Objects
         {
             if (type == Type.DEFORMATION)
             {
-                Debug.LogWarning("Spline object is allready a deformation!");
+                Debug.LogWarning("[Spline Architect] Spline object is allready a deformation!");
                 return;
             }
 
@@ -672,7 +674,7 @@ namespace SplineArchitect.Objects
                     lodGroup.RecalculateBounds();
 
                     if (lodGroup.animateCrossFading && type == Type.DEFORMATION)
-                        Debug.LogWarning("Using Animate Cross-fading on a Deformation may have undesired consequences.");
+                        Debug.LogWarning("[Spline Architect] Using Animate Cross-fading on a Deformation may have undesired consequences.");
                 }
             }
         }
@@ -717,13 +719,15 @@ namespace SplineArchitect.Objects
                 {
                     foreach (Segment s in splineParent.segments)
                     {
-                        float d = Mathf.Abs(s.zPosition - point);
+                        float zPoint = s.zPosition;
+                        if (alignToEnd) zPoint = s.splineParent.length - s.zPosition; 
+                        float d = Mathf.Abs(zPoint - point);
 
                         if (dCheck > d)
                         {
                             dCheck = d;
                             distance = d;
-                            closestPoint = s.zPosition;
+                            closestPoint = zPoint;
                         }
                     }
                 }
@@ -750,6 +754,7 @@ namespace SplineArchitect.Objects
                         if (meshFilter == null)
                         {
                             float startPoint = so.splinePosition.z;
+                            if(alignToEnd != so.alignToEnd) startPoint = splineParent.length - so.splinePosition.z;
                             float d2 = Mathf.Abs(startPoint - point);
                             if (dCheck > d2)
                             {
@@ -767,6 +772,8 @@ namespace SplineArchitect.Objects
                             Bounds tBounds = GeneralUtility.TransformBounds(lBounds, SplineObjectUtility.GetCombinedParentMatrixs(so, true));
 
                             float startPoint = so.splinePosition.z - tBounds.extents.z + lBounds.center.z;
+                            if (alignToEnd != so.alignToEnd) startPoint = splineParent.length - startPoint;
+
                             float d2 = Mathf.Abs(startPoint - point);
                             if (dCheck > d2)
                             {
@@ -776,6 +783,7 @@ namespace SplineArchitect.Objects
                             }
 
                             float endPoint = so.splinePosition.z + tBounds.extents.z + lBounds.center.z;
+                            if (alignToEnd != so.alignToEnd) endPoint = splineParent.length - endPoint;
                             d2 = Mathf.Abs(endPoint - point);
                             if (dCheck > d2)
                             {

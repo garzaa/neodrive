@@ -298,6 +298,7 @@ namespace SplineArchitect.Ui
                         EUiUtility.CreatePopupField("Deformations:", 110, 0, optionsDeformedMeshModePrefab, (int newValue) =>
                         {
                         }, -1, true, false);
+                        spline.deformationMode = DeformationMode.GENERATE;
                     }
                     else
                     {

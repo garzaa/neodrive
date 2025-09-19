@@ -424,10 +424,12 @@ namespace SplineArchitect.Objects
 
         public bool LinkToConnector(Vector3 linkPoint)
         {
+            SetAnchorPosition(linkPoint);
 
 #if UNITY_EDITOR
-            SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint, linkCreatedThisFrameOnly ? HandleRegistry.GetSplineConnectorsRegistredThisFrame() :
-                                                                                                              HandleRegistry.GetSplineConnectors());
+            SplineConnector closest = SplineConnectorUtility.GetFirstConnectorAtPoint(linkPoint, 
+                                                                                      linkCreatedThisFrameOnly ? HandleRegistry.GetSplineConnectorsRegistredThisFrame() :
+                                                                                                                 HandleRegistry.GetSplineConnectors());
 #else
             SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint, HandleRegistry.GetSplineConnectors());
 #endif
@@ -436,7 +438,6 @@ namespace SplineArchitect.Objects
             if (sucessfullLink)
             {
                 closest.AddConnection(this);
-                SetAnchorPosition(linkPoint);
                 splineConnector = closest;
                 linkTarget = LinkTarget.SPLINE_CONNECTOR;
             }
@@ -528,7 +529,7 @@ namespace SplineArchitect.Objects
         {
             if(splineParent == null)
             {
-                Debug.LogError("splineParent is null!");
+                Debug.LogError("[Spline Architect] splineParent is null!");
                 return;
             }
 

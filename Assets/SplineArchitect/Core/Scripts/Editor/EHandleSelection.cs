@@ -609,14 +609,14 @@ namespace SplineArchitect
             foreach (Spline spline2 in selectedSplines) action.Invoke(spline2);
         }
 
-        public static void UpdatedSelectedSplineObjectsRecordUndo(Action<SplineObject> action, string recordName, bool recordTransform = false)
+        public static void UpdatedSelectedSplineObjectsRecordUndo(Action<SplineObject> action, string recordName, bool recordTransform = false, EHandleUndo.RecordType recordType = EHandleUndo.RecordType.RECORD_OBJECT)
         {
             Object objectToRecord = selectedSplineObject;
 
             if (recordTransform)
                 objectToRecord = selectedSplineObject.transform;
 
-            EHandleUndo.RecordNow(objectToRecord, recordName);
+            EHandleUndo.RecordNow(objectToRecord, recordName, recordType);
             action.Invoke(selectedSplineObject);
 
             foreach (SplineObject so2 in selectedSplineObjects)
@@ -626,7 +626,7 @@ namespace SplineArchitect
                 if (recordTransform)
                     objectToRecord2 = so2.transform;
 
-                EHandleUndo.RecordNow(objectToRecord2, recordName);
+                EHandleUndo.RecordNow(objectToRecord2, recordName, recordType);
                 action.Invoke(so2);
             }
         }

@@ -8,12 +8,8 @@ public class EngineAudio : MonoBehaviour {
 	List<RPMPoint> rpmPoints = new();
 
     bool mute = false;
-
-    void Start() {
-        GetComponent<Car>().onRespawn.AddListener(OnCarRespawn);
-    }
     
-    void OnCarRespawn() {
+    public void OnCarRespawn() {
         CancelInvoke(nameof(Unmute));
         mute = true;
         Invoke(nameof(Unmute), 0.1f);

@@ -63,7 +63,7 @@ namespace SplineArchitect.Objects
         {
             if (so.meshContainers.Count == 0)
             {
-                Debug.LogWarning($"Tried to add SplineObject {so.name} with empty meshContainers list.");
+                Debug.LogWarning($"[Spline Architect] Tried to add SplineObject {so.name} with empty meshContainers list.");
                 return;
             }
 
@@ -106,6 +106,7 @@ namespace SplineArchitect.Objects
             NativeHashMap<int, float4x4> localSpaces = new NativeHashMap<int, float4x4>(splineObjects.Count, Allocator.TempJob);
             NativeArray<int> verticesMap = new NativeArray<int>(splineObjects.Count, Allocator.TempJob);
             NativeArray<bool> mirrorMap = new NativeArray<bool>(splineObjects.Count, Allocator.TempJob);
+            NativeArray<bool> alignToEndMap = new NativeArray<bool>(splineObjects.Count, Allocator.TempJob);
             NativeArray<SnapData> snapDatas = new NativeArray<SnapData>(splineObjects.Count, Allocator.TempJob);
             int offset = 0;
 
@@ -133,17 +134,23 @@ namespace SplineArchitect.Objects
                     offset += originVertices.Length;
                 }
 
-                mirrorMap[i] = false;
-
-                if (so.mirrorDeformation)
-                    mirrorMap[i] = true;
-
+                mirrorMap[i] = so.mirrorDeformation;
+                alignToEndMap[i] = so.alignToEnd;
                 verticesMap[i] = offset;
 
                 if(so.snapMode != SplineObject.SnapMode.NONE) snapDatas[i] = so.CalculateSnapData();
             }
 
-            deformJob = DeformationUtility.CreateDeformJob(spline, vertices, spline.nativeSegmentsLocal, localSpaces, verticesMap, mirrorMap, SplineObject.Type.DEFORMATION, snapDatas);
+            deformJob = DeformationUtility.CreateDeformJob(spline, 
+                                                           vertices, 
+                                                           spline.nativeSegmentsLocal, 
+                                                           localSpaces, 
+                                                           verticesMap, 
+                                                           mirrorMap, 
+                                                           SplineObject.Type.DEFORMATION, 
+                                                           alignToEndMap, 
+                                                           snapDatas);
+
             jobHandle = deformJob.Schedule(deformJob.vertices.Length, 1);
             state = State.WORKING;
         }

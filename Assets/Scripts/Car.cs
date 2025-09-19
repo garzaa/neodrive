@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Cinemachine;
 using Rewired;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
@@ -77,6 +78,7 @@ public class Car : MonoBehaviour {
     NitroxMeter nitroxMeter;
     public Animator perfectShiftEffect;
     AlertText alertText;
+    bool shiftLurch = false;
 
     public AudioSource perfectShiftAudio;
     public int lastGear;
@@ -119,6 +121,12 @@ public class Car : MonoBehaviour {
     MeshRenderer carMesh;
     
     Achievements achievements;
+    
+    bool usingKeyboard;
+
+    // this is currently broken
+    bool fullAutomatic = false;
+    bool changingGear = false;    
 
     public bool Drifting {
         get {
@@ -168,6 +176,7 @@ public class Car : MonoBehaviour {
         startPoint = transform.position;
         startRotation = transform.rotation;
         achievements = FindObjectOfType<Achievements>();
+        onRespawn.AddListener(engineAudio.OnCarRespawn);
     }
 
     void Update() {
@@ -386,7 +395,7 @@ public class Car : MonoBehaviour {
                 float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
-                    bool lcsBreak = (wantedAccel-settings.burnoutThreshold) > settings.lcsLimit;
+                    bool lcsBreak = ((wantedAccel-settings.burnoutThreshold) > settings.lcsLimit) && !usingKeyboard;
                     // don't disable LCS on disabling assists
                     // just to make a the car a little easier to drive
                     // maybe expose that in settings later on
@@ -441,7 +450,6 @@ public class Car : MonoBehaviour {
         } else {
             handbrakeLight.SetOff();
         }
-
 
         UpdateSteering();
         if (!drifting) {
@@ -543,12 +551,20 @@ public class Car : MonoBehaviour {
             float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
+                if (fullAutomatic) {
+                    if (engineRPM > engine.redline-200) {
+                        StartCoroutine(AutoGearUp());
+                    } else if (engineRPM < engine.stallRPM+200) {
+                        StartCoroutine(AutoGearDown());
+                    }
+                }
+
                 engineRPMFromSpeed = GetEngineRPMFromSpeed(flatSpeed);
                 if (clutchOutThisFrame) {
                     float rpmDiff = engineRPMFromSpeed - engineRPM;
                     if (rpmDiff < 0) {
                         // you can shift bad from first gear if you're at max power
-                        if (rpmDiff < -700 && (currentGear != 1 || !engine.PeakPower(idealEngineRPM))) {
+                        if (rpmDiff < -settings.maxRPMDiff && (currentGear != 1 || !engine.PeakPower(idealEngineRPM))) {
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
                             clutchRatio = 0f;
@@ -569,7 +585,7 @@ public class Car : MonoBehaviour {
                         if (Random.Range(0f, 1f) < 0.8f) {
                             exhaustAnimator.SetTrigger("Backfire");
                         }
-                        if (rpmDiff > 1000) {
+                        if (rpmDiff > settings.maxRPMDiff) {
                             clutchRatio = 0.5f;
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
@@ -602,7 +618,7 @@ public class Car : MonoBehaviour {
 
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
-            if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
+            if (fullAutomatic || automatic && currentGear < engine.gearRatios.Count && !clutch) {
                 ChangeGear(currentGear + 1);
             } else {
                 fuelCutoff = true;
@@ -617,6 +633,8 @@ public class Car : MonoBehaviour {
             if (engineRPM < engine.stallRPM) {
                 if (Mathf.Abs(currentGear) == 1 && gas > 0.7f) {
                     // mimic letting the clutch out slowly 
+                    engineRPM = engine.stallRPM;
+                } else if (fullAutomatic) {
                     engineRPM = engine.stallRPM;
                 } else {
                     checkEngine.Flash();
@@ -686,6 +704,7 @@ public class Car : MonoBehaviour {
         targetSteerAngle = steering * settings.maxSteerAngle;
         float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
         bool usingWheel = ReInput.controllers.GetLastActiveController().ImplementsTemplate<RacingWheelTemplate>();
+        usingKeyboard = ReInput.controllers.GetLastActiveController().type != Rewired.ControllerType.Joystick;
         float steeringMult = usingWheel ? 1 : settings.steerLimitCurve.Evaluate(Mathf.Abs(forwardSpeed));
         if (steering == 0) {
             targetSteerAngle = 0;
@@ -805,10 +824,13 @@ public class Car : MonoBehaviour {
             // clutch kick should initiate a drift
             Alert("clutch kick\n+"+settings.driftNitroGain);
             nitroxMeter.Add(settings.driftNitroGain);
+        } else {
+            shiftLurch = true;
         }
         assistDisabled = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
         assistDisabled = false;
+        shiftLurch = false;
         carBody.maxXAngle /= 2f;
     }
 
@@ -912,6 +934,10 @@ public class Car : MonoBehaviour {
             bumpVibration += 0.5f;
         }
 
+        if (shiftLurch) {
+            bumpVibration = 1f;
+        }
+
         if (Mathf.Abs(engineRPM - engine.idleRPM) < 50f) {
             startVibration += 0.1f + Mathf.Clamp01(Mathf.Sin(Time.time*16f)-0.5f);
         }
@@ -989,5 +1015,31 @@ public class Car : MonoBehaviour {
         foreach (Wheel w in wheels) {
             w.ApplyCustomWheel(c);
         }
+    }
+
+    IEnumerator AutoGearUp() {
+        if (changingGear) yield break;
+        changingGear = true;
+        clutch = true;
+        yield return new WaitForSeconds(settings.gearShiftTime);
+        if (currentGear < engine.gearRatios.Count) {
+            ChangeGear(currentGear-1);
+        }
+        clutchRatio = 0.5f;
+        clutch = false;
+        changingGear = false;
+    }
+
+    IEnumerator AutoGearDown() {
+        if (changingGear) yield break;
+        changingGear = true;
+        clutch = true;
+        yield return new WaitForSeconds(settings.gearShiftTime);
+        if (currentGear > 1) {
+            ChangeGear(currentGear-1);
+        }
+        clutchRatio = 0.5f;
+        clutch = false;
+        changingGear = false;
     }
 }

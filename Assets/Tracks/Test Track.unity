@@ -9208,52 +9208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Container: {fileID: 307795011}
-  m_ItemsToInstantiate:
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 8395691659160600761, guid: 5b5c6d23193de094caa7ec33bce8af18, type: 3}
-    probability: 0
-    Probability: 20
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 1635126284043044643, guid: 5798c7eb6edba214aaf170c92dd93799, type: 3}
-    probability: 0
-    Probability: 20
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 2289657814636052006, guid: 68724652a8d61e349995b60ce430b084, type: 3}
-    probability: 0
-    Probability: 20
-  m_Method: 1
-  m_Space: 0
-  m_Spacing: {x: 10.2, y: 10.6}
-  m_Up: 1
-  m_Forward: 2
-  m_PositionOffset:
-    setup: 1
-    min: {x: 0, y: 1.5, z: 0}
-    max: {x: 0, y: 1.78, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_RotationOffset:
-    setup: 1
-    min: {x: 0, y: 90, z: 0}
-    max: {x: 0, y: 258, z: 0}
-    randomX: 0
-    randomY: 1
-    randomZ: 0
-    space: 0
-  m_ScaleOffset:
-    setup: 0
-    min: {x: 0, y: 0, z: 0}
-    max: {x: 0, y: 0, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_DeprecatedInstances: []
-  m_AutoRefresh: 1
-  m_Seed: 1712362344
 --- !u!114 &307795011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9266,94 +9220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: -33.67
-        y: 0
-        z: 18.040009
-      TangentIn:
-        x: 0
-        y: 0
-        z: -21.766178
-      TangentOut:
-        x: 0
-        y: 0
-        z: 10.883087
-      Rotation:
-        value:
-          x: 9.268238e-12
-          y: 0.9902335
-          z: 1.3049217e-12
-          w: 0.13941948
-    - Position:
-        x: 3.1000023
-        y: 0
-        z: 30.40001
-      TangentIn:
-        x: 0.0000009536743
-        y: -6.938894e-18
-        z: -10.573199
-      TangentOut:
-        x: 0
-        y: 6.938894e-18
-        z: 10.5732
-      Rotation:
-        value:
-          x: 7.38197e-12
-          y: 0.7893253
-          z: 5.7420514e-12
-          w: 0.6139752
-    - Position:
-        x: 22.879997
-        y: 0
-        z: 43.1
-      TangentIn:
-        x: 0
-        y: 0
-        z: -8.366511
-      TangentOut:
-        x: 0
-        y: 0
-        z: 3.7531757
-      Rotation:
-        value:
-          x: 0
-          y: -0.51316893
-          z: -0
-          w: 0.8582876
-    m_MetaData:
-    - Mode: 3
-      Tension: 0.5
-    - Mode: 4
-      Tension: 0.5
-    - Mode: 3
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!4 &307795012
 Transform:
   m_ObjectHideFlags: 0
@@ -12152,52 +12018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Container: {fileID: 683287934}
-  m_ItemsToInstantiate:
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 8395691659160600761, guid: 5b5c6d23193de094caa7ec33bce8af18, type: 3}
-    probability: 0
-    Probability: 20
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 1635126284043044643, guid: 5798c7eb6edba214aaf170c92dd93799, type: 3}
-    probability: 0
-    Probability: 20
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 2289657814636052006, guid: 68724652a8d61e349995b60ce430b084, type: 3}
-    probability: 0
-    Probability: 20
-  m_Method: 1
-  m_Space: 0
-  m_Spacing: {x: 10.2, y: 10.6}
-  m_Up: 1
-  m_Forward: 2
-  m_PositionOffset:
-    setup: 1
-    min: {x: 0, y: 1.5, z: 0}
-    max: {x: 0, y: 1.78, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_RotationOffset:
-    setup: 1
-    min: {x: 0, y: 90, z: 0}
-    max: {x: 0, y: 258, z: 0}
-    randomX: 0
-    randomY: 1
-    randomZ: 0
-    space: 0
-  m_ScaleOffset:
-    setup: 0
-    min: {x: 0, y: 0, z: 0}
-    max: {x: 0, y: 0, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_DeprecatedInstances: []
-  m_AutoRefresh: 1
-  m_Seed: 1712362344
 --- !u!114 &683287934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12210,94 +12030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: -23.92
-        y: 0
-        z: 13.75
-      TangentIn:
-        x: 0
-        y: 0
-        z: -21.766178
-      TangentOut:
-        x: 0
-        y: 0
-        z: 10.883087
-      Rotation:
-        value:
-          x: 9.2681965e-12
-          y: 0.9902334
-          z: 1.304914e-12
-          w: 0.13941962
-    - Position:
-        x: 3.1000023
-        y: 0
-        z: 30.40001
-      TangentIn:
-        x: 0.0000009536743
-        y: -6.938894e-18
-        z: -10.573199
-      TangentOut:
-        x: 0
-        y: 6.938894e-18
-        z: 10.5732
-      Rotation:
-        value:
-          x: 7.38197e-12
-          y: 0.7893253
-          z: 5.7420514e-12
-          w: 0.6139752
-    - Position:
-        x: 22.879997
-        y: 0
-        z: 43.1
-      TangentIn:
-        x: 0
-        y: 0
-        z: -8.366511
-      TangentOut:
-        x: 0
-        y: 0
-        z: 3.7531757
-      Rotation:
-        value:
-          x: 0
-          y: -0.51316893
-          z: -0
-          w: 0.8582876
-    m_MetaData:
-    - Mode: 3
-      Tension: 0.5
-    - Mode: 4
-      Tension: 0.5
-    - Mode: 3
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!4 &683287935
 Transform:
   m_ObjectHideFlags: 0
@@ -18947,44 +18679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Container: {fileID: 1606718583}
-  m_ItemsToInstantiate:
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 2025043572256557255, guid: 99ae9588ec57e6340bfb1deafe35a88a, type: 3}
-    probability: 0
-    Probability: 20
-  m_Method: 1
-  m_Space: 0
-  m_Spacing: {x: 10, y: 12}
-  m_Up: 1
-  m_Forward: 2
-  m_PositionOffset:
-    setup: 1
-    min: {x: 0, y: 1.5, z: 0}
-    max: {x: 0, y: 1.78, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_RotationOffset:
-    setup: 1
-    min: {x: 0, y: 180, z: 0}
-    max: {x: 0, y: 200, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_ScaleOffset:
-    setup: 0
-    min: {x: 0, y: 0, z: 0}
-    max: {x: 0, y: 0, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_DeprecatedInstances: []
-  m_AutoRefresh: 1
-  m_Seed: -126134
 --- !u!114 &1606718583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18997,74 +18691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: -29.864346
-        y: -0.00000011920929
-        z: -0.051189423
-      TangentIn:
-        x: -0
-        y: -0
-        z: -3.1188042
-      TangentOut:
-        x: 0
-        y: 0
-        z: 3.1188042
-      Rotation:
-        value:
-          x: 0.000000004007815
-          y: -0.5833721
-          z: -0.000000005579916
-          w: 0.812205
-    - Position:
-        x: -59.41924
-        y: -0.00000011920929
-        z: 9.908836
-      TangentIn:
-        x: 0
-        y: 0
-        z: -10.949994
-      TangentOut:
-        x: 0
-        y: 0
-        z: 8.891625
-      Rotation:
-        value:
-          x: 0.000000006088348
-          y: -0.1305258
-          z: -0.000000004542478
-          w: 0.99144495
-    m_MetaData:
-    - Mode: 0
-      Tension: 0.5
-    - Mode: 3
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!4 &1606718584
 Transform:
   m_ObjectHideFlags: 0
@@ -21020,44 +20646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Container: {fileID: 1886883411}
-  m_ItemsToInstantiate:
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 2025043572256557255, guid: 99ae9588ec57e6340bfb1deafe35a88a, type: 3}
-    probability: 0
-    Probability: 20
-  m_Method: 1
-  m_Space: 0
-  m_Spacing: {x: 10, y: 12}
-  m_Up: 1
-  m_Forward: 2
-  m_PositionOffset:
-    setup: 1
-    min: {x: 0, y: 1.5, z: 0}
-    max: {x: 0, y: 1.78, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_RotationOffset:
-    setup: 1
-    min: {x: 0, y: 88.1, z: 0}
-    max: {x: 0, y: 151.26, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_ScaleOffset:
-    setup: 0
-    min: {x: 0, y: 0, z: 0}
-    max: {x: 0, y: 0, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_DeprecatedInstances: []
-  m_AutoRefresh: 1
-  m_Seed: -126134
 --- !u!114 &1886883411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21070,74 +20658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: -56.5
-        y: 0
-        z: 17.400002
-      TangentIn:
-        x: 0
-        y: 0
-        z: -21.766178
-      TangentOut:
-        x: 0
-        y: 0
-        z: 21.766178
-      Rotation:
-        value:
-          x: 9.2681965e-12
-          y: 0.9902334
-          z: 1.304914e-12
-          w: 0.13941965
-    - Position:
-        x: -8.810001
-        y: 0
-        z: 9.269997
-      TangentIn:
-        x: 0
-        y: 0
-        z: -28.741865
-      TangentOut:
-        x: 0
-        y: 0
-        z: 8.891625
-      Rotation:
-        value:
-          x: 0
-          y: 0.35223228
-          z: 0
-          w: 0.93591267
-    m_MetaData:
-    - Mode: 2
-      Tension: 0.5
-    - Mode: 3
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!4 &1886883412
 Transform:
   m_ObjectHideFlags: 0
@@ -21723,44 +21243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Container: {fileID: 2021170616}
-  m_ItemsToInstantiate:
-  - prefab: {fileID: 0}
-    Prefab: {fileID: 2025043572256557255, guid: 99ae9588ec57e6340bfb1deafe35a88a, type: 3}
-    probability: 0
-    Probability: 20
-  m_Method: 1
-  m_Space: 0
-  m_Spacing: {x: 10, y: 12}
-  m_Up: 1
-  m_Forward: 2
-  m_PositionOffset:
-    setup: 1
-    min: {x: 0, y: 1.5, z: 0}
-    max: {x: 0, y: 1.78, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_RotationOffset:
-    setup: 1
-    min: {x: 0, y: 147.73, z: 0}
-    max: {x: 0, y: 200, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_ScaleOffset:
-    setup: 0
-    min: {x: 0, y: 0, z: 0}
-    max: {x: 0, y: 0, z: 0}
-    randomX: 0
-    randomY: 0
-    randomZ: 0
-    space: 0
-  m_DeprecatedInstances: []
-  m_AutoRefresh: 1
-  m_Seed: -126134
 --- !u!114 &2021170616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21773,74 +21255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Splines:
-  - m_EditModeType: 1
-    m_Knots:
-    - Position:
-        x: 4.840332
-        y: 0.79818296
-        z: 4.174286
-      TangentIn:
-        x: 0
-        y: 0
-        z: -7.0102654
-      TangentOut:
-        x: 0
-        y: 0
-        z: 41.991604
-      Rotation:
-        value:
-          x: -0.029924588
-          y: 0.9043957
-          z: -0.013553681
-          w: -0.4254283
-    - Position:
-        x: -65.10523
-        y: -3.8043242
-        z: 5.077942
-      TangentIn:
-        x: 0
-        y: 0
-        z: -21.868555
-      TangentOut:
-        x: 0
-        y: 0
-        z: 8.891625
-      Rotation:
-        value:
-          x: -0.000024516126
-          y: -0.4819146
-          z: -0.0000544166
-          w: 0.8762182
-    m_MetaData:
-    - Mode: 3
-      Tension: 0.5
-    - Mode: 3
-      Tension: 0.5
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
-  m_Knots:
-    m_KnotsLink: []
 --- !u!4 &2021170617
 Transform:
   m_ObjectHideFlags: 0
@@ -24910,63 +24324,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1001943150879763651, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1001943150879763651, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1001943150879763651, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1001943150879763651, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1001943150879763651, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -340
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517527035695322197, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517527035695322197, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517527035695322197, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517527035695322197, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517527035695322197, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2759558944333758407, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2759558944333758407, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2759558944333758407, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2759558944333758407, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2759558944333758407, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -190
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3471482201908159252, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: raceType
@@ -24978,23 +24392,23 @@ PrefabInstance:
       objectReference: {fileID: 612606015}
     - target: {fileID: 5973817490241660474, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5973817490241660474, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5973817490241660474, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5973817490241660474, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5973817490241660474, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -265
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8158401734331591598, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_Name
@@ -25002,23 +24416,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8462696756345138498, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8462696756345138498, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8462696756345138498, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8462696756345138498, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8462696756345138498, guid: cb9b1a29d8a4a8c4bb878f429613b8f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

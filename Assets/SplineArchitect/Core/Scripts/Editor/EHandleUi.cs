@@ -51,7 +51,7 @@ namespace SplineArchitect
 
                 int preloadedTextures = LibraryTexture.GetPreloadedTextureCount();
                 if (preloadedTextures > 0)
-                    Debug.LogWarning($"{preloadedTextures} textures have been preloaded. This should only happen during the first time you import Spline Architect into a project.");
+                    Debug.LogWarning($"[Spline Architect] {preloadedTextures} textures have been preloaded. This should only happen during the first time you import Spline Architect into a project.");
             }
         }
 

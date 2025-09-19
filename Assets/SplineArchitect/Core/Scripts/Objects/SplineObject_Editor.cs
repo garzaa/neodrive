@@ -45,6 +45,10 @@ namespace SplineArchitect.Objects
         public bool disableOnTransformChildrenChanged;
         [NonSerialized]
         public bool initalizedThisFrame = false;
+        [NonSerialized]
+        private bool readWriteWarningTriggered;
+        [NonSerialized]
+        private bool componentModeWarningTriggered;
 
         private void Start()
         {
@@ -78,7 +82,7 @@ namespace SplineArchitect.Objects
 
                         if(childSpline != null)
                         {
-                            Debug.LogWarning($"Can't parent spline to SplineObject with type Deformation.");
+                            Debug.LogWarning($"[Spline Architect] Can't parent spline to SplineObject with type Deformation.");
                             child.parent = null;
                             continue;
                         }
@@ -117,7 +121,7 @@ namespace SplineArchitect.Objects
                 {
                     if (!mc.GetOriginMesh().isReadable)
                     {
-                        Debug.LogError($"SplineObject \"{name}\" has an invalid mesh.\n Enable 'Read/Write Enabled' in the import settings to allow runtime deformation.");
+                        Debug.LogError($"[Spline Architect] SplineObject \"{name}\" has an invalid mesh.\n Enable 'Read/Write Enabled' in the import settings to allow runtime deformation.");
                         break;
                     }
                 }
@@ -163,6 +167,13 @@ namespace SplineArchitect.Objects
                     //3. The instanceMeshs name is the resourceKey.
                     mc.UpdateInstanceMeshName();
                 }
+            }
+
+            //If part of hierarchy this data needs to be the same for all spline objects in the hierarchy.
+            if (soParent != null)
+            {
+                alignToEnd = soParent.alignToEnd;
+                componentMode = soParent.componentMode;
             }
         }
 
@@ -226,8 +237,19 @@ namespace SplineArchitect.Objects
             }
         }
 
-        public bool ValidForRuntimeDeformation()
+        public bool ValidForRuntimeDeformation(bool runWarnings)
         {
+            if(runWarnings && !componentModeWarningTriggered && !initalizedThisFrame && Application.isPlaying && componentMode != ComponentMode.ACTIVE)
+            {
+                componentModeWarningTriggered = true;
+                Debug.LogWarning($"[Spline Architect] Component mode is not set to Active on {name}! Animating this object will not work in your built game.");
+            }
+            else if (runWarnings && !componentModeWarningTriggered && Application.isPlaying && componentMode == ComponentMode.REMOVE_FROM_BUILD)
+            {
+                componentModeWarningTriggered = true;
+                Debug.LogWarning($"[Spline Architect] Component mode is not set to Active or Inactive on {name}! Generating this object will not work in your built game.");
+            }
+
             foreach (MeshContainer mc in meshContainers)
             {
                 Mesh instanceMesh = mc.GetInstanceMesh();
@@ -240,7 +262,15 @@ namespace SplineArchitect.Objects
                     return false;
 
                 if (!instanceMesh.isReadable)
+                {
+                    if (runWarnings && !readWriteWarningTriggered && Application.isPlaying && type == Type.DEFORMATION)
+                    {
+                        readWriteWarningTriggered = true;
+                        Debug.LogWarning($"[Spline Architect] No read/write access on {name}! Generating or animating this object will not work in your built game.");
+                    }
+
                     return false;
+                }
             }
 
             return true;

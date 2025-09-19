@@ -33,7 +33,7 @@ namespace SplineArchitect.Utility
 
         public static void LogElapsed(string message, int id = 0, bool stop = false)
         {
-            Debug.Log($"[EDebugUtility] {message}: {stopWatches[id].ElapsedMilliseconds} ms");
+            Debug.Log($"[Spline Architect] {message}: {stopWatches[id].ElapsedMilliseconds} ms");
             if (stop) stopWatches[id].Stop();
         }
 

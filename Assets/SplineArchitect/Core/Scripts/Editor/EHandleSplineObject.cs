@@ -161,7 +161,6 @@ namespace SplineArchitect
 
                 if (instanceMesh == originMesh)
                 {
-                    //Debug.LogWarning("Can't deform mesh: " + instanceMesh.name + " Instance mesh is same as OriginMesh!");
                     return false;
                 }
             }

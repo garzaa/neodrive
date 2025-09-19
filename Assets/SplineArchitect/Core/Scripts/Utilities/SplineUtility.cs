@@ -134,10 +134,10 @@ namespace SplineArchitect.Utility
         /// Retrieves segments from active Splines that are located at a specified point within a given tolerance.
         /// </summary>
         /// <param name="activeSplines">A dictionary of active Splines to search.</param>
-        /// <param name="point">The point in world space to check for segments.</param>
+        /// <param name="worldPoint">The point in world space to check for segments.</param>
         /// <param name="epsilon">The tolerance within which a segment's anchor point is considered to match the specified point. Default is 0.001f.</param>
         /// <returns>A list of tuples containing the Spline and Segment found at the specified point.</returns>
-        public static void GetSegmentsAtPointNoAlloc(List<Segment> closestSegmentContainer, HashSet<Spline> activeSplines, Vector3 point, float epsilon = 0.001f)
+        public static void GetSegmentsAtPointNoAlloc(List<Segment> closestSegmentContainer, HashSet<Spline> activeSplines, Vector3 worldPoint, float epsilon = 0.001f)
         {
             closestSegmentContainer.Clear();
 
@@ -149,8 +149,8 @@ namespace SplineArchitect.Utility
                 if (!spline.IsEnabled())
                     continue;
 
-                Vector3 closestPoint = spline.controlPointsBounds.ClosestPoint(point);
-                float distanceToBounds = Vector3.Distance(closestPoint, point);
+                Vector3 closestPoint = spline.controlPointsBounds.ClosestPoint(worldPoint);
+                float distanceToBounds = Vector3.Distance(closestPoint, worldPoint);
 
                 if (distanceToBounds > 15)
                     continue;
@@ -162,7 +162,7 @@ namespace SplineArchitect.Utility
                     if (spline.loop && spline.segments.Count - 1 == i)
                         continue;
 
-                    float d = Vector3.Distance(s.GetPosition(Segment.ControlHandle.ANCHOR), point);
+                    float d = Vector3.Distance(s.GetPosition(Segment.ControlHandle.ANCHOR), worldPoint);
 
                     if (GeneralUtility.IsZero(d, epsilon))
                     {

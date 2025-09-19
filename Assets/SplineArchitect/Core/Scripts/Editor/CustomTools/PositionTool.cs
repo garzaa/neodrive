@@ -44,6 +44,7 @@ namespace SplineArchitect.CustomTools
         public static int hotControlId;
         public static bool active { get; private set; }
         public static bool locked { get; private set; }
+        public static bool released { get; private set; }
         public static ActivationType activationType { get; private set; }
         public static Part activePart { get; private set; }
 
@@ -247,6 +248,8 @@ namespace SplineArchitect.CustomTools
 
             if (Event.current.type == EventType.MouseUp || !EHandleSceneView.mouseInsideSceneView)
             {
+                UpdateReleased(true);
+
                 //Set active part to none
                 activePart = Part.NONE;
                 return false;
@@ -257,7 +260,7 @@ namespace SplineArchitect.CustomTools
 
             if (locked)
             {
-                Debug.LogWarning("Surface tool is locked!");
+                Debug.LogWarning("[Spline Architect] Surface tool is locked!");
                 return false;
             }
 
@@ -327,6 +330,8 @@ namespace SplineArchitect.CustomTools
             //Cant use up the MouseUp event. If its used up and the user presses the right mouse button directly after, MouseDrag will be started and we dont want this (dont know why unity does this).
             if (Event.current.type == EventType.MouseUp || !EHandleSceneView.mouseInsideSceneView)
             {
+                UpdateReleased(true);
+
                 //Set active part to none
                 activePart = Part.NONE;
 
@@ -339,7 +344,7 @@ namespace SplineArchitect.CustomTools
 
             if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT))
             {
-                Debug.LogWarning("Position tool is locked!");
+                Debug.LogWarning("[Spline Architect] Position tool is locked!");
                 return false;
             }
 
@@ -399,6 +404,8 @@ namespace SplineArchitect.CustomTools
             //Cant use up the MouseUp event. If its used up and the user presses the right mouse button directly after, MouseDrag will be started and we dont want this (dont know why unity does this).
             if (Event.current.type == EventType.MouseUp || !EHandleSceneView.mouseInsideSceneView)
             {
+                UpdateReleased(true);
+
                 //Set active part to none
                 activePart = Part.NONE;
 
@@ -411,7 +418,7 @@ namespace SplineArchitect.CustomTools
 
             if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT))
             {
-                Debug.LogWarning("Position tool is locked!");
+                Debug.LogWarning("[Spline Architect] Position tool is locked!");
                 return false;
             }
 
@@ -700,6 +707,12 @@ namespace SplineArchitect.CustomTools
         {
             if (hotControlId == 0) hotControlId = GUIUtility.GetControlID(FocusType.Passive);
             return hotControlId;
+        }
+
+        private static void UpdateReleased(bool value)
+        {
+            released = value;
+            if(released) EActionToSceneGUI.Add(() => { released = false; }, EActionToSceneGUI.Type.LATE, EventType.Repaint);
         }
     }
 }

@@ -286,18 +286,18 @@ namespace SplineArchitect.Utility
             actionOnValueChange.Invoke(currentValue);
         }
 
-        public static void CreateFloatFieldWithLabel(string label, float currentValue, Action<float> actionOnValueChange, float width = -1, float labelWidth = -1, bool skipGroup = false)
+        public static void CreateFloatFieldWithLabel(string label, float currentValue, Action<float> actionOnValueChange, float width = -1, float labelWidth = -1, bool skipGroup = false, bool enable = true)
         {
             float newValue;
 
             if (!skipGroup) GUILayout.BeginHorizontal(GetBackgroundStyle());
-
-            if(labelWidth == -1) EditorGUILayout.LabelField(label, LibraryGUIStyle.textDefault);
+            GUI.enabled = enable;
+            if (labelWidth == -1) EditorGUILayout.LabelField(label, LibraryGUIStyle.textDefault);
             else EditorGUILayout.LabelField(label, LibraryGUIStyle.textDefault, GUILayout.Width(labelWidth));
 
             if (width == -1) newValue = EditorGUILayout.FloatField(currentValue, LibraryGUIStyle.textFieldNoWidth);
             else newValue = EditorGUILayout.FloatField(currentValue, LibraryGUIStyle.textFieldNoWidth, GUILayout.Width(width));
-
+            GUI.enabled = true;
             if (!skipGroup) GUILayout.EndHorizontal();
 
             if (GeneralUtility.IsEqual(newValue, currentValue))

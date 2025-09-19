@@ -21,6 +21,7 @@ namespace SplineArchitect.Monitor
 
         private bool mirrored;
         private bool lockPosition;
+        private bool alignToEnd;
         private SplineObject.SnapMode snapMode;
         private float snapLengthStart;
         private float snapLengthEnd;
@@ -129,7 +130,10 @@ namespace SplineArchitect.Monitor
             if (so.snapMode != snapMode)
                 foundChange = true;
 
-            if(!GeneralUtility.IsEqual(so.snapLengthStart, snapLengthStart))
+            if (so.alignToEnd != alignToEnd)
+                foundChange = true;
+
+            if (!GeneralUtility.IsEqual(so.snapLengthStart, snapLengthStart))
                 foundChange = true;
 
             if (!GeneralUtility.IsEqual(so.snapLengthEnd, snapLengthEnd))
@@ -149,6 +153,7 @@ namespace SplineArchitect.Monitor
                 snapLengthEnd = so.snapLengthEnd;
                 snapOffsetStart = so.snapOffsetStart;
                 snapOffsetEnd = so.snapOffsetEnd;
+                alignToEnd = so.alignToEnd;
             }
 
             return foundChange;
@@ -348,6 +353,7 @@ namespace SplineArchitect.Monitor
             snapLengthEnd = so.snapLengthEnd;
             snapOffsetStart = so.snapOffsetStart;
             snapOffsetEnd = so.snapOffsetEnd;
+            alignToEnd = so.alignToEnd;
         }
 
         public void ForceUpdate()

@@ -22,7 +22,7 @@ namespace SplineArchitect
         private static DeformationWorker GetWorker(DeformationWorker.Type type, Spline spline)
         {
             if (deformationWorkers.Count > 500)
-                Debug.LogWarning("Contains: " + deformationWorkers.Count + " workers.");
+                Debug.LogWarning($"[Spline Architect] Currently: {deformationWorkers.Count} deformation workers exists!.");
 
             foreach(DeformationWorker dw in deformationWorkers)
             {
@@ -55,6 +55,12 @@ namespace SplineArchitect
             DeformationWorker dw = GetWorker(type, spline);
 
             dw.Add(so, spline);
+        }
+
+        public static void Deform(SplineObject so, DeformationWorker.Type type)
+        {
+            DeformationWorker dw = GetWorker(type, so.splineParent);
+            dw.Add(so, so.splineParent);
         }
 
         public static void GetActiveWorkers(DeformationWorker.Type type, Spline spline, List<DeformationWorker> activeWorkersList)

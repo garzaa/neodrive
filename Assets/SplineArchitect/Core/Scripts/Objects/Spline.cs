@@ -1018,11 +1018,13 @@ namespace SplineArchitect.Objects
 
             so.localSplinePosition = localSplinePosition;
             so.localSplineRotation = localSplineRotation;
+            so.componentMode = ComponentMode.ACTIVE;
 
             if (skipRuntimeUpdates)
             {
                 RemoveSplineObject(so);
                 HandleDeformationWorker.Deform(so, DeformationWorker.Type.RUNETIME, this);
+                so.componentMode = ComponentMode.INACTIVE;
             }
             else
                 so.monitor.ForceUpdate();
@@ -1053,11 +1055,13 @@ namespace SplineArchitect.Objects
 
             so.localSplinePosition = localSplinePosition;
             so.localSplineRotation = localSplineRotation;
+            so.componentMode = ComponentMode.ACTIVE;
 
             if (skipRuntimeUpdates)
             {
                 RemoveSplineObject(so);
                 followerUpdateList.Add(so);
+                so.componentMode = ComponentMode.INACTIVE;
             }
             else
                 so.monitor.ForceUpdate();
@@ -1178,19 +1182,21 @@ namespace SplineArchitect.Objects
         /// Converts a position on a spline to a world position.
         /// </summary>
         /// <returns>The world position.</returns>
-        public Vector3 SplinePositionToWorldPosition(Transform parentTransform, Vector3 splinePosition, float4x4 matrix)
+        public Vector3 SplinePositionToWorldPosition(Transform parentTransform, Vector3 splinePosition, float4x4 matrix, bool alignToEnd = false)
         {
             Vector3 worldPosition;
             NativeArray<Vector3> point = new NativeArray<Vector3>(1, Allocator.TempJob);
             NativeHashMap<int, float4x4> localSpaces = new NativeHashMap<int, float4x4>(1, Allocator.TempJob);
             NativeArray<int> localSpaceMap = new NativeArray<int>(1, Allocator.TempJob);
             NativeArray<bool> mirrorMap = new NativeArray<bool>(0, Allocator.TempJob);
+            NativeArray<bool> alignToEndMap = new NativeArray<bool>(1, Allocator.TempJob);
 
             point[0] = splinePosition;
             localSpaces.Add(0, matrix);
             localSpaceMap[0] = 0;
+            alignToEndMap[0] = alignToEnd;
 
-            DeformJob deformJob = DeformationUtility.CreateDeformJob(this, point, nativeSegmentsLocal, localSpaces, localSpaceMap, mirrorMap, SplineObject.Type.FOLLOWER);
+            DeformJob deformJob = DeformationUtility.CreateDeformJob(this, point, nativeSegmentsLocal, localSpaces, localSpaceMap, mirrorMap, alignToEndMap, SplineObject.Type.FOLLOWER);
 
             JobHandle jobHandle = deformJob.Schedule(1, 1);
             jobHandle.Complete();

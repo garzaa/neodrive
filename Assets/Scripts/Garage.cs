@@ -25,7 +25,7 @@ public class Garage : MonoBehaviour {
 
 	void Awake() {
 		wheels = Resources.LoadAll<CustomWheel>("Wheels")
-			.Where(x => x.achievement != null || !x.achievement.hidden)
+			.Where(x => x.achievement == null || !x.achievement.hidden)
 			.ToArray();
 		achievements = FindObjectOfType<Achievements>();
 		carCustomization = FindObjectOfType<CarCustomization>();

@@ -162,7 +162,7 @@ public class RaceLogic : MonoBehaviour {
 		}
 		expiredGhosts.Clear();
 
-		if (Application.isEditor && Input.GetKeyDown(KeyCode.S)) {
+		if (Application.isEditor && Input.GetKeyDown(KeyCode.Y)) {
 			if (authorGhost != null) {
 				authorGhost.playerName = "author";
 				// re-save author ghosts for data migration

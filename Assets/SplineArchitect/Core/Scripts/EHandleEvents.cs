@@ -40,6 +40,7 @@ namespace SplineArchitect
         public static event Action<Spline> OnUndoSelectedSplines;
         public static event Action<Spline> OnInitalizeSplineEditor;
         public static event Action<Spline> OnDestroySpline;
+        public static event Action<Segment> OnSegmentDeleted;
         public static event Action<Spline> OnCopiedSpline;
         public static event Action<Spline> OnUpdateLoopEndData;
         public static event Action<Spline, SplineObject> OnSplineObjectSCeneGUI;
@@ -92,6 +93,11 @@ namespace SplineArchitect
         public static void InvokeUpdateEarly()
         {
             OnUpdateEarly?.Invoke();
+        }
+
+        public static void InvokeOnSegmentDeleted(Segment segment)
+        {
+            OnSegmentDeleted?.Invoke(segment);
         }
 
         public static void InvokeTransformToCenter(Spline spline, Vector3 dif)

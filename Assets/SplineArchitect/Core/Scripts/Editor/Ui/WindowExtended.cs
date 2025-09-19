@@ -135,6 +135,16 @@ namespace SplineArchitect.Ui
                 }, "Toggle mirror deformation");
             }, so.mirrorDeformation, isDeformation && so.meshContainers.Count > 0);
 
+            //Auto type
+            EUiUtility.CreateButtonToggle(ButtonType.DEFAULT, LibraryGUIContent.iconAuto, LibraryGUIContent.iconAutoActive, 35, 19, () =>
+            {
+                bool value = !so.autoType;
+                EHandleSelection.UpdatedSelectedSplineObjectsRecordUndo((selected) =>
+                {
+                    selected.autoType = value;
+                }, "Toggled auto type");
+            }, so.autoType, so.type != SplineObject.Type.NONE);
+
             EUiUtility.CreateSeparator();
 
             //Objects to spline center
@@ -388,14 +398,42 @@ namespace SplineArchitect.Ui
 
                 GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
 
-                EUiUtility.CreateEmpty(13);
-                EUiUtility.CreateToggleField("Auto type: ", so.autoType, (value) =>
+                GUILayout.Space(7);
+                //Align to end
+                EUiUtility.CreateToggleField("Align to end:", so.alignToEnd, (value) =>
                 {
                     EHandleSelection.UpdatedSelectedSplineObjectsRecordUndo((selected) =>
                     {
-                        selected.autoType = value;
-                    }, "Toggled auto type");
-                }, so.type != SplineObject.Type.NONE, true, 67);
+                        //Set component mode for whole hierarchy
+                        SplineObject firstSo = selected;
+                        for (int i = 0; i < 25; i++)
+                        {
+                            if (firstSo.soParent == null)
+                                break;
+
+                            firstSo = firstSo.soParent;
+                        }
+
+                        EHandleUndo.RecordNow(firstSo);
+                        bool oldAlignToEnd = firstSo.alignToEnd;
+                        firstSo.alignToEnd = value;
+                        firstSo.monitor.ForceUpdate();
+
+                        foreach (SplineObject so2 in so.splineParent.splineObjects)
+                        {
+                            if (firstSo.IsParentTo(so2))
+                            {
+                                EHandleUndo.RecordNow(so2);
+                                oldAlignToEnd = so2.alignToEnd;
+                                so2.alignToEnd = value;
+                                so2.monitor.ForceUpdate();
+                            }
+                        }
+                    }, "Toggle align to end");
+
+                    EHandleTool.ActivatePositionToolForSplineObject(spline, so);
+                    EHandleSceneView.RepaintCurrent();
+                }, true, true, 81);
 
                 //Type
                 EUiUtility.CreatePopupField("Type:", 70, (int)so.type, typeOptions, (int newValue) =>

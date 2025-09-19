@@ -50,18 +50,21 @@ namespace SplineArchitect.Utility
                 return;
 
             SplineObject soParent = null;
+            if (transform.parent != null) soParent = transform.parent.GetComponent<SplineObject>();
 
-            if (transform.parent != null)
-                soParent = transform.parent.GetComponent<SplineObject>();
+            SplineObject newSo = null;
+            if (newSo == null) newSo = transform.GetComponent<SplineObject>();
 
             if (soParent != null && soParent.type == SplineObject.Type.FOLLOWER)
                 return;
 
-            SplineObject newSo = null;
-
-            //Try get so
-            if (newSo == null)
-                newSo = transform.GetComponent<SplineObject>();
+            //If part of hierarchy this data needs to be the same for all spline objects in the hierarchy.
+            if (newSo != null && soParent != null)
+            {
+                UnityEditor.Undo.RecordObject(newSo, "Attache SplineObject");
+                newSo.alignToEnd = soParent.alignToEnd;
+                newSo.componentMode = soParent.componentMode;
+            }
 
             //Create so
             if (newSo == null)

@@ -81,14 +81,14 @@ namespace SplineArchitect.Ui
             System.Type hostViewType = typeof(Editor).Assembly.GetType("UnityEditor.HostView");
             if (hostViewType == null)
             {
-                Debug.LogWarning("UnityEditor.HostView not found. Internal Unity API may have changed.");
+                Debug.LogWarning("[Spline Architect] UnityEditor.HostView not found. Internal Unity API may have changed.");
                 return;
             }
 
             FieldInfo fieldInfo = hostViewType.GetField("k_DockedMinSize", BindingFlags.Static | BindingFlags.NonPublic);
             if (fieldInfo == null)
             {
-                Debug.LogWarning("UnityEditor.HostView.k_DockedMinSize not found. Unity may have changed internal APIs.");
+                Debug.LogWarning("[Spline Architect] UnityEditor.HostView.k_DockedMinSize not found. Unity may have changed internal APIs.");
                 return;
             }
             fieldInfo.SetValue(null, new Vector2(22, 22));

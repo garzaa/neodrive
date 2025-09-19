@@ -49,19 +49,8 @@ namespace SplineArchitect.Utility
 #if UNITY_EDITOR
                 if (so == null)
                     continue;
-
-                Vector3 combinedScale = SplineObjectUtility.GetCombinedParentScales(so);
-
-                if (GeneralUtility.IsZero(combinedScale.x) ||
-                    GeneralUtility.IsZero(combinedScale.y) ||
-                    GeneralUtility.IsZero(combinedScale.z))
-                    return;
-
-                //If not valid for runtime let the editor deformation process catch and deform it.
-                //If readablility is set to false, the mesh can still be deformed during the editor deformation process.
-                if (!so.ValidForRuntimeDeformation())
-                    continue;
 #endif
+
                 if (!so.IsEnabled())
                     continue;
 
@@ -69,6 +58,20 @@ namespace SplineArchitect.Utility
                 bool posRotSplineSpaceChange = so.monitor.PosRotSplineSpaceChange(true);
                 bool combinedParentPosRotScaleChange = so.monitor.CombinedParentPosRotScaleChange(true);
                 bool acoDirty = scaleChange || posRotSplineSpaceChange || combinedParentPosRotScaleChange;
+
+#if UNITY_EDITOR
+                Vector3 combinedScale = SplineObjectUtility.GetCombinedParentScales(so);
+
+                if (GeneralUtility.IsZero(combinedScale.x) ||
+                    GeneralUtility.IsZero(combinedScale.y) ||
+                    GeneralUtility.IsZero(combinedScale.z))
+                    continue;
+
+                //If not valid for runtime let the editor deformation process catch and deform it.
+                //If readablility is set to false, the mesh can still be deformed during the editor deformation process.
+                if (!so.ValidForRuntimeDeformation(splineDirty || acoDirty))
+                    continue;
+#endif
 
                 //FOLLOWER
                 if (so.type == SplineObject.Type.FOLLOWER)
@@ -159,9 +162,10 @@ namespace SplineArchitect.Utility
                                                 NativeArray<Vector3> vertices, 
                                                 NativeArray<NativeSegment> nativeSegments, 
                                                 NativeHashMap<int, float4x4> localSpaces, 
-                                                NativeArray<int> verticesMap, 
+                                                NativeArray<int> verticesMap,
                                                 NativeArray<bool> mirrorMap, 
                                                 SplineObject.Type deformationType,
+                                                NativeArray<bool> alignToEndMap,
                                                 NativeArray<SnapData> snapDatas)
         {
             DeformJob deformJob = new DeformJob()
@@ -172,6 +176,7 @@ namespace SplineArchitect.Utility
                 rightDir = new NativeArray<Vector3>(vertices.Length, Allocator.TempJob),
                 localSpaces = localSpaces,
                 verticesMap = verticesMap,
+                alignToEndMap = alignToEndMap,
                 mirrorMap = mirrorMap,
                 splineUpDirection = spline.normalType == Spline.NormalType.STATIC_2D ? -Vector3.forward : Vector2.up,
                 nativeSegments = nativeSegments,
@@ -198,7 +203,19 @@ namespace SplineArchitect.Utility
                                         NativeArray<bool> mirrorMap,
                                         SplineObject.Type deformationType)
         {
-            return CreateDeformJob(spline, vertices, nativeSegments, localSpaces, verticesMap, mirrorMap, deformationType, new NativeArray<SnapData>(0, Allocator.TempJob));
+            return CreateDeformJob(spline, vertices, nativeSegments, localSpaces, verticesMap, mirrorMap, deformationType, new NativeArray<bool>(localSpaces.Count, Allocator.TempJob), new NativeArray<SnapData>(0, Allocator.TempJob));
+        }
+
+        public static DeformJob CreateDeformJob(Spline spline,
+                                NativeArray<Vector3> vertices,
+                                NativeArray<NativeSegment> nativeSegments,
+                                NativeHashMap<int, float4x4> localSpaces,
+                                NativeArray<int> verticesMap,
+                                NativeArray<bool> mirrorMap,
+                                NativeArray<bool> alignToEndMap,
+                                SplineObject.Type deformationType)
+        {
+            return CreateDeformJob(spline, vertices, nativeSegments, localSpaces, verticesMap, mirrorMap, deformationType, alignToEndMap, new NativeArray<SnapData>(0, Allocator.TempJob));
         }
 
         /// <summary>
@@ -214,6 +231,7 @@ namespace SplineArchitect.Utility
             deformJob.forwardDir.Dispose();
             deformJob.upDir.Dispose();
             deformJob.rightDir.Dispose();
+            deformJob.alignToEndMap.Dispose();
 
 #if UNITY_EDITOR
             EHandleEvents.InvokeDisposeDeformJob();
@@ -235,6 +253,7 @@ namespace SplineArchitect.Utility
 
             NativeArray<Vector3> points = new NativeArray<Vector3>(spline.followerUpdateList.Count, Allocator.TempJob);
             NativeArray<int> verticesMap = new NativeArray<int>(spline.followerUpdateList.Count, Allocator.TempJob);
+            NativeArray<bool> alignToEndMap = new NativeArray<bool>(spline.followerUpdateList.Count, Allocator.TempJob);
             NativeArray<bool> mirrorMap = new NativeArray<bool>(0, Allocator.TempJob);
             localSpaces.Clear();
 
@@ -249,9 +268,10 @@ namespace SplineArchitect.Utility
                 int combinedParentHashCodes = SplineObjectUtility.GetCombinedParentHashCodes(so);
                 if (!localSpaces.ContainsKey(combinedParentHashCodes)) localSpaces.Add(combinedParentHashCodes, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent));
                 verticesMap[i] = combinedParentHashCodes;
+                alignToEndMap[i] = so.alignToEnd;
             }
 
-            DeformJob deformJob = CreateDeformJob(spline, points, spline.nativeSegmentsLocal, SplineUtilityNative.ToNativeHashMap(localSpaces), verticesMap, mirrorMap, SplineObject.Type.FOLLOWER);
+            DeformJob deformJob = CreateDeformJob(spline, points, spline.nativeSegmentsLocal, SplineUtilityNative.ToNativeHashMap(localSpaces), verticesMap, mirrorMap, alignToEndMap, SplineObject.Type.FOLLOWER);
             JobHandle jobHandle = deformJob.Schedule(spline.followerUpdateList.Count, 1);
             jobHandle.Complete();
 

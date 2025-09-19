@@ -29,6 +29,7 @@ namespace SplineArchitect.Jobs
         [ReadOnly] public NativeHashMap<int, float4x4> localSpaces;
         [ReadOnly] public NativeArray<int> verticesMap;
         [ReadOnly] public NativeArray<bool> mirrorMap;
+        [ReadOnly] public NativeArray<bool> alignToEndMap;
         [ReadOnly] public NativeArray<NativeSegment> nativeSegments;
         [ReadOnly] public NativeArray<NoiseLayer> noises;
         [ReadOnly] public Vector3 splineUpDirection;
@@ -47,11 +48,12 @@ namespace SplineArchitect.Jobs
             Vector3 vertice = vertices[i];
             int snapDataIndex = i;
 
-            //Get local space
             float4x4 localSpace;
+            bool alignToEnd = false;
             if (deformationType == SplineObject.Type.FOLLOWER)
             {
                 localSpace = localSpaces[verticesMap[i]];
+                alignToEnd = alignToEndMap[i];
             }
             else
             {
@@ -66,6 +68,7 @@ namespace SplineArchitect.Jobs
 
                         localSpace = localSpaces[i2];
                         snapDataIndex = i2;
+                        alignToEnd = alignToEndMap[i2];
                         break;
                     }
                 }
@@ -103,6 +106,7 @@ namespace SplineArchitect.Jobs
                 }
             }
 
+            if (alignToEnd) vertice.z = splineLength - vertice.z;
             float time = vertice.z / splineLength;
             float fixedTime = SplineUtilityNative.TimeToFixedTime(lengthMap, splineResolution, time, loop);
 
@@ -124,6 +128,7 @@ namespace SplineArchitect.Jobs
             {
                 //Get spline direction
                 zDirection = SplineUtilityNative.GetDirection(nativeSegments, fixedTime);
+                if (alignToEnd) zDirection = -zDirection;
                 //Calculate directions
                 xDirection = Vector3.Cross(zDirection, -splineUpDirection).normalized;
                 yDirection = Vector3.Cross(xDirection, -zDirection).normalized;
@@ -143,6 +148,11 @@ namespace SplineArchitect.Jobs
                 xDirection = normalsArray[normalIndex * 3];
                 yDirection = normalsArray[normalIndex * 3 + 1];
                 zDirection = normalsArray[normalIndex * 3 + 2];
+                if (alignToEnd)
+                {
+                    xDirection = -xDirection;
+                    zDirection = -zDirection;
+                }
             }
 
             //Saddle skew

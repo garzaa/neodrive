@@ -72,7 +72,7 @@ namespace SplineArchitect.Objects
 
             if (instanceMesh == originMesh)
             {
-                Debug.LogError("InstanceMesh and OriginMesh is the same!");
+                Debug.LogError("[Spline Architect] InstanceMesh and OriginMesh is the same!");
                 return;
             }
 
@@ -84,7 +84,7 @@ namespace SplineArchitect.Objects
             else if (meshCollider != null) 
                 meshCollider.sharedMesh = instanceMesh;
             else
-                Debug.LogError($"Could not find MeshFilter or MeshCollider for: {instanceMesh.name}");
+                Debug.LogError($"[Spline Architect] Could not find MeshFilter or MeshCollider for: {instanceMesh.name}");
         }
 
         public void SetOriginMesh(Mesh originMesh)
@@ -93,7 +93,7 @@ namespace SplineArchitect.Objects
             string path = GeneralUtility.GetAssetPath(originMesh);
             if (path == "")
             {
-                Debug.LogError($"Can't set origin mesh! {originMesh.name} does not have an asset path!");
+                Debug.LogError($"[Spline Architect] Can't set origin mesh! {originMesh.name} does not have an asset path!");
                 return;
             }
 #endif
@@ -123,7 +123,7 @@ namespace SplineArchitect.Objects
             else if (meshCollider != null)
                 meshCollider.sharedMesh = originMesh;
             else
-                Debug.LogError($"Could not find MeshFilter or MeshCollider for: {originMesh.name}");
+                Debug.LogError($"[Spline Architect] Could not find MeshFilter or MeshCollider for: {originMesh.name}");
         }
 
         public Component GetMeshContainerComponent()
@@ -222,7 +222,7 @@ namespace SplineArchitect.Objects
 
             if (path == "")
             {
-                Debug.LogError($"Can't set timestamp! {originMesh.name} does not have an asset path!");
+                Debug.LogError($"[Spline Architect] Can't set timestamp! {originMesh.name} does not have an asset path!");
                 return false;
             }
 
