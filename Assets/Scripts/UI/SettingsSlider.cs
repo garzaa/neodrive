@@ -6,7 +6,7 @@ public class SettingsSlider : MonoBehaviour {
     public Text valueLabel;
     public int defaultValue = 5;
 
-    virtual protected void OnEnable() {
+    virtual public void OnEnable() {
         GetComponentInChildren<Slider>().value = PlayerPrefs.GetInt(prefName, defaultValue);
         // force an update
         HandleValueChanged(GetComponentInChildren<Slider>().value);

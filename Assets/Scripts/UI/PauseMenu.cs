@@ -31,6 +31,11 @@ public class PauseMenu : MonoBehaviour {
 		targetPosition = vCam.transform.localPosition;
 		targetRotation = vCam.transform.localRotation;
 		chaseCam = FindObjectOfType<CameraRotate>().GetComponentInChildren<CinemachineVirtualCamera>(includeInactive: true);
+		FindObjectOfType<GameOptions>(includeInactive: true).Awake();
+		GameOptions.Load();
+		foreach (SettingsSlider slider in GetComponentsInChildren<SettingsSlider>()) {
+			slider.OnEnable();
+		}
 	}
 
 	void Update() {

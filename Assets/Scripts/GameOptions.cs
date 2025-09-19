@@ -12,7 +12,7 @@ public class GameOptions : MonoBehaviour {
 
 	static GameOptions instance;
 
-	void Awake() {
+	public void Awake() {
 		instance = this;
 		Load();
 	}

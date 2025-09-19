@@ -262,6 +262,7 @@ public class RaceLogic : MonoBehaviour {
 			return new Tuple<string, Sprite>("Gold Medal", gold.sprite);
 		}
 		if (playerTime <= silver.time) {
+			firstAuthor.Get();
 			return new Tuple<string, Sprite>("Silver Medal", silver.sprite);
 		}
 		if (playerTime <= bronze.time) {
