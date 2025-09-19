@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Rigidbody))]
 public class KickableProp : MonoBehaviour {
 	Vector3 startPos;
 	Quaternion startRot;
@@ -25,6 +26,12 @@ public class KickableProp : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.CompareTag("Player")) {
 			gameObject.layer = LayerMask.NameToLayer("Debris");
+			rb.constraints = RigidbodyConstraints.None;
+			rb.AddForceAtPosition(
+				collision.rigidbody.velocity,
+				collision.contacts[0].point,
+				ForceMode.VelocityChange
+			);
 		}
 	}
 }

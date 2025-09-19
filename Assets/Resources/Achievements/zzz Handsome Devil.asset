@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Get an author medal.
   secret: 1
   titleOverride: Who's That Handsome Devil?
-  hidden: 1
+  hidden: 0

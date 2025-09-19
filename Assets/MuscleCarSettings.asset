@@ -19,6 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gearShiftTime: 0.5
+  maxRPMDiff: 1200
   enableNitrox: 1
   maxNitrox: 3000
   nitroxBoost: 2
@@ -68,4 +69,3 @@ MonoBehaviour:
   driftControl: 3
   airSpinControl: 0.7
   airPitchControl: 0.5
-  customWheel: {fileID: 11400000, guid: ddbb3e106be295e4da660d2ee7514cb1, type: 2}

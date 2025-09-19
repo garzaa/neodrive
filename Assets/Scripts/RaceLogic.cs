@@ -7,6 +7,7 @@ using System.Linq;
 using Cinemachine;
 using System;
 using NaughtyAttributes;
+using Mono.Cecil;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -53,6 +54,8 @@ public class RaceLogic : MonoBehaviour {
 
 	readonly List<string> expiredGhosts = new();
 
+	Achievement firstAuthor;
+
 	public Text timeContainer;
 	Image[] medals;
 
@@ -82,6 +85,8 @@ public class RaceLogic : MonoBehaviour {
 		finishLine.SetRaceType(raceType);
 		finishLine.onValidFinish.AddListener(OnValidFinish);
 		finishLine.onInvalidFinish.AddListener(OnInvalidFinish);
+
+		firstAuthor = Resources.Load<Achievement>("Achivements/zzz Handsome Devil");
 
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
@@ -250,6 +255,7 @@ public class RaceLogic : MonoBehaviour {
 
 	public Tuple<string, Sprite> GetBestMedal(float playerTime) {
 		if (playerTime <= author.time) {
+			firstAuthor.Get();
 			return new Tuple<string, Sprite>("Author Medal", author.sprite);
 	}
 		if (playerTime <= gold.time) {
