@@ -274,7 +274,7 @@ public class RaceLogic : MonoBehaviour {
 
 	public void PlayLoadedGhosts() {
 		playStart = Time.time;
-		authorGhost.playerName = "author";
+		if (authorGhost != null) authorGhost.playerName = "author";
 		if (bestPlayerGhost != null) {
 			if (GameOptions.PlayerGhost) PlayGhost(bestPlayerGhost, isAuthor: false);
 			if (authorGhost != null && bestPlayerGhost.totalTime < gold.time) {

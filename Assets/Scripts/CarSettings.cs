@@ -66,7 +66,7 @@ public class CarSettings : ScriptableObject {
 
 	public float GetTireSlip(float forwardSpeed) {
 		if (forwardSpeed < 1f) {
-			return 1;
+			return 0.99f;
 		}
 		return tireSlip;
 	}

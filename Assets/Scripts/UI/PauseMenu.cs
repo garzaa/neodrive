@@ -40,16 +40,15 @@ public class PauseMenu : MonoBehaviour {
 
 	void Update() {
 		if (paused) {
-			vCam.transform.localPosition = Vector3.Slerp(
+			vCam.transform.SetLocalPositionAndRotation(Vector3.Slerp(
 				vCam.transform.localPosition,
 				targetPosition,
 				0.05f
-			);
-			vCam.transform.localRotation = Quaternion.Slerp(
+			), Quaternion.Slerp(
 				vCam.transform.localRotation,
 				targetRotation,
 				0.05f
-			);
+			));
 		}
 
 		if (InputManager.ButtonDown(Buttons.PAUSE)) {
