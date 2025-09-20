@@ -34592,6 +34592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Streetlight(Clone)
       objectReference: {fileID: 0}
+    - target: {fileID: 5997179038592326706, guid: 5d25bff42ca0af04d9242457f82a3f03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6884836856509487659, guid: 5d25bff42ca0af04d9242457f82a3f03, type: 3}
       propertyPath: m_Size
       value: 10.974995

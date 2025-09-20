@@ -86,8 +86,6 @@ public class RaceLogic : MonoBehaviour {
 		finishLine.onValidFinish.AddListener(OnValidFinish);
 		finishLine.onInvalidFinish.AddListener(OnInvalidFinish);
 
-		firstAuthor = Resources.Load<Achievement>("Achivements/zzz Handsome Devil");
-
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
 		if (authorGhost != null) {
@@ -267,7 +265,6 @@ public class RaceLogic : MonoBehaviour {
 			return new Tuple<string, Sprite>("Gold Medal", gold.sprite);
 		}
 		if (playerTime <= silver.time) {
-			firstAuthor.Get();
 			return new Tuple<string, Sprite>("Silver Medal", silver.sprite);
 		}
 		if (playerTime <= bronze.time) {
@@ -292,6 +289,7 @@ public class RaceLogic : MonoBehaviour {
 
 	void RenderScoreboard() {
 		if (authorGhost == null) {
+			print("no author medal, not rendering scoreboard");
 			scoreContainer.gameObject.SetActive(false);
 			return;
 		}

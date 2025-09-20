@@ -10,9 +10,9 @@ using Unity.VisualScripting;
 using System.Linq;
 
 public class BinarySaver {
-	string baseDataPath;
-	string currentTrack;
-	string applicationVersion;
+	readonly string baseDataPath;
+	readonly string currentTrack;
+	readonly string applicationVersion;
 
 	public BinarySaver(string currentTrack) {
 		this.currentTrack = currentTrack;
@@ -36,6 +36,7 @@ public class BinarySaver {
 			g = LoadGhost(fn);
 			if (!CompatibleVersions(g.version)) {
 				Debug.Log("no compatible ghost version");
+				return null;
 			}
 		} catch (Exception e) {
 			Debug.Log("error loading author ghost: " + e);

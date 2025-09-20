@@ -903,7 +903,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded || forceClutch) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded) {
             InputManager.player.StopVibration();
             return;
         }
