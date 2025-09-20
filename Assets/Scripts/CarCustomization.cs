@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class CarCustomization : SavedObject {
 	CustomWheel wheel;
 	Car car;
+	RaceLogic raceLogic;
 
 	public CustomWheel wheelOverride;
 
@@ -13,6 +14,7 @@ public class CarCustomization : SavedObject {
 
 	protected override void Initialize() {
 		car = FindObjectOfType<Car>();
+		raceLogic = FindObjectOfType<RaceLogic>();
 	}
 
 	public CustomWheel LoadWheelObject(string wheelName) {
@@ -38,6 +40,7 @@ public class CarCustomization : SavedObject {
 			if (wheelOverride != null) wheel = wheelOverride;
 		#endif
 		if (car) car.ApplyWheel(wheel);
+		if (raceLogic) raceLogic.ApplyWheel(wheel);
 		foreach (Wheel w in extraWheels) {
 			w.ApplyCustomWheel(wheel);
 		}

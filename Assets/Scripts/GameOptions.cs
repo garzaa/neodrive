@@ -23,6 +23,9 @@ public class GameOptions : MonoBehaviour {
 		Rumble = LoadBool("Rumble", true);
 		QualitySettings.vSyncCount = LoadBool("VSync") ? 1 : 0;
 		instance.Apply.Invoke();
+		foreach (SettingsSlider slider in FindObjectsOfType<SettingsSlider>(includeInactive: true)) {
+			slider.OnEnable();
+		}
 	}
 
 	static bool LoadBool(string name, bool defaultValue = false) {

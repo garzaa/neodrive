@@ -11,7 +11,7 @@ public class CameraZone : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.CompareTag("Player")) {
+		if (other.CompareTag("Player") || other.CompareTag("PlayerGhost")) {
 			replayCam.transform.position = transform.position;
 		}
 	}

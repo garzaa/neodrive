@@ -250,6 +250,11 @@ public class RaceLogic : MonoBehaviour {
 				i.enabled = true;
 				i.sprite = resultData.Item2;
 			}
+			if (string.IsNullOrEmpty(resultData.Item1)) {
+				medalText.enabled = false;
+			} else {
+				medalText.enabled = true;
+			}
 		}
 	}
 
@@ -257,7 +262,7 @@ public class RaceLogic : MonoBehaviour {
 		if (playerTime <= author.time) {
 			firstAuthor.Get();
 			return new Tuple<string, Sprite>("Author Medal", author.sprite);
-	}
+		}
 		if (playerTime <= gold.time) {
 			return new Tuple<string, Sprite>("Gold Medal", gold.sprite);
 		}
@@ -268,6 +273,8 @@ public class RaceLogic : MonoBehaviour {
 		if (playerTime <= bronze.time) {
 			return new Tuple<string, Sprite>("Bronze Medal", bronze.sprite);
 		}
+
+		if (author.time == 0) return new Tuple<string, Sprite>("", null);
 
 		return new Tuple<string, Sprite>("No Medal", null);
 	}
@@ -442,6 +449,12 @@ public class RaceLogic : MonoBehaviour {
 		}
 		if (!GameOptions.PlayerGhost) {
 			StopPlayingGhost(bestPlayerGhost);
+		}
+	}
+	
+	public void ApplyWheel(CustomWheel wheel) {
+		foreach (Wheel w in playerGhostCar.GetComponentsInChildren<Wheel>()) {
+			w.ApplyCustomWheel(wheel);
 		}
 	}
 }

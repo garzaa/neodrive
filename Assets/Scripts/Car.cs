@@ -490,7 +490,7 @@ public class Car : MonoBehaviour {
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
             tireSkid.mute = false;
-            if (drifting) {
+            if (drifting && !forceClutch) {
                 driftingTime += Time.fixedDeltaTime;
                 Alert("Drift\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
                 nitroxMeter.Add(settings.driftNitroGain * Time.fixedDeltaTime);
@@ -903,7 +903,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded || forceBrake) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded || forceClutch) {
             InputManager.player.StopVibration();
             return;
         }
