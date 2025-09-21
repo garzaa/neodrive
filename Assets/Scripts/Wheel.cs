@@ -55,6 +55,7 @@ public class Wheel : MonoBehaviour {
 		if (!onGhost) compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
 		highSpeedObject.GetComponent<MeshRenderer>().enabled = true;
+		highSpeedObject.SetActive(false);
 		offset = transform.localPosition.magnitude;
 		if (tireSkid) baseSkidPos = tireSkid.transform.localPosition;
 	}
