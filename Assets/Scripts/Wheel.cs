@@ -35,9 +35,6 @@ public class Wheel : MonoBehaviour {
 	public GameObject normalSpeedObject;
 	public GameObject highSpeedObject;
 
-	MeshRenderer normalMesh;
-	MeshRenderer speedMesh;
-
 	float offset;
 
 	public TrailRenderer[] fireStreaks;
@@ -57,8 +54,7 @@ public class Wheel : MonoBehaviour {
 		if (!onGhost) groundedText = GetComponentInChildren<Text>();
 		if (!onGhost) compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
-		normalMesh = normalSpeedObject.GetComponent<MeshRenderer>();
-		speedMesh = highSpeedObject.GetComponent<MeshRenderer>();
+		highSpeedObject.GetComponent<MeshRenderer>().enabled = true;
 		offset = transform.localPosition.magnitude;
 		if (tireSkid) baseSkidPos = tireSkid.transform.localPosition;
 	}
@@ -155,18 +151,19 @@ public class Wheel : MonoBehaviour {
 
 		wheelObject.transform.position = transform.position - transform.up * (settings.suspensionTravel - suspensionCompression);
 		wheelObject.transform.position += transform.up * fakeGroundBump;
-		Vector3 v = wheelObject.transform.localRotation.eulerAngles;
+		Vector3 v = normalSpeedObject.transform.localRotation.eulerAngles;
 
 		// get wheel position against the ground
 		float deg = rpm / 60f * Time.deltaTime * 360f;
 		v.z += deg * (reverseRotation ? -1 : 1);
 		if (!float.IsNaN(v.z) && float.IsFinite(v.z)) {
-			wheelObject.transform.localRotation = Quaternion.Euler(v);
+			normalSpeedObject.transform.localRotation = Quaternion.Euler(v);
+			highSpeedObject.transform.localRotation = Quaternion.Euler(v);
 		}
 
 		bool highSpeed = rpm > 400;
-		normalMesh.enabled = !highSpeed;
-		speedMesh.enabled = highSpeed;
+		normalSpeedObject.SetActive(!highSpeed);
+		highSpeedObject.SetActive(highSpeed);
 
 		foreach (TrailRenderer r in fireStreaks) {
 			r.emitting = boosting;
@@ -196,7 +193,7 @@ public class Wheel : MonoBehaviour {
 	}
 
 	public void ApplyCustomWheel(CustomWheel w) {
-		normalMesh.material = w.defaultMaterial;
-		speedMesh.material = w.spinningMaterial;
+		normalSpeedObject.GetComponent<MeshRenderer>().material = w.defaultMaterial;
+		highSpeedObject.GetComponent<MeshRenderer>().material = w.spinningMaterial;
 	}
 }
