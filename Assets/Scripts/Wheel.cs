@@ -194,7 +194,7 @@ public class Wheel : MonoBehaviour {
 
 		if (brakeDisc) {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
-			brakeDiscMaterial.SetColor("_Emissive_Color", brakeGlow > 0 ? Color.white : Color.black);
+			brakeDiscMaterial.SetColor("_Emissive_Color", Color.Lerp(Color.black, Color.white, brakeGlow));
 			brakeDisc.SetPropertyBlock(brakeDiscMaterial, 0);
 		}
 	}

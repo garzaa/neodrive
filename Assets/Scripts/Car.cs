@@ -67,6 +67,7 @@ public class Car : MonoBehaviour {
     bool clutchOutThisFrame, clutchInThisFrame;
     float clutchOutTime = 0;
     public float clutchRatio = 1f;
+    float brakeGlow = 0f;
 
     float currentGrip = 1f;
 
@@ -359,6 +360,13 @@ public class Car : MonoBehaviour {
 
         UpdateEngine();
         if (Time.timeScale > 0) {
+            float targetBrakeGlow = grounded && rb.velocity.sqrMagnitude > 5f && (brake > 0) ? 1 : 0;
+            if (targetBrakeGlow > brakeGlow) {
+                brakeGlow = Mathf.Lerp(brakeGlow, targetBrakeGlow, 10f * Time.fixedDeltaTime);
+            } else {
+                brakeGlow = Mathf.Lerp(brakeGlow, targetBrakeGlow, 1f * Time.fixedDeltaTime);
+            }
+
             foreach (Wheel w in wheels) {
                 float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
                 if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
@@ -378,7 +386,7 @@ public class Car : MonoBehaviour {
                     rpm,
                     wheelBoost,
                     Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f),
-                    grounded && rb.velocity.sqrMagnitude > 5f && (brake > 0) ? 1 : 0
+                    brakeGlow
                 );
             }
         }
@@ -397,6 +405,11 @@ public class Car : MonoBehaviour {
                 float wantedAccel = GetWantedAccel(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
                     bool lcsBreak = ((wantedAccel-settings.burnoutThreshold) > settings.lcsLimit) && !usingKeyboard;
+
+                    // if braking at low speed allow doing a burnout
+                    bool burnout = gas>0 && (forwardSpeed * u2mph) < 5 && (brake>0 || InputManager.Button(Buttons.HANDBRAKE));
+                    lcsBreak |= burnout;
+
                     // don't disable LCS on disabling assists
                     // just to make a the car a little easier to drive
                     // maybe expose that in settings later on
@@ -406,6 +419,7 @@ public class Car : MonoBehaviour {
                     } else {
                         forwardTraction = settings.burnoutThreshold/wantedAccel;
                         forwardTraction = Mathf.Pow(forwardTraction, 2);
+                        if (burnout) forwardTraction = 0.01f;
                     }
                 }
 
