@@ -193,7 +193,6 @@ public class Wheel : MonoBehaviour {
 		tireSkid.emitting = Grounded && drifting;
 
 		if (brakeDisc) {
-			print($"setting brake glow to {brakeGlow > 0}");
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 			brakeDiscMaterial.SetColor("_Emissive_Color", brakeGlow > 0 ? Color.white : Color.black);
 			brakeDisc.SetPropertyBlock(brakeDiscMaterial, 0);

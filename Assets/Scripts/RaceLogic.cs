@@ -289,7 +289,6 @@ public class RaceLogic : MonoBehaviour {
 
 	void RenderScoreboard() {
 		if (authorGhost == null) {
-			print("no author medal, not rendering scoreboard");
 			scoreContainer.gameObject.SetActive(false);
 			return;
 		}
