@@ -195,5 +195,17 @@ public class Wheel : MonoBehaviour {
 	public void ApplyCustomWheel(CustomWheel w) {
 		normalSpeedObject.GetComponent<MeshRenderer>().material = w.defaultMaterial;
 		highSpeedObject.GetComponent<MeshRenderer>().material = w.spinningMaterial;
+
+		// doesn't work right now
+		MaterialPropertyBlock mpb = new();
+		foreach (TrailRenderer trail in GetComponentsInChildren<TrailRenderer>(includeInactive: true)) {
+			if (trail.material.name == "SkidStreak (Instance)") {
+				trail.GetPropertyBlock(mpb);
+				mpb.SetColor("_BaseColorMaskColor", w.skidColor);
+				mpb.SetColor("_FirstShadeMaskColor", w.skidColor);
+				mpb.SetColor("_SecondShadeMaskColor", w.skidColor);
+				trail.SetPropertyBlock(mpb);
+			}
+		}
 	}
 }

@@ -24,6 +24,7 @@ public class Tutorial : MonoBehaviour {
 		car = FindObjectOfType<Car>();
 		nitroxMeter = FindObjectOfType<NitroxMeter>();
 		car.forceBrake = true;
+		car.onRespawn.AddListener(() => vcam.enabled = false);
 		shiftPrompt.SetActive(false);
 		respawnPrompt.SetActive(false);
 		boostPrompt.SetActive(false);

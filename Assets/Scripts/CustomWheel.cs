@@ -8,6 +8,7 @@ public class CustomWheel : ScriptableObject {
 	public Material spinningMaterial;
 	public string nameOverride;
 	public Achievement achievement;
+	public Color skidColor = Color.black;
 
 	public string GetName() {
 		if (string.IsNullOrEmpty(nameOverride)) {
