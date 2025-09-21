@@ -43,6 +43,9 @@ public class Wheel : MonoBehaviour {
 	Vector3 baseSkidPos;
 	bool onGhost;
 
+	MeshRenderer brakeDisc;
+	MaterialPropertyBlock brakeDiscMaterial;
+
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
 		if (settings == null) {
@@ -58,6 +61,13 @@ public class Wheel : MonoBehaviour {
 		highSpeedObject.SetActive(false);
 		offset = transform.localPosition.magnitude;
 		if (tireSkid) baseSkidPos = tireSkid.transform.localPosition;
+		Transform brakeDiscT = transform.Find("WheelContainer/Axle/BrakeDisc");
+		if (brakeDiscT != null) {
+			brakeDiscMaterial = new();
+			brakeDisc = brakeDiscT.GetComponent<MeshRenderer>();
+			// disc is 0, calipers are 1
+			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
+		}
 	}
 
 	void GenerateRays() {
@@ -141,7 +151,7 @@ public class Wheel : MonoBehaviour {
 		car.rb.AddForceAtPosition(f, transform.position);
 	}
 
-	public void UpdateWheelVisuals(float flatSpeed, float rpm, bool boosting, bool drifting) {
+	public void UpdateWheelVisuals(float flatSpeed, float rpm, bool boosting, bool drifting, float brakeGlow) {
 		if (Time.timeScale == 0) return;
 		fakeGroundBump = 0;
 
@@ -181,6 +191,13 @@ public class Wheel : MonoBehaviour {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}
 		tireSkid.emitting = Grounded && drifting;
+
+		if (brakeDisc) {
+			print($"setting brake glow to {brakeGlow > 0}");
+			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
+			brakeDiscMaterial.SetColor("_Emissive_Color", brakeGlow > 0 ? Color.white : Color.black);
+			brakeDisc.SetPropertyBlock(brakeDiscMaterial, 0);
+		}
 	}
 
 	public float GetWheelRPMFromSpeed(float flatSpeed) {

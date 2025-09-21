@@ -377,7 +377,8 @@ public class Car : MonoBehaviour {
                     Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
                     rpm,
                     wheelBoost,
-                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f)
+                    Drifting || ((w==WheelRR||w==WheelRL) && forwardTraction < 1f),
+                    grounded && rb.velocity.sqrMagnitude > 5f && (brake > 0) ? 1 : 0
                 );
             }
         }
@@ -997,7 +998,8 @@ public class Car : MonoBehaviour {
                 Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
                 0,
                 false,
-                false
+                false,
+                0
             );
             w.ClearTrails();
         }

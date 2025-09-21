@@ -28,7 +28,7 @@ public class GhostCar : MonoBehaviour {
 		wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
 
 		foreach (Wheel w in wheels) {
-			w.UpdateWheelVisuals(0, 0, false, false);
+			w.UpdateWheelVisuals(0, 0, false, false, 0);
 		}
 
 		boostEffect.SetActive(false);
@@ -47,7 +47,7 @@ public class GhostCar : MonoBehaviour {
 
 		foreach (Wheel w in wheels) {
 			bool wheelBoost = snapshot.boosting && (w==WheelRR || w==WheelRL);
-			w.UpdateWheelVisuals(flatSpeed, w.GetWheelRPMFromSpeed(flatSpeed), wheelBoost, snapshot.drifting);
+			w.UpdateWheelVisuals(flatSpeed, w.GetWheelRPMFromSpeed(flatSpeed), wheelBoost, snapshot.drifting, 0);
 		}
 
 		boostEffect.SetActive(snapshot.boosting);
