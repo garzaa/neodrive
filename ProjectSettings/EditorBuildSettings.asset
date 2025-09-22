@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Canyon Bends.unity
     guid: 6dc7eea45a793a94aabc66de8356e431
+  - enabled: 1
+    path: Assets/Tracks/Tutorial.unity
+    guid: dda3b138a9651b24a94a2084d5302fe3
   m_configObjects: {}

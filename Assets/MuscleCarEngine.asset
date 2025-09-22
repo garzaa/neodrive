@@ -167,9 +167,11 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    rpm: 4000
-    toneShiftAmount: 0.5
+    rpm: 3000
+    toneShiftAmount: 0.8
     gearLoop: {fileID: 8300000, guid: 2c52791dbcd21a44fb469c5ef9dc190b, type: 3}
+    baseVolume: 0.3
+    tremoloVolumeRange: 0.4
   clutchSound: {fileID: 8300000, guid: cb16732382b41fe468e9b49d2907427c, type: 3}
   clutchSharpness: 2.5
   gearShiftNoises:

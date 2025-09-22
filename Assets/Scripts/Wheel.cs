@@ -6,8 +6,7 @@ using UnityEngine.Assertions.Must;
 
 public class Wheel : MonoBehaviour {
 	CarSettings settings;
-	RaycastHit raycastHit = new();
-	RaycastHit[] hits;
+	RaycastHit frameHit;
 
 	const int wheelRays = 16;
 	readonly Vector3[] wheelCastRays = new Vector3[wheelRays];
@@ -16,6 +15,7 @@ public class Wheel : MonoBehaviour {
 	public GameObject wheelObject;
 
 	public bool Grounded;
+	public bool hydroplaning;
 
 	public float wheelRadius;
 	public float suspensionCompression;
@@ -46,6 +46,8 @@ public class Wheel : MonoBehaviour {
 	MeshRenderer brakeDisc;
 	MaterialPropertyBlock brakeDiscMaterial;
 
+	int waterRaycast;
+
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
 		if (settings == null) {
@@ -68,6 +70,7 @@ public class Wheel : MonoBehaviour {
 			// disc is 0, calipers are 1
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
+		waterRaycast = LayerMask.GetMask("Water");
 	}
 
 	void GenerateRays() {
@@ -81,37 +84,48 @@ public class Wheel : MonoBehaviour {
 		}
 	}
 
-	public bool GetRaycast() {
+	public RaycastHit GetRaycast(LayerMask raycastMask) {
 		// get the nearest raycast out of the arc of wheel raycasts
 		float minDist = float.MaxValue;
-		bool hasHit = false;
+		RaycastHit h = new();
 		foreach (Vector3 rayOffset in wheelCastRays) {
 			Vector3 actualOffset = transform.TransformVector(rayOffset);
 			if (Physics.Raycast(
 				new Ray(transform.position + actualOffset + transform.up*wheelRadius, -transform.up),
 				out RaycastHit tempHit,
 				settings.suspensionTravel + wheelRadius,
-				settings.wheelRaycast
+				raycastMask
 			)) {
-				hasHit = true;
-				if (tempHit.distance < minDist)
-				{
+				if (tempHit.distance < minDist) {
 					minDist = tempHit.distance;
-					raycastHit = tempHit;
+					h = tempHit;
 				}
 			}
 		}
-		return hasHit;
+		return h;
 	}
 
-	public Vector3 GetSuspensionForce() {
-		bool hit = GetRaycast();
+	public Vector3 GetSuspensionForce(Rigidbody rb) {
+		RaycastHit groundHit = GetRaycast(settings.wheelRaycast);
+		bool hit = groundHit.collider != null;
+		frameHit = groundHit;
+
+		// if car is going over hydroplaneSpeed in a flat speed, raycast with water
+		float flatVelocity = Vector3.ProjectOnPlane(rb.velocity, transform.up).magnitude;
+		RaycastHit waterHit = GetRaycast(waterRaycast);
+		if (waterHit.collider != null && (flatVelocity * Car.u2mph > settings.hydroplaneSpeed)) {
+			hit = true;
+			frameHit = waterHit;
+			hydroplaning = true;
+		} else {
+			hydroplaning = false;
+		}
 
 		if (hit) {
 			Grounded = true;
 			suspensionCompression = settings.suspensionTravel
 				+ wheelRadius
-				- (raycastHit.point - transform.position).magnitude;
+				- (frameHit.point - transform.position).magnitude;
 		} else {
 			Grounded = false;
 			suspensionCompression = 0;
@@ -186,11 +200,11 @@ public class Wheel : MonoBehaviour {
 
 		// pin skidmarks to ground
 		if (Grounded) {
-			tireSkid.transform.position = raycastHit.point + transform.up*0.06f;
+			tireSkid.transform.position = frameHit.point + transform.up*0.06f;
 		} else {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}
-		tireSkid.emitting = Grounded && drifting;
+		tireSkid.emitting = Grounded && drifting && !hydroplaning;
 
 		if (brakeDisc) {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);

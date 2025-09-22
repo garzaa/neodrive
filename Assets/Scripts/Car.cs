@@ -62,6 +62,7 @@ public class Car : MonoBehaviour {
 
     bool drifting = false;
     float driftingTime = 0;
+    bool hydroplaning = false;
     public float forwardTraction = 1f;
     bool clutch = false;
     bool clutchOutThisFrame, clutchInThisFrame;
@@ -338,10 +339,10 @@ public class Car : MonoBehaviour {
 
     void FixedUpdate() {
         Vector3 FLForce, FRForce, RLForce, RRForce;
-        FLForce = WheelFL.GetSuspensionForce();
-        FRForce = WheelFR.GetSuspensionForce();
-        RLForce = WheelRL.GetSuspensionForce();
-        RRForce = WheelRR.GetSuspensionForce();
+        FLForce = WheelFL.GetSuspensionForce(rb);
+        FRForce = WheelFR.GetSuspensionForce(rb);
+        RLForce = WheelRL.GetSuspensionForce(rb);
+        RRForce = WheelRR.GetSuspensionForce(rb);
 
         WheelFL.AddForce(this, FLForce);
         WheelFR.AddForce(this, FRForce);
@@ -349,9 +350,13 @@ public class Car : MonoBehaviour {
         WheelRR.AddForce(this, RRForce);
 
         grounded = false;
+        hydroplaning = false;
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
+            }
+            if (w.hydroplaning) {
+                hydroplaning = true;
             }
         }
 
@@ -402,7 +407,7 @@ public class Car : MonoBehaviour {
                 mult *= 1-tcsFrac*settings.tcsBraking;
                 
                 float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
-                float wantedAccel = GetWantedAccel(gas, forwardSpeed);
+                float wantedAccel = GetWantedAccelForGas(gas, forwardSpeed);
                 if (wantedAccel > settings.burnoutThreshold) {
                     bool lcsBreak = ((wantedAccel-settings.burnoutThreshold) > settings.lcsLimit) && !usingKeyboard;
 
@@ -419,8 +424,8 @@ public class Car : MonoBehaviour {
                     } else {
                         forwardTraction = settings.burnoutThreshold/wantedAccel;
                         forwardTraction = Mathf.Pow(forwardTraction, 2);
-                        if (burnout) forwardTraction = 0.01f;
                     }
+                    if (burnout || hydroplaning) forwardTraction = 0.5f;
                 }
 
                 float forceMagnitude = engine.GetPower(engineRPM)*gas*mult;
@@ -473,7 +478,7 @@ public class Car : MonoBehaviour {
         }
         
         if (grounded) {
-            if (Drifting) {
+            if (Drifting || hydroplaning) {
                 // steering should also rotate the car's velocity when drifting
                 float angleOffForward = Vector3.SignedAngle(rb.velocity, transform.forward, transform.up);
                 // you can countersteer to avoid rotation
@@ -491,7 +496,7 @@ public class Car : MonoBehaviour {
 
             if (WheelFL.Grounded || WheelFR.Grounded) {
                 AddLateralForce(frontAxle, Quaternion.AngleAxis(targetSteerAngle, transform.up) * transform.right, true, false);
-                if (drifting && rb.velocity.sqrMagnitude > 1f) {
+                if ((hydroplaning || drifting) && rb.velocity.sqrMagnitude > 1f) {
                     // mass * distance / time^2
                     rb.AddTorque(settings.driftControl * settings.maxSteerAngle * steering * transform.up);
                 }
@@ -504,10 +509,11 @@ public class Car : MonoBehaviour {
                 wheelAudio.volume = 0.5f;
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
-            tireSkid.mute = false;
-            if (drifting && !forceClutch) {
+            tireSkid.mute = hydroplaning;
+            if ((drifting && !forceBrake) || hydroplaning) {
                 driftingTime += Time.fixedDeltaTime;
-                Alert("Drift\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
+                string skillName = hydroplaning ? "Hydroplaning" : "Drift";
+                Alert($"{skillName}\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
                 nitroxMeter.Add(settings.driftNitroGain * Time.fixedDeltaTime);
             } else {
                 driftingTime = 0;
@@ -693,7 +699,7 @@ public class Car : MonoBehaviour {
         return sa;
     }
     
-    float GetWantedAccel(float gas, float forwardSpeed) {
+    float GetWantedAccelForGas(float gas, float forwardSpeed) {
         float mult = 1-tcsFrac*settings.tcsBraking;
         float forceMagnitude = engine.GetPower(engineRPM)*gas*mult;
         float wantedSpeed = forwardSpeed + (forceMagnitude * Time.fixedDeltaTime / rb.mass);
@@ -772,7 +778,7 @@ public class Car : MonoBehaviour {
         float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
         float wantedAccel = -lateralSpeed * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward)) / Time.fixedDeltaTime;
         if (steeringAxle) {
-            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
+            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce && !hydroplaning) {
                 drifting = true;
             } else {
                 drifting = false;
@@ -782,6 +788,9 @@ public class Car : MonoBehaviour {
                 currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
             } else {
                 carBody.driftRoll = 0f;
+            }
+            if (hydroplaning) {
+                currentGrip = settings.hydroplaneGrip;
             }
             float gs = ToGs(wantedAccel);
             gForceIndicator.rectTransform.localScale = new Vector3(gs, 1, 1);
