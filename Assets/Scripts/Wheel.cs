@@ -78,7 +78,7 @@ public class Wheel : MonoBehaviour {
 			// disc is 0, calipers are 1
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
-		waterRaycast = LayerMask.GetMask("Water", "Ground");
+		waterRaycast = LayerMask.GetMask("Water");
 		if (!onGhost) waterWake.Stop();
 	}
 
@@ -123,6 +123,7 @@ public class Wheel : MonoBehaviour {
 		float flatVelocity = Vector3.ProjectOnPlane(rb.velocity, transform.up).magnitude;
 		RaycastHit waterHit = GetRaycast(waterRaycast);
 		hydroplaning = false;
+		// only hydroplane check if water is above ground
 		if (waterHit.collider != null) {
 			if (!waterWake.isPlaying) waterWake.Play();
 			print("playing water particles");

@@ -69,5 +69,5 @@ MonoBehaviour:
   driftControl: 3
   airSpinControl: 0.7
   airPitchControl: 0.5
-  hydroplaneSpeed: 80
+  hydroplaneSpeed: 100
   hydroplaneGrip: 0.1

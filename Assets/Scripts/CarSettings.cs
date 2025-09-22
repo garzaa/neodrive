@@ -65,7 +65,7 @@ public class CarSettings : ScriptableObject {
 	public float airPitchControl = 0.5f;
 
 	[Tooltip("Speed, in MPH, the car must be traveling to hydroplane")]
-	public float hydroplaneSpeed = 80f;
+	public float hydroplaneSpeed = 100f;
 	[Range(0f, 1f)]
 	public float hydroplaneGrip = 0.1f;
 
