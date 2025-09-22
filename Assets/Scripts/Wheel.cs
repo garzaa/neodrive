@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Assertions.Must;
+using UnityEditor;
 
 public class Wheel : MonoBehaviour {
 	CarSettings settings;
@@ -39,6 +40,9 @@ public class Wheel : MonoBehaviour {
 
 	public TrailRenderer[] fireStreaks;
 	public GameObject wheelFire;
+	public ParticleSystem waterWake;
+
+	bool wetWithoutHydroplaneLastStep;
 
 	Vector3 baseSkidPos;
 	bool onGhost;
@@ -71,6 +75,7 @@ public class Wheel : MonoBehaviour {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
 		waterRaycast = LayerMask.GetMask("Water");
+		if (!onGhost) waterWake.Stop();
 	}
 
 	void GenerateRays() {
@@ -113,12 +118,22 @@ public class Wheel : MonoBehaviour {
 		// if car is going over hydroplaneSpeed in a flat speed, raycast with water
 		float flatVelocity = Vector3.ProjectOnPlane(rb.velocity, transform.up).magnitude;
 		RaycastHit waterHit = GetRaycast(waterRaycast);
-		if (waterHit.collider != null && (flatVelocity * Car.u2mph > settings.hydroplaneSpeed)) {
-			hit = true;
-			frameHit = waterHit;
-			hydroplaning = true;
-		} else {
-			hydroplaning = false;
+		hydroplaning = false;
+		if (waterHit.collider != null) {
+			if (!waterWake.isPlaying) waterWake.Play();
+			print("playing water particles");
+			waterWake.transform.position = waterHit.point + Vector3.up*0.1f;
+			// don't pop the car up onto the surface if they start hydroplaning
+			if (flatVelocity * Car.u2mph > settings.hydroplaneSpeed && !wetWithoutHydroplaneLastStep) {
+				hit = true;
+				frameHit = waterHit;
+				hydroplaning = true;
+			} else {
+				wetWithoutHydroplaneLastStep = true;
+			}
+		} else if (!onGhost && waterWake.isPlaying) {
+			waterWake.Stop();
+			wetWithoutHydroplaneLastStep = false;
 		}
 
 		if (hit) {

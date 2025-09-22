@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SWS_WaterEffects_Desktop
-  m_Shader: {fileID: 4800000, guid: 4eaa0a0d50c52f748be15614eef105c3, type: 3}
+  m_Shader: {fileID: 4800000, guid: 43a1bbcf4d7dd7b449bd0873c6fb1dba, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
