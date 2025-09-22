@@ -11,7 +11,7 @@ public class EngineAudio : MonoBehaviour {
     EngineSettings engine;
 
     const float tremoloHZ = 5;
-    const float tremoloAmp = 0.5f;
+    float t = 0;
 
     bool mute = false;
     
@@ -62,7 +62,7 @@ public class EngineAudio : MonoBehaviour {
 	}
 
 	public void SetRPMAudio(float rpm, float gas, bool fuelCutoff, bool clutchPressed) {
-        SetGearAudio(rpm, clutchPressed);
+        SetGearAudio(rpm, clutchPressed, gas);
         RPMPoint lowTarget = rpmPoints[0];
         RPMPoint highTarget = rpmPoints[0];
         for (int i=1; i<rpmPoints.Count-1; i++) {
@@ -145,7 +145,7 @@ public class EngineAudio : MonoBehaviour {
         highTarget.throttleOffAudio.pitch = targetHighPitch;
 	}
 
-    void SetGearAudio(float rpm, bool clutch) {
+    void SetGearAudio(float rpm, bool clutch, float gas) {
 
         float frac = rpm / engine.redline;
         gearAudio.volume = engine.gearSound.volumeCurve.Evaluate(frac);
@@ -163,9 +163,15 @@ public class EngineAudio : MonoBehaviour {
         
         // sinewave volume modulation
         // at default RPM: 5 hz
-        // get a sinewave normalized betwen 0.5 and 1
-        // midpoint at 0.75
-        float s = Mathf.Sin(Time.time * Mathf.PI * 2f * tremoloHZ) * 0.25f + (0.5f + 0.125f);
+        // get a sinewave normalized betwen 0.75 and 1
+        // midpoint at 0.8625
+        t += Time.deltaTime * Mathf.PI * 2f * tremoloHZ * (rpm / engine.gearSound.rpm);
+        float s = Mathf.Sin(t) * 0.125f + (0.8625f);
         gearAudio.volume *= s;
+        // reduce volume partly based on gas
+        gearAudio.volume *= 1-((1-gas)*0.3f);
+        gearAudio.volume *= 0.4f;
+
+        // change sinewave freq based on rpm
     }
 }
