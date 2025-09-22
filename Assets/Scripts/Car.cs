@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Cinemachine;
 using Rewired;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
@@ -63,6 +64,8 @@ public class Car : MonoBehaviour {
     bool drifting = false;
     float driftingTime = 0;
     bool hydroplaning = false;
+    bool inWater = false;
+    public AudioSource hydroplaneNoise;
     public float forwardTraction = 1f;
     bool clutch = false;
     bool clutchOutThisFrame, clutchInThisFrame;
@@ -351,12 +354,16 @@ public class Car : MonoBehaviour {
 
         grounded = false;
         hydroplaning = false;
+        inWater = false;
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
             }
             if (w.hydroplaning) {
                 hydroplaning = true;
+            }
+            if (w.inWater) {
+                inWater = true;
             }
         }
 
@@ -547,6 +554,8 @@ public class Car : MonoBehaviour {
             UpdateAirControl();
         }
         groundedLastStep = grounded;
+
+        hydroplaneNoise.mute = !hydroplaning || !(inWater && rb.velocity.sqrMagnitude > 5f);
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {

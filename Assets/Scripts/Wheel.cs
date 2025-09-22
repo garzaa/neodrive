@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Assertions.Must;
 using UnityEditor;
+using System.Linq;
 
 public class Wheel : MonoBehaviour {
 	CarSettings settings;
@@ -17,6 +18,7 @@ public class Wheel : MonoBehaviour {
 
 	public bool Grounded;
 	public bool hydroplaning;
+	public bool inWater;
 
 	public float wheelRadius;
 	public float suspensionCompression;
@@ -50,6 +52,8 @@ public class Wheel : MonoBehaviour {
 	MeshRenderer brakeDisc;
 	MaterialPropertyBlock brakeDiscMaterial;
 
+	readonly Collider[] overlaps = new Collider[1];
+
 	int waterRaycast;
 
 	void Awake() {
@@ -74,7 +78,7 @@ public class Wheel : MonoBehaviour {
 			// disc is 0, calipers are 1
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
-		waterRaycast = LayerMask.GetMask("Water");
+		waterRaycast = LayerMask.GetMask("Water", "Ground");
 		if (!onGhost) waterWake.Stop();
 	}
 
@@ -150,6 +154,12 @@ public class Wheel : MonoBehaviour {
 		suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
 
 		suspensionCompressionLastStep = suspensionCompression;
+		inWater = Physics.OverlapSphereNonAlloc(
+			transform.position,
+			wheelRadius,
+			overlaps,
+			waterRaycast
+		) > 0;
 		UpdateTelemetry();
 		return suspensionForce;
 	}
