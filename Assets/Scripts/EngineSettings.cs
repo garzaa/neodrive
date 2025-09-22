@@ -34,6 +34,8 @@ public class GearSound {
 	[Range(0.1f, 1)]
 	public float toneShiftAmount;
 	public AudioClip gearLoop;
+	public float baseVolume = 0.4f;
+	public float tremoloVolumeRange = 0.25f;
 }
 
 [CreateAssetMenu(menuName = "Data/EngineSettings")]
