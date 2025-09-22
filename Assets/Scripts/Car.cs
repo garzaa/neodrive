@@ -669,7 +669,7 @@ public class Car : MonoBehaviour {
             }
         }
 
-        engineAudio.SetRPMAudio(GetRPMAudioPoint(), gas, fuelCutoff);
+        engineAudio.SetRPMAudio(GetRPMAudioPoint(), gas, fuelCutoff, clutch);
         UpdateEngineLowPass();
         carBody.transform.localPosition = new Vector3(0, engineRPM/engine.redline * 0.025f, 0);
     }

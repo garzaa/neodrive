@@ -25,6 +25,17 @@ public class RPMPoint {
 	}
 }
 
+[System.Serializable]
+public class GearSound {
+	[Tooltip("Volume as a fraction of redline")]
+	public AnimationCurve volumeCurve;
+	[Tooltip("Keep pitch neutral at this RPM")]
+	public float rpm;
+	[Range(0.1f, 1)]
+	public float toneShiftAmount;
+	public AudioClip gearLoop;
+}
+
 [CreateAssetMenu(menuName = "Data/EngineSettings")]
 public class EngineSettings : ScriptableObject {
 	public int redline = 8000;
@@ -41,6 +52,7 @@ public class EngineSettings : ScriptableObject {
 	public float throttleResponse = 6000f;
 	public List<RPMPoint> rpmPoints;
 	public List<float> gearRatios;
+	public GearSound gearSound;
 	public AudioClip clutchSound;
 	[Range(0.1f, 3f)]
 	public float clutchSharpness = 0.7f;

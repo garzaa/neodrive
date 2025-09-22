@@ -133,6 +133,43 @@ MonoBehaviour:
   - 1.2
   - 1
   - 0.8
+  gearSound:
+    volumeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.7
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0.7
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    rpm: 5000
+    toneShiftAmount: 1
+    gearLoop: {fileID: 8300000, guid: 2c52791dbcd21a44fb469c5ef9dc190b, type: 3}
   clutchSound: {fileID: 8300000, guid: cb16732382b41fe468e9b49d2907427c, type: 3}
   clutchSharpness: 2.5
   gearShiftNoises:

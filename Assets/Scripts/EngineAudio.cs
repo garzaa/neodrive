@@ -1,11 +1,17 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class EngineAudio : MonoBehaviour {
 
 	float maxEngineVolume;
-	List<RPMPoint> rpmPoints = new();
+	readonly List<RPMPoint> rpmPoints = new();
+    AudioSource gearAudio;
+    EngineSettings engine;
+
+    const float tremoloHZ = 5;
+    const float tremoloAmp = 0.5f;
 
     bool mute = false;
     
@@ -20,6 +26,7 @@ public class EngineAudio : MonoBehaviour {
     }
 
 	public void BuildSoundCache(EngineSettings engine, AudioSource engineAudioSource, bool bigSteps = false) {
+        this.engine = engine;
 		maxEngineVolume = engineAudioSource.volume;
         foreach (RPMPoint r in engine.rpmPoints) {
 			if (bigSteps && (r.rpm % 1000 != 0)) continue;
@@ -43,9 +50,19 @@ public class EngineAudio : MonoBehaviour {
 
             rpmPoints.Add(new RPMPoint(r, rAudio, rOffAudio));
         }
+
+        gearAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
+        gearAudio.volume = 0;
+        gearAudio.outputAudioMixerGroup = engineAudioSource.outputAudioMixerGroup;
+        gearAudio.clip = engine.gearSound.gearLoop;
+        gearAudio.loop = true;
+        gearAudio.spatialBlend = 1;
+        gearAudio.minDistance = engineAudioSource.minDistance;
+        gearAudio.Play();
 	}
 
-	public void SetRPMAudio(float rpm, float gas, bool fuelCutoff) {
+	public void SetRPMAudio(float rpm, float gas, bool fuelCutoff, bool clutchPressed) {
+        SetGearAudio(rpm, clutchPressed);
         RPMPoint lowTarget = rpmPoints[0];
         RPMPoint highTarget = rpmPoints[0];
         for (int i=1; i<rpmPoints.Count-1; i++) {
@@ -127,4 +144,28 @@ public class EngineAudio : MonoBehaviour {
         highTarget.throttleAudio.pitch = targetHighPitch;
         highTarget.throttleOffAudio.pitch = targetHighPitch;
 	}
+
+    void SetGearAudio(float rpm, bool clutch) {
+
+        float frac = rpm / engine.redline;
+        gearAudio.volume = engine.gearSound.volumeCurve.Evaluate(frac);
+        if (clutch) {
+            gearAudio.volume = 0;
+        }
+
+        // shorten the RPM diff so it doesn't fluctuate as much
+        float diff = engine.gearSound.rpm - rpm;
+        diff *= -engine.gearSound.toneShiftAmount;
+        float updatedRPM  = engine.gearSound.rpm + diff;
+        float targetPitch = updatedRPM / engine.gearSound.rpm;
+        gearAudio.pitch = targetPitch;
+
+        
+        // sinewave volume modulation
+        // at default RPM: 5 hz
+        // get a sinewave normalized betwen 0.5 and 1
+        // midpoint at 0.75
+        float s = Mathf.Sin(Time.time * Mathf.PI * 2f * tremoloHZ) * 0.25f + (0.5f + 0.125f);
+        gearAudio.volume *= s;
+    }
 }
