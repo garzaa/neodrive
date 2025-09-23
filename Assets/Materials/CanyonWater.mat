@@ -11,9 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 4bcc0b68579a5c740ad31644411ffb54, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _LIGHTING_ON
-  - _SECONDARY_WAVES_ON
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _SECONDARYFOAMALWAYSVISIBLE_ON
   - _USEINTERSECTIONFOAM_ON
@@ -29,7 +27,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _ColorGradient:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d8bee890ada3c594d8ef662f5c193f0a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DepthTex:
@@ -41,11 +39,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GradientTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d8bee890ada3c594d8ef662f5c193f0a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normals:
-        m_Texture: {fileID: 2800000, guid: c3fc283aa0eb2ac4dbf2e234343bb6a5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c0f2ff39c68189449bbdfca4c492cd17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Reflection:
@@ -72,30 +70,30 @@ Material:
     m_Floats:
     - _ChromaticAberration: 0.3
     - _Cutoff: 0.5
-    - _Depth: 4.2
+    - _Depth: 2.9
     - _Depthdarkness: 0
     - _ENABLE_GRADIENT: 0
     - _ENABLE_SHADOWS: 0
     - _ENABLE_VC: 0
-    - _EdgeFade: 0
+    - _EdgeFade: 0.09
     - _FoamDistortion: 0
     - _FoamOpacity: 0
     - _FoamSize: 0
     - _FoamSpeed: 0.068
     - _FoamTiling: 0.15000004
     - _Fresnelexponent: 3.8
-    - _Glossiness: 0.672
+    - _Glossiness: 0.163
     - _Gradient: 0
     - _HighlightPanning: 0
     - _IntersectionDistortion: 0.1
     - _Keyword1: 0
-    - _LIGHTING: 1
+    - _LIGHTING: 0
     - _MACRO_WAVES: 0
     - _MacroBlendDistance: 1000
     - _MaskClipValue: 0.5
     - _Metallicness: 0
     - _NORMAL_MAP: 0
-    - _NormalStrength: 0
+    - _NormalStrength: 0.015
     - _NormalTiling: 0.39999992
     - _Pixelate: 0
     - _Pixelize: 0
@@ -104,13 +102,13 @@ Material:
     - _ReflectionFresnel: 7.7
     - _ReflectionRefraction: 0.024
     - _ReflectionStrength: 0.489
-    - _RefractionAmount: 0.0343
+    - _RefractionAmount: 0.0155
     - _RimDistance: 1.91
     - _RimDistortion: 0.139
-    - _RimSize: 0.4
-    - _Rimfalloff: 1.4
-    - _Rimtiling: 1.8100004
-    - _SECONDARY_WAVES: 1
+    - _RimSize: 0.3
+    - _Rimfalloff: 0.4
+    - _Rimtiling: 3.609999
+    - _SECONDARY_WAVES: 0
     - _SurfaceHighlight: 0
     - _SurfaceHighlightsDistortion: 0.59
     - _SurfaceHighlightsSpeed: 1
@@ -119,14 +117,14 @@ Material:
     - _TessPhongStrength: 0.5
     - _Tessellation: 20
     - _Tiling: 2.9489994
-    - _Transparency: 0.76
+    - _Transparency: 0.726
     - _USE_VC_INTERSECTION: 0
     - _Unlit: 0
     - _UseIntersectionFoam: 1
     - _UseIntersectionHighlight: 1
     - _WaveFoam: 0
     - _WaveHeight: 0
-    - _WaveSize: 0.01
+    - _WaveSize: 0.1
     - _Wavefoam: 1
     - _Wavesspeed: 0.75
     - _Wavesstrength: 0.268

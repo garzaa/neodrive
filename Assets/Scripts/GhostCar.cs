@@ -33,7 +33,7 @@ public class GhostCar : MonoBehaviour {
 
 		boostEffect.SetActive(false);
 
-		engineAudio.SetRPMAudio(0, 0, true, false);
+		engineAudio.SetRPMAudio(0, 0, true, false, 0);
 
 		shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
@@ -43,7 +43,7 @@ public class GhostCar : MonoBehaviour {
 	public void ApplySnapshot(CarSnapshot snapshot) {
 		flatSpeed = Vector3.Dot(transform.position - positionLastUpdate, transform.forward) / Time.deltaTime;
 		transform.SetPositionAndRotation(snapshot.position, snapshot.rotation);
-		engineAudio.SetRPMAudio(snapshot.rpm, snapshot.gas, false, false);
+		engineAudio.SetRPMAudio(snapshot.rpm, snapshot.gas, false, false, flatSpeed);
 
 		foreach (Wheel w in wheels) {
 			bool wheelBoost = snapshot.boosting && (w==WheelRR || w==WheelRL);

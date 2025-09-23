@@ -40,6 +40,9 @@ public class CameraRotate : MonoBehaviour {
 
     float respawnTime;
 
+    float baseFOV;
+    float targetFOV;
+
     void Start() {
         car = FindObjectOfType<Car>();
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
@@ -49,6 +52,7 @@ public class CameraRotate : MonoBehaviour {
         car.onRespawn.AddListener(OnRespawn);
         CycleCamera();
         respawnTime = Time.time;
+        baseFOV = cameras[0].m_Lens.FieldOfView;
     }
 
     void CycleCamera() {
@@ -167,6 +171,14 @@ public class CameraRotate : MonoBehaviour {
         if (snapping) {
             transform.position = targetPos;
         }
+
+        if (car.boosting) {
+            targetFOV = baseFOV * 1.5f;
+        } else {
+            targetFOV = baseFOV;
+        }
+        float f = Mathf.Lerp(cameras[0].m_Lens.FieldOfView, targetFOV, 4f * Time.deltaTime);
+        cameras[0].m_Lens.FieldOfView = f;
     }
 
     public void OnRespawn() {

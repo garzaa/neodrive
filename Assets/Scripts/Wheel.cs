@@ -126,7 +126,6 @@ public class Wheel : MonoBehaviour {
 		// only hydroplane check if water is above ground
 		if (waterHit.collider != null) {
 			if (!waterWake.isPlaying) waterWake.Play();
-			print("playing water particles");
 			waterWake.transform.position = waterHit.point + Vector3.up*0.1f;
 			// don't pop the car up onto the surface if they start hydroplaning
 			if (flatVelocity * Car.u2mph > settings.hydroplaneSpeed && !wetWithoutHydroplaneLastStep) {

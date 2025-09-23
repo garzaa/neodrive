@@ -29,8 +29,8 @@ public class RPMPoint {
 public class GearSound {
 	[Tooltip("Volume as a fraction of redline")]
 	public AnimationCurve volumeCurve;
-	[Tooltip("Keep pitch neutral at this RPM")]
-	public float rpm;
+	[Tooltip("Keep pitch neutral at this speed")]
+	public float baseSpeed;
 	[Range(0.1f, 1)]
 	public float toneShiftAmount;
 	public AudioClip gearLoop;
