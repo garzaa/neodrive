@@ -750,7 +750,7 @@ public class Car : MonoBehaviour {
         // user might tap handbrake without being at full lock/drift inducing steering angle
         // so this extra 0.5s allows them to "buffer" a drift
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
-        if (settings.tcs && !assistDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f) {
+        if (settings.tcs && !assistDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f && !hydroplaning) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
@@ -1031,6 +1031,7 @@ public class Car : MonoBehaviour {
         engineRunning = false;
         drifting = false;
         boosting = false;
+        hydroplaning = false;
         foreach (Wheel w in wheels) {
             w.UpdateWheelVisuals(
                 Vector3.Dot(rb.GetPointVelocity(w.transform.position),transform.forward),
@@ -1040,6 +1041,7 @@ public class Car : MonoBehaviour {
                 0
             );
             w.ClearTrails();
+            w.inWater = false;
         }
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
