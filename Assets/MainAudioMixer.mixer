@@ -36,6 +36,26 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-8283121941910083438
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 4d090df6e59344347b7b30ef27106cdb
+  m_EffectName: ParamEQ
+  m_MixLevel: acc401f62935f8245bad6be7a730e457
+  m_Parameters:
+  - m_ParameterName: Center freq
+    m_GUID: 7d90cd4991b867c489e9a5c62c4cdda7
+  - m_ParameterName: Octave range
+    m_GUID: 06227d487923ffe4890ca597ef8231bd
+  - m_ParameterName: Frequency gain
+    m_GUID: 09e4795d7dfee194b87422b9d2a6b3f4
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-7587640536349724629
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -132,6 +152,7 @@ AudioMixerGroupController:
   m_GroupID: dbb5371566c7eea4c8f904289aad8896
   m_Children:
   - {fileID: 2414365984576934264}
+  - {fileID: -8312322636375061050}
   m_Volume: cc438907a89ccd24aaaba5b65a08796d
   m_Pitch: 63bcc30c0fe17bb4c90b692c90891a4a
   m_Send: 00000000000000000000000000000000
@@ -254,8 +275,11 @@ AudioMixerSnapshotController:
     05067ae55150fb748acd4baab1b10f8c: 1406
     2c44fc46cc20b214da6bb48a3ca57a59: 5
     94404e461f3df914da3feb850026197c: 0
+    06227d487923ffe4890ca597ef8231bd: 2
     377e7da8c1b2d6646b178fccf589f741: 22000
+    7d90cd4991b867c489e9a5c62c4cdda7: 100
     c0f646aae75ca904bb110a3a2b0d5175: 0
+    09e4795d7dfee194b87422b9d2a6b3f4: 1.5
     9696b3de09b3a874d9ddec478214f499: 10
   m_TransitionOverrides: {}
 --- !u!244 &128845422354138334
@@ -348,8 +372,7 @@ AudioMixerGroupController:
   m_Name: EngineOutput
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 7d869d5d03c444d47a6e96c49e55ad59
-  m_Children:
-  - {fileID: -8312322636375061050}
+  m_Children: []
   m_Volume: 9e3027057e56bf34b864ba0293d86d52
   m_Pitch: 219471f2219bd5544ad9dea1237fef91
   m_Send: 00000000000000000000000000000000
@@ -357,6 +380,7 @@ AudioMixerGroupController:
   - {fileID: -1564463615174742692}
   - {fileID: 1086911240954404621}
   - {fileID: -6041257191354754784}
+  - {fileID: -8283121941910083438}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0

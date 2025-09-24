@@ -43,6 +43,7 @@ public class Wheel : MonoBehaviour {
 	public TrailRenderer[] fireStreaks;
 	public GameObject wheelFire;
 	public ParticleSystem waterWake;
+	ParticleSystem[] waterWakes;
 
 	bool wetWithoutHydroplaneLastStep;
 
@@ -79,7 +80,10 @@ public class Wheel : MonoBehaviour {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
 		waterRaycast = LayerMask.GetMask("Water");
-		if (!onGhost) waterWake.Stop();
+		if (!onGhost) {
+			waterWake.Stop();
+			waterWakes = waterWake.GetComponentsInChildren<ParticleSystem>();
+		}
 	}
 
 	void GenerateRays() {
@@ -125,7 +129,13 @@ public class Wheel : MonoBehaviour {
 		hydroplaning = false;
 		// only hydroplane check if water is above ground
 		if (waterHit.collider != null) {
-			if (!waterWake.isPlaying) waterWake.Play();
+			if (!waterWake.isPlaying) {
+				waterWake.Play();
+				for (int i=0; i<waterWakes.Length; i++) {
+					// then the water wake particles
+					waterWakes[i].Play();
+				}
+			}
 			waterWake.transform.position = waterHit.point + Vector3.up*0.1f;
 			// don't pop the car up onto the surface if they start hydroplaning
 			if (flatVelocity * Car.u2mph > settings.hydroplaneSpeed && !wetWithoutHydroplaneLastStep) {
@@ -137,6 +147,9 @@ public class Wheel : MonoBehaviour {
 			}
 		} else if (!onGhost && waterWake.isPlaying) {
 			waterWake.Stop();
+			for (int i=0; i<waterWakes.Length; i++) {
+				waterWakes[i].Stop();
+			}
 			wetWithoutHydroplaneLastStep = false;
 		}
 

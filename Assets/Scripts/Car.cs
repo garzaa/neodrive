@@ -265,7 +265,7 @@ public class Car : MonoBehaviour {
         }
 
         if (InputManager.ButtonDown(Buttons.PAUSE) && InputManager.Button(Buttons.CLUTCH)) {
-			StartCoroutine(Respawn());
+			Respawn();
 		}
 
         if (clutch) {
@@ -517,7 +517,13 @@ public class Car : MonoBehaviour {
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
             tireSkid.mute = hydroplaning;
-            if ((drifting && !forceBrake) || hydroplaning) {
+            // not a great fix for the car shaking randomly at a full stop
+            // which is in itself not a great fix for the car slowly sliding sideways
+            // need to linearly evaluate it or something based on speed. at what speed
+            // threshold does tire slip go to 1
+            // it can be 10mph or something
+            // TODO: does this work with the inverse calculations for TCS?
+            if ((drifting || hydroplaning) && engineRunning) {
                 driftingTime += Time.fixedDeltaTime;
                 string skillName = hydroplaning ? "Hydroplaning" : "Drift";
                 Alert($"{skillName}\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
@@ -555,7 +561,7 @@ public class Car : MonoBehaviour {
         }
         groundedLastStep = grounded;
 
-        hydroplaneNoise.mute = !hydroplaning || !(inWater && rb.velocity.sqrMagnitude > 5f);
+        hydroplaneNoise.mute = !hydroplaning && !(inWater && rb.velocity.sqrMagnitude > 5f);
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
@@ -661,7 +667,7 @@ public class Car : MonoBehaviour {
 
         if (engineRunning) {
             if (engineRPM < engine.stallRPM) {
-                if (Mathf.Abs(currentGear) == 1 && gas > 0.7f) {
+                if (Mathf.Abs(currentGear) == 1 && gas > 0.3f) {
                     // mimic letting the clutch out slowly 
                     engineRPM = engine.stallRPM;
                 } else if (fullAutomatic) {
@@ -740,7 +746,7 @@ public class Car : MonoBehaviour {
         targetSteerAngle = steering * settings.maxSteerAngle;
         float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
         bool usingWheel = ReInput.controllers.GetLastActiveController().ImplementsTemplate<RacingWheelTemplate>();
-        usingKeyboard = ReInput.controllers.GetLastActiveController().type != Rewired.ControllerType.Joystick;
+        usingKeyboard = ReInput.controllers.GetLastActiveController().type != ControllerType.Joystick;
         float steeringMult = usingWheel ? 1 : settings.steerLimitCurve.Evaluate(Mathf.Abs(forwardSpeed));
         if (steering == 0) {
             targetSteerAngle = 0;
@@ -755,14 +761,14 @@ public class Car : MonoBehaviour {
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
             float wantedAccel = GetWantedAccel(targetSteerAngle, flatVelocity);
 
-            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce) {
-                targetSteerAngle = GetWantedSteeringAngle(settings.maxCorneringForce * 0.9f * Mathf.Sign(wantedAccel), flatVelocity);
+            if (Mathf.Abs(wantedAccel) > settings.maxCorneringAccel) {
+                targetSteerAngle = GetWantedSteeringAngle(settings.maxCorneringAccel * 0.9f * Mathf.Sign(wantedAccel), flatVelocity);
                 // set it to how much over the max cornering force you are
-                tcsFrac = 1 - Mathf.Clamp01((Mathf.Abs(wantedAccel)-settings.maxCorneringForce)/settings.maxCorneringForce);
+                tcsFrac = 1 - Mathf.Clamp01((Mathf.Abs(wantedAccel)-settings.maxCorneringAccel)/settings.maxCorneringAccel);
                 tcsLight.SetOn();
             } else {
                 tcsFrac = 0;
-                if (Mathf.Abs(wantedAccel)>settings.maxCorneringForce*settings.gripLimitThreshold && Mathf.Abs(wantedAccel)<settings.maxCorneringForce) {
+                if (Mathf.Abs(wantedAccel)>settings.maxCorneringAccel*settings.gripLimitThreshold && Mathf.Abs(wantedAccel)<settings.maxCorneringAccel) {
                     timeAtEdge += Time.fixedDeltaTime;
                     if (timeAtEdge > 0.2f) {
                         Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"), constant: true);
@@ -779,7 +785,7 @@ public class Car : MonoBehaviour {
             tcsLight.SetOff();
         }
 
-        currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, settings.steerSpeed * Time.fixedDeltaTime);
+        currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, (usingWheel ? 1000 : settings.steerSpeed) * Time.fixedDeltaTime);
         Quaternion targetRotation = Quaternion.Euler(0, currentSteerAngle, 0);
         WheelFL.transform.localRotation = targetRotation;
         WheelFR.transform.localRotation = targetRotation;
@@ -793,14 +799,14 @@ public class Car : MonoBehaviour {
         float lateralSpeed = Vector3.Dot(flatVelocity, lateralNormal);
         float wantedAccel = -lateralSpeed * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward)) / Time.fixedDeltaTime;
         if (steeringAxle) {
-            if (Mathf.Abs(wantedAccel) > settings.maxCorneringForce && !hydroplaning) {
+            if (Mathf.Abs(wantedAccel) > settings.maxCorneringAccel && !hydroplaning) {
                 drifting = true;
             } else {
                 drifting = false;
             }
             if (drifting) {
                 carBody.driftRoll = 5f * Mathf.Sign(Vector3.Dot(rb.velocity, transform.right));
-                currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringForce);
+                currentGrip = 0.5f / (Mathf.Abs(wantedAccel) / settings.maxCorneringAccel);
             } else {
                 carBody.driftRoll = 0f;
             }
@@ -859,10 +865,8 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
-        if (!drifting && lastGear == currentGear) {
-            // clutch kick should initiate a drift
-            Alert("clutch kick\n+"+settings.driftNitroGain);
-            nitroxMeter.Add(settings.driftNitroGain);
+        if (lastGear == currentGear) {
+            ClutchKick();
         } else {
             shiftLurch = true;
         }
@@ -871,6 +875,20 @@ public class Car : MonoBehaviour {
         assistDisabled = false;
         shiftLurch = false;
         carBody.maxXAngle /= 2f;
+    }
+
+    void ClutchKick() {
+        // push the car sideways based on gas, in the direction it's sliding
+        // TODO: maybe have a little visual for that too?
+        if (Mathf.Abs(steering) > 0.5f) {
+            Alert("clutch kick\n+"+settings.driftNitroGain);
+            nitroxMeter.Add(settings.driftNitroGain);
+        }
+        float angleOffForward = Vector3.SignedAngle(transform.forward, rb.velocity, transform.up);
+        float slideDirection = angleOffForward > 0 ? 1 : -1;
+        if (Mathf.Abs(angleOffForward) > 15) {
+            rb.AddForce(engine.maxPower * slideDirection * gas * 0.5f * transform.right, ForceMode.Impulse);
+        }
     }
 
     void StallEngine() {
@@ -1024,7 +1042,12 @@ public class Car : MonoBehaviour {
         engineRunning = false;
     }
 
-    public IEnumerator Respawn() {
+    public void Respawn() {
+        StopCoroutine(nameof(_Respawn));
+        StartCoroutine(_Respawn());
+    }
+
+    IEnumerator _Respawn() {
         nitroxMeter.Reset();
         currentGear = 0;
         engineRPM = engine.idleRPM;

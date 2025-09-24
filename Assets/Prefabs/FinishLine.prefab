@@ -3217,6 +3217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 8333234082198910464}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -3231,6 +3233,7 @@ MonoBehaviour:
   - {fileID: 5134677651001746702}
   - {fileID: 7560706704327540640}
   wheelFire: {fileID: 1215452719061700656}
+  waterWake: {fileID: 0}
 --- !u!1 &2519477649416946744
 GameObject:
   m_ObjectHideFlags: 0
@@ -4609,6 +4612,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 4716327194427406396}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -4621,6 +4626,7 @@ MonoBehaviour:
   highSpeedObject: {fileID: 2040669267194473079}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
 --- !u!1 &3999876755188869570
 GameObject:
   m_ObjectHideFlags: 0
@@ -5197,6 +5203,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 106358367295783428}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -5211,6 +5219,7 @@ MonoBehaviour:
   - {fileID: 2523048525283694299}
   - {fileID: 5757480262169572729}
   wheelFire: {fileID: 5700144865302141872}
+  waterWake: {fileID: 0}
 --- !u!1 &4246979352226266219
 GameObject:
   m_ObjectHideFlags: 0
@@ -5262,6 +5271,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 8995477288195113371}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -5276,6 +5287,7 @@ MonoBehaviour:
   - {fileID: 1298722065165523440}
   - {fileID: 7438994996330505757}
   wheelFire: {fileID: 3431509614058015489}
+  waterWake: {fileID: 0}
 --- !u!1 &4427021926392481201
 GameObject:
   m_ObjectHideFlags: 0
@@ -6065,6 +6077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 8602612247296760616}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -6077,6 +6091,7 @@ MonoBehaviour:
   highSpeedObject: {fileID: 3664903182344419656}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
 --- !u!1 &5464681848291220069
 GameObject:
   m_ObjectHideFlags: 0
@@ -6261,6 +6276,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 2974324204085608037}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -6273,6 +6290,7 @@ MonoBehaviour:
   highSpeedObject: {fileID: 406136925338422711}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
 --- !u!1 &5523894006104905258
 GameObject:
   m_ObjectHideFlags: 0
@@ -6514,6 +6532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 5016878524592750392}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -6528,6 +6548,7 @@ MonoBehaviour:
   - {fileID: 3802416198113064290}
   - {fileID: 6046521411632788914}
   wheelFire: {fileID: 2348348017691357952}
+  waterWake: {fileID: 0}
 --- !u!1 &5772042149539120837
 GameObject:
   m_ObjectHideFlags: 0
@@ -8372,6 +8393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 2168168537766660659}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -8384,6 +8407,7 @@ MonoBehaviour:
   highSpeedObject: {fileID: 90775685122887977}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
 --- !u!1 &7907440618279310456
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ public class CarSettings : ScriptableObject {
 	public float maxSteerAngle = 30;
 	public float steerSpeed = 10f;
 	public AnimationCurve steerLimitCurve;
-	public float maxCorneringForce = 20f;
+	public float maxCorneringAccel = 22f;
 	[SerializeField] float tireSlip = 1f;
 
 	[Header("Assists")]

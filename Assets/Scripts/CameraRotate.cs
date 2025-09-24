@@ -177,7 +177,12 @@ public class CameraRotate : MonoBehaviour {
         } else {
             targetFOV = baseFOV;
         }
-        float f = Mathf.Lerp(cameras[0].m_Lens.FieldOfView, targetFOV, 4f * Time.deltaTime);
+        float f;
+        if (targetFOV > baseFOV) {
+            f = Mathf.Lerp(cameras[0].m_Lens.FieldOfView, targetFOV, 4f * Time.deltaTime);
+        } else {
+            f = Mathf.Lerp(cameras[0].m_Lens.FieldOfView, targetFOV, 1f * Time.deltaTime);
+        }
         cameras[0].m_Lens.FieldOfView = f;
     }
 
