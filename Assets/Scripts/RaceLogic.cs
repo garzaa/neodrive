@@ -21,7 +21,6 @@ public class RaceLogic : MonoBehaviour {
 	bool ghostEnabled = true;
 
 	public RaceType raceType = RaceType.ROUTE;
-	public GameObject resultsCanvas;
 
 	public Text medalText;
 
@@ -81,7 +80,7 @@ public class RaceLogic : MonoBehaviour {
 		car = FindObjectOfType<Car>();
 		playerGhostCar.gameObject.SetActive(false);
 		authorGhostCar.gameObject.SetActive(false);
-		resultsCanvas.SetActive(false);
+		medalText.gameObject.SetActive(false);
 		carTrackingCamera = GetComponentInChildren<CinemachineVirtualCamera>();
 		carTrackingCamera.m_LookAt = car.transform;
 		carTrackingCamera.m_Priority = 100;
@@ -389,7 +388,7 @@ public class RaceLogic : MonoBehaviour {
 
 	public void HideResults() {
 		StopCoroutine(resultsRoutine);
-		resultsCanvas.SetActive(false);
+		medalText.gameObject.SetActive(false);
 	}
 
 	public void FirstStart() {
@@ -432,13 +431,13 @@ public class RaceLogic : MonoBehaviour {
 
 	IEnumerator ShowResults() {
 		yield return new WaitForSeconds(1f);
-		resultsCanvas.SetActive(true);
+		medalText.gameObject.SetActive(true);
 		// write the last time
 		// then the best time
 		// then display the medals for that time
 		// (if the author medal exists)
 		yield return new WaitForSeconds(3f);
-		resultsCanvas.SetActive(false);
+		medalText.gameObject.SetActive(false);
 	}
 
 	[Button("Invalidate Times")]
