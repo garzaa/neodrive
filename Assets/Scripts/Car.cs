@@ -117,6 +117,7 @@ public class Car : MonoBehaviour {
     Quaternion startRotation;
 
     public UnityEvent onRespawn;
+    IEnumerator respawnRoutine;
     public UnityEvent onEngineStart;
     public bool forceClutch;
     public bool forceBrake;
@@ -150,6 +151,7 @@ public class Car : MonoBehaviour {
     }
 
     void Start() {
+        respawnRoutine = _Respawn();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfGravity.transform.localPosition;
@@ -1037,8 +1039,8 @@ public class Car : MonoBehaviour {
     }
 
     public void Respawn() {
-        StopCoroutine(nameof(_Respawn));
-        StartCoroutine(_Respawn());
+        StopCoroutine(respawnRoutine);
+        StartCoroutine(respawnRoutine);
     }
 
     IEnumerator _Respawn() {

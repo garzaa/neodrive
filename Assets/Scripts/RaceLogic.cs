@@ -61,6 +61,7 @@ public class RaceLogic : MonoBehaviour {
 	Image[] medals;
 
 	IEnumerator startRoutine;
+	IEnumerator resultsRoutine;
 
 	struct NameTimePair {
 		public string name;
@@ -76,6 +77,7 @@ public class RaceLogic : MonoBehaviour {
 
 	void Start() {
 		startRoutine = CountdownAndStart();
+		resultsRoutine = ShowResults();
 		car = FindObjectOfType<Car>();
 		playerGhostCar.gameObject.SetActive(false);
 		authorGhostCar.gameObject.SetActive(false);
@@ -234,7 +236,7 @@ public class RaceLogic : MonoBehaviour {
 			carTrackingCamera.enabled = true;
 			car.forceClutch = true;
 			car.forceBrake = true;
-			StartCoroutine(ShowResults());
+			StartCoroutine(resultsRoutine);
 		} else {
 			StartRecordingGhost();
 			PlayLoadedGhosts();
@@ -386,7 +388,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void HideResults() {
-		StopCoroutine(nameof(ShowResults));
+		StopCoroutine(resultsRoutine);
 		resultsCanvas.SetActive(false);
 	}
 
@@ -403,7 +405,7 @@ public class RaceLogic : MonoBehaviour {
 	IEnumerator CountdownAndStart() {
 		carTrackingCamera.enabled = false;
 		HideResults();
-		StopCoroutine(ShowResults());
+		StopCoroutine(resultsRoutine);
 		if (raceType == RaceType.HOTLAP || skipCountdown) {
 			OnRaceStart();
 			skipCountdown = false;
@@ -435,6 +437,8 @@ public class RaceLogic : MonoBehaviour {
 		// then the best time
 		// then display the medals for that time
 		// (if the author medal exists)
+		yield return new WaitForSeconds(3f);
+		resultsCanvas.SetActive(false);
 	}
 
 	[Button("Invalidate Times")]
