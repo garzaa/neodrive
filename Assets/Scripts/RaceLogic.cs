@@ -8,6 +8,7 @@ using Cinemachine;
 using System;
 using NaughtyAttributes;
 using Mono.Cecil;
+using System.Threading;
 
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
@@ -59,6 +60,8 @@ public class RaceLogic : MonoBehaviour {
 	public Text timeContainer;
 	Image[] medals;
 
+	IEnumerator startRoutine;
+
 	struct NameTimePair {
 		public string name;
 		public float time;
@@ -72,6 +75,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void Start() {
+		startRoutine = CountdownAndStart();
 		car = FindObjectOfType<Car>();
 		playerGhostCar.gameObject.SetActive(false);
 		authorGhostCar.gameObject.SetActive(false);
@@ -120,8 +124,8 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void OnRespawn() {
-		StopCoroutine(nameof(CountdownAndStart));
-		StartCoroutine(CountdownAndStart());
+		StopCoroutine(startRoutine);
+		StartCoroutine(startRoutine);
 		StopPlayingGhosts();
 		medalText.gameObject.SetActive(false);
 	}
@@ -393,7 +397,7 @@ public class RaceLogic : MonoBehaviour {
 	IEnumerator FirstStartRoutine() {
 		car.onEngineStart.RemoveListener(FirstStart);
 		yield return new WaitForSeconds(1);
-		StartCoroutine(CountdownAndStart());
+		StartCoroutine(startRoutine);
 	}
 
 	IEnumerator CountdownAndStart() {

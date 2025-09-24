@@ -517,13 +517,7 @@ public class Car : MonoBehaviour {
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
             tireSkid.mute = hydroplaning;
-            // not a great fix for the car shaking randomly at a full stop
-            // which is in itself not a great fix for the car slowly sliding sideways
-            // need to linearly evaluate it or something based on speed. at what speed
-            // threshold does tire slip go to 1
-            // it can be 10mph or something
-            // TODO: does this work with the inverse calculations for TCS?
-            if ((drifting || hydroplaning) && engineRunning) {
+            if (drifting || hydroplaning) {
                 driftingTime += Time.fixedDeltaTime;
                 string skillName = hydroplaning ? "Hydroplaning" : "Drift";
                 Alert($"{skillName}\n+"+(driftingTime*settings.driftNitroGain).ToString("F0"), constant: true);
@@ -604,7 +598,7 @@ public class Car : MonoBehaviour {
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
                             clutchRatio = 0f;
-                            if (currentGear == 1) forwardTraction = 0.1f;
+                            if (currentGear == 1 && gas > 0) forwardTraction = 0.1f;
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, transform.forward) * u2mph < 5f) {
                             // this is the max power shift launch
                             // keep the clutch ratio soft to avoid a money shift on launch

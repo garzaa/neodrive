@@ -70,8 +70,8 @@ public class CarSettings : ScriptableObject {
 	public float hydroplaneGrip = 0.1f;
 
 	public float GetTireSlip(float forwardSpeed) {
-		if (forwardSpeed < 1f) {
-			return 0.99f;
+		if (forwardSpeed < 10f) {
+			return Mathf.Lerp(0.9f, tireSlip, forwardSpeed/10f);
 		}
 		return tireSlip;
 	}
