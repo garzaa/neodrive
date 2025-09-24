@@ -19,7 +19,7 @@ namespace SplineArchitect.Ui
     public class WindowInfo : WindowBase
     {
         public const string toolName = "Spline Architect";
-        public const string versionNumber = "1.2.4";
+        public const string versionNumber = "1.2.5";
 
         private static List<string> activeAddons = new List<string> { "None" };
 

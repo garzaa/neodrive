@@ -394,7 +394,6 @@ namespace SplineArchitect.Objects
             SplineUtility.GetSegmentsAtPointNoAlloc(closestSegmentContainer, HandleRegistry.GetSplines(), linkPoint);
 #endif
             bool sucessfullLink = closestSegmentContainer.Count > 1;
-
             if (sucessfullLink) linkTarget = LinkTarget.ANCHOR;
 
             //Update links
@@ -427,9 +426,10 @@ namespace SplineArchitect.Objects
             SetAnchorPosition(linkPoint);
 
 #if UNITY_EDITOR
-            SplineConnector closest = SplineConnectorUtility.GetFirstConnectorAtPoint(linkPoint, 
-                                                                                      linkCreatedThisFrameOnly ? HandleRegistry.GetSplineConnectorsRegistredThisFrame() :
-                                                                                                                 HandleRegistry.GetSplineConnectors());
+            HashSet<SplineConnector> connectors = HandleRegistry.GetSplineConnectors();
+            HashSet<SplineConnector> thisFrameConnectors = HandleRegistry.GetSplineConnectorsRegistredThisFrame();
+            if (thisFrameConnectors.Count > 0 || (linkCreatedThisFrameOnly && !EHandleEvents.undoActive)) connectors = thisFrameConnectors;
+            SplineConnector closest = SplineConnectorUtility.GetFirstConnectorAtPoint(linkPoint, connectors);
 #else
             SplineConnector closest = SplineConnectorUtility.GetClosest(linkPoint, HandleRegistry.GetSplineConnectors());
 #endif

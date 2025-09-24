@@ -42,8 +42,9 @@ namespace SplineArchitect.CustomTools
         const float pressSize = 0.166f;
 
         public static int hotControlId;
+        public static bool locked;
+        public static string lockedWarningMsg = "[Spline Architect] Position handle tool is locked!";
         public static bool active { get; private set; }
-        public static bool locked { get; private set; }
         public static bool released { get; private set; }
         public static ActivationType activationType { get; private set; }
         public static Part activePart { get; private set; }
@@ -81,20 +82,21 @@ namespace SplineArchitect.CustomTools
             active = false;
         }
 
-        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, bool _supportGlobal = true, bool _locked = false)
+        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, bool _supportGlobal = true)
         {
             handlePosition = newPosition;
             activationPosition = newPosition;
             activationType = type;
             active = true;
-            locked = _locked;
+            locked = false;
+            lockedWarningMsg = "[Spline Architect] Position handle is locked!";
 
             supportGlobal = _supportGlobal;
         }
 
-        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, Vector3 cameraPosition, Vector3 newForwardDirection, Vector3 newUpDirection, bool _supportGlobal = true, bool _locked = false)
+        public static void ActivateAndSetPosition(ActivationType type, Vector3 newPosition, Vector3 cameraPosition, Vector3 newForwardDirection, Vector3 newUpDirection, bool _supportGlobal = true)
         {
-            ActivateAndSetPosition(type, newPosition, _supportGlobal, _locked);
+            ActivateAndSetPosition(type, newPosition, _supportGlobal);
             UpdateOrientation(cameraPosition, newForwardDirection, newUpDirection);
         }
 
@@ -260,7 +262,7 @@ namespace SplineArchitect.CustomTools
 
             if (locked)
             {
-                Debug.LogWarning("[Spline Architect] Surface tool is locked!");
+                Debug.LogWarning(lockedWarningMsg);
                 return false;
             }
 
@@ -342,9 +344,9 @@ namespace SplineArchitect.CustomTools
             if (Event.current.type != EventType.Repaint && Event.current.type != EventType.Layout)
                 Event.current.Use();
 
-            if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT))
+            if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT || Tools.pivotRotation != PivotRotation.Local))
             {
-                Debug.LogWarning("[Spline Architect] Position tool is locked!");
+                Debug.LogWarning(lockedWarningMsg);
                 return false;
             }
 
@@ -416,9 +418,9 @@ namespace SplineArchitect.CustomTools
             if (Event.current.type != EventType.Repaint && Event.current.type != EventType.Layout)
                 Event.current.Use();
 
-            if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT))
+            if (locked && (activePart != Part.Z_AXEL || activationType != ActivationType.TANGENT || Tools.pivotRotation != PivotRotation.Local))
             {
-                Debug.LogWarning("[Spline Architect] Position tool is locked!");
+                Debug.LogWarning(lockedWarningMsg);
                 return false;
             }
 
@@ -620,7 +622,7 @@ namespace SplineArchitect.CustomTools
             if (activePart == Part.NONE || anyZSelected)
             {
                 Color color = anyZSelected ? Handles.selectedColor : Handles.zAxisColor;
-                if (locked && activationType != ActivationType.TANGENT) color = lockColor;
+                if (locked && (activationType != ActivationType.TANGENT || Tools.pivotRotation != PivotRotation.Local)) color = lockColor;
 
                 Handles.color = color;
                 Handles.ArrowHandleCap(0, handlePosition, Quaternion.LookRotation(zDirection), arrowSize, EventType.Repaint);

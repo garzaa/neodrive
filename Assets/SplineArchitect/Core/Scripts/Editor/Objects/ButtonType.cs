@@ -15,6 +15,7 @@ namespace SplineArchitect.Ui
         DEFAULT_ACTIVE,
         DEFAULT_GREEN,
         DEFAULT_RED,
+        DEFAULT_WHITE,
         DEFAULT_MIDDLE_LEFT,
         SUB_MENU
     }

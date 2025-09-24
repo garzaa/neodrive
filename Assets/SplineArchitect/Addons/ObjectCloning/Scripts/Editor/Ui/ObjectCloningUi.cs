@@ -45,7 +45,7 @@ namespace SplineArchitect.Ui
 
                 EHandleSelection.UpdatedSelectedSplineObjects((selected) =>
                 {
-                    EHandleObjectCloning.UpdateCloneOffset(spline, selected);
+                    EHandleObjectCloning.UpdateCloneAmount(selected);
                 });
             }, 55, 10, 62);
             GUILayout.EndHorizontal();

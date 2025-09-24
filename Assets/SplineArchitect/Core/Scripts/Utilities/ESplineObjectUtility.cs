@@ -100,14 +100,14 @@ namespace SplineArchitect.Utility
 
                 newSo.monitor.UpdatePosRotSplineSpace();
 
-                if (newSo.type != SplineObject.Type.DEFORMATION)
-                    return;
+                if (newSo.type == SplineObject.Type.DEFORMATION)
+                {
+                    newSo.monitor.ForceUpdate();
 
-                newSo.monitor.ForceUpdate();
-
-                //Auto set type to FOLLOWER if no mesh containers are present
-                if (newSo.meshContainers.Count == 0 && newSo.gameObject.GetComponentCount() > 2)
-                    newSo.type = SplineObject.Type.FOLLOWER;
+                    //Auto set type to FOLLOWER if no mesh containers are present
+                    if (newSo.meshContainers.Count == 0 && newSo.gameObject.GetComponentCount() > 2)
+                        newSo.type = SplineObject.Type.FOLLOWER;
+                }
             }
         }
 

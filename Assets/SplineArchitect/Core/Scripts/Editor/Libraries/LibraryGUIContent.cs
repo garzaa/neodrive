@@ -27,6 +27,8 @@ namespace SplineArchitect.Libraries
         public static GUIContent iconCreateSplineLight { get; private set; }
         public static GUIContent iconMaximize { get; private set; }
         public static GUIContent iconMinimize { get; private set; }
+        public static GUIContent iconMaximizeBlack { get; private set; }
+        public static GUIContent iconMinimizeBlack { get; private set; }
         public static GUIContent iconMenuControlPanel { get; private set; }
         public static GUIContent iconMenuSettings { get; private set; }
         public static GUIContent iconMenuInfo { get; private set; }
@@ -146,6 +148,7 @@ namespace SplineArchitect.Libraries
             iconCreateSpline = new GUIContent(LibraryTexture.iconCreateSpline, "Spline Architect - Create Spline or Control Point on selected spline");
             iconCreateSplineLight = new GUIContent(LibraryTexture.iconCreateSplineLight, "Spline Architect - Create Spline or Control Point on selected spline");
             iconMaximize = new GUIContent(LibraryTexture.iconPlus, "Maximize");
+            iconMaximizeBlack = new GUIContent(LibraryTexture.iconPlusBlack, "Maximize");
             iconMove = new GUIContent(LibraryTexture.iconMove, "Move activeInstance");
             iconSplit = new GUIContent(LibraryTexture.iconSplit, "Split spline");
             iconJoin = new GUIContent(LibraryTexture.iconJoin, "Join selected splines");
@@ -190,6 +193,7 @@ namespace SplineArchitect.Libraries
             iconDownArrow = new GUIContent(LibraryTexture.iconDownArrow, "Move down");
             iconExport = new GUIContent(LibraryTexture.iconExport, "Export mesh");
             iconMinimize = new GUIContent(LibraryTexture.iconMinimize, "Minimize");
+            iconMinimizeBlack = new GUIContent(LibraryTexture.iconMinimizeBlack, "Minimize");
             iconCopy = new GUIContent(LibraryTexture.iconCopy, "Copy");
             iconPaste = new GUIContent(LibraryTexture.iconPaste, "Paste");
             iconAlignTangents = new GUIContent(LibraryTexture.iconAlignTangents, "Align tangents");

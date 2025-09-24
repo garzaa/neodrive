@@ -39,6 +39,8 @@ namespace SplineArchitect.Objects
         private string resourceKeyShort;
         [NonSerialized]
         private int oldTransformsInstanceId;
+        [NonSerialized]
+        private int oldOriginMeshId;
 
         public MeshContainer(Component component)
         {
@@ -159,7 +161,7 @@ namespace SplineArchitect.Objects
 
         public string GetResourceKey()
         {
-            if (string.IsNullOrEmpty(resourceKey) || oldTransformsInstanceId != GetMeshContainerComponent().transform.GetInstanceID())
+            if (string.IsNullOrEmpty(resourceKey) || oldTransformsInstanceId != GetMeshContainerComponent().transform.GetInstanceID() || oldOriginMeshId != originMesh.GetInstanceID())
                 UpdateResourceKey();
 
             return resourceKey;
@@ -176,8 +178,9 @@ namespace SplineArchitect.Objects
         public void UpdateResourceKey()
         {
             oldTransformsInstanceId = GetMeshContainerComponent().transform.GetInstanceID();
-            resourceKey = $"{GetMeshContainerComponent().transform.GetInstanceID()}*{originMesh.GetInstanceID()}*{timestamp}";
-            resourceKeyShort = $"{GetScene().name}*{originMesh.GetInstanceID()}*{timestamp}";
+            oldOriginMeshId = originMesh.GetInstanceID();
+            resourceKey = $"{oldTransformsInstanceId}*{oldOriginMeshId}*{timestamp}";
+            resourceKeyShort = $"{GetScene().name}*{oldOriginMeshId}*{timestamp}";
         }
 
         public Scene GetScene()

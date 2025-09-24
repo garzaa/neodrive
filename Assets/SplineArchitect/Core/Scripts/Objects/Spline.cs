@@ -102,12 +102,15 @@ namespace SplineArchitect.Objects
                 {
                     Segment segment = segments[i];
 
-                    //CHECKS
-                    if (segment.links == null)
-                        continue;
+                    if (segment.links == null || segment.links.Count == 0)
+                    {
+                        if (segment.linkTarget == LinkTarget.SPLINE_CONNECTOR && segment.splineConnector != null)
+                        {
+                            segment.splineConnector.RemoveConnection(segment);
+                        }
 
-                    if (segment.links.Count == 0)
                         continue;
+                    }
                     else
                     {
                         bool foundSelf = false;

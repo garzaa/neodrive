@@ -31,6 +31,7 @@ namespace SplineArchitect.Libraries
         public static GUIStyle buttonDefault { get; private set; }
         public static GUIStyle buttonDefaultGreen { get; private set; }
         public static GUIStyle buttonDefaultRed { get; private set; }
+        public static GUIStyle buttonDefaultWhite { get; private set; }
         public static GUIStyle buttonDefaultActive { get; private set; }
         public static GUIStyle buttonDefaultMiddleLeft { get; private set; }
         public static GUIStyle buttonDefaultMiddleLeftActive { get; private set; }
@@ -41,6 +42,7 @@ namespace SplineArchitect.Libraries
         public static GUIStyle textHeader { get; private set; }
         public static GUIStyle textHeaderBlack { get; private set; }
         public static GUIStyle textSubHeader { get; private set; }
+        public static GUIStyle textSubHeader2 { get; private set; }
         public static GUIStyle textDefault { get; private set; }
         public static GUIStyle textDefaultBlack { get; private set; }
         public static GUIStyle textSmall { get; private set; }
@@ -58,6 +60,7 @@ namespace SplineArchitect.Libraries
         public static GUIStyle lineYellow { get; private set; }
         public static GUIStyle lineBlack { get; private set; }
         public static GUIStyle lineGrey { get; private set; }
+        public static GUIStyle lineGrey2 { get; private set; }
 
         //Backgrounds
         public static GUIStyle backgroundHeader { get; private set; }
@@ -65,6 +68,7 @@ namespace SplineArchitect.Libraries
         public static GUIStyle backgroundNoSplineSelected { get; private set; }
         public static GUIStyle backgroundToolbar { get; private set; }
         public static GUIStyle backgroundSubHeader { get; private set; }
+        public static GUIStyle backgroundSubHeader2 { get; private set; }
         public static GUIStyle backgroundItem2 { get; private set; }
         public static GUIStyle backgroundItem1 { get; private set; }
         public static GUIStyle backgroundSelectedLayerHeader { get; private set; }
@@ -76,7 +80,7 @@ namespace SplineArchitect.Libraries
         {
             //General
             specificX = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 13, 15);
-            specificYZ = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(10, 0, 0, 0), 13, 15);
+            specificYZ = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 13, 15);
             specificFromToX = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 13, 15);
             specificFromToYZ = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(10, 0, 0, 0), 13, 15);
             empty = new GUIStyle();
@@ -86,6 +90,7 @@ namespace SplineArchitect.Libraries
             //Backgrounds
             backgroundHeader = CreateBackgroundStyle(LibraryTexture.gScale95_100, 18);
             backgroundSubHeader = CreateBackgroundStyle(LibraryTexture.gScale95_100, 12);
+            backgroundSubHeader2 = CreateBackgroundStyle(LibraryTexture.gScale15_100, 0);
             backgroundToolbar = CreateBackgroundStyle(LibraryTexture.gScale40_100, 23);
             backgroundBottomMenu = CreateBackgroundStyle(LibraryTexture.gScale15_100, 18);
             backgroundItem1 = CreateBackgroundStyle(LibraryTexture.gScale10_100, WindowBase.menuItemHeight);
@@ -101,11 +106,13 @@ namespace SplineArchitect.Libraries
             lineYellow = CreateBoxStyle(LibraryTexture.yellow100, 0, 0, new RectOffset(0, 0, 0, 0));
             lineBlack = CreateBoxStyle(LibraryTexture.gScale0_100, 0, 0, new RectOffset(0, 0, 0, 0));
             lineGrey = CreateBoxStyle(LibraryTexture.gScale80_100, 0, 0, new RectOffset(0, 0, 0, 0));
+            lineGrey2 = CreateBoxStyle(LibraryTexture.gScale30_100, 0, 0, new RectOffset(0, 0, 0, 0));
 
             //Texts
             textHeader = CreateTextStyle(Color.white, new RectOffset(6, 4, 2, 2), new RectOffset(0, 0, 0, 0), 12);
             textHeaderBlack = CreateTextStyle(Color.black, new RectOffset(6, 4, -5, 0), new RectOffset(0, 0, 0, 0), 12);
             textSubHeader = CreateTextStyle(new Color(0, 0, 0, 1), new RectOffset(6, 4, -10, 0), new RectOffset(0, 0, 0, 0), 9);
+            textSubHeader2 = CreateTextStyle(new Color(1, 1, 1, 1), new RectOffset(6, 4, 0, 0), new RectOffset(0, 0, 3, 1), 8, 0, 10);
             textDefault = CreateTextStyle(Color.white, new RectOffset(6, 4, 0, 2), new RectOffset(0, 0, 0, 0), 12);
             textDefaultBlack = CreateTextStyle(Color.black, new RectOffset(6, 4, 0, 2), new RectOffset(0, 0, 0, 0), 12);
             textNoWdith = CreateTextStyle(Color.white, new RectOffset(0, 0, 0, 2), new RectOffset(0, 0, 0, 0), 12);
@@ -124,6 +131,7 @@ namespace SplineArchitect.Libraries
             buttonDefault = CreateButton(LibraryTexture.buttonDefault, LibraryTexture.buttonDefaultPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleCenter);
             buttonDefaultGreen = CreateButton(LibraryTexture.buttonDefaultGreen, LibraryTexture.buttonDefaultGreenPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleCenter);
             buttonDefaultRed = CreateButton(LibraryTexture.buttonDefaultRed, LibraryTexture.buttonDefaultRedPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleCenter);
+            buttonDefaultWhite = CreateButton(LibraryTexture.buttonDefaultWhite, LibraryTexture.buttonDefaultWhitePressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleCenter);
             buttonDefaultActive = CreateButton(LibraryTexture.buttonDefaultActive, LibraryTexture.buttonDefaultPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleCenter);
             buttonDefaultMiddleLeft = CreateButton(LibraryTexture.buttonDefault, LibraryTexture.buttonDefaultPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleLeft);
             buttonDefaultMiddleLeftActive = CreateButton(LibraryTexture.buttonDefaultActive, LibraryTexture.buttonDefaultPressed, new RectOffset(2, 2, 2, 2), TextAnchor.MiddleLeft);
@@ -184,7 +192,7 @@ namespace SplineArchitect.Libraries
         {
             GUIStyle style = new GUIStyle();
             style.normal.background = texture;
-            style.fixedHeight = size;
+            if(size > 0) style.fixedHeight = size;
 
             return style;
         }
@@ -200,20 +208,22 @@ namespace SplineArchitect.Libraries
             return style;
         }
 
-        private static GUIStyle CreateTextStyle(Color color, RectOffset padding, RectOffset margin, int size, float elementWidth = 0)
+        private static GUIStyle CreateTextStyle(Color color, RectOffset padding, RectOffset margin, int size, float elementWidth = 0, float elementHeight = 0, bool centerAlignment = false)
         {
             GUIStyle textStyle = new GUIStyle();
 
             if(elementWidth != 0)
                 textStyle.fixedWidth = elementWidth;
 
-            textStyle.fixedHeight = WindowBase.menuItemHeight;
+            if (elementHeight != 0) textStyle.fixedHeight = elementHeight;
+            else textStyle.fixedHeight = WindowBase.menuItemHeight;
             textStyle.richText = true;
             textStyle.padding = padding;
             textStyle.margin = margin;
             textStyle.normal.textColor = color;
             textStyle.fontSize = size;
             textStyle.alignment = TextAnchor.MiddleLeft;
+            if(centerAlignment) textStyle.alignment = TextAnchor.MiddleCenter;
 
             return textStyle;
         }

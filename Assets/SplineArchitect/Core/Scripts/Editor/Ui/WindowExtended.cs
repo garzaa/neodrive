@@ -244,7 +244,7 @@ namespace SplineArchitect.Ui
                         }, "Set snap length start");
                     }, 50, 38, true);
 
-                    EUiUtility.CreateEmpty(0);
+                    EUiUtility.CreateSpaceWidth(0);
 
                     //Snap length end
                     EUiUtility.CreateFloatFieldWithLabel("End", so.snapLengthEnd, (newValue) => {
@@ -269,7 +269,7 @@ namespace SplineArchitect.Ui
                         }, "Set snap offset start");
                     }, 50, 38, true);
 
-                    EUiUtility.CreateEmpty(0);
+                    EUiUtility.CreateSpaceWidth(0);
 
                     //Snap length end
                     EUiUtility.CreateFloatFieldWithLabel("End", so.snapOffsetEnd, (newValue) => {
@@ -696,7 +696,8 @@ namespace SplineArchitect.Ui
             int selectedSegmentId = SplineUtility.ControlPointIdToSegmentIndex(spline.selectedControlPoint);
             EUiUtility.CreateButton(ButtonType.DEFAULT, LibraryGUIContent.iconSplit, 35, 19, () =>
             {
-                EHandleSpline.Split(spline, selectedSegmentId);
+                Spline newSpline = EHandleSpline.Split(spline, selectedSegmentId);
+                EHandleEvents.InvokeSplineSplit(spline, newSpline);
                 EHandleSceneView.RepaintCurrent();
             }, !spline.loop && selectedSegmentId > 0 && selectedSegmentId < (spline.segments.Count - 1));
 
@@ -773,6 +774,11 @@ namespace SplineArchitect.Ui
                     {
                         selected.SetInterpolationMode((Segment.InterpolationType)newValue);
                     }, "Updated interpolation type");
+
+                    EHandleUndo.RecordNow(spline);
+                    spline.selectedControlPoint = SplineUtility.SegmentIndexToControlPointId(segmentIndex, Segment.ControlHandle.ANCHOR);
+                    EHandleSelection.ForceUpdate();
+                    EHandleTool.ActivatePositionToolForControlPoint(spline);
                 }, 47, true);
                 GUILayout.EndHorizontal();
             }
@@ -955,6 +961,7 @@ namespace SplineArchitect.Ui
             {
                 EHandleUndo.RecordNow(spline, "Changed anchor menu");
                 spline.selectedAnchorMenu = "general";
+                GUI.FocusControl(null);
             }, spline.selectedAnchorMenu == "general");
 
             //Deformation
@@ -962,6 +969,7 @@ namespace SplineArchitect.Ui
             {
                 EHandleUndo.RecordNow(spline, "Changed anchor menu");
                 spline.selectedAnchorMenu = "deformation";
+                GUI.FocusControl(null);
             }, spline.selectedAnchorMenu == "deformation");
 
             //Addon buttons
@@ -971,6 +979,7 @@ namespace SplineArchitect.Ui
                 {
                     EHandleUndo.RecordNow(spline, "Changed sub menu");
                     spline.selectedAnchorMenu = addonsButtonsCp[i].Item1;
+                    GUI.FocusControl(null);
                 }, spline.selectedAnchorMenu == addonsButtonsCp[i].Item1);
             }
 
@@ -1008,7 +1017,7 @@ namespace SplineArchitect.Ui
                 else if (spline.selectedObjectMenu == "info")
                 {
                     cachedRect.height = menuItemHeight * 4 + 33;
-                    cachedRect.width = 158;
+                    cachedRect.width = 195;
                 }
                 //Addons
                 else

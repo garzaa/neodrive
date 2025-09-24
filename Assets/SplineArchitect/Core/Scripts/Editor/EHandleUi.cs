@@ -83,6 +83,14 @@ namespace SplineArchitect
             }
         }
 
+        public static void BeforeSceneGUIGlobal(SceneView sceneView, Event e)
+        {
+            if (e.type == EventType.MouseUp)
+            {
+                WindowBase.RepaintAll();
+            }
+        }
+
         public static void BeforeAssemblyReload()
         {
             LibraryTexture.DestroyPreloadedTextures();

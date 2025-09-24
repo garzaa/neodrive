@@ -20,6 +20,9 @@ namespace SplineArchitect.Ui
         public static void CreateSpline()
         {
             Spline spline = EHandleSpline.CreatedForContext(new GameObject());
+            if (Selection.activeTransform != null)
+                EHandleUndo.SetTransformParent(spline.transform, Selection.activeTransform);
+
             Selection.activeTransform = spline.transform;
 
             EHandleUndo.RecordNow(spline);
@@ -30,6 +33,9 @@ namespace SplineArchitect.Ui
         public static void CreateSplineConnector()
         {
             SplineConnector splineConnector = EHandleSplineConnector.CreatedForContext(new GameObject());
+            if(Selection.activeTransform != null)
+                EHandleUndo.SetTransformParent(splineConnector.transform, Selection.activeTransform);
+
             Selection.activeTransform = splineConnector.transform;
         }
     }

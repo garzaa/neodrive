@@ -190,7 +190,7 @@ namespace SplineArchitect
 
             Spline spline = TryFindSpline(newSelection);
             SplineObject so = newSelection.GetComponent<SplineObject>();
-            SplineConnector sc = newSelection.GetComponent<SplineConnector>();
+            //SplineConnector sc = newSelection.GetComponent<SplineConnector>();
 
             //Select Spline
             if (so == null)
@@ -555,6 +555,9 @@ namespace SplineArchitect
 
             foreach (int segmentIndex in selectedSpline.selectedAnchors)
             {
+                if (selectedSpline.segments.Count <= segmentIndex)
+                    continue;
+
                 Segment selectedSegment = selectedSpline.segments[SplineUtility.ControlPointIdToSegmentIndex(segmentIndex)];
                 if (selectedSegment == segment)
                     return true;

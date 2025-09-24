@@ -231,6 +231,7 @@ namespace SplineArchitect.Objects
             splineParent.RemoveSplineObject(this);
 #if UNITY_EDITOR
             splineParent.monitor.UpdateChildCount();
+
 #endif
 
             //Update parent data
@@ -256,6 +257,7 @@ namespace SplineArchitect.Objects
 
 #if UNITY_EDITOR
                 activationPosition = localSplinePosition;
+                EHandleEvents.InvokeSplineObjectParentChanged(this);
 #endif
             }
 
@@ -674,17 +676,23 @@ namespace SplineArchitect.Objects
                     lodGroup.RecalculateBounds();
 
                     if (lodGroup.animateCrossFading && type == Type.DEFORMATION)
-                        Debug.LogWarning("[Spline Architect] Using Animate Cross-fading on a Deformation may have undesired consequences.");
+                        Debug.LogWarning("[Spline Architect] Using Animate Cross-fading on a Deformation with LOD Group may have undesired consequences.");
                 }
             }
         }
 
         public SnapData CalculateSnapData()
         {
+            SnapData snapData = new SnapData();
+
+            if (meshContainers == null || meshContainers.Count == 0)
+            {
+                return snapData;
+            }
+
             Bounds localBounds = meshContainers[0].GetOriginMesh().bounds;
             Bounds transformedBounds = GeneralUtility.TransformBounds(localBounds, SplineObjectUtility.GetCombinedParentMatrixs(this));
 
-            SnapData snapData = new SnapData();
             snapData.soStartPoint = splinePosition.z - transformedBounds.extents.z + localBounds.center.z;
             snapData.soEndPoint = splinePosition.z + transformedBounds.extents.z + localBounds.center.z;
 

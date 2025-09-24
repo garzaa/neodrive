@@ -121,12 +121,17 @@ namespace SplineArchitect
         {
             playModeStateChange = state;
             EHandleEvents.playModeStateChange = state;
+            bool domainReloadDisabled = EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableDomainReload);
 
-            if (state == PlayModeStateChange.ExitingEditMode)
+            foreach (Spline spline in HandleRegistry.GetSplines())
             {
-                foreach (Spline spline in HandleRegistry.GetSplines())
+                if (state == PlayModeStateChange.ExitingEditMode)
+                    spline.DisposeCachedData();
+
+                if(domainReloadDisabled && state == PlayModeStateChange.EnteredPlayMode)
                 {
                     spline.DisposeCachedData();
+                    spline.UpdateCachedData();
                 }
             }
 
@@ -146,6 +151,7 @@ namespace SplineArchitect
             EHandleSpline.BeforeSceneGUIGlobal(sceneView, Event.current);
             EHandleSceneView.BeforeSceneGUIGlobal(sceneView, Event.current);
             EHandleSelection.BeforeSceneGUIGlobal(sceneView, Event.current);
+            EHandleUi.BeforeSceneGUIGlobal(sceneView, Event.current);
             EHandleEvents.InitAfterDrag(sceneView);
             EActionToSceneGUI.BeforeOnSceneGUI(Event.current);
         }
@@ -247,10 +253,12 @@ namespace SplineArchitect
             EActionToUpdate.LateUpdate();
 
             firstInitialization = false;
+            EHandleEvents.undoActive = false;
         }
 
         private static void OnUndo()
         {
+            EHandleEvents.undoActive = true;
             EHandleSelection.OnUndo();
 
             foreach (Spline spline in HandleRegistry.GetSplines())
@@ -271,6 +279,7 @@ namespace SplineArchitect
                 if (!IsSecondarySelection && !isPrimiarySelection) continue;
 
                 EHandleEvents.InvokeUndoSelection(spline);
+                EHandleSpline.MarkForInfoUpdate(spline);
             }
 
             EHandleTool.OnUndoGlobal();

@@ -321,6 +321,7 @@ namespace SplineArchitect
             Vector3 position = spline.SplinePositionToWorldPosition(so.transform.parent, so.localSplinePosition, SplineObjectUtility.GetCombinedParentMatrixs(so.soParent), so.alignToEnd);
             PositionTool.ActivateAndSetPosition(PositionTool.ActivationType.SPLINE_OBJECT, position, sceneView.camera.transform.position, normalsContainer[2], normalsContainer[1], false);
             so.activationPosition = so.localSplinePosition;
+            EHandleEvents.InvokeAfterSplineObjectActivatePositionTool(so);
         }
 
         public static void ActivatePositionToolForControlPoint(Spline spline)
@@ -373,8 +374,9 @@ namespace SplineArchitect
                                                 EHandleSceneView.GetCurrent().camera.transform.position,
                                                 directions.Item1,
                                                 directions.Item2,
-                                                true,
-                                                segment.linkTarget == Segment.LinkTarget.SPLINE_CONNECTOR);
+                                                true);
+            PositionTool.locked = segment.linkTarget == Segment.LinkTarget.SPLINE_CONNECTOR;
+            PositionTool.lockedWarningMsg = "[Spline Architect] Can't move position handle when connected to a Spline Connector.";
         }
 
         private static (Vector3, Vector3) GetForwardDirectionForControlPoint(Spline spline, Vector3 anchor, Vector3 tangentA, Vector3 tangentB, Segment.ControlHandle tangentType)

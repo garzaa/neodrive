@@ -33,6 +33,8 @@ namespace SplineArchitect.Libraries
         public static Texture2D buttonSubMenuPressed { get; private set; }
         public static Texture2D buttonDefaultRed { get; private set; }
         public static Texture2D buttonDefaultRedPressed { get; private set; }
+        public static Texture2D buttonDefaultWhite { get; private set; }
+        public static Texture2D buttonDefaultWhitePressed { get; private set; }
         public static Texture2D buttonDefaultGreen { get; private set; }
         public static Texture2D buttonDefaultGreenPressed { get; private set; }
 
@@ -45,6 +47,8 @@ namespace SplineArchitect.Libraries
         public static Texture2D iconCreateSplineLight { get; private set; }
         public static Texture2D iconMinimize { get; private set; }
         public static Texture2D iconPlus { get; private set; }
+        public static Texture2D iconMinimizeBlack { get; private set; }
+        public static Texture2D iconPlusBlack { get; private set; }
         public static Texture2D iconHandleMirrored { get; private set; }
         public static Texture2D iconHandleMirroredLight { get; private set; }
         public static Texture2D iconHandleContinuous { get; private set; }
@@ -163,6 +167,7 @@ namespace SplineArchitect.Libraries
             iconCreateSpline = LoadImage("createSplineIcon.png");
             iconCreateSplineLight = LoadImage("createSplineLightIcon.png");
             iconPlus = LoadImage("plusIcon.png");
+            iconPlusBlack = LoadImage("plusBlackIcon.png");
             iconHandleMirrored = LoadImage("handleMirroredIcon.png");
             iconHandleMirroredLight = LoadImage("handleMirroredLightIcon.png");
             iconHandleContinuous = LoadImage("handleContinuousIcon.png");
@@ -221,6 +226,7 @@ namespace SplineArchitect.Libraries
             iconDownArrow = LoadImage("downArrowIcon.png");
             iconExport = LoadImage("exportIcon.png");
             iconMinimize = LoadImage("minimizeIcon.png");
+            iconMinimizeBlack = LoadImage("minimizeBlackIcon.png");
             iconCopy = LoadImage("copyIcon.png");
             iconPaste = LoadImage("pasteIcon.png");
             iconAlignTangents = LoadImage("alignTangentsIcon.png");
@@ -236,6 +242,8 @@ namespace SplineArchitect.Libraries
             buttonSubMenuPressed = LoadImage("subMenuButton_pressed9s.png");
             buttonDefaultRed = LoadImage("defaultButtonRed9s.png");
             buttonDefaultRedPressed = LoadImage("defaultButtonRed_pressed9s.png");
+            buttonDefaultWhite = LoadImage("defaultButtonWhite9s.png");
+            buttonDefaultWhitePressed = LoadImage("defaultButtonWhite_pressed9s.png");
             buttonDefaultGreen = LoadImage("defaultButtonGreen9s.png");
             buttonDefaultGreenPressed = LoadImage("defaultButtonGreen_pressed9s.png");
 

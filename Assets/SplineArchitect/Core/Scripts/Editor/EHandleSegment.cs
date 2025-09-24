@@ -51,7 +51,6 @@ namespace SplineArchitect
 
                 DeleteAndUnlinkMarked(spline, true);
                 spline.selectedAnchors.Clear();
-                e.Use();
             }
 
 
@@ -84,27 +83,37 @@ namespace SplineArchitect
 
                 Segment s = spline.segments[segmentIndex];
 
-                if(s.links != null)
+                if(s.linkTarget != Segment.LinkTarget.NONE)
                 {
-                    //Unlink on other segments
-                    foreach (Segment s2 in s.links)
+                    if(s.links != null)
                     {
-                        if (s2 == s)
-                            continue;
+                        //Unlink on other segments
+                        foreach (Segment s2 in s.links)
+                        {
+                            if (s2 == s)
+                                continue;
 
-                        if (s2.links.Count > 2)
-                            continue;
+                            if (s2.links.Count > 2)
+                                continue;
 
-                        EHandleUndo.RecordNow(s2.splineParent, "Delete segement: " + segmentIndex);
-                        s2.linkTarget = Segment.LinkTarget.NONE;
+                            EHandleUndo.RecordNow(s2.splineParent, "Delete segement: " + segmentIndex);
+                            s2.linkTarget = Segment.LinkTarget.NONE;
+                        }
+                    }
+
+                    if(s.splineConnector != null)
+                    {
+                        s.splineConnector.RemoveConnection(s);
                     }
                 }
+
+
 
                 //If deleteing an Spline very fast after selecting it, the segement will be -333 and it will go into this if statement if "segement >= 0" is not here.
                 //In this case the Spline should be deleted.
                 if (spline.segments.Count > 1 && segmentIndex >= 0)
                 {
-                    EHandleEvents.InvokeOnSegmentDeleted(s);
+                    EHandleEvents.InvokeSegmentRemoved(s);
 
                     EHandleUndo.RecordNow(spline, "Delete segement: " + segmentIndex);
                     if (segmentIndex > spline.segments.Count - 1)
@@ -240,7 +249,6 @@ namespace SplineArchitect
             segment.splineParent = spline;
 
             HandleType handleType = GlobalSettings.GetHandleType();
-            spline.monitor.UpdateSegement();
 
             if (handleType == HandleType.CONTINUOUS)
             {

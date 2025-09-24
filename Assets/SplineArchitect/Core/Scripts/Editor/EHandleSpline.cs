@@ -634,7 +634,7 @@ namespace SplineArchitect
             }
         }
 
-        public static void Split(Spline spline, int segmentIndex)
+        public static Spline Split(Spline spline, int segmentIndex)
         {
             GameObject splineGo = new GameObject(spline.name + "(split)");
             EHandleUndo.RegisterCreatedObject(splineGo, "Splited Spline");
@@ -661,6 +661,8 @@ namespace SplineArchitect
 
             if(spline.transform.parent != null)
                 EHandleUndo.SetTransformParent(splineGo.transform, spline.transform.parent);
+
+            return newSpline;
         }
 
         public static void JoinSelection()

@@ -11,17 +11,20 @@ using System.Collections.Generic;
 
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 
 using SplineArchitect.Objects;
 using SplineArchitect.Ui;
 using SplineArchitect.Utility;
+using SplineArchitect.CustomTools;
 
 namespace SplineArchitect
 {
     public class EHandleObjectCloning
     {
         const string name = "Object Cloning";
-        const string version = "1.2.1";
+        const string version = "1.2.2";
 
         public static Texture2D textureClone { get; private set; }
         public static Texture2D textureCloneActive { get; private set; }
@@ -38,7 +41,13 @@ namespace SplineArchitect
         {
             //Events
             EHandleEvents.OnFirstUpdate += OnFirstUpdate;
-            EHandleEvents.OnSegmentDeleted += OnSegmentDeleted;
+            EHandleEvents.OnSegmentRemoved += OnSegmentDeleted;
+            EHandleEvents.OnSplineSplit += OnSplineSplit;
+            EHandleEvents.OnSplineJoin += OnSplineChange;
+            EHandleEvents.OnSplineReverse += OnSplineChange;
+            EHandleEvents.OnSplineLoop += OnSplineChange;
+            EHandleEvents.AfterSplineObjectActivatePositionTool += AfterSplineObjectActivatePositionTool;
+            EHandleEvents.OnSplineObjectParentChanged += OnSplineObjectParentChanged;
             SceneView.beforeSceneGui += BeforeSceneGUI;
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
 
@@ -75,6 +84,30 @@ namespace SplineArchitect
 
                         UpdateClones(spline.splineObjects[i]);
                     }
+
+                    //Update clones for links
+                    foreach (Segment s in spline.segments)
+                    {
+                        if (s.links != null && s.links.Count > 0)
+                        {
+                            foreach (Segment link in s.links)
+                            {
+                                if (link == s)
+                                    continue;
+
+                                if (link.splineParent == null)
+                                {
+                                    Debug.LogError("[Spline Architect] Spline parent is null!");
+                                    continue;
+                                }
+
+                                for (int i2 = link.splineParent.splineObjects.Count - 1; i2 >= 0; i2--)
+                                {
+                                    UpdateClones(link.splineParent.splineObjects[i2]);
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -91,9 +124,15 @@ namespace SplineArchitect
 
                         foreach(Segment s in connector.connections)
                         {
+                            if (s == null)
+                                continue;
+
+                            if (s.linkTarget == Segment.LinkTarget.NONE)
+                                continue;
+
                             if (s.splineParent == null)
                             {
-                                Debug.LogError("[Spline Architect] Could not find spline parent for segment!");
+                                Debug.LogError($"[Spline Architect] Could not find spline parent for segment! {connectors.Length} {connector.name}");
                                 continue;
                             }
 
@@ -102,9 +141,9 @@ namespace SplineArchitect
                         }
                     }
 
-                    foreach(Spline spline2 in splineContainer)
+                    foreach (Spline spline2 in splineContainer)
                     {
-                        for(int i = spline2.splineObjects.Count - 1; i >= 0; i--)
+                        for (int i = spline2.splineObjects.Count - 1; i >= 0; i--)
                         {
                             if (i >= spline2.splineObjects.Count)
                                 continue;
@@ -129,6 +168,52 @@ namespace SplineArchitect
                     return;
 
                 UpdateCloneAmount(so);
+            }
+        }
+
+        private static void OnSplineSplit(Spline spline, Spline newSpline)
+        {
+            if (spline == null)
+                return;
+
+            foreach(SplineObject so in spline.splineObjects)
+            {
+                if (so == null)
+                    continue;
+
+                if (so.type != SplineObject.Type.DEFORMATION)
+                    continue;
+
+                if (!so.cloningEnabled)
+                    continue;
+
+                EActionDelayed.Add(() => { 
+                    UpdateCloneAmount(so);
+                    EHandleDeformation.TryDeform(so.splineParent, false);
+                }, 0, 0, EActionDelayed.Type.FRAMES);
+            }
+        }
+
+        private static void OnSplineChange(Spline spline)
+        {
+            if (spline == null)
+                return;
+
+            foreach (SplineObject so in spline.splineObjects)
+            {
+                if (so == null)
+                    continue;
+
+                if (so.type != SplineObject.Type.DEFORMATION)
+                    continue;
+
+                if (!so.cloningEnabled)
+                    continue;
+
+                EActionDelayed.Add(() => { 
+                    UpdateCloneAmount(so);
+                    EHandleDeformation.TryDeform(so.splineParent, false);
+                }, 0, 0, EActionDelayed.Type.FRAMES);
             }
         }
 
@@ -203,6 +288,37 @@ namespace SplineArchitect
             }
         }
 
+        private static void OnSplineObjectParentChanged(SplineObject so)
+        {
+            if (so == null)
+                return;
+
+            if (so.type != SplineObject.Type.DEFORMATION)
+                return;
+
+            if (!so.cloningEnabled)
+                return;
+
+            EActionDelayed.Add(() => {
+                UpdateCloneAmount(so);
+                EHandleDeformation.TryDeform(so.splineParent, false);
+            }, 0, 0, EActionDelayed.Type.FRAMES);
+        }
+
+        private static void AfterSplineObjectActivatePositionTool(SplineObject so)
+        {
+            //Lock position tool when a clone is selected
+            SplineObject selectedSo = EHandleSelection.selectedSplineObject;
+            if (selectedSo != null)
+            {
+                if (IsClone(selectedSo))
+                {
+                    PositionTool.lockedWarningMsg = "[Spline Architect] Can't move cloned GameObject!";
+                    PositionTool.locked = true;
+                }
+            }
+        }
+
         private static int GetCurrentCloneSections(SplineObject cloneParent)
         {
             return cloneParent.clones.Count / cloneParent.originClones.Count + 1;
@@ -237,7 +353,10 @@ namespace SplineArchitect
                 foreach (SplineObject originClone in cloneParent.originClones)
                 {
                     //Create clone
-                    GameObject goClone = Object.Instantiate(originClone.gameObject);
+                    cloneParent.disableOnTransformChildrenChanged = true;
+                    GameObject goClone = Object.Instantiate(originClone.gameObject, cloneParent.transform);
+                    cloneParent.disableOnTransformChildrenChanged = false;
+
                     GameObject prefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(originClone.gameObject);
                     if (prefab != null)
                     {
@@ -251,10 +370,6 @@ namespace SplineArchitect
                     }
 
                     EHandleUndo.RegisterCreatedObject(goClone, "Created clones");
-                    cloneParent.disableOnTransformChildrenChanged = true;
-                    EHandleUndo.SetTransformParent(goClone.transform, cloneParent.transform, "Created clones");
-                    cloneParent.disableOnTransformChildrenChanged = false;
-
                     SplineObject soClone = goClone.GetComponent<SplineObject>();
 
                     EHandleUndo.RecordNow(soClone);
@@ -421,6 +536,8 @@ namespace SplineArchitect
             float sectionLength = amountAndSectionLength.Item2;
             int dif = newAmount - currentSections;
 
+            UpdateCloneOffset(cloneParent, sectionLength);
+
             if (dif > 0)
             {
                 CreateClones(cloneParent, dif, sectionLength);
@@ -458,6 +575,9 @@ namespace SplineArchitect
             {
                 SplineObject clone = cloneParent.clones[i];
 
+                if (clone == null)
+                    continue;
+
                 Bounds transformedBounds = GetTransformedBounds(clone);
                 float end = transformedBounds.center.z + transformedBounds.extents.z;
                 float start = transformedBounds.center.z - transformedBounds.extents.z;
@@ -479,12 +599,23 @@ namespace SplineArchitect
 
             foreach (SplineObject so in cloneParent.clones)
             {
-                EHandleUndo.RecordNow(so);
-                so.snapMode = SplineObject.SnapMode.NONE;
-                so.snapLengthEnd = 1;
-                so.snapLengthStart = 1;
-                so.snapOffsetEnd = 0;
-                so.snapOffsetStart = 0;
+                if (so == null || so.transform == null)
+                    continue;
+
+                SplineObject[] splineObjects = so.transform.GetComponentsInChildren<SplineObject>();
+                foreach (SplineObject soChild in splineObjects)
+                    ResetSnapData(soChild);
+
+                void ResetSnapData(SplineObject so)
+                {
+                    EHandleUndo.RecordNow(so);
+                    so.snapMode = SplineObject.SnapMode.NONE;
+                    so.snapLengthEnd = 1;
+                    so.snapLengthStart = 1;
+                    so.snapOffsetEnd = 0;
+                    so.snapOffsetStart = 0;
+
+                }
             }
 
             (int, float) amountAndSectionLength = GetAmountAndSectionLength(cloneParent);
@@ -519,8 +650,6 @@ namespace SplineArchitect
                     so.snapLengthStart = amountAndSectionLength.Item2 * 1.01f;
                     so.snapLengthEnd = 0;
                     so.snapOffsetStart = cloneParent.cloneSnapEndOffset;
-
-
                 }
             }
         }
@@ -554,31 +683,45 @@ namespace SplineArchitect
             UpdateCloneAmount(cloneParent);
         }
 
-        public static void UpdateCloneOffset(Spline spline, SplineObject cloneParent)
+        private static void UpdateCloneOffset(SplineObject cloneParent, float sectionLength)
         {
-            if (!cloneParent.cloningEnabled)
-                return;
-
-            (int, float) amountAndSectionLength = GetAmountAndSectionLength(cloneParent);
-            float sectionLength = amountAndSectionLength.Item2;
-
             if (cloneParent.clones != null && cloneParent.clones.Count > 0)
             {
                 for (int i = 0; i < cloneParent.clones.Count; i++)
                 {
                     SplineObject clone = cloneParent.clones[i];
+                    SplineObject originClone = cloneParent.originClones[i % cloneParent.originClones.Count];
 
-                    if (clone == null)
+                    if (clone == null || originClone == null)
                         continue;
 
                     EHandleUndo.RecordNow(clone);
                     int column = 1;
                     if(i > 0) column += Mathf.FloorToInt(i / cloneParent.originClones.Count);
-                    clone.localSplinePosition = (new Vector3(0, 0, sectionLength) + new Vector3(cloneParent.cloneOffset.x, cloneParent.cloneOffset.y, 0)) * column;
+                    Vector3 p = new Vector3(cloneParent.cloneOffset.x * column + originClone.localSplinePosition.x,
+                                            cloneParent.cloneOffset.y * column + originClone.localSplinePosition.y,
+                                            sectionLength * column + originClone.localSplinePosition.z);
+                    clone.localSplinePosition = p;
                 }
             }
+        }
 
-            UpdateCloneAmount(cloneParent);
+        private static bool IsClone(SplineObject so)
+        {
+            SplineObject parent = so.soParent;
+
+            for(int i = 0; i < 25; i++)
+            {
+                if (parent == null)
+                    return false;
+
+                if (parent.cloningEnabled && parent.clones != null && parent.clones.Contains(so))
+                    return true;
+
+                parent = parent.soParent;
+            }
+
+            return false;
         }
 
         public static void Enable(Spline spline, SplineObject cloneParent)

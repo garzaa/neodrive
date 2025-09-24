@@ -30,6 +30,19 @@ namespace SplineArchitect.Objects
 
         private void OnEnable()
         {
+            Initalize();
+        }
+
+        public void Initalize()
+        {
+#if UNITY_EDITOR
+            if (EHandleEvents.dragActive)
+            {
+                EHandleEvents.InitalizeAfterDrag(this);
+                return;
+            }
+#endif
+
             if (initalized)
                 return;
 
@@ -42,11 +55,6 @@ namespace SplineArchitect.Objects
                 monitor = new MonitorSplineConnector(this);
 
             HandleRegistry.AddSplineConnector(this);
-
-            foreach(Segment s in connections)
-            {
-                s.splineConnector = this;
-            }
         }
 
         private void OnDestroy()
@@ -78,6 +86,9 @@ namespace SplineArchitect.Objects
         private void Update()
         {
 #if UNITY_EDITOR
+            if (EHandleEvents.dragActive)
+                return;
+
             if (!Application.isPlaying)
                 return;
 #endif

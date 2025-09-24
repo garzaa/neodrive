@@ -78,7 +78,7 @@ namespace SplineArchitect.Jobs
             vertice = math.transform(localSpace, vertice);
 
             //Snapping, needs to be before time.
-            if (snapDatas.Length > 0 && (snapDatas[snapDataIndex].end || snapDatas[snapDataIndex].start))
+            if (snapDatas.Length > 0 && snapDatas.Length > snapDataIndex && (snapDatas[snapDataIndex].end || snapDatas[snapDataIndex].start))
             {
                 SnapData snapData = snapDatas[snapDataIndex];
 

@@ -109,6 +109,7 @@ namespace SplineArchitect.Ui
                 {
                     selected.loop = !selected.loop;
                     EHandleSpline.EnableDisableLoop(selected, selected.loop);
+                    EHandleEvents.InvokeSplineLoop(selected);
                 }, "Toggle loop");
                 EHandleSceneView.RepaintCurrent();
             }, spline.loop);
@@ -134,9 +135,11 @@ namespace SplineArchitect.Ui
                         }
                     }
 
+                    EHandleEvents.InvokeSplineReverse(selected);
                 }, "Reverse control points");
 
-                EHandleTool.ActivatePositionToolForControlPoint(spline);
+                if (EHandleSelection.selectedSplineObject != null) EHandleTool.ActivatePositionToolForSplineObject(spline, EHandleSelection.selectedSplineObject);
+                else EHandleTool.ActivatePositionToolForControlPoint(spline);
                 EHandleSceneView.RepaintCurrent();
             });
 
@@ -149,7 +152,8 @@ namespace SplineArchitect.Ui
                     EHandleSegment.LinkMovementAll(selected);
                 }, "Flatten control points");
 
-                EHandleTool.ActivatePositionToolForControlPoint(spline);
+                if (EHandleSelection.selectedSplineObject != null) EHandleTool.ActivatePositionToolForSplineObject(spline, EHandleSelection.selectedSplineObject);
+                else EHandleTool.ActivatePositionToolForControlPoint(spline);
                 EHandleSceneView.RepaintCurrent();
             });
 
@@ -177,6 +181,7 @@ namespace SplineArchitect.Ui
                     spline.monitor.MarkEditorDirty();
 
                 EHandleSelection.ForceUpdate();
+                EHandleSceneView.RepaintCurrent();
             });
 
             //Select all control points
@@ -210,6 +215,7 @@ namespace SplineArchitect.Ui
             EUiUtility.CreateButton(ButtonType.DEFAULT, LibraryGUIContent.iconJoin, 35, 19, () =>
             {
                 EHandleSpline.JoinSelection();
+                EHandleEvents.InvokeSplineJoin(spline);
                 EHandleSceneView.RepaintCurrent();
             }, EHandleSelection.selectedSplines.Count > 0);
 
@@ -416,7 +422,6 @@ namespace SplineArchitect.Ui
                     NoiseLayer noise = spline.noises[i];
 
                     GUIStyle backgroundStyleHeader = EUiUtility.GetBackgroundStyle();
-
                     if (noise.selected) backgroundStyleHeader = LibraryGUIStyle.backgroundSelectedLayerHeader;
 
                     GUILayout.BeginHorizontal(backgroundStyleHeader);
@@ -425,7 +430,7 @@ namespace SplineArchitect.Ui
                     string text2 = EConversionUtility.CapitalizeString($"{noise.group}");
                     EUiUtility.CreateLabelField($"{i + 1} {text} ({text2})", noise.selected ? LibraryGUIStyle.textDefaultBlack : LibraryGUIStyle.textDefault, true);
 
-                    EUiUtility.CreateEmpty(12);
+                    EUiUtility.CreateSpaceWidth(12);
 
                     //Move down
                     EUiUtility.CreateButton(ButtonType.DEFAULT, LibraryGUIContent.iconDownArrow, 22, 19, () =>
@@ -456,7 +461,7 @@ namespace SplineArchitect.Ui
                         }, "Removed noise effect");
                     });
 
-                    EUiUtility.CreateEmpty(11);
+                    EUiUtility.CreateSpaceWidth(11);
 
                     EUiUtility.CreateButton(ButtonType.DEFAULT_GREEN, noise.selected ? LibraryGUIContent.iconMinimize : LibraryGUIContent.iconSelectLayer, 22, 19, () =>
                     {
@@ -493,11 +498,17 @@ namespace SplineArchitect.Ui
                         continue;
 
                     GUIStyle backgroundStyle = LibraryGUIStyle.backgroundSelectedLayer;
-
                     EUiUtility.CreateHorizontalBlackLine();
 
+                    //SECTION HEADER MASKS
+                    GUILayout.BeginHorizontal(LibraryGUIStyle.backgroundSubHeader2);
+                    GUILayout.Space(163);
+                    EUiUtility.CreateLabelField("<b>GENERAL</b>", LibraryGUIStyle.textSubHeader2, true, 50);
+                    GUILayout.EndHorizontal();
+                    EUiUtility.CreateHorizontalSubHeader2Line();
+
                     GUILayout.BeginHorizontal(backgroundStyle);
-                    EUiUtility.CreateEmpty(18);
+                    EUiUtility.CreateSpaceWidth(18);
                     EUiUtility.CreatePopupField("Noise:", 85, (int)noise.type, EHandleUi.optionsNoiseType, (int newValue) =>
                     {
                         EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
@@ -509,7 +520,7 @@ namespace SplineArchitect.Ui
                     }, 46, true, true, false);
 
 
-                    EUiUtility.CreateEmpty(2);
+                    EUiUtility.CreateSpaceWidth(2);
                     EUiUtility.CreatePopupField("Group:", 85, (int)noise.group - 1, EHandleUi.optionsNoiseGroups, (int newValue) =>
                     {
                         EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
@@ -522,7 +533,7 @@ namespace SplineArchitect.Ui
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal(backgroundStyle);
-                    EUiUtility.CreateEmpty(21);
+                    EUiUtility.CreateSpaceWidth(21);
                     EUiUtility.CreateFloatFieldWithLabel("Seed:", noise.seed, (newValue) => {
                         EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
                         {
@@ -535,7 +546,7 @@ namespace SplineArchitect.Ui
                         }, "Changed noise seed");
                     }, 40, 42, true);
 
-                    EUiUtility.CreateEmpty(46);
+                    EUiUtility.CreateSpaceWidth(46);
                     EUiUtility.CreateXYZInputFields("Scale:", noise.scale, (newValue, dif) => {
                         EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
                         {
@@ -567,7 +578,7 @@ namespace SplineArchitect.Ui
                         }, "Changed noise amplitude");
                     }, 40, 68, true);
 
-                    EUiUtility.CreateEmpty(19);
+                    EUiUtility.CreateSpaceWidth(19);
 
                     GUI.enabled = fullSettings;
 
@@ -583,7 +594,7 @@ namespace SplineArchitect.Ui
                         }, "Changed noise frequency");
                     }, 40, 71, true);
 
-                    EUiUtility.CreateEmpty(20);
+                    EUiUtility.CreateSpaceWidth(20);
 
                     EUiUtility.CreateFloatFieldWithLabel("Octaves:", noise.octaves, (newValue) => {
                         EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
@@ -599,6 +610,9 @@ namespace SplineArchitect.Ui
                     GUI.enabled = true;
                     GUILayout.EndHorizontal();
 
+                    GUILayout.BeginHorizontal(LibraryGUIStyle.backgroundSubHeader2, GUILayout.Height(3));
+                    GUILayout.Space(3);
+                    GUILayout.EndHorizontal();
                     EUiUtility.CreateHorizontalBlackLine();
                 }
 
@@ -717,6 +731,7 @@ namespace SplineArchitect.Ui
             {
                 EHandleUndo.RecordNow(spline, "Changed sub menu");
                 spline.selectedSplineMenu = "deformation";
+                GUI.FocusControl(null);
             }, spline.selectedSplineMenu == "deformation");
 
             //Addons
@@ -726,6 +741,7 @@ namespace SplineArchitect.Ui
                 {
                     EHandleUndo.RecordNow(spline, "Changed sub menu");
                     spline.selectedSplineMenu = addonsButtons[i].Item1;
+                    GUI.FocusControl(null);
                 }, spline.selectedSplineMenu == addonsButtons[i].Item1);
             }
 
@@ -734,6 +750,7 @@ namespace SplineArchitect.Ui
             {
                 EHandleUndo.RecordNow(spline, "Changed sub menu");
                 spline.selectedSplineMenu = "noise";
+                GUI.FocusControl(null);
             }, spline.selectedSplineMenu == "noise");
 
             //Info
@@ -741,6 +758,7 @@ namespace SplineArchitect.Ui
             {
                 EHandleUndo.RecordNow(spline, "Changed sub menu");
                 spline.selectedSplineMenu = "info";
+                GUI.FocusControl(null);
             }, spline.selectedSplineMenu == "info");
 
             GUILayout.EndHorizontal();
@@ -784,7 +802,7 @@ namespace SplineArchitect.Ui
                         if (!nl.selected) cachedRect.height += menuItemHeight * 1;
                         else
                         {
-                            cachedRect.height += 2;
+                            cachedRect.height += 20;
                             cachedRect.height += menuItemHeight * 4;
                         }
                     }

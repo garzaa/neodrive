@@ -99,6 +99,8 @@ namespace SplineArchitect.Utility
                 buttonStyle = LibraryGUIStyle.buttonSubMenu;
             else if (buttonType == ButtonType.DEFAULT_RED)
                 buttonStyle = LibraryGUIStyle.buttonDefaultRed;
+            else if (buttonType == ButtonType.DEFAULT_WHITE)
+                buttonStyle = LibraryGUIStyle.buttonDefaultWhite;
             else if (buttonType == ButtonType.DEFAULT_GREEN)
                 buttonStyle = LibraryGUIStyle.buttonDefaultGreen;
             else if (buttonType == ButtonType.DEFAULT_MIDDLE_LEFT)
@@ -155,7 +157,7 @@ namespace SplineArchitect.Utility
             EditorStyles.label.normal.textColor = Color.white;
             EditorStyles.label.hover.textColor = Color.white;
             EditorStyles.label.focused.textColor = Color.white;
-
+            GUI.enabled = !disable;
             GUI.SetNextControlName("field_x");
             currentValue.x = EditorGUILayout.FloatField("X", currentValue.x, LibraryGUIStyle.textFieldNoWidth, GUILayout.Width(inputFieldWidth));
             GUILayout.Space(2);
@@ -164,6 +166,7 @@ namespace SplineArchitect.Utility
             GUILayout.Space(2);
             GUI.SetNextControlName("field_z");
             currentValue.z = EditorGUILayout.FloatField("Z", currentValue.z, LibraryGUIStyle.textFieldNoWidth, GUILayout.Width(inputFieldWidth));
+            GUI.enabled = true;
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
             EditorStyles.label.normal.textColor = oldNormal;
@@ -191,14 +194,14 @@ namespace SplineArchitect.Utility
             }
         }
 
-        public static void CreateFromToInputField(string label, float currentValueFrom, float currentValueTo, Action<float, float> actionOnValueChange, float width = 58, float paddingLeft = 6, float labelWidth = 58, bool skipGroup = false)
+        public static void CreateFromToInputField(string label, float currentValueFrom, float currentValueTo, Action<float, float> actionOnValueChange, float width = 58, float paddingLeft = 6, float labelWidth = 58, bool skipGroup = false, bool verySmall = false)
         {
             if(!skipGroup) GUILayout.BeginHorizontal(GetBackgroundStyle());
             GUILayout.Space(paddingLeft);
             GUILayout.Label(label, LibraryGUIStyle.textNoWdith, GUILayout.Width(labelWidth));
-            float newValueFrom = EditorGUILayout.FloatField(currentValueFrom, LibraryGUIStyle.textFieldSmall, GUILayout.Width(width));
+            float newValueFrom = EditorGUILayout.FloatField(currentValueFrom, verySmall ? LibraryGUIStyle.textFieldVerySmall : LibraryGUIStyle.textFieldSmall, GUILayout.Width(width));
             GUILayout.Label("-", LibraryGUIStyle.textNoWdith, GUILayout.Width(6));
-            float newValueTo = EditorGUILayout.FloatField(currentValueTo, LibraryGUIStyle.textFieldSmall, GUILayout.Width(width));
+            float newValueTo = EditorGUILayout.FloatField(currentValueTo, verySmall ? LibraryGUIStyle.textFieldVerySmall : LibraryGUIStyle.textFieldSmall, GUILayout.Width(width));
             if (!skipGroup) GUILayout.EndHorizontal();
 
             if (GeneralUtility.IsEqual(newValueFrom, currentValueFrom) && GeneralUtility.IsEqual(newValueTo, currentValueTo))
@@ -268,7 +271,7 @@ namespace SplineArchitect.Utility
 
             //Follow axels
             if(!skipGroup) GUILayout.BeginHorizontal(GetBackgroundStyle());
-            GUILayout.Label("", LibraryGUIStyle.textNoWdith, GUILayout.Width(paddingLeft));
+            GUILayout.Space(paddingLeft);
             GUILayout.Label(label, LibraryGUIStyle.textNoWdith);
             GUILayout.Label("X", LibraryGUIStyle.specificX);
             currentValue.x = EditorGUILayout.Toggle(currentValue.x != 0) ? 1 : 0;
@@ -388,6 +391,15 @@ namespace SplineArchitect.Utility
             GUILayout.Box("", LibraryGUIStyle.lineGrey, GUILayout.Height(1), GUILayout.ExpandWidth(true));
         }
 
+        public static void CreateHorizontalSubHeader2Line()
+        {
+            GUILayout.BeginHorizontal(LibraryGUIStyle.backgroundSubHeader2);
+            GUILayout.Space(10);
+            GUILayout.Box("", LibraryGUIStyle.lineGrey2, GUILayout.Height(1), GUILayout.ExpandWidth(true));
+            GUILayout.Space(10);
+            GUILayout.EndHorizontal();
+        }
+
         public static void CreateVerticalYellowLine()
         {
             GUILayout.Box("", LibraryGUIStyle.lineYellow, GUILayout.Width(1), GUILayout.ExpandHeight(true));
@@ -413,7 +425,7 @@ namespace SplineArchitect.Utility
             GUILayout.Box("", LibraryGUIStyle.separatorWhite);
         }
 
-        public static void CreateEmpty(float width)
+        public static void CreateSpaceWidth(float width)
         {
             GUILayout.Label(LibraryTexture.empty, GUILayout.Width(width));
         }

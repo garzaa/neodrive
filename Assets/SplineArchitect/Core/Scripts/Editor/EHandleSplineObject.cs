@@ -40,7 +40,7 @@ namespace SplineArchitect
                     }
 
                     EHandleMeshContainer.TryUpdate(spline, so);
-                    EHandleEvents.InvokeOnSplineObjectSceneGUI(spline, so);
+                    EHandleEvents.InvokeSplineObjectSceneGUI(spline, so);
                 }
             }
         }
@@ -225,6 +225,9 @@ namespace SplineArchitect
                 }
             }
 
+            if (segmentContainer.Count == 0)
+                return;
+
             bool sameDirection = true;
             Vector3 originDirection = segmentContainer[0].GetPosition(Segment.ControlHandle.ANCHOR) - segmentContainer[0].GetPosition(Segment.ControlHandle.TANGENT_A);
             originDirection = originDirection.normalized;
@@ -348,6 +351,7 @@ namespace SplineArchitect
             so.transform.localRotation = so.localSplineRotation;
             so.monitor.ForceUpdate();
             EHandleTool.UpdateOrientationForPositionTool(EHandleSceneView.GetCurrent(), spline);
+            so.SyncInstanceMeshesFromCache();
         }
 
         public static void ConvertToNone(Spline spline, SplineObject so, SplineObject.Type oldType)

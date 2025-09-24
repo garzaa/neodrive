@@ -26,11 +26,13 @@ namespace SplineArchitect
         public static bool sceneIsLoadedPlaymode;
         public static bool buildRunning;
         public static bool dragActive;
+        public static bool undoActive;
         public static PlayModeStateChange playModeStateChange;
 
         private static List<Spline> markedInfoUpdates = new List<Spline>();
         private static List<(SplineObject, bool)> detachList = new List<(SplineObject, bool)>();
         private static List<Spline> InitalizeAfterDragSplines = new List<Spline>();
+        private static List<SplineConnector> InitalizeAfterDragSplineConnectors = new List<SplineConnector>();
         private static List<SplineObject> InitalizeAfterDragSplineObjects = new List<SplineObject>();
 
         //Events
@@ -40,7 +42,13 @@ namespace SplineArchitect
         public static event Action<Spline> OnUndoSelectedSplines;
         public static event Action<Spline> OnInitalizeSplineEditor;
         public static event Action<Spline> OnDestroySpline;
-        public static event Action<Segment> OnSegmentDeleted;
+        public static event Action<Spline> OnSplineJoin;
+        public static event Action<Spline> OnSplineReverse;
+        public static event Action<Spline> OnSplineLoop;
+        public static event Action<Spline, Spline> OnSplineSplit;
+        public static event Action<SplineObject> AfterSplineObjectActivatePositionTool;
+        public static event Action<SplineObject> OnSplineObjectParentChanged;
+        public static event Action<Segment> OnSegmentRemoved;
         public static event Action<Spline> OnCopiedSpline;
         public static event Action<Spline> OnUpdateLoopEndData;
         public static event Action<Spline, SplineObject> OnSplineObjectSCeneGUI;
@@ -65,6 +73,14 @@ namespace SplineArchitect
                         continue;
 
                     spline.Initalize();
+                }
+
+                foreach (SplineConnector sc in InitalizeAfterDragSplineConnectors)
+                {
+                    if (sc == null)
+                        continue;
+
+                    sc.Initalize();
                 }
 
                 foreach (SplineObject so in InitalizeAfterDragSplineObjects)
@@ -95,9 +111,9 @@ namespace SplineArchitect
             OnUpdateEarly?.Invoke();
         }
 
-        public static void InvokeOnSegmentDeleted(Segment segment)
+        public static void InvokeSegmentRemoved(Segment segment)
         {
-            OnSegmentDeleted?.Invoke(segment);
+            OnSegmentRemoved?.Invoke(segment);
         }
 
         public static void InvokeTransformToCenter(Spline spline, Vector3 dif)
@@ -115,6 +131,26 @@ namespace SplineArchitect
             OnInitalizeSplineEditor?.Invoke(spline);
         }
 
+        public static void InvokeSplineSplit(Spline spline, Spline newSpline)
+        {
+            OnSplineSplit?.Invoke(spline, newSpline);
+        }
+
+        public static void InvokeSplineJoin(Spline spline)
+        {
+            OnSplineJoin?.Invoke(spline);
+        }
+
+        public static void InvokeSplineLoop(Spline spline)
+        {
+            OnSplineLoop?.Invoke(spline);
+        }
+
+        public static void InvokeSplineReverse(Spline spline)
+        {
+            OnSplineReverse?.Invoke(spline);
+        }
+
         public static void InvokeDestroySpline(Spline spline)
         {
             OnDestroySpline?.Invoke(spline);
@@ -130,9 +166,19 @@ namespace SplineArchitect
             OnUpdateLoopEndData?.Invoke(spline);
         }
 
-        public static void InvokeOnSplineObjectSceneGUI(Spline spline, SplineObject splineObject)
+        public static void InvokeSplineObjectParentChanged(SplineObject so)
+        {
+            OnSplineObjectParentChanged?.Invoke(so);
+        }
+
+        public static void InvokeSplineObjectSceneGUI(Spline spline, SplineObject splineObject)
         {
             OnSplineObjectSCeneGUI?.Invoke(spline, splineObject);
+        }
+
+        public static void InvokeAfterSplineObjectActivatePositionTool(SplineObject splineObject)
+        {
+            AfterSplineObjectActivatePositionTool?.Invoke(splineObject);
         }
 
         public static void MarkForInfoUpdate(Spline spline)
@@ -176,6 +222,14 @@ namespace SplineArchitect
                 return;
 
             InitalizeAfterDragSplines.Add(spline);
+        }
+
+        public static void InitalizeAfterDrag(SplineConnector splineConnector)
+        {
+            if (InitalizeAfterDragSplineConnectors.Contains(splineConnector))
+                return;
+
+            InitalizeAfterDragSplineConnectors.Add(splineConnector);
         }
 
         public static void InitalizeAfterDrag(SplineObject splineObject)

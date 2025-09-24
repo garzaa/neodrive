@@ -178,10 +178,15 @@ namespace SplineArchitect
                         so.transform.localPosition = so.localSplinePosition;
                         so.transform.localRotation = so.localSplineRotation;
                         so.monitor.UpdateSplineLength(spline.length);
-                        EActionToUpdate.Add(() => 
+
+                        //Need to delay UpdateExternalComponents else sometimes everything has not initialized and the LOD Groyp may recalculate bounds from an undeformed mesh.
+                        EActionDelayed.Add(() => 
                         {
+                            if (so == null)
+                                return;
+
                             so.UpdateExternalComponents();
-                        }, EActionToUpdate.Type.LATE);
+                        }, 0, 0, EActionDelayed.Type.FRAMES);
                         continue;
                     }
 

@@ -46,6 +46,9 @@ namespace SplineArchitect
                     if (s == null)
                         continue;
 
+                    if (s.localSpace == null)
+                        continue;
+
                     if (s.linkTarget != Segment.LinkTarget.SPLINE_CONNECTOR)
                     {
                         s.splineConnector.RemoveConnection(s);
