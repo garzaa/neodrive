@@ -24,8 +24,6 @@ public class FinishLine : MonoBehaviour {
 	public UnityEvent onValidFinish;
 	public UnityEvent onInvalidFinish;
 
-	RaceLogic raceLogic;
-
 	RaceType raceType = RaceType.HOTLAP;
 	bool finishedOnce = false;
 
@@ -36,7 +34,6 @@ public class FinishLine : MonoBehaviour {
 		timerAlert = FindObjectOfType<TimerAlert>();
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
-		raceLogic = GameObject.FindObjectOfType<RaceLogic>();
 		FindObjectOfType<Car>().onRespawn.AddListener(OnRespawn);
 	}
 

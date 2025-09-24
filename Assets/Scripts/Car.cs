@@ -974,10 +974,10 @@ public class Car : MonoBehaviour {
 		float bumpVibration;
 		foreach (Wheel w in wheels) {
 			if (w.GetCompressionRatio() > 1f) {
-				bumpTS = Time.time;
+				bumpTS = Time.unscaledTime;
 			}
 		}
-		if (Time.unscaledTime < bumpTS + 0.2f) {
+		if (Time.unscaledTime < bumpTS + 0.1f) {
 			bumpVibration = 1f;
 		} else {
 			bumpVibration = 0;
@@ -994,7 +994,7 @@ public class Car : MonoBehaviour {
         if (Mathf.Abs(engineRPM - engine.idleRPM) < 50f) {
             startVibration += 0.1f + Mathf.Clamp01(Mathf.Sin(Time.time*16f)-0.5f);
         }
-
+        
 		InputManager.player.SetVibration(0, startVibration+bumpVibration);
         InputManager.player.SetVibration(1, startVibration+rpmVibration);
         
