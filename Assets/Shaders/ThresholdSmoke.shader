@@ -39,7 +39,7 @@ Shader "Unlit/ThresholdSmoke"
             v2f vert (appdata v) {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-				 o.screenPos = ComputeScreenPos(o.vertex);
+				o.screenPos = ComputeScreenPos(o.vertex);
                 o.uv = v.uv;
                 return o;
             }
@@ -54,7 +54,7 @@ Shader "Unlit/ThresholdSmoke"
 				float smokeDepth = smokeData.r;
 
 				// Sample the scene's depth buffer
-				float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
+				float sceneDepth = smokeData.g;// SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
 
 				// Discard smoke pixel if it's behind the scene geometry
 				if (sceneDepth > smokeDepth) {

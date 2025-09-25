@@ -9,12 +9,13 @@ Shader "Unlit/AccumulateAlpha"
         Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
         Cull Off
+        ZWrite Off
         // Additive blending for the alpha channel
-        Blend One OneMinusSrcAlpha
+        // Blend One OneMinusSrcAlpha
+        Blend One Zero, One One
 
         Pass
         {
-			ZTest Always
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -58,7 +59,7 @@ Shader "Unlit/AccumulateAlpha"
 				if (col.a <= 0) {
 					discard;
 				}
-                return fixed4(depth, 0, 0, col.a);
+                return fixed4(depth, sceneDepth, 0, col.a);
             }
             ENDCG
         }
