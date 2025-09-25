@@ -455,8 +455,8 @@ public class Car : MonoBehaviour {
                 if (drifting) {
                     float lostForce = Vector3.Dot(forwardForce, -rb.velocity);
                     // if drive force is pushing the car against its velocity
-                    // and therefore slowing it down
-                    if (lostForce > 0) {
+                    // and therefore slowing it down (and if the car is moving forward)
+                    if (lostForce > 0 && Vector3.Dot(rb.velocity, transform.forward) > 0) {
                         lostForce = Mathf.Abs(lostForce) + (forwardForce.magnitude / forwardTraction * settings.driftBoost);
                         rb.AddForce(lostForce * settings.driftBoost * Vector3.Project(rb.velocity, transform.right).normalized);
                     }
