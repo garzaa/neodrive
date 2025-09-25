@@ -47,6 +47,7 @@ public class CameraRotate : MonoBehaviour {
         car = FindObjectOfType<Car>();
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
         mainCam = Camera.main;
+        mainCam.depthTextureMode = DepthTextureMode.Depth;
         photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true).gameObject;
         photoModeCamera.SetActive(false);
         car.onRespawn.AddListener(OnRespawn);

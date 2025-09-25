@@ -7,9 +7,9 @@ using System.Linq;
 using Cinemachine;
 using System;
 using NaughtyAttributes;
-using Mono.Cecil;
-using System.Threading;
+using UnityEngine.Events;
 
+[RequireComponent(typeof(AudioSource))]
 public class RaceLogic : MonoBehaviour {
 	Ghost recordingGhost;
 	bool recording = false;
@@ -20,7 +20,7 @@ public class RaceLogic : MonoBehaviour {
 
 	bool ghostEnabled = true;
 
-	public RaceType raceType = RaceType.ROUTE;
+	public RaceType raceType = RaceType.HOTLAP;
 
 	public Text medalText;
 
@@ -56,11 +56,21 @@ public class RaceLogic : MonoBehaviour {
 
 	Achievement firstAuthor;
 
-	public Text timeContainer;
-	Image[] medals;
-
 	IEnumerator startRoutine;
 	IEnumerator resultsRoutine;
+
+	public UnityEvent onValidFinish, onInvalidFinish;
+
+	Timer raceTimer, lapTimer;
+	TimerAlert timerAlert;
+	LapTime bestLap = null;
+	LapTime currentLap;
+	AudioSource checkpointSound;
+	public Text lapRecord;
+	bool finishedOnce = false;
+
+	List<Checkpoint> allCheckpoints = new();
+	readonly HashSet<Checkpoint> checkpointsCrossed = new();
 
 	struct NameTimePair {
 		public string name;
@@ -75,21 +85,30 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	void Start() {
+		finishLine = FindObjectOfType<FinishLine>();
+		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
+		medalText.gameObject.SetActive(false);
+		car = FindObjectOfType<Car>();
+		
+		if (finishLine == null) return;
+
+		firstAuthor = Resources.Load<Achievement>("Achievements/zzz Handsome Devil");
+
+		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
+		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
+		timerAlert = FindObjectOfType<TimerAlert>();
+		currentLap = new();
+		checkpointSound = GetComponent<AudioSource>();
+
 		startRoutine = CountdownAndStart();
 		resultsRoutine = ShowResults();
-		car = FindObjectOfType<Car>();
 		playerGhostCar.gameObject.SetActive(false);
 		authorGhostCar.gameObject.SetActive(false);
-		medalText.gameObject.SetActive(false);
-		carTrackingCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+		carTrackingCamera = finishLine.GetComponentInChildren<CinemachineVirtualCamera>();
 		carTrackingCamera.m_LookAt = car.transform;
 		carTrackingCamera.m_Priority = 100;
 		carTrackingCamera.enabled = false;
 
-		finishLine = FindObjectOfType<FinishLine>();
-		finishLine.SetRaceType(raceType);
-		finishLine.onValidFinish.AddListener(OnValidFinish);
-		finishLine.onInvalidFinish.AddListener(OnInvalidFinish);
 
 		saver = new BinarySaver(SceneManager.GetActiveScene().name);
 		authorGhost = saver.GetAuthorGhost();
@@ -106,7 +125,7 @@ public class RaceLogic : MonoBehaviour {
 			if (player != null) {
 				bestPlayerGhost = player;
 				this.player.time = bestPlayerGhost.totalTime;
-				finishLine.SetBestLap(bestPlayerGhost);
+				SetBestLap(bestPlayerGhost);
 			}
 		}
 
@@ -114,21 +133,64 @@ public class RaceLogic : MonoBehaviour {
 
 		car.onRespawn.AddListener(OnRespawn);
 		car.onEngineStart.AddListener(FirstStart);
+		onValidFinish.AddListener(OnValidFinish);
+		onInvalidFinish.AddListener(OnInvalidFinish);
+		finishLine.onFinishCross.AddListener(OnFinishCross);
 
 		if (raceType != RaceType.HOTLAP && !skipCountdown) {
 			car.forceClutch = true;
 			car.forceBrake = true;
 		}
 
-		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
-		medalText.gameObject.SetActive(false);
+		raceTimer.gameObject.SetActive(raceType != RaceType.ROUTE);
+		StartCoroutine(WaitForSpawn());
+	}
+
+	IEnumerator WaitForSpawn() {
+		yield return new WaitForEndOfFrame();
+		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
+		foreach (Checkpoint c in allCheckpoints) {
+			c.onPlayerEnter.AddListener(() => OnCheckpointCrossed(c));
+		}
+	}
+
+	public void SetBestLap(Ghost ghost) {
+		bestLap = new LapTime(ghost);
+		lapRecord.text = lapTimer.FormattedTime(ghost.totalTime);
+	}
+
+	void OnCheckpointCrossed(Checkpoint c) {
+		float t = lapTimer.GetTime();
+		string tx = lapTimer.FormattedTime(t);
+		// don't alert if you haven't crossed the finish yet on a hot lap
+		// like if you're passing through checkpoints after spawning before starting an actual lap
+		if (!checkpointsCrossed.Contains(c) || (raceType==RaceType.HOTLAP && !finishedOnce)) {
+			currentLap.splits[c.name] = lapTimer.GetTime();
+			if (bestLap != null) {
+				if (!bestLap.splits.ContainsKey(c.name)) {
+					// best lap can be invalid due to changing the map between editor runs
+					bestLap = null;
+				} else {
+					float diff = t - bestLap.splits[c.name];
+					string color = (diff > 0) ? "red" : "blue";
+					tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
+				}
+			}
+		}
+		checkpointsCrossed.Add(c);
+		timerAlert.Alert(tx);
 	}
 
 	void OnRespawn() {
 		StopCoroutine(startRoutine);
+		startRoutine = CountdownAndStart();
 		StartCoroutine(startRoutine);
 		StopPlayingGhosts();
 		medalText.gameObject.SetActive(false);
+		raceTimer.Restart();
+		lapTimer.Restart();
+		checkpointsCrossed.Clear();
+		finishedOnce = false;
 	}
 
 	public void StartRecordingGhost() {
@@ -207,12 +269,55 @@ public class RaceLogic : MonoBehaviour {
 	public void OnRaceStart() {
 		car.forceClutch = false;
 		car.forceBrake = false;
-		finishLine.RestartTimers();
+		RestartTimers();
 		PlayLoadedGhosts();
 		StartRecordingGhost();
 	}
 
-	public void OnInvalidFinish() {
+	public void RestartTimers() {
+		raceTimer.Restart();
+		lapTimer.Restart();
+	}
+
+	public void OnFinishCross() {
+		finishedOnce = true;
+		checkpointSound.Play();
+		if (checkpointsCrossed.Count == allCheckpoints.Count) {
+			currentLap.totalTime = lapTimer.GetTime();
+			if (bestLap == null || currentLap.totalTime < bestLap.totalTime) {
+				bestLap = currentLap;
+				currentLap = new();
+				timerAlert.Alert("lap record "+lapTimer.GetFormattedTime());
+				lapRecord.text = lapTimer.GetFormattedTime();
+			} else {
+				string tx = lapTimer.FormattedTime(lapTimer.GetTime());
+				if (bestLap != null) {
+					float diff = lapTimer.GetTime() - bestLap.totalTime;
+					string color = (diff > 0) ? "red" : "blue";
+					tx += $"\n<color={color}>" + lapTimer.FormattedTime(diff, keepSign: true)+"</color>";
+				}
+				timerAlert.Alert(tx);
+			}
+			
+			if (raceType == RaceType.ROUTE) {
+				onValidFinish.Invoke();
+				lapTimer.Pause();
+				raceTimer.Pause();
+				currentLap = new();
+			} else {
+				onValidFinish.Invoke();
+			}
+		} else {
+			onInvalidFinish.Invoke();
+		}
+		if (raceType != RaceType.ROUTE) {
+			lapTimer.Restart();
+		}
+		currentLap = new();
+		checkpointsCrossed.Clear();
+	}
+
+	void OnInvalidFinish() {
 		// should still stop and do a new ghost if you're starting a new lap
 		if (raceType == RaceType.HOTLAP) {
 			StopRecordingGhost();
@@ -225,16 +330,17 @@ public class RaceLogic : MonoBehaviour {
 		Ghost p = StopRecordingGhost();
 		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
 			player.time = p.totalTime;
-			p.splits = finishLine.GetBestLapSplits();
+			p.splits = GetBestLapSplits();
 			bestPlayerGhost = p;
 			player.time = p.totalTime;
-			finishLine.SetBestLap(bestPlayerGhost);
+			SetBestLap(bestPlayerGhost);
 			saver.SaveGhost(bestPlayerGhost);
 		}
 		if (raceType != RaceType.HOTLAP) {
 			carTrackingCamera.enabled = true;
 			car.forceClutch = true;
 			car.forceBrake = true;
+			resultsRoutine = ShowResults();
 			StartCoroutine(resultsRoutine);
 		} else {
 			StartRecordingGhost();
@@ -259,6 +365,14 @@ public class RaceLogic : MonoBehaviour {
 				medalText.enabled = true;
 			}
 		}
+	}
+
+	Dictionary<string, float> GetBestLapSplits() {
+		// best lap is reset due to weird logic chaining between this
+		// and racelogic. racelogic should handle it all
+		// but until then, do this lol
+		if (bestLap != null) return bestLap.splits;
+		return currentLap.splits;
 	}
 
 	public Tuple<string, Sprite> GetBestMedal(float playerTime) {
@@ -467,4 +581,16 @@ public enum RaceType {
 	ROUTE = 0,
 	MULTILAP = 1,
 	HOTLAP = 2
+}
+
+public class LapTime {
+	public float totalTime;
+	public Dictionary<string, float> splits = new();
+
+	public LapTime() {}
+
+	public LapTime(Ghost g) {
+		totalTime = g.totalTime;
+		splits = g.splits;
+	}
 }

@@ -151,7 +151,7 @@ public class Car : MonoBehaviour {
     }
 
     void Start() {
-        respawnRoutine = _Respawn();
+        respawnRoutine = RespawnRoutine();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfGravity.transform.localPosition;
@@ -174,7 +174,7 @@ public class Car : MonoBehaviour {
         FinishLine f = FindObjectOfType<FinishLine>();
         if (f) {
             f.onFinishCross.AddListener(() => nitroxMeter.Reset());
-            dashboardUI.Add(f.GetComponentInChildren<Canvas>());
+            dashboardUI.Add(FindObjectOfType<RaceLogic>().GetComponentInChildren<Canvas>());
         }
         pointsAudio.mute = true;
         shaderBlock = new();
@@ -212,6 +212,15 @@ public class Car : MonoBehaviour {
         carMesh.GetPropertyBlock(shaderBlock, 0);
         shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
         carMesh.SetPropertyBlock(shaderBlock, 0);
+        if (clutch && (currentGear == 1)) {
+            if (engine.PeakPower(engineRPM)) {
+                float diff = Mathf.Abs(engine.maxPower - engine.GetPower(engineRPM));
+                float percent = 1 - (diff / (engine.maxPower * 0.1f));
+                perfectShiftEffect.SetFloat("PowerLight", percent);
+            }
+        } else {
+            perfectShiftEffect.SetFloat("PowerLight", 0);
+        }
     }
 
     void UpdateInputs() {
@@ -973,7 +982,7 @@ public class Car : MonoBehaviour {
 		// check if wheel suspension is compressed
 		float bumpVibration;
 		foreach (Wheel w in wheels) {
-			if (w.GetCompressionRatio() > 1f) {
+			if (w.GetCompressionRatio() > 1.5f) {
 				bumpTS = Time.unscaledTime;
 			}
 		}
@@ -1040,10 +1049,11 @@ public class Car : MonoBehaviour {
 
     public void Respawn() {
         StopCoroutine(respawnRoutine);
+        respawnRoutine = RespawnRoutine();
         StartCoroutine(respawnRoutine);
     }
 
-    IEnumerator _Respawn() {
+    IEnumerator RespawnRoutine() {
         nitroxMeter.Reset();
         currentGear = 0;
         engineRPM = engine.idleRPM;

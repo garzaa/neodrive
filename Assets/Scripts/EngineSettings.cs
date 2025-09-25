@@ -65,7 +65,7 @@ public class EngineSettings : ScriptableObject {
 	}
 
 	public bool PeakPower(float rpm) {
-		return maxPower - GetPower(rpm) < (maxPower*0.1);
+		return maxPower - GetPower(rpm) < (maxPower*0.1f);
 	}
 
 	public float GetThrottleResponse(float rpm) {

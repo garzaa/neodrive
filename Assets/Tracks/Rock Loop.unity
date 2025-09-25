@@ -128,7 +128,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55096*37302*638886995573018551
+  m_Name: -231018*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -406,6 +406,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -640,6 +641,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -911,6 +913,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -952,6 +955,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1272,6 +1276,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1313,6 +1318,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1517,6 +1523,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1649,7 +1656,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53366*37300*638886995573018551
+  m_Name: -232810*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -1920,7 +1927,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54548*37326*638885271819073394
+  m_Name: -231144*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2265,6 +2272,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2306,6 +2314,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2355,6 +2364,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2400,6 +2410,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2425,7 +2436,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54992*37302*638886995573018551
+  m_Name: -231306*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2706,7 +2717,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53350*37330*638885271819073394
+  m_Name: -232750*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2901,6 +2912,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2926,7 +2938,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53380*37300*638886995573018551
+  m_Name: -232782*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -3111,6 +3123,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3156,6 +3169,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3328,6 +3342,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3349,7 +3364,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55130*37328*638886995573018551
+  m_Name: -231136*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -3514,7 +3529,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55086*37300*638886995573018551
+  m_Name: -231062*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -3679,7 +3694,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55000*37328*638886995573018551
+  m_Name: -231314*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4086,6 +4101,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4127,6 +4143,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4205,7 +4222,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53344*37328*638886995573018551
+  m_Name: -232800*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4390,6 +4407,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4415,7 +4433,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55006*37302*638886995573018551
+  m_Name: -231166*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4834,6 +4852,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4857,8 +4876,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273548597}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373514, y: 4.987526, z: -0.0000016838312}
-  m_Size: 10.974998
+  m_LocalReferencePoint: {x: 2.5374217, y: 4.9875093, z: -0.000006377697}
+  m_Size: 10.974996
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -5199,7 +5218,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55174*37300*638886995573018551
+  m_Name: -231042*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5595,6 +5614,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0.002041723, y: 0.70710385, z: 0.70710385, w: -0.0020545465}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -5616,7 +5636,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55158*37328*638886995573018551
+  m_Name: -231116*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5919,6 +5939,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -5942,8 +5963,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325164970}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373464, y: 4.987491, z: -0.000015750527}
-  m_Size: 10.975001
+  m_LocalReferencePoint: {x: 2.53735, y: 4.9875026, z: -0.000015869737}
+  m_Size: 10.974996
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -5966,7 +5987,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53376*37302*638886995573018551
+  m_Name: -232778*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6141,7 +6162,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53362*37302*638886995573018551
+  m_Name: -232806*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6316,7 +6337,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55014*37328*638886995573018551
+  m_Name: -231174*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6693,7 +6714,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53356*37330*638885271819073394
+  m_Name: -231148*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7017,7 +7038,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55068*37302*638886995573018551
+  m_Name: -231004*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7192,7 +7213,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55140*37300*638886995573018551
+  m_Name: -232768*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7377,6 +7398,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7814,6 +7836,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7855,6 +7878,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7933,7 +7957,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55164*37330*638885271819073394
+  m_Name: -231122*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8191,7 +8215,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55166*37326*638885271819073394
+  m_Name: -231124*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8366,7 +8390,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55072*37300*638886995573018551
+  m_Name: -231008*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8551,6 +8575,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -8659,7 +8684,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53354*37382*638885271819073394
+  m_Name: -231146*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8834,7 +8859,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53390*37330*638885271819073394
+  m_Name: -231072*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9262,6 +9287,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9303,6 +9329,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9352,6 +9379,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9543,6 +9571,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9584,6 +9613,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9633,6 +9663,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9658,7 +9689,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53348*37382*638885271819073394
+  m_Name: -232748*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -10000,6 +10031,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10041,6 +10073,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10066,7 +10099,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55010*37300*638886995573018551
+  m_Name: -231170*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -10251,6 +10284,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10442,6 +10476,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10483,6 +10518,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10532,6 +10568,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10910,6 +10947,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10951,6 +10989,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11029,7 +11068,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54540*37330*638885271819073394
+  m_Name: -231052*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11204,7 +11243,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55062*37330*638885271819073394
+  m_Name: -231320*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11434,6 +11473,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11457,8 +11497,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634281036}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373578, y: 4.9874988, z: 0.00001335144}
-  m_Size: 10.974999
+  m_LocalReferencePoint: {x: 2.5373738, y: 4.9874887, z: -0.000004172325}
+  m_Size: 10.974997
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -11534,6 +11574,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11608,6 +11649,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11736,7 +11778,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53384*37328*638886995573018551
+  m_Name: -232786*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -12090,7 +12132,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55090*37328*638886995573018551
+  m_Name: -231066*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -12255,7 +12297,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54986*37330*638885271819073394
+  m_Name: -231032*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -12467,6 +12509,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12663,6 +12706,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12688,7 +12732,67 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3150824910883812794, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: field of view
-      value: 90
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7223178998979723216, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LookAt
@@ -12754,29 +12858,73 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Logic
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.376862
+    - target: {fileID: 7407864429435127999, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: raceType
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 31.11
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -282.3406
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9998966
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalRotation.x
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -29.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99965733
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.026176924
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.014380905
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.z
@@ -12959,6 +13107,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13000,6 +13149,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13049,6 +13199,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13074,7 +13225,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55064*37326*638885271819073394
+  m_Name: -231322*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -13269,6 +13420,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13560,6 +13712,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13634,6 +13787,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13761,7 +13915,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53352*37326*638885271819073394
+  m_Name: -232752*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -13956,6 +14110,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14147,6 +14302,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14188,6 +14344,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14237,6 +14394,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14262,7 +14420,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53370*37328*638886995573018551
+  m_Name: -232814*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14718,6 +14876,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14741,7 +14900,7 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825896643}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373423, y: 4.987498, z: -0.000021219254}
+  m_LocalReferencePoint: {x: 2.5373428, y: 4.987495, z: 0.000030636787}
   m_Size: 10.974996
   m_FadeMode: 0
   m_AnimateCrossFading: 0
@@ -14931,6 +15090,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14972,6 +15132,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15021,6 +15182,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15276,6 +15438,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0.002041723, y: 0.70710385, z: 0.70710385, w: -0.0020545465}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15463,6 +15626,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15504,6 +15668,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15553,6 +15718,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15748,6 +15914,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15789,6 +15956,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15838,6 +16006,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16129,6 +16298,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16152,8 +16322,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 991084419}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.7311022, y: 4.9875164, z: -0.0000011324883}
-  m_Size: 10.975002
+  m_LocalReferencePoint: {x: 2.731101, y: 4.9874964, z: -0.00000064074993}
+  m_Size: 10.974995
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -16229,6 +16399,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16270,6 +16441,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16295,7 +16467,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55170*37302*638886995573018551
+  m_Name: -231038*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -16524,6 +16696,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16547,8 +16720,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012889030}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.7311037, y: 4.987497, z: -0.0000068843365}
-  m_Size: 10.975009
+  m_LocalReferencePoint: {x: 2.7310922, y: 4.9874945, z: 0.000030055642}
+  m_Size: 10.974997
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -16624,6 +16797,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17014,6 +17188,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17082,6 +17257,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17239,7 +17415,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53388*37382*638885271819073394
+  m_Name: -231070*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17603,7 +17779,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54542*37326*638885271819073394
+  m_Name: -231054*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17778,7 +17954,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55178*37328*638886995573018551
+  m_Name: -231046*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17943,7 +18119,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54984*37382*638885271819073394
+  m_Name: -231030*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -18138,6 +18314,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -18218,6 +18395,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -18241,8 +18419,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122788931}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373516, y: 4.9875197, z: -0.000024333596}
-  m_Size: 10.975001
+  m_LocalReferencePoint: {x: 2.5373487, y: 4.9874983, z: 0.000023186207}
+  m_Size: 10.974997
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -18348,7 +18526,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55104*37328*638886995573018551
+  m_Name: -231026*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -18513,7 +18691,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54538*37382*638885271819073394
+  m_Name: -231050*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -18688,7 +18866,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53340*37300*638886995573018551
+  m_Name: -232796*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19155,6 +19333,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19180,7 +19359,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53358*37326*638885271819073394
+  m_Name: -231150*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19355,7 +19534,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53392*37326*638885271819073394
+  m_Name: -231074*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19530,7 +19709,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55122*37302*638886995573018551
+  m_Name: -231128*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19705,7 +19884,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55136*37302*638886995573018551
+  m_Name: -232764*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19900,6 +20079,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19925,7 +20105,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55154*37300*638886995573018551
+  m_Name: -231112*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -20090,7 +20270,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55100*37300*638886995573018551
+  m_Name: -231022*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -20255,7 +20435,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -53336*37302*638886995573018551
+  m_Name: -232792*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -20485,6 +20665,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -20508,8 +20689,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377067561}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373476, y: 4.9874887, z: -0.000027775764}
-  m_Size: 10.975002
+  m_LocalReferencePoint: {x: 2.5373113, y: 4.9874973, z: -0.000012263656}
+  m_Size: 10.974995
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -20532,7 +20713,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55126*37300*638886995573018551
+  m_Name: -231132*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -20717,6 +20898,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -20762,6 +20944,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -21139,6 +21322,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -21180,6 +21364,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -21530,7 +21715,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55144*37328*638886995573018551
+  m_Name: -232772*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22051,6 +22236,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22072,7 +22258,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55082*37302*638886995573018551
+  m_Name: -231058*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22267,6 +22453,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22292,7 +22479,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54544*37382*638885271819073394
+  m_Name: -231140*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22467,7 +22654,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54988*37326*638885271819073394
+  m_Name: -231034*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22662,6 +22849,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22687,7 +22875,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55150*37302*638886995573018551
+  m_Name: -231108*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22862,7 +23050,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55076*37328*638886995573018551
+  m_Name: -231012*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -23153,6 +23341,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23259,7 +23448,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54546*37330*638885271819073394
+  m_Name: -231142*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -23680,6 +23869,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23721,6 +23911,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23819,6 +24010,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23907,6 +24099,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24200,6 +24393,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24223,8 +24417,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1870209056}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.5373533, y: 4.9875, z: 0.000030040741}
-  m_Size: 10.975
+  m_LocalReferencePoint: {x: 2.5373383, y: 4.9874964, z: -0.00000059604645}
+  m_Size: 10.974997
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -24304,7 +24498,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55060*37382*638885271819073394
+  m_Name: -231318*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -24533,6 +24727,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24556,8 +24751,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897754501}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.7311015, y: 4.9874916, z: 0.000014476478}
-  m_Size: 10.974998
+  m_LocalReferencePoint: {x: 2.73108, y: 4.987501, z: 0.000014849007}
+  m_Size: 10.974995
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -24580,7 +24775,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -54996*37300*638886995573018551
+  m_Name: -231310*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -24848,6 +25043,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24926,6 +25122,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25002,6 +25199,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25025,8 +25223,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950123380}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 2.537343, y: 4.987516, z: -0.000003799796}
-  m_Size: 10.974996
+  m_LocalReferencePoint: {x: 2.5373662, y: 4.987499, z: -0.00001579523}
+  m_Size: 10.974997
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -25298,6 +25496,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25339,6 +25538,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25388,6 +25588,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25621,6 +25822,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25816,6 +26018,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25857,6 +26060,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25906,6 +26110,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25951,6 +26156,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26229,6 +26435,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26356,7 +26563,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -55162*37382*638885271819073394
+  m_Name: -231120*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -26697,6 +26904,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26738,6 +26946,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26787,6 +26996,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26938,6 +27148,7 @@ MonoBehaviour:
   localSplineRotation: {x: -0.707107, y: 0, z: -0, w: 0.7071069}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1

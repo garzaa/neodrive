@@ -360,23 +360,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 350}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -404,23 +402,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -939,23 +935,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 62}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1209,23 +1203,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 150}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1253,23 +1245,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1369,23 +1359,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1517,7 +1505,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48026*33108*638886995573018551
+  m_Name: -240784*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -1817,23 +1805,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -1881,7 +1867,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47418*33114*638885271819073394
+  m_Name: -237594*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2208,23 +2194,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 166.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2252,23 +2236,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2304,23 +2286,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2346,7 +2326,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47508*33114*638885271819073394
+  m_Name: -237506*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2527,23 +2507,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -2764,23 +2742,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3024,23 +3000,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3515,23 +3489,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 124}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3701,23 +3673,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 4.75, y: 0, z: 94.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3745,23 +3715,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -3791,7 +3759,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48976*33108*638886995573018551
+  m_Name: -237496*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4062,7 +4030,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -46250*33038*638886995573018551
+  m_Name: -240892*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4421,23 +4389,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 72.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4465,23 +4431,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4517,23 +4481,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4559,7 +4521,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49054*33108*638886995573018551
+  m_Name: -240916*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -4846,23 +4808,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 93}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -4936,17 +4896,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 1
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 13
-  cloneMenuAmount: 13
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones:
   - {fileID: 1716140578}
   mirrorDeformation: 0
@@ -4954,6 +4911,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -5081,7 +5039,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49092*33038*638886995573018551
+  m_Name: -237576*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5252,23 +5210,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -5294,7 +5250,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48882*33204*638885271819073394
+  m_Name: -240772*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5469,7 +5425,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47996*33114*638885271819073394
+  m_Name: -240826*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5757,23 +5713,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -5799,7 +5753,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49046*33082*638885271819073394
+  m_Name: -241042*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5980,23 +5934,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -6095,7 +6047,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48946*33204*638885271819073394
+  m_Name: -237484*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6270,7 +6222,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48972*33110*638886995573018551
+  m_Name: -237492*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6677,23 +6629,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 100}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -6721,23 +6671,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -6816,7 +6764,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47420*33082*638885271819073394
+  m_Name: -237596*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -6997,23 +6945,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7271,23 +7217,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 50}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7315,23 +7259,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7451,23 +7393,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7515,7 +7455,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47416*33204*638885271819073394
+  m_Name: -237592*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7731,23 +7671,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -7795,7 +7733,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49072*33038*638886995573018551
+  m_Name: -240756*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -7999,23 +7937,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 155}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -8143,7 +8079,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48886*33082*638885271819073394
+  m_Name: -240776*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8442,23 +8378,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -8506,7 +8440,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48898*33038*638886995573018551
+  m_Name: -240906*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8710,23 +8644,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 279}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -8858,7 +8790,67 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3150824910883812794, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: field of view
-      value: 90
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483742650235328569, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6537618760713209393, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692460656114651515, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7223178998979723216, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LookAt
@@ -8924,29 +8916,73 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Logic
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -28.81058
+    - target: {fileID: 7407864429435127999, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: raceType
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.21
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -60.07788
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.83907056
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
-      propertyPath: m_LocalRotation.x
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301873257291720875, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011557404685277180, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -29.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99965733
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.026176924
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.54402274
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.z
@@ -9005,6 +9041,10 @@ MonoBehaviour:
     zPosition: 0
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: -16.327757, y: -0.5863745, z: 34.98004}
     tangentA: {x: -12.588561, y: -0.58638275, z: 42.424767}
     tangentB: {x: -19.197859, y: -0.5863682, z: 29.26568}
@@ -9019,6 +9059,10 @@ MonoBehaviour:
     zPosition: 54.199352
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: 19.669064, y: 1.2245018, z: 46.714615}
     tangentA: {x: 26.59974, y: 0.81338453, z: 39.329166}
     tangentB: {x: 4.725416, y: 2.1109374, z: 62.638832}
@@ -9033,6 +9077,10 @@ MonoBehaviour:
     zPosition: 99.17278
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: 50.674683, y: 0.29237485, z: 6.469635}
     tangentA: {x: 54.663757, y: 0.29237485, z: 1.0265236}
     tangentB: {x: 47.164124, y: 0.29237485, z: 11.259815}
@@ -9047,6 +9095,10 @@ MonoBehaviour:
     zPosition: 149.97696
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: 120.57881, y: -0.6579883, z: -19.658699}
     tangentA: {x: 145, y: 0, z: -20}
     tangentB: {x: 73.69711, y: -1.9211378, z: -19.003502}
@@ -9061,6 +9113,10 @@ MonoBehaviour:
     zPosition: 226.96768
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: 185, y: 75, z: -20}
     tangentA: {x: 190, y: 105, z: -20}
     tangentB: {x: 175.95805, y: 20.748335, z: -20}
@@ -9075,6 +9131,10 @@ MonoBehaviour:
     zPosition: 334.63782
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   - anchor: {x: 190, y: 160, z: -20}
     tangentA: {x: 190, y: 164.99992, z: -20}
     tangentB: {x: 190, y: 145, z: -20}
@@ -9089,6 +9149,10 @@ MonoBehaviour:
     zPosition: 419.8014
     linkTarget: 0
     mirrorConnector: 0
+    oldDisTangentA: 0
+    oldDisTangentB: 0
+    oldDirTangentA: {x: 0, y: 0, z: 0}
+    oldDirTangentB: {x: 0, y: 0, z: 0}
   noises: []
   noiseGroupMesh: 1
   deformationMode: 1
@@ -9260,7 +9324,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48002*33114*638885271819073394
+  m_Name: -237582*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9584,23 +9648,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 1
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 2
-  cloneMenuAmount: 2
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 48.5}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9622,7 +9684,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47432*33038*638886995573018551
+  m_Name: -240802*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9828,23 +9890,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -9892,7 +9952,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49080*33082*638885271819073394
+  m_Name: -237590*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -10073,23 +10133,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10236,23 +10294,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 372}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10357,7 +10413,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49076*33206*638888292456926650
+  m_Name: -237586*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -10882,23 +10938,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 200}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -10926,23 +10980,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11021,7 +11073,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48966*33038*638886995573018551
+  m_Name: -240820*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11186,7 +11238,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49042*33204*638885271819073394
+  m_Name: -241038*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11399,23 +11451,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 403}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11437,7 +11487,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48000*33206*638888292456926650
+  m_Name: -237580*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11608,23 +11658,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -11650,7 +11698,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47416*33206*638888292456926650
+  m_Name: -237592*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -12047,23 +12095,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 250}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12091,23 +12137,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12290,23 +12334,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12479,23 +12521,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12543,7 +12583,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48000*33204*638885271819073394
+  m_Name: -237580*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -12759,23 +12799,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -12935,23 +12973,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13156,7 +13192,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48950*33082*638885271819073394
+  m_Name: -237488*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -13337,23 +13373,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13379,7 +13413,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49078*33114*638885271819073394
+  m_Name: -237588*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -13560,23 +13594,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13758,23 +13790,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 4.75, y: 0, z: 210.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13802,23 +13832,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -13854,23 +13882,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14108,7 +14134,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49064*33110*638886995573018551
+  m_Name: -240748*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14389,7 +14415,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47428*33108*638886995573018551
+  m_Name: -240798*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14554,7 +14580,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48882*33206*638888292456926650
+  m_Name: -240772*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14758,23 +14784,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 310}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -14796,7 +14820,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47994*33204*638885271819073394
+  m_Name: -240824*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14971,7 +14995,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49068*33108*638886995573018551
+  m_Name: -240752*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -15302,7 +15326,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49058*33038*638886995573018551
+  m_Name: -240920*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -15556,23 +15580,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15614,23 +15636,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -4.5, y: 0, z: 416.5}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15652,7 +15672,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47510*33082*638885271819073394
+  m_Name: -237508*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -15833,23 +15853,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15914,23 +15932,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 31}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -15952,7 +15968,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47506*33206*638888292456926650
+  m_Name: -237504*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -16156,23 +16172,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 248}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16194,7 +16208,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49050*33110*638886995573018551
+  m_Name: -240912*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -16468,23 +16482,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -16724,7 +16736,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49044*33114*638885271819073394
+  m_Name: -241040*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -16922,23 +16934,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 155}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17017,23 +17027,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17087,23 +17095,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17308,7 +17314,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49036*33204*638885271819073394
+  m_Name: -237470*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17737,23 +17743,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -4.5, y: 0, z: 73.25}
   localSplineRotation: {x: -0.00000003090862, y: -0.70710677, z: -0.70710677, w: 0.00000003090862}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -17775,7 +17779,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49036*33206*638888292456926650
+  m_Name: -237470*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17981,23 +17985,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -18277,23 +18279,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 400}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -18321,23 +18321,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -18627,7 +18625,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49076*33204*638885271819073394
+  m_Name: -237586*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -18808,23 +18806,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19109,23 +19105,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 25.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19153,23 +19147,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19205,23 +19197,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19403,23 +19393,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 4.75, y: 0, z: 193.75}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19447,23 +19435,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19499,23 +19485,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19547,23 +19531,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19629,23 +19611,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -19693,7 +19673,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47994*33206*638888292456926650
+  m_Name: -240824*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19970,23 +19950,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -20280,23 +20258,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -4.75, y: 0, z: 141.5}
   localSplineRotation: {x: 0.002041723, y: 0.70710385, z: 0.70710385, w: -0.0020545465}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -20483,7 +20459,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48948*33114*638885271819073394
+  m_Name: -237486*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -20658,7 +20634,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -46246*33108*638886995573018551
+  m_Name: -240888*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -21203,7 +21179,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -46242*33110*638886995573018551
+  m_Name: -240884*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -21378,7 +21354,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47998*33082*638885271819073394
+  m_Name: -240828*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -21609,7 +21585,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49040*33082*638885271819073394
+  m_Name: -237474*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22078,7 +22054,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48016*33038*638886995573018551
+  m_Name: -237466*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22249,23 +22225,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22332,23 +22306,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22396,7 +22368,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48004*33082*638885271819073394
+  m_Name: -237584*32578*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22571,7 +22543,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48980*33038*638886995573018551
+  m_Name: -237500*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -22742,23 +22714,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22913,23 +22883,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 1
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 7
-  cloneMenuAmount: 7
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 25}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -22972,23 +22940,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23057,23 +23023,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23339,23 +23303,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 100
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 300}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23383,23 +23345,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23517,23 +23477,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 217}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -23636,7 +23594,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48012*33108*638886995573018551
+  m_Name: -237462*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -23908,7 +23866,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49084*33110*638886995573018551
+  m_Name: -237568*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -24519,23 +24477,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 119.25}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24563,23 +24519,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24615,23 +24569,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24779,23 +24731,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 341}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -24906,23 +24856,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: -1, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25361,23 +25309,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 95.75}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25405,23 +25351,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25457,23 +25401,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -25499,7 +25441,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47424*33110*638886995573018551
+  m_Name: -240794*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -25747,7 +25689,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48022*33110*638886995573018551
+  m_Name: -240780*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -25922,7 +25864,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48008*33110*638886995573018551
+  m_Name: -237458*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -26103,23 +26045,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26145,7 +26085,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48890*33110*638886995573018551
+  m_Name: -240898*32466*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -26367,17 +26307,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 1
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 8
-  cloneMenuAmount: 8
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 49}
   cloneDirection: 0
+  clones: []
   originClones:
   - {fileID: 798294575}
   mirrorDeformation: 0
@@ -26385,6 +26322,7 @@ MonoBehaviour:
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26665,23 +26603,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 142.75}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26709,23 +26645,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26761,23 +26695,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -26886,7 +26818,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48962*33108*638886995573018551
+  m_Name: -240816*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -27051,7 +26983,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48946*33206*638888292456926650
+  m_Name: -237484*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -27257,23 +27189,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 30}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 0}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -27402,7 +27332,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49088*33108*638886995573018551
+  m_Name: -237572*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -27573,23 +27503,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -27615,7 +27543,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49042*33206*638888292456926650
+  m_Name: -241038*32594*638888292456926650
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -27863,7 +27791,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -47506*33204*638885271819073394
+  m_Name: -237504*32592*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -28038,7 +27966,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -49038*33114*638885271819073394
+  m_Name: -237472*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -28402,7 +28330,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48884*33114*638885271819073394
+  m_Name: -240774*32558*638885271819073394
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -28577,7 +28505,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48030*33038*638886995573018551
+  m_Name: -240788*32524*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -28781,23 +28709,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 1
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 1
-  cloneShiftForward: 0
-  cloneShiftBackward: -0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: 0, y: 0, z: 186}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -28819,7 +28745,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: -48894*33108*638886995573018551
+  m_Name: -240902*32464*638886995573018551
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -29538,23 +29464,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -29591,23 +29515,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -29923,23 +29845,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -5.25, y: 0, z: 48.75}
   localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1
@@ -29977,23 +29897,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
+  cloningEnabled: 0
   cloneUseFixedAmount: 0
+  cloneSnapEnd: 0
   cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
+  cloneSnapEndOffset: 0
   cloneOffset: {x: 0, y: 0, z: 0}
   cloneDirection: 0
+  clones: []
   originClones: []
   mirrorDeformation: 0
   localSplinePosition: {x: -0, y: 0, z: 0}
   localSplineRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   followAxels: {x: 1, y: 1, z: 1}
   lockPosition: 0
+  alignToEnd: 0
   snapMode: 0
   snapLengthStart: 1
   snapLengthEnd: 1

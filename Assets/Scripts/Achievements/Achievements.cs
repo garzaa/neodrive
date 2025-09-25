@@ -45,6 +45,7 @@ public class Achievements : SavedObject {
 
 	protected override void Initialize() {
 		loadedAchievements ??= Resources.LoadAll<Achievement>("Achievements");
+		ListAchievements();
 	}
 
     protected override void LoadFromProperties() {
