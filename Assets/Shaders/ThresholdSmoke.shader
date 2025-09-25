@@ -54,13 +54,13 @@ Shader "Unlit/ThresholdSmoke"
 				float smokeDepth = smokeData.r;
 
 				// Sample the scene's depth buffer
-				float sceneDepth = smokeData.g;// SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
+				float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
 
 				// Discard smoke pixel if it's behind the scene geometry
 				if (sceneDepth > smokeDepth) {
 					discard;
 				}
-				// return fixed4(accumulatedAlpha, accumulatedAlpha, accumulatedAlpha, 1);
+				// return fixed4(smokeDepth, smokeDepth, smokeDepth, 1);
 
 				// Discard smoke pixel if it's below the alpha threshold
 				if (accumulatedAlpha < _Threshold) {

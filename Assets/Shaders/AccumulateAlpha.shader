@@ -53,13 +53,10 @@ Shader "Unlit/AccumulateAlpha"
 				float depth = i.projPos.z / i.projPos.w;
 				float2 screenUV = i.projPos.xy / i.projPos.w;
 				float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
-				if (sceneDepth > depth) {
-					discard;
-				}
 				if (col.a <= 0) {
 					discard;
 				}
-                return fixed4(depth, sceneDepth, 0, col.a);
+                return fixed4(depth, 0, 0, col.a);
             }
             ENDCG
         }
