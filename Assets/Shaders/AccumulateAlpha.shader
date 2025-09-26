@@ -11,8 +11,12 @@ Shader "Unlit/AccumulateAlpha"
         Cull Off
         ZWrite Off
         // Additive blending for the alpha channel
-        // Blend One OneMinusSrcAlpha
+        // But then take whatever's in front for the depth channel
+        // actually we should be taking the max, right
+        // how do you do max and then additive
         Blend One Zero, One One
+
+        BlendOp Max, Add
 
         Pass
         {

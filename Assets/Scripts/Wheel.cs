@@ -44,6 +44,7 @@ public class Wheel : MonoBehaviour {
 	public GameObject wheelFire;
 	public ParticleSystem waterWake;
 	ParticleSystem[] waterWakes;
+	public ParticleSystem[] skidSmokes;
 
 	bool wetWithoutHydroplaneLastStep;
 
@@ -128,7 +129,7 @@ public class Wheel : MonoBehaviour {
 		RaycastHit waterHit = GetRaycast(waterRaycast);
 		hydroplaning = false;
 		// only hydroplane check if water is above ground
-		if (waterHit.collider != null) {
+		if (waterHit.collider != null && rb.velocity.sqrMagnitude > 1) {
 			if (!waterWake.isPlaying) {
 				waterWake.Play();
 				for (int i=0; i<waterWakes.Length; i++) {
@@ -248,6 +249,14 @@ public class Wheel : MonoBehaviour {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 			brakeDiscMaterial.SetColor("_Emissive_Color", Color.Lerp(Color.black, Color.white, brakeGlow));
 			brakeDisc.SetPropertyBlock(brakeDiscMaterial, 0);
+		}
+
+		foreach (ParticleSystem skidSmoke in skidSmokes) {
+			if (drifting && Grounded) {
+				skidSmoke.Play();
+			} else {
+				skidSmoke.Stop();
+			}
 		}
 	}
 

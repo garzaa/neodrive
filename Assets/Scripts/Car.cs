@@ -365,7 +365,7 @@ public class Car : MonoBehaviour {
 
         grounded = false;
         hydroplaning = false;
-        inWater = false;
+        inWater = true;
         foreach (Wheel w in wheels) {
             if (w.Grounded) {
                 grounded = true;
@@ -373,8 +373,9 @@ public class Car : MonoBehaviour {
             if (w.hydroplaning) {
                 hydroplaning = true;
             }
-            if (w.inWater) {
-                inWater = true;
+            if (!w.inWater) {
+                // all four wheels gotta be in/not hydroplaning
+                inWater = false;
             }
         }
 
@@ -393,7 +394,6 @@ public class Car : MonoBehaviour {
             foreach (Wheel w in wheels) {
                 float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
                 if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
-                    float a = GetWheelRPMFromEngineRPM(engineRPM);
                     rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction*clutchRatio);
                     if (!grounded) {
                         rpm = GetWheelRPMFromEngineRPM(engineRPM);
@@ -543,6 +543,9 @@ public class Car : MonoBehaviour {
         }
 
         float dragForce = 0.5f * rb.velocity.sqrMagnitude * settings.drag * 0.1f;
+        if (inWater && !hydroplaning) {
+            dragForce *= 50f;
+        }
         if (gas==0 || fuelCutoff) dragForce = 0;
         rb.AddForce((-rb.velocity.normalized)*dragForce, ForceMode.Force);
         if (grounded) rb.AddForce(-dragForce * settings.downforceRatio * transform.up);

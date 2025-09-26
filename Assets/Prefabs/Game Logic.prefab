@@ -430,6 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2364872975550863862}
   - component: {fileID: 7425200374855293283}
+  - component: {fileID: 1170438727528307481}
   m_Layer: 0
   m_Name: SmokeParticleCamera
   m_TagString: Untagged
@@ -486,7 +487,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -504,6 +505,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1170438727528307481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413662403425297536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5f1f3b49cf5b14cb1721d3a375dbe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseline: {fileID: 3150824910883812794}
 --- !u!1 &438886843939680395
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,6 +2378,7 @@ MonoBehaviour:
   - {fileID: 1340523631747167348}
   wheelFire: {fileID: 1905176859397273789}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &2316563770279485260
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3133,7 @@ MonoBehaviour:
   fireStreaks: []
   wheelFire: {fileID: 0}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &2840830047553063890
 GameObject:
   m_ObjectHideFlags: 0
@@ -5752,6 +5768,7 @@ MonoBehaviour:
   fireStreaks: []
   wheelFire: {fileID: 0}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &5345707805606969716
 GameObject:
   m_ObjectHideFlags: 0
@@ -7216,6 +7233,7 @@ MonoBehaviour:
   - {fileID: 2498979048973997191}
   wheelFire: {fileID: 7762297486913876813}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &6505742971705807037
 GameObject:
   m_ObjectHideFlags: 0
@@ -7279,6 +7297,7 @@ MonoBehaviour:
   fireStreaks: []
   wheelFire: {fileID: 0}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &6581961801461382564
 GameObject:
   m_ObjectHideFlags: 0
@@ -9117,6 +9136,7 @@ MonoBehaviour:
   fireStreaks: []
   wheelFire: {fileID: 0}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &7429070979588534290
 GameObject:
   m_ObjectHideFlags: 0
@@ -9811,6 +9831,7 @@ MonoBehaviour:
   - {fileID: 2248994903081876130}
   wheelFire: {fileID: 5132784877749432173}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &7928674109936031719
 GameObject:
   m_ObjectHideFlags: 0
@@ -10841,6 +10862,7 @@ MonoBehaviour:
   - {fileID: 1715479379221956410}
   wheelFire: {fileID: 2134312689849274472}
   waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &8850466970634452919
 GameObject:
   m_ObjectHideFlags: 0

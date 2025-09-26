@@ -67,6 +67,9 @@ Shader "Unlit/ThresholdSmoke"
 					discard;
 				}
 
+				// approximate smoke density by fading it out
+				// the closer it is to the camera
+				_SmokeColor.a *= saturate(1-smokeDepth*5);
 				return _SmokeColor;
             }
             ENDCG
