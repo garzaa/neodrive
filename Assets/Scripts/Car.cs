@@ -562,11 +562,9 @@ public class Car : MonoBehaviour {
             transform.up,
             5, 
             1 << LayerMask.NameToLayer("Ground")
-        ) && !grounded && rb.velocity.sqrMagnitude < 2f) {
+        ) && !grounded && rb.velocity.sqrMagnitude < 10f) {
             rb.AddTorque(-75 * steering * transform.forward, ForceMode.Acceleration);
-        }
-
-        if (!grounded) {
+        } else if (!grounded) {
             UpdateAirControl();
         }
         groundedLastStep = grounded;
