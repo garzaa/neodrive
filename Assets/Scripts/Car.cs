@@ -82,6 +82,8 @@ public class Car : MonoBehaviour {
     Speedometer speedometer;
     NitroxMeter nitroxMeter;
     public Animator perfectShiftEffect;
+    public Animator gripEffect;
+    float gripEffectStrength;
     AlertText alertText;
     bool shiftLurch = false;
 
@@ -764,6 +766,7 @@ public class Car : MonoBehaviour {
         // user might tap handbrake without being at full lock/drift inducing steering angle
         // so this extra 0.5s allows them to "buffer" a drift
         bool handbrakeInput = InputManager.Button(Buttons.HANDBRAKE) || Time.time<handbrakeDown+0.5f;
+        gripEffectStrength = 0;
         if (settings.tcs && !assistDisabled && !handbrakeInput && !drifting && grounded && forwardSpeed>1f && forwardTraction==1f && !hydroplaning) {
             Vector3 axleVelocity = rb.GetPointVelocity(frontAxle);
             Vector3 flatVelocity = Vector3.ProjectOnPlane(axleVelocity, transform.up);
@@ -774,9 +777,12 @@ public class Car : MonoBehaviour {
                 // set it to how much over the max cornering force you are
                 tcsFrac = 1 - Mathf.Clamp01((Mathf.Abs(wantedAccel)-settings.maxCorneringAccel)/settings.maxCorneringAccel);
                 tcsLight.SetOn();
+                gripEffectStrength = 0;
             } else {
                 tcsFrac = 0;
-                if (Mathf.Abs(wantedAccel)>settings.maxCorneringAccel*settings.gripLimitThreshold && Mathf.Abs(wantedAccel)<settings.maxCorneringAccel) {
+                float accelStrength = Mathf.Abs(wantedAccel);
+                if (accelStrength>settings.maxCorneringAccel*settings.gripLimitThreshold && accelStrength<settings.maxCorneringAccel) {
+                    gripEffectStrength = 1;
                     timeAtEdge += Time.fixedDeltaTime;
                     if (timeAtEdge > 0.2f) {
                         Alert("Grip limit\n+"+(timeAtEdge*settings.edgeNitroGain).ToString("F0"), constant: true);
@@ -792,6 +798,7 @@ public class Car : MonoBehaviour {
             tcsFrac = 0;
             tcsLight.SetOff();
         }
+        gripEffect.SetFloat("PowerLight", Mathf.MoveTowards(gripEffect.GetFloat("PowerLight"), gripEffectStrength, 5f * Time.fixedDeltaTime));
 
         currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, (usingWheel ? 1000 : settings.steerSpeed) * Time.fixedDeltaTime);
         Quaternion targetRotation = Quaternion.Euler(0, currentSteerAngle, 0);
