@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine.Audio;
 
-public class CameraRotate : MonoBehaviour {
+public class CameraRotate : SavedObject {
 
     public float snapDistance = 0.5f;
     public List<Vector2> snapVectors;
@@ -43,7 +43,18 @@ public class CameraRotate : MonoBehaviour {
     float baseFOV;
     float targetFOV;
 
-    void Start() {
+    int favoriteCamera = 0;
+
+	protected override void LoadFromProperties() {
+		favoriteCamera = Get<int>(nameof(favoriteCamera));
+        SetCamera(favoriteCamera);
+	}
+
+	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
+		properties[nameof(favoriteCamera)] = favoriteCamera;
+	}
+
+    override protected void Initialize() {
         car = FindObjectOfType<Car>();
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
         mainCam = Camera.main;
@@ -64,6 +75,11 @@ public class CameraRotate : MonoBehaviour {
             } else {
                 cameras[i].enabled = false;
             }
+        }
+
+        // save whether it's either the chase or hood camera
+        if (currentCamera==1 || currentCamera==2) {
+            favoriteCamera = currentCamera;
         }
     }
 

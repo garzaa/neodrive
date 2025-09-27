@@ -8602,6 +8602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23e9c4ece6563443be8fe70b3f83fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useEternalSave: 1
+  useGlobalNamespace: 1
   snapDistance: 0.5
   snapVectors:
   - {x: 0, y: -1}
