@@ -169,8 +169,8 @@ public class Wheel : MonoBehaviour {
 
 		suspensionCompressionLastStep = suspensionCompression;
 		inWater = Physics.OverlapSphereNonAlloc(
-			transform.position,
-			wheelRadius,
+			transform.position + (wheelRadius * transform.up),
+			wheelRadius * 0.5f,
 			overlaps,
 			waterRaycast
 		) > 0;

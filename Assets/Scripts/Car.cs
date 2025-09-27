@@ -130,7 +130,7 @@ public class Car : MonoBehaviour {
     
     Achievements achievements;
     
-    bool usingKeyboard;
+    bool usingKeyboard, usingWheel, usingController;
 
     // this is currently broken
     bool fullAutomatic = false;
@@ -753,8 +753,9 @@ public class Car : MonoBehaviour {
     void UpdateSteering() {
         targetSteerAngle = steering * settings.maxSteerAngle;
         float forwardSpeed = Vector3.Dot(rb.velocity, transform.forward);
-        bool usingWheel = ReInput.controllers.GetLastActiveController().ImplementsTemplate<RacingWheelTemplate>();
+        usingWheel = ReInput.controllers.GetLastActiveController().ImplementsTemplate<RacingWheelTemplate>();
         usingKeyboard = ReInput.controllers.GetLastActiveController().type != ControllerType.Joystick;
+        usingController = !usingWheel && !usingKeyboard;
         float steeringMult = usingWheel ? 1 : settings.steerLimitCurve.Evaluate(Mathf.Abs(forwardSpeed));
         if (steering == 0) {
             targetSteerAngle = 0;
@@ -878,7 +879,7 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
-        if (lastGear == currentGear) {
+        if (lastGear == currentGear && gas > 0) {
             ClutchKick();
         } else {
             shiftLurch = true;
@@ -973,7 +974,7 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded) {
+        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded || !usingController) {
             InputManager.player.StopVibration();
             return;
         }
