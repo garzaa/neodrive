@@ -78,7 +78,7 @@ public class CameraRotate : SavedObject {
         }
 
         // save whether it's either the chase or hood camera
-        if (currentCamera==1 || currentCamera==2) {
+        if (currentCamera==0 || currentCamera==1) {
             favoriteCamera = currentCamera;
         }
     }
