@@ -9435,7 +9435,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 1
 --- !u!95 &2475806746609259881
 Animator:
   serializedVersion: 5
@@ -11240,9 +11240,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.26
-  m_Height: 2.52
+  m_Height: 1.76
   m_Direction: 0
-  m_Center: {x: 0, y: 0.17, z: 0.07}
+  m_Center: {x: 0, y: 0.26, z: 0.07}
 --- !u!136 &2927629483606858373
 CapsuleCollider:
   m_ObjectHideFlags: 0

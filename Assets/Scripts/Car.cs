@@ -312,7 +312,8 @@ public class Car : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (rb.velocity.sqrMagnitude > 5 * mph2u) {
+        // don't play the bang noise if the car suspension bottoms out
+        if (rb.velocity.sqrMagnitude > 5 * mph2u && Vector3.Angle(transform.up, collision.contacts[0].normal) > 20f) {
             gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
             // ok need ot not play this when the wheel colliders hit. howmst
             collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(

@@ -165,11 +165,11 @@ public class Wheel : MonoBehaviour {
 		}
 
 		suspensionForce = (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength * transform.up;
-		suspensionForce += transform.up * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
+		suspensionForce += frameHit.normal * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
 
 		suspensionCompressionLastStep = suspensionCompression;
 		inWater = Physics.OverlapSphereNonAlloc(
-			transform.position + (wheelRadius * transform.up),
+			transform.position,
 			wheelRadius * 0.5f,
 			overlaps,
 			waterRaycast
