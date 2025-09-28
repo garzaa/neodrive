@@ -12,8 +12,6 @@ Shader "Unlit/AccumulateAlpha"
         ZWrite Off
         // Additive blending for the alpha channel
         // But then take whatever's in front for the depth channel
-        // actually we should be taking the max, right
-        // how do you do max and then additive
         Blend One Zero, One One
 
         BlendOp Max, Add
@@ -54,12 +52,13 @@ Shader "Unlit/AccumulateAlpha"
                 // We use the particle's alpha (from texture and its color tint)
                 // The Blend mode will add this to the render texture
                 fixed4 col = tex2D(_MainTex, i.uv) * i.color;
-				float depth = i.projPos.z / i.projPos.w;
-				float2 screenUV = i.projPos.xy / i.projPos.w;
-				float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
-				if (col.a <= 0) {
+                if (col.a <= 0) {
 					discard;
 				}
+				float depth = i.projPos.z / i.projPos.w;
+                depth += col.a * 0.0001;
+				float2 screenUV = i.projPos.xy / i.projPos.w;
+				float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV);
                 return fixed4(depth, 0, 0, col.a);
             }
             ENDCG

@@ -47,7 +47,8 @@ public class CameraRotate : SavedObject {
 
 	protected override void LoadFromProperties() {
 		favoriteCamera = Get<int>(nameof(favoriteCamera));
-        SetCamera(favoriteCamera);
+        currentCamera = favoriteCamera;
+        CycleCamera();
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
@@ -62,7 +63,6 @@ public class CameraRotate : SavedObject {
         photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true).gameObject;
         photoModeCamera.SetActive(false);
         car.onRespawn.AddListener(OnRespawn);
-        CycleCamera();
         respawnTime = Time.time;
         baseFOV = cameras[0].m_Lens.FieldOfView;
     }
@@ -100,7 +100,7 @@ public class CameraRotate : SavedObject {
             if (!photoMode && Time.timeScale != 1) return;
             photoMode = !photoMode;
             Time.timeScale = photoMode ? 0 : 1;
-            photoModeCamera.gameObject.SetActive(photoMode);
+            photoModeCamera.SetActive(photoMode);
             AudioListener.volume = photoMode ? 0 : 1;
             if (photoMode) {
                 pausedAudio.TransitionTo(0.5f);

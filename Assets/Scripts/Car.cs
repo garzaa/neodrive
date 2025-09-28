@@ -203,7 +203,7 @@ public class Car : MonoBehaviour {
         boostEffect.SetActive(boosting);
 
         if (drifting || forwardTraction < 1f || boosting) {
-            tireSkidVolume = 1f;
+            tireSkidVolume = 0.5f;
         } else {
             tireSkidVolume = 0f;
         }
