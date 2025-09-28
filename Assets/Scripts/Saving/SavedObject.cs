@@ -8,10 +8,10 @@ using System;
 
 public abstract class SavedObject : MonoBehaviour {
 	[Tooltip("Persist over ALL playthroughs and reloads (e.g. an achievement)")]
-	public bool useEternalSave = false;
+	public bool useEternalSave = true;
 
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
-	public bool useGlobalNamespace;
+	public bool useGlobalNamespace = true;
 
 	private Dictionary<string, object> properties = new();
 

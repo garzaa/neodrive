@@ -1902,6 +1902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 371411687}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -1914,6 +1916,8 @@ MonoBehaviour:
   highSpeedObject: {fileID: 1970018937}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &225556769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,7 +2458,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d036f19cd647b04ab760f20536a8146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useEternalSave: 1
+  useGlobalNamespace: 1
   mainMenu: {fileID: 2129667353}
+  submenuList:
+  - {fileID: 452402551}
+  - {fileID: 189593952}
+  - {fileID: 159648034}
+  - {fileID: 2129667353}
+  - {fileID: 1186321505}
+  - {fileID: 682224376}
+  - {fileID: 4443207300366145630}
 --- !u!4 &279831032
 Transform:
   m_ObjectHideFlags: 0
@@ -9921,6 +9935,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 1139700281}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -9933,6 +9949,8 @@ MonoBehaviour:
   highSpeedObject: {fileID: 2047181539}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &642772400
 GameObject:
   m_ObjectHideFlags: 0
@@ -12542,6 +12560,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 18999568}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -12554,6 +12574,8 @@ MonoBehaviour:
   highSpeedObject: {fileID: 1618329341}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1001 &947878008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13369,6 +13391,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelObject: {fileID: 877438151}
   Grounded: 0
+  hydroplaning: 0
+  inWater: 0
   wheelRadius: 0
   suspensionCompression: 0
   suspensionCompressionLastStep: 0
@@ -13381,6 +13405,8 @@ MonoBehaviour:
   highSpeedObject: {fileID: 1176469975}
   fireStreaks: []
   wheelFire: {fileID: 0}
+  waterWake: {fileID: 0}
+  skidSmokes: []
 --- !u!1 &1088453598
 GameObject:
   m_ObjectHideFlags: 0
