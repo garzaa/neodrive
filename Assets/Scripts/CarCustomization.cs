@@ -36,9 +36,7 @@ public class CarCustomization : SavedObject {
 	}
 
 	private void ApplyWheel() {
-		#if UNITY_EDITOR
-			if (wheelOverride != null) wheel = wheelOverride;
-		#endif
+		if (wheelOverride != null && Application.isEditor) wheel = wheelOverride;
 		if (car) car.ApplyWheel(wheel);
 		if (raceLogic) raceLogic.ApplyWheel(wheel);
 		foreach (Wheel w in extraWheels) {
