@@ -10,6 +10,8 @@ public class SplineUtils : MonoBehaviour {
 	public float loopRadius = 50;
 	public float roadWidth = 10;
 
+	readonly Vector3[] normals = new Vector3[3];
+
 	void Start() {
 		GetSpline();
 		// FixBounds();
@@ -55,7 +57,7 @@ public class SplineUtils : MonoBehaviour {
 			newPos - (loopRadius * 0.5f * rightUpForward[2]),
 			newPos + (loopRadius * 0.5f * rightUpForward[2])
 		);
-		spline.segments[^1].zRotation = 22.5f;
+		SetFlat(spline.segments[^1]);
 
 		// down the backside
 		lastPos = newPos;
@@ -66,7 +68,7 @@ public class SplineUtils : MonoBehaviour {
 			newPos - (loopRadius * 0.5f * rightUpForward[1]),
 			newPos + (loopRadius * 0.5f * rightUpForward[1])
 		);
-		spline.segments[^1].zRotation = 45f;
+		SetFlat(spline.segments[^1]);
 
 		// then the bottom anchor
 		lastPos = newPos;
@@ -76,7 +78,7 @@ public class SplineUtils : MonoBehaviour {
 			newPos + (loopRadius * 0.5f * rightUpForward[2]),
 			newPos - (loopRadius * 0.5f * rightUpForward[2])
 		);
-		spline.segments[^1].zRotation = 45f;
+		SetFlat(spline.segments[^1]);
 
 		// then one more afterwards to give it a flat tangent
 		lastPos = newPos;
@@ -86,7 +88,22 @@ public class SplineUtils : MonoBehaviour {
 			newPos + (loopRadius * 0.5f * rightUpForward[2]),
 			newPos - (loopRadius * 0.5f * rightUpForward[2])
 		);
-		spline.segments[^1].zRotation = 45f;
+		SetFlat(spline.segments[^1]);
+
+		// need to update?
+		// TODO: update spline architect
+		// spline.monitor.ForceUpdate();
+	}
+	
+	void SetFlat(Segment s) {
+		spline.GetNormalsNonAlloc(normals, s.zPosition / spline.length);
+
+		float dotUp = Vector3.Dot(normals[1], Vector3.up);
+		float dotDown = Vector3.Dot(normals[1], Vector3.down);
+		float dot = dotUp > dotDown ? dotUp : dotDown;
+
+		s.zRotation -= Mathf.Acos(dot) * Mathf.Rad2Deg;
+		spline.CalculateCachedNormals();
 	}
 
 	[Button("Remove Loop")]
