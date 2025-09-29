@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(TransitionManager))]
@@ -13,6 +12,8 @@ public class MainMenu : SavedObject {
 	readonly Dictionary<string, GameObject> menuNames = new();
 
 	readonly Stack<GameObject> submenus = new();
+	bool fromTrack = false;
+	List<string> submenuNameList = new();
 
 	protected override void Initialize() {
 		// need to build this stupid cache because
@@ -23,17 +24,29 @@ public class MainMenu : SavedObject {
 	}
 
 	protected override void LoadFromProperties() {
-		// do nothing, can just read submenus in start()
+		fromTrack = Get<bool>("fromTrack");
+		submenuNameList = GetList<string>("submenus");
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		properties["submenus"] = submenus.Reverse().Select(x => x.GetHierarchicalName()).ToArray();
+		Debug.Log($"saving submenus to array");
+		// do this so it doesn't interfere if the main menu is in a world level
+		// and syncs its fromTrack bool, don't sync an empty submenu list as well. christ
+		properties["submenus"] = submenuNameList;
+		properties[nameof(fromTrack)] = fromTrack;
 	}
 
 	void Start() {
-		foreach (string menuObjectName in GetList<string>("submenus")) {
-			OpenSubmenu(menuNames[menuObjectName]);
+		if (fromTrack) {
+			foreach (string menuObjectName in GetList<string>("submenus")) {
+				OpenSubmenu(menuNames[menuObjectName]);
+			}
+			fromTrack = false;
 		}
+	}
+	
+	public void SetFromTrack() {
+		fromTrack = true;
 	}
 
 	public void Exit() {
@@ -42,6 +55,11 @@ public class MainMenu : SavedObject {
 	}
 
 	public void LoadTrack(string track) {
+		StartCoroutine(Load(track));
+	}
+	
+	IEnumerator Load(string track) {
+		yield return new WaitForEndOfFrame();
 		SaveManager.LoadScene(track);
 	}
 
@@ -53,13 +71,16 @@ public class MainMenu : SavedObject {
 
 	public void OpenSubmenu(GameObject submenu) {
 		if (submenus.Count > 0) {
+			print("opening submenu" + submenus.Peek().name);
 			submenus.Peek().SetActive(false);
 		} else {
+			print("closing main menu");
 			mainMenu.SetActive(false);
 		}
 		submenus.Push(submenu);
 		submenu.SetActive(true);
 		StartCoroutine(SelectNextFrame(submenu));
+		submenuNameList = submenus.Reverse().Select(x => x.GetHierarchicalName()).ToList();
 	}
 
 	public void CloseSubmenu() {
@@ -73,6 +94,7 @@ public class MainMenu : SavedObject {
 			mainMenu.SetActive(true);
 			StartCoroutine(SelectNextFrame(mainMenu));
 		}
+		submenuNameList = submenus.Reverse().Select(x => x.GetHierarchicalName()).ToList();
 	}
 
 	IEnumerator SelectNextFrame(GameObject parent) {

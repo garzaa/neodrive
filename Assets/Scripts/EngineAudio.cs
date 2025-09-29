@@ -150,6 +150,11 @@ public class EngineAudio : MonoBehaviour {
 	}
 
     void SetGearAudio(float carSpeed, bool clutch, float gas) {
+        if (mute) {
+            gearAudio.volume = 0;
+            return;
+        }
+
         float frac = carSpeed / engine.gearSound.baseSpeed;
         gearAudio.volume = engine.gearSound.volumeCurve.Evaluate(frac);
 

@@ -21,6 +21,8 @@ public class PauseMenu : MonoBehaviour {
 
 	public GameObject settingsMenu;
 	bool pausedThisFrame = false;
+	
+	public MainMenu mainMenu;
 
 	void Start() {
 		GetComponentInChildren<Canvas>(includeInactive: true).worldCamera = Camera.current;
@@ -129,7 +131,8 @@ public class PauseMenu : MonoBehaviour {
 
 	public void Menu() {
 		Time.timeScale = 1f;
-		FindObjectOfType<TransitionManager>().LoadScene("MainMenu");
+		mainMenu.SetFromTrack();
+		SaveManager.LoadScene("MainMenu");
 	}
 
 	IEnumerator SelectNextFrame(GameObject parent) {

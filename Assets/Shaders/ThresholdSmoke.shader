@@ -45,6 +45,7 @@ Shader "Unlit/ThresholdSmoke"
             }
 
 			sampler2D_float _CameraDepthTexture;
+            sampler2D _MainTex; // needed for platform-dependent macros or some shit
             fixed4 frag (v2f i) : SV_Target {
                 float2 screenUV = i.screenPos.xy / i.screenPos.w;
 

@@ -19,10 +19,10 @@ public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, 
 	}
 
 	public void OnPointerEnter(PointerEventData data) {
-		audioSource.PlayOneShot(onHover);
+		if (gameObject.activeSelf) audioSource.PlayOneShot(onHover);
 	}
 
 	public void OnSelect(BaseEventData data) {
-		audioSource.PlayOneShot(onHover);
+		if (gameObject.activeSelf) audioSource.PlayOneShot(onHover);
 	}
 }

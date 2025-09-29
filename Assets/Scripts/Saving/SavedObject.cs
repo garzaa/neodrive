@@ -13,6 +13,9 @@ public abstract class SavedObject : MonoBehaviour {
 	[Tooltip("Use state shared between scenes for objects with this hierarchichal name.")]
 	public bool useGlobalNamespace = true;
 
+	[Tooltip("For niche things like other scripts calling this one to write data to itself")]
+	public bool dummy = false;
+
 	private Dictionary<string, object> properties = new();
 
 	bool HasSavedData => properties.Count > 0;
