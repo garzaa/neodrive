@@ -7,6 +7,7 @@ using Cinemachine;
 using Rewired;
 using Random = UnityEngine.Random;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
