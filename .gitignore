@@ -100,3 +100,5 @@ InitTestScene*.unity*
 
 Assets/ghosts/*
 Assets/Blender/
+
+*.haunt
