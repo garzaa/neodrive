@@ -181,6 +181,15 @@ public class Car : MonoBehaviour {
         shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
         carMesh.GetPropertyBlock(shaderBlock, 0);
+        StartLine startLine = FindObjectOfType<StartLine>();
+        if (startLine != null) {
+            transform.SetPositionAndRotation(startLine.transform.position, startLine.transform.rotation);
+            rb.MovePosition(startLine.transform.position);
+            rb.MoveRotation(startLine.transform.rotation);
+			print("moving to start line pos");
+            Debug.Log($"car: {transform.position}, rotation {transform.rotation}");
+            Debug.Log($"start line: {startLine.transform.position}, rotation {startLine.transform.rotation}");
+        }
         startPoint = transform.position;
         startRotation = transform.rotation;
         achievements = FindObjectOfType<Achievements>();

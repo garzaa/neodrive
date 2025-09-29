@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class EngineAudio : MonoBehaviour {
 
@@ -74,13 +73,6 @@ public class EngineAudio : MonoBehaviour {
             RPMPoint lower = rpmPoints[i-1];
             RPMPoint higher = rpmPoints[i+1];
 
-            // in the one-in-a-million scenario where the RPM exactly matches up
-            if (rpm == current.rpm) {
-                lowTarget = current;
-                highTarget = current;
-                break;
-            }
-
             // if at the start, and it's just the lower rpm, return the lowest RPM
             if (i==1 && rpm < lower.rpm) {
                 lowTarget = lower;
@@ -94,10 +86,10 @@ public class EngineAudio : MonoBehaviour {
                 break;
             }
 
-            if (rpm > lower.rpm && rpm < current.rpm) {
+            if (rpm >= lower.rpm && rpm <= current.rpm) {
                 lowTarget = lower;
                 highTarget = current;
-            } else if (rpm > current.rpm && rpm < higher.rpm) {
+            } else if (rpm >= current.rpm && rpm <= higher.rpm) {
                 lowTarget = current;
                 highTarget = higher;
             }
