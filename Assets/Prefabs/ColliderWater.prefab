@@ -145,8 +145,8 @@ MonoBehaviour:
   rimColor: {r: 1, g: 1, b: 1, a: 0.453}
   waveTint: -0.5
   transparency: 0.726
-  glossiness: 0.163
-  metallicness: 0
+  glossiness: 0.01
+  metallicness: 0.149
   edgeFade: 0.09
   tilingMethodNames:
   - Mesh UV
@@ -154,7 +154,7 @@ MonoBehaviour:
   worldSpaceTiling: 1
   refractionAmount: 0.0155
   enableNormalMap: 1
-  normalStrength: 0.015
+  normalStrength: 0.025
   enableMacroNormals: 0
   macroNormalsDistance: 1000
   normalTiling: 0.39999992
@@ -239,7 +239,7 @@ MonoBehaviour:
   reflectLayers:
     serializedVersion: 2
     m_Bits: 8
-  lightingMethod: 1
+  lightingMethod: 2
   enableShadows: 0
   shadowCaster: {fileID: 0}
   currentCam: {fileID: 0}

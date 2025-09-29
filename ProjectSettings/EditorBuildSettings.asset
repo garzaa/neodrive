@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Tutorial.unity
     guid: dda3b138a9651b24a94a2084d5302fe3
+  - enabled: 1
+    path: Assets/Tracks/Hydroplane.unity
+    guid: ae9ec0aa0a4a86e4b977ab405e3448bb
   m_configObjects: {}

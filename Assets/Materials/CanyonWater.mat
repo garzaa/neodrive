@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 4bcc0b68579a5c740ad31644411ffb54, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _LIGHTING_ON
   m_InvalidKeywords:
   - _SECONDARYFOAMALWAYSVISIBLE_ON
   - _USEINTERSECTIONFOAM_ON
@@ -82,18 +83,18 @@ Material:
     - _FoamSpeed: 0.068
     - _FoamTiling: 0.15000004
     - _Fresnelexponent: 3.8
-    - _Glossiness: 0.163
+    - _Glossiness: 0.01
     - _Gradient: 0
     - _HighlightPanning: 0
     - _IntersectionDistortion: 0.1
     - _Keyword1: 0
-    - _LIGHTING: 0
+    - _LIGHTING: 1
     - _MACRO_WAVES: 0
     - _MacroBlendDistance: 1000
     - _MaskClipValue: 0.5
-    - _Metallicness: 0
+    - _Metallicness: 0.149
     - _NORMAL_MAP: 0
-    - _NormalStrength: 0.015
+    - _NormalStrength: 0.025
     - _NormalTiling: 0.39999992
     - _Pixelate: 0
     - _Pixelize: 0
