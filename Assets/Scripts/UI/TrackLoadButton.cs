@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using NaughtyAttributes;
+using System;
 
 // TODO: eventually, scroll in the scroll view. HOUGH
 public class TrackLoadButton : MonoBehaviour {
@@ -50,22 +51,27 @@ public class TrackLoadButton : MonoBehaviour {
 			medalTask.SetResult(bs.GetMedalForTrack(trackName));
 		});
 		medalTask.Task.ConfigureAwait(true).GetAwaiter().OnCompleted(() => {
-			string medalName = medalTask.Task.Result;
-			switch (medalName) {
-				case "author":
-					author.SetActive(true);
-					goto case "gold";
-				case "gold":
-					gold.SetActive(true);
-					goto case "silver";
-				case "silver": 
-					silver.SetActive(true);
-					goto case "bronze";
-				case "bronze":
-					bronze.SetActive(true);
-					break;
-				default:
-					break;
+			try {
+				string medalName = medalTask.Task.Result;
+				switch (medalName) {
+					case "author":
+						author.SetActive(true);
+						goto case "gold";
+					case "gold":
+						gold.SetActive(true);
+						goto case "silver";
+					case "silver": 
+						silver.SetActive(true);
+						goto case "bronze";
+					case "bronze":
+						bronze.SetActive(true);
+						break;
+					default:
+						break;
+				}
+			} catch (NullReferenceException) {
+				// if the buttons finish loading after going to a new scene
+				// easy hack so we don't interrupt the async bs
 			}
 		});
 	}

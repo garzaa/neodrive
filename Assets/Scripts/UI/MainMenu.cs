@@ -37,7 +37,7 @@ public class MainMenu : SavedObject {
 	}
 
 	void Start() {
-		if (fromTrack) {
+		if (fromTrack && gameObject.activeSelf) {
 			foreach (string menuObjectName in GetList<string>("submenus")) {
 				OpenSubmenu(menuNames[menuObjectName]);
 			}

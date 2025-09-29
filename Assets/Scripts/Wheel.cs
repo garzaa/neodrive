@@ -84,6 +84,9 @@ public class Wheel : MonoBehaviour {
 		if (!onGhost) {
 			waterWake.Stop();
 			waterWakes = waterWake.GetComponentsInChildren<ParticleSystem>();
+			for (int i=0; i<waterWakes.Length; i++) {
+				waterWakes[i].Stop();
+			}
 		}
 	}
 

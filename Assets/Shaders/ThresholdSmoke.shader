@@ -5,6 +5,7 @@ Shader "Unlit/ThresholdSmoke"
         _AccumTex ("Accumulation Texture", 2D) = "white" {}
         _Threshold ("Alpha Threshold", Range(0, 5)) = 1.0
         _SmokeColor ("Smoke Color", Color) = (1,1,1,1)
+        _MainTex ("Dummy Main Texture", 2D) = "white" {}
     }
     SubShader
     {

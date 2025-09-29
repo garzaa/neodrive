@@ -7,3 +7,5 @@ echo "building project"
     -batchmode \
     -executeMethod ProjectBuilder.BuildWindows
 echo "done"
+
+explorer.exe "C:\Users\Adrian\Desktop\gamedev\cargame\Demos\neodrive-win-exe"

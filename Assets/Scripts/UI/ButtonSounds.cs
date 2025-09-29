@@ -15,14 +15,14 @@ public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, 
 
 	public void OnSubmit(BaseEventData data) {
 		// if it's a button that closes its parent UI
-		if (gameObject.activeSelf) audioSource.PlayOneShot(onClick);
+		if (audioSource.enabled) audioSource.PlayOneShot(onClick);
 	}
 
 	public void OnPointerEnter(PointerEventData data) {
-		if (gameObject.activeSelf) audioSource.PlayOneShot(onHover);
+		if (audioSource.enabled) audioSource.PlayOneShot(onHover);
 	}
 
 	public void OnSelect(BaseEventData data) {
-		if (gameObject.activeSelf) audioSource.PlayOneShot(onHover);
+		if (audioSource.enabled) audioSource.PlayOneShot(onHover);
 	}
 }
