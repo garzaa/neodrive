@@ -65,7 +65,7 @@ public class Wheel : MonoBehaviour {
 		}
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
-		onGhost = GetComponentInChildren<Canvas>() == null;
+		onGhost = GetComponentInParent<Car>() == null;
 		if (!onGhost) groundedText = GetComponentInChildren<Text>();
 		if (!onGhost) compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
@@ -81,13 +81,14 @@ public class Wheel : MonoBehaviour {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
 		}
 		waterRaycast = LayerMask.GetMask("Water");
-		if (!onGhost) {
+		if (waterWake != null) {
 			waterWake.Stop();
 			waterWakes = waterWake.GetComponentsInChildren<ParticleSystem>();
 			for (int i=0; i<waterWakes.Length; i++) {
 				waterWakes[i].Stop();
 			}
-		}
+			if (onGhost) waterWake.gameObject.SetActive(false);
+		} 
 	}
 
 	void GenerateRays() {
@@ -132,29 +133,31 @@ public class Wheel : MonoBehaviour {
 		RaycastHit waterHit = GetRaycast(waterRaycast);
 		hydroplaning = false;
 		// only hydroplane check if water is above ground
-		if (waterHit.collider != null && rb.velocity.sqrMagnitude > 1) {
-			if (!waterWake.isPlaying) {
-				waterWake.Play();
-				for (int i=0; i<waterWakes.Length; i++) {
-					// then the water wake particles
-					waterWakes[i].Play();
+		if (waterWake != null) {
+			if (waterHit.collider != null && rb.velocity.sqrMagnitude > 1) {
+				if (!waterWake.isPlaying) {
+					waterWake.Play();
+					for (int i=0; i<waterWakes.Length; i++) {
+						// then the water wake particles
+						waterWakes[i].Play();
+					}
 				}
+				waterWake.transform.position = waterHit.point + Vector3.up*0.1f;
+				// don't pop the car up onto the surface if they start hydroplaning
+				if (flatVelocity * Car.u2mph > settings.hydroplaneSpeed && !wetWithoutHydroplaneLastStep) {
+					hit = true;
+					frameHit = waterHit;
+					hydroplaning = true;
+				} else {
+					wetWithoutHydroplaneLastStep = true;
+				}
+			} else if (waterWake.isPlaying) {
+				waterWake.Stop();
+				for (int i=0; i<waterWakes.Length; i++) {
+					waterWakes[i].Stop();
+				}
+				wetWithoutHydroplaneLastStep = false;
 			}
-			waterWake.transform.position = waterHit.point + Vector3.up*0.1f;
-			// don't pop the car up onto the surface if they start hydroplaning
-			if (flatVelocity * Car.u2mph > settings.hydroplaneSpeed && !wetWithoutHydroplaneLastStep) {
-				hit = true;
-				frameHit = waterHit;
-				hydroplaning = true;
-			} else {
-				wetWithoutHydroplaneLastStep = true;
-			}
-		} else if (!onGhost && waterWake.isPlaying) {
-			waterWake.Stop();
-			for (int i=0; i<waterWakes.Length; i++) {
-				waterWakes[i].Stop();
-			}
-			wetWithoutHydroplaneLastStep = false;
 		}
 
 		if (hit) {
@@ -246,7 +249,7 @@ public class Wheel : MonoBehaviour {
 		} else {
 			tireSkid.transform.localPosition = baseSkidPos;
 		}
-		tireSkid.emitting = Grounded && drifting && !hydroplaning;
+		tireSkid.emitting = Grounded && drifting && !hydroplaning && !onGhost;
 
 		if (brakeDisc) {
 			brakeDisc.GetPropertyBlock(brakeDiscMaterial, 0);
