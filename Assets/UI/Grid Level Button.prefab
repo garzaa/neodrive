@@ -747,6 +747,7 @@ MonoBehaviour:
   silver: {fileID: 673088719562787732}
   gold: {fileID: 5703698914205070567}
   author: {fileID: 797811779473038883}
+  firstAuthorAchievement: {fileID: 11400000, guid: f8b60cb3f257c4b499f79ec59df1616b, type: 2}
 --- !u!114 &2053635138751739597
 MonoBehaviour:
   m_ObjectHideFlags: 0

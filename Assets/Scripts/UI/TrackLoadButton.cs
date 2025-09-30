@@ -15,6 +15,8 @@ public class TrackLoadButton : MonoBehaviour {
 	public Text trackTitle;
 	[Foldout("Internal")]
 	public GameObject bronze, silver, gold, author;
+	
+	public Achievement firstAuthorAchievement;
 
 	string trackName;
 	BinarySaver bs;
@@ -55,6 +57,7 @@ public class TrackLoadButton : MonoBehaviour {
 				string medalName = medalTask.Task.Result;
 				switch (medalName) {
 					case "author":
+						firstAuthorAchievement.Get();
 						author.SetActive(true);
 						goto case "gold";
 					case "gold":

@@ -1683,8 +1683,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016158602942211723}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.90306354, z: 0, w: -0.42950708}
-  m_LocalPosition: {x: 384.85004, y: 1.5500002, z: -705.47}
+  m_LocalRotation: {x: 0.026176924, y: 0, z: 0, w: 0.99965733}
+  m_LocalPosition: {x: -20, y: 1.75, z: -29.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1758,7 +1758,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 80
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -2089,6 +2089,7 @@ MonoBehaviour:
   suspensionForce: {x: 0, y: 0, z: 0}
   groundedText: {fileID: 0}
   compressionBar: {fileID: 0}
+  compressionRatio: {fileID: 0}
   reverseRotation: 1
   tireSkid: {fileID: 9037858190626234055}
   normalSpeedObject: {fileID: 7928674109936031719}
@@ -2608,6 +2609,7 @@ MonoBehaviour:
   countdownAnimator: {fileID: 2464735961543273626}
   countdown: {fileID: 8514142160391814956}
   skipCountdown: 0
+  firstAuthor: {fileID: 11400000, guid: f8b60cb3f257c4b499f79ec59df1616b, type: 2}
   onValidFinish:
     m_PersistentCalls:
       m_Calls: []
@@ -4692,6 +4694,7 @@ MonoBehaviour:
   suspensionForce: {x: 0, y: 0, z: 0}
   groundedText: {fileID: 0}
   compressionBar: {fileID: 0}
+  compressionRatio: {fileID: 0}
   reverseRotation: 1
   tireSkid: {fileID: 824997102118574006}
   normalSpeedObject: {fileID: 5986706704421783045}
@@ -5611,6 +5614,7 @@ MonoBehaviour:
   suspensionForce: {x: 0, y: 0, z: 0}
   groundedText: {fileID: 0}
   compressionBar: {fileID: 0}
+  compressionRatio: {fileID: 0}
   reverseRotation: 0
   tireSkid: {fileID: 2653335809198814670}
   normalSpeedObject: {fileID: 7429070979588534290}
@@ -6987,6 +6991,7 @@ MonoBehaviour:
   suspensionForce: {x: 0, y: 0, z: 0}
   groundedText: {fileID: 0}
   compressionBar: {fileID: 0}
+  compressionRatio: {fileID: 0}
   reverseRotation: 0
   tireSkid: {fileID: 8693380534474391623}
   normalSpeedObject: {fileID: 3805623159118047500}

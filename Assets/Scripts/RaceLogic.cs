@@ -54,7 +54,7 @@ public class RaceLogic : MonoBehaviour {
 
 	readonly List<string> expiredGhosts = new();
 
-	Achievement firstAuthor;
+	public Achievement firstAuthor;
 
 	IEnumerator startRoutine;
 	IEnumerator resultsRoutine;
@@ -92,8 +92,6 @@ public class RaceLogic : MonoBehaviour {
 		
 		if (finishLine == null) return;
 
-		firstAuthor = Resources.Load<Achievement>("Achievements/zzz Handsome Devil");
-
 		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
 		timerAlert = FindObjectOfType<TimerAlert>();
@@ -127,6 +125,10 @@ public class RaceLogic : MonoBehaviour {
 				this.player.time = bestPlayerGhost.totalTime;
 				SetBestLap(bestPlayerGhost);
 			}
+		}
+
+		if (bestPlayerGhost.totalTime < authorGhost.totalTime) {
+			firstAuthor.Get();
 		}
 
 		RenderScoreboard();
@@ -348,9 +350,9 @@ public class RaceLogic : MonoBehaviour {
 		}
 		RenderScoreboard();
 
+		Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
 		if (raceType == RaceType.ROUTE) {
 			medalText.gameObject.SetActive(true);
-			Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
 			medalText.text = resultData.Item1;
 			if (resultData.Item2 == null) {
 				medalText.GetComponentInChildren<Image>().enabled = false;
@@ -431,6 +433,7 @@ public class RaceLogic : MonoBehaviour {
 		Text[] texts = scoreContainer.GetComponentsInChildren<Text>(includeInactive: true);
 		for (int i = 0; i < pairs.Count; i++) {
 			if (pairs[i].time < player.time || (pairs[i].name != player.name && player.time == 0)) {
+				// only show author medal if player's gotten a gold medal
 				if (player.time != 0 && player.time < gold.time && pairs[i].name == "author") {
 					texts[i].transform.parent.gameObject.SetActive(true);
 				} else {

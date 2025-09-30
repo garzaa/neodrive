@@ -27,8 +27,8 @@ public class Wheel : MonoBehaviour {
 
 	const float springTarget = 0;
 
-	public Text groundedText;
 	public Image compressionBar;
+	public Text compressionRatio;
 
 	public bool reverseRotation;
 	float fakeGroundBump;
@@ -66,8 +66,6 @@ public class Wheel : MonoBehaviour {
 		wheelMesh = normalSpeedObject.GetComponent<MeshFilter>().mesh;
 		wheelRadius = 0.5f*(wheelMesh.bounds.size.x * normalSpeedObject.transform.localScale.x);
 		onGhost = GetComponentInParent<Car>() == null;
-		if (!onGhost) groundedText = GetComponentInChildren<Text>();
-		if (!onGhost) compressionBar = GetComponentsInChildren<Image>()[1];
 		GenerateRays();
 		highSpeedObject.GetComponent<MeshRenderer>().enabled = true;
 		highSpeedObject.SetActive(false);
@@ -200,6 +198,7 @@ public class Wheel : MonoBehaviour {
             compressionBar.rectTransform.sizeDelta.x,
             suspensionCompression / settings.suspensionTravel
         );
+		compressionRatio.text = GetCompressionRatio().ToString("F2");
 	}
 
 	public float GetCompressionRatio() {
