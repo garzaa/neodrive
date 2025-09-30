@@ -51,14 +51,26 @@ PrefabInstance:
     - target: {fileID: -6404656478403193985, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
+      objectReference: {fileID: 2100000, guid: 193e1440ad3ed1e4d9f4c4626ede16b3, type: 2}
+    - target: {fileID: -6404656478403193985, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 2100000, guid: 206993d4cf0efbe4c8e4d092fd863121, type: 2}
     - target: {fileID: -5357905564040085393, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 206993d4cf0efbe4c8e4d092fd863121, type: 2}
     - target: {fileID: -3645242291558447063, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3645242291558447063, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -3281942860050450204, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3281942860050450204, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -68,13 +80,25 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 206993d4cf0efbe4c8e4d092fd863121, type: 2}
+    - target: {fileID: -3053474692494062017, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 193e1440ad3ed1e4d9f4c4626ede16b3, type: 2}
+    - target: {fileID: -2612725542086440620, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -2612725542086440620, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2612725542086440620, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 166665003678018834, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 166665003678018834, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -85,8 +109,16 @@ PrefabInstance:
       value: Orange Track Base
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284829074058584462, guid: b82bf363f7740844785ee82160a1f553, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -97,14 +129,14 @@ PrefabInstance:
       addedObject: {fileID: 5705808584404311512}
     - targetCorrespondingSourceObject: {fileID: 166665003678018834, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4372333188460017982}
+      addedObject: {fileID: 5170668775422083665}
   m_SourcePrefab: {fileID: 100100000, guid: b82bf363f7740844785ee82160a1f553, type: 3}
 --- !u!1 &1376451630082673027 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 166665003678018834, guid: b82bf363f7740844785ee82160a1f553, type: 3}
   m_PrefabInstance: {fileID: 1245878095590876305}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &4372333188460017982
+--- !u!64 &5170668775422083665
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PhotoModeCamera : MonoBehaviour {
-	float cameraSpeed = 10f;
-	public GameObject car;
+	readonly float cameraSpeed = 10f;
+	GameObject car = null;
 
 	void OnEnable() {
+		if (car == null) car = FindObjectOfType<Car>().gameObject;
 		transform.position = car.transform.position;
 		transform.SetPositionAndRotation(car.transform.position + new Vector3(3, 0, 2), Quaternion.Euler(0, 270, 0));
 	}

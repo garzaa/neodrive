@@ -130,4 +130,9 @@ public class SplineUtils : MonoBehaviour {
 			checkpoints[i].name = "Checkpoint " + i;
 		}
 	}
+
+	[Button("Check Spline Length")]
+	public void CheckLength() {
+		print(spline.length);
+	}
 }
