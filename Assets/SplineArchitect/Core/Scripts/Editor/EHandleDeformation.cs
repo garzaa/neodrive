@@ -60,8 +60,22 @@ namespace SplineArchitect
                     mesh.MarkDynamic();
                     mesh.SetVertices(vertices);
                     mesh.RecalculateBounds();
-                    //Need to set mesh like this else MeshColliders will not update properly. MeshFilter will work fine without this.
-                    mc.SetInstanceMesh(mesh);
+
+                    if (mc.IsMeshFilter())
+                    {
+                        foreach (MeshContainer mc2 in so.meshContainers)
+                        {
+                            Mesh instanceMesh = mc2.GetInstanceMesh();
+                            if (instanceMesh == null) continue;
+                            //Need to set mesh like this else MeshColliders will not update properly. MeshFilter will work fine without this.
+                            if (instanceMesh == mesh) mc2.SetInstanceMesh(mesh);
+                        }
+                    }
+                    else
+                    {
+                        mc.SetInstanceMesh(mesh);
+                    }
+
                     CreateOrthoNormalsWorker(so);
                 });
             }

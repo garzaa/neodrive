@@ -40,6 +40,13 @@ namespace SplineArchitect.Objects
             DYNAMIC
         }
 
+        public enum UpdateType : byte
+        {
+            UPDATE,
+            LATE_UPDATE,
+        }
+
+
         //Public stored data
         //General data
         [HideInInspector]
@@ -58,6 +65,8 @@ namespace SplineArchitect.Objects
         public DeformationMode deformationMode = DeformationMode.SAVE_IN_BUILD;
         [HideInInspector]
         public ComponentMode componentMode = ComponentMode.REMOVE_FROM_BUILD;
+        [HideInInspector]
+        public UpdateType updateType = UpdateType.UPDATE;
 
         //Runtime data
         [NonSerialized]
@@ -207,17 +216,26 @@ namespace SplineArchitect.Objects
 #endif
         }
 
+        private void LateUpdate()
+        {
+            if (updateType != UpdateType.LATE_UPDATE)
+                return;
+
+#if UNITY_EDITOR
+            if (!ValidForEditorRealtimeDeformation())
+                return;
+#endif
+
+            DeformationUtility.TryDeformRealtime(this);
+        }
+
         private void Update()
         {
+            if (updateType != UpdateType.UPDATE)
+                return;
+
 #if UNITY_EDITOR
-            if (EHandleEvents.dragActive)
-                return;
-
-            if (segments.Count < 2)
-                return;
-
-            if (EHandleEvents.playModeStateChange == UnityEditor.PlayModeStateChange.ExitingEditMode ||
-                EHandleEvents.playModeStateChange == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+            if (!ValidForEditorRealtimeDeformation())
                 return;
 #endif
 
@@ -263,7 +281,6 @@ namespace SplineArchitect.Objects
         /// Establishes links for all linked segments in the spline. 
         /// Skips already established links.
         /// </summary>
-        /// <param name="force">If true, re-establishes all links even if already initialized.</param>
         public void EstablishLinks()
         {
 #if UNITY_EDITOR
@@ -498,6 +515,18 @@ namespace SplineArchitect.Objects
 #if UNITY_EDITOR
             Vector3 p = transform.TransformPoint(gridCenterPoint) + dif;
             gridCenterPoint = transform.InverseTransformPoint(p);
+
+            Spline[] splines = transform.GetComponentsInChildren<Spline>();
+
+            foreach(Spline s in splines)
+            {
+                if(s == this)
+                    continue;
+
+                UnityEditor.Undo.RecordObject(s.transform, "");
+                s.transform.position += dif;
+            }
+
             EHandleEvents.InvokeTransformToCenter(this, dif);
 #endif
         }
@@ -741,19 +770,13 @@ namespace SplineArchitect.Objects
         /// <returns>An array of three normalized vectors representing the right, up, and forward directions at the specified spline position.</returns>
         public void GetNormalsNonAlloc(Vector3[] normals, float fixedTime, Space space = Space.World)
         {
-            normals[1] = Vector3.up;
-            normals[2] = Vector3.forward;
-            normals[0] = Vector3.right;
-
             if (segments.Count == 1)
             {
                 normals[1] = normalType == NormalType.STATIC_2D ? -transform.forward : transform.up;
                 normals[2] = segments[0].GetDirection();
                 normals[0] = Vector3.Cross(normals[2], -normals[1]).normalized;
-                return;
             }
-
-            if (normalType != NormalType.DYNAMIC)
+            else if (normalType != NormalType.DYNAMIC)
             {
                 //Z
                 normals[2] = GetDirection(fixedTime, false, space);
@@ -769,11 +792,8 @@ namespace SplineArchitect.Objects
                 normals[0] = rotation * normals[0];
                 normals[1] = rotation * normals[1];
             }
-            else
+            else if(normalsLocal.Length > 0)
             {
-                if (normalsLocal.Length == 0)
-                    return;
-
                 //Get index
                 float n = fixedTime * (normalsLocal.Length / 3);
                 int normalIndex = (int)math.floor(n);
@@ -797,6 +817,13 @@ namespace SplineArchitect.Objects
                     normals[1] = transform.TransformDirection(normals[1]);
                     normals[2] = transform.TransformDirection(normals[2]);
                 }
+            }
+
+            if (GeneralUtility.IsEqual(normals[2], normals[1]))
+            {
+                normals[1] = Vector3.up;
+                normals[2] = Vector3.forward;
+                normals[0] = Vector3.right;
             }
         }
 
@@ -1017,7 +1044,21 @@ namespace SplineArchitect.Objects
 
             if (parent == null) go.transform.parent = transform;
             else go.transform.parent = parent;
-            SplineObject so = go.AddComponent<SplineObject>();
+
+            SplineObject so = null;
+
+            for(int i = 0; i < go.GetComponentCount(); i++)
+            {
+                Component c = go.GetComponentAtIndex(i);
+
+                if(c is SplineObject)
+                {
+                    so = (SplineObject)c;
+                    break;
+                }
+            }
+
+            if(so == null) so = go.AddComponent<SplineObject>();
 
             so.localSplinePosition = localSplinePosition;
             so.localSplineRotation = localSplineRotation;

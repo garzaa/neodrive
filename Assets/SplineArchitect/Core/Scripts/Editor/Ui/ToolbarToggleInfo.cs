@@ -28,7 +28,12 @@ namespace SplineArchitect.Ui
 
         protected override void CloseOrOpenWindow(bool open)
         {
-            if (open) ShowWindow<WindowInfo>();
+            if (open)
+            {
+                EHandleFolder.UpdateTempFolderSize();
+                EHandleFolder.UpdateHarddiskSpaceLeft();
+                ShowWindow<WindowInfo>();
+            }
             else CloseWindow();
         }
 

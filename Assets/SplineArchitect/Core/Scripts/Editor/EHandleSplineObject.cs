@@ -55,7 +55,7 @@ namespace SplineArchitect
                 if (so.monitor.ComponentCountChange(true))
                 {
                     EHandleMeshContainer.Initialize(so);
-                    EHandleMeshContainer.DeleteNull(so);
+                    EHandleMeshContainer.DeleteUnvalidMeshContainers(so);
                 }
             }
 

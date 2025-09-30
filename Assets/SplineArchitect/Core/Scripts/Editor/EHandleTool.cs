@@ -346,17 +346,6 @@ namespace SplineArchitect
             //Updated position tool rotation if InterpolationType line
             if (segment.GetInterpolationType() == Segment.InterpolationType.LINE)
                 segment.SetInterpolationMode(Segment.InterpolationType.LINE);
-            else
-            {
-                //Check if tangent has same position as anchor
-                if (GeneralUtility.IsEqual(segment.GetPosition(Segment.ControlHandle.TANGENT_A), segment.GetPosition(Segment.ControlHandle.ANCHOR)) ||
-                    GeneralUtility.IsEqual(segment.GetPosition(Segment.ControlHandle.TANGENT_B), segment.GetPosition(Segment.ControlHandle.ANCHOR)))
-                {
-                    EHandleUndo.RecordNow(spline, "Set interpolation mode to line");
-                    segment.SetInterpolationMode(Segment.InterpolationType.LINE);
-                    spline.selectedControlPoint = SplineUtility.SegmentIndexToControlPointId(segementId, Segment.ControlHandle.ANCHOR);
-                }
-            }
 
             Segment.ControlHandle segementType = SplineUtility.GetControlPointType(spline.selectedControlPoint);
             Vector3 position = segment.GetPosition(segementType);

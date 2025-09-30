@@ -349,6 +349,11 @@ namespace SplineArchitect.Monitor
             dirty++;
         }
 
+        public void ForceUpdate()
+        {
+            dirty++;
+        }
+
 #if UNITY_EDITOR
         private int childCount;
         private int editorDirty;

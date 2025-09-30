@@ -405,6 +405,11 @@ namespace SplineArchitect.Monitor
         {
             componentCount = so.gameObject.GetComponentCount();
         }
+
+        public void ForceUpdateEditor()
+        {
+            splineLength++;
+        }
 #endif
     }
 }

@@ -83,6 +83,7 @@ namespace SplineArchitect.Libraries
         public static GUIContent iconMagnetActive2 { get; private set; }
 
         //Info messages
+        public static GUIContent infoMsgUpdateType { get; private set; }
         public static GUIContent infoMsgDeformationType { get; private set; }
         public static GUIContent infoMsgNormalResolution { get; private set; }
         public static GUIContent infoMsgPositionResolution { get; private set; }
@@ -94,7 +95,7 @@ namespace SplineArchitect.Libraries
         public static GUIContent infoMsgSplineComponentMode { get; private set; }
         public static GUIContent infoMsgSplineDeformationMode { get; private set; }
         public static GUIContent infoMsgSplineDeformationModePrefab { get; private set; }
-        public static GUIContent infoMsgACOComponentMode { get; private set; }
+        public static GUIContent infoMsgSOComponentMode { get; private set; }
 
         //Warning messages
         public static GUIContent warningMsgResourceCreateOptions { get; private set; }
@@ -104,15 +105,18 @@ namespace SplineArchitect.Libraries
         public static GUIContent warningMsgCanOnlyRandomizeWithTypeDeformation { get; private set; }
         public static GUIContent warningMsgCantDoRealtimeDeformation { get; private set; }
         public static GUIContent warningMsgNoLayerPalleteAssigned { get; private set; }
+        public static GUIContent warningMsgComponentOptionIsRedundant { get; private set; }
 
         //Error messages
         public static GUIContent errorMsgSplineGenerateDeformationsRuntime { get; private set; }
-        public static GUIContent errorMsgSplineObjectGenerateDeformationsRuntime { get; private set; }
-        public static GUIContent errorMsgStaticSplineObject { get; private set; }
+        public static GUIContent errorMsgSOGenerateDeformationsRuntime { get; private set; }
+        public static GUIContent errorMsgStaticSO { get; private set; }
 
         //Texts
         public static GUIContent textDeformTerrain { get; private set; }
         public static GUIContent textRevertTerrain { get; private set; }
+        public static GUIContent textEnableTerrainDeformation { get; private set; }
+        public static GUIContent textDisableTerrainDeformation { get; private set; }
         public static GUIContent textUserManual { get; private set; }
         public static GUIContent textDocumenation { get; private set; }
         public static GUIContent textDiscord { get; private set; }
@@ -213,6 +217,8 @@ namespace SplineArchitect.Libraries
                                                                                  "without negatively impacting performance.");
             infoMsgPositionResolution = new GUIContent(LibraryTexture.iconInfoMsg, "The resolution of cached positions per 100 meters. You can turn off cached positions, but deforming meshes will require more performance.");
             infoMsgNormalResolution = new GUIContent(LibraryTexture.iconInfoMsg, "The resolution of cached normals per 100 meters.");
+            infoMsgUpdateType = new GUIContent(LibraryTexture.iconInfoMsg,"Controls when the spline updates its deformations and followers. " +
+                                                                          "Use 'Late Update' when generating objects on the spline, but in most cases 'Update' is recommended.");
             infoMsgDeformationType = new GUIContent(LibraryTexture.iconInfoMsg, "Static splines do not use cached normals and, because of this, consume less memory. " +
                                                                                 "They can also be easier to work with since their normals do not change in the same way as those of a dynamic spline. \n \n" +
                                                                                 "However, dynamic splines are capable of handling more advanced shapes, such as loops.");
@@ -228,7 +234,7 @@ namespace SplineArchitect.Libraries
                                                                                   "Save in build: \nSaves all deformed meshes only in your built game (scene files in your project will take less disk space). \n \n" +
                                                                                   "Do nothing: \nGenerates meshes only in editor mode. This can be useful if you want to manage mesh generation yourself.");
             infoMsgSplineDeformationModePrefab = new GUIContent(LibraryTexture.iconInfoMsg, "Prefabs can only be generated.");
-            infoMsgACOComponentMode = new GUIContent(LibraryTexture.iconInfoMsg, "How the spline object component is handled during runtime. " +
+            infoMsgSOComponentMode = new GUIContent(LibraryTexture.iconInfoMsg, "How the spline object component is handled during runtime. " +
                                                                                  "You can only change this options when the 'Components' option on the spline is set to 'Active'. " +
                                                                                  "Else it will mimic the spline.\n \n" +
                                                                                  "Inactive: \nDisables the component after scene load. \n \n" +
@@ -243,16 +249,19 @@ namespace SplineArchitect.Libraries
             warningMsgCantDoRealtimeDeformation = new GUIContent(LibraryTexture.iconWarningMsg, "Cannot perform real-time deformations or generate the mesh in Play Mode or in a built application. " +
                                                                                                 "Enable Read/Write access on the original mesh if you want to allow this.");
             warningMsgNoLayerPalleteAssigned = new GUIContent(LibraryTexture.iconWarningMsg, "No layer palette assigned. You need to assign a layer palette to the terrain.");
+            warningMsgComponentOptionIsRedundant = new GUIContent(LibraryTexture.iconWarningMsg, "The spline object is not active, having the component option set to any other setting then 'Remove from build' is redundant.");
 
             //Error messages
             errorMsgSplineGenerateDeformationsRuntime = new GUIContent(LibraryTexture.iconErrorMsg, "Can’t use 'Remove from build' when generating deformed meshes at runtime.");
-            errorMsgSplineObjectGenerateDeformationsRuntime = new GUIContent(LibraryTexture.iconErrorMsg, "Can’t use 'Remove from build' when generating the deformed meshe at runtime. " +
+            errorMsgSOGenerateDeformationsRuntime = new GUIContent(LibraryTexture.iconErrorMsg, "Can’t use 'Remove from build' when generating the deformed meshe at runtime. " +
                                                                                                  "You need to change the 'Deformations' option on the spline to something else then 'Generate'.");
-            errorMsgStaticSplineObject = new GUIContent(LibraryTexture.iconErrorMsg, "A static deformation needs to ne 'Removed from build'.");
+            errorMsgStaticSO = new GUIContent(LibraryTexture.iconErrorMsg, "A static deformation needs to ne 'Removed from build'.");
 
             //Texts
             textDeformTerrain = new GUIContent("Deform terrain");
             textRevertTerrain = new GUIContent("Revert terrain");
+            textEnableTerrainDeformation = new GUIContent("Start deforming");
+            textDisableTerrainDeformation = new GUIContent("Stop deforming");
             textUserManual = new GUIContent("User manual", LibraryTexture.iconExternalLink, "https://splinearchitect.com/#/user_manual");
             textDocumenation = new GUIContent("Documentation", LibraryTexture.iconExternalLink, "https://splinearchitect.com/");
             textDiscord = new GUIContent("Discord", LibraryTexture.iconExternalLink, "https://discord.gg/uDyCeGKff7");

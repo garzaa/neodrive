@@ -76,6 +76,7 @@ namespace SplineArchitect.Ui
             }
             else if(segmentIndex >= 0 && spline.segments.Count > 0 && segmentIndex < spline.segments.Count)
             {
+                EHandleEvents.InvokeWindowControlPointGUI(Event.current);
                 OnGUIControlPoint(spline, spline.segments[segmentIndex], segmentIndex, SplineUtility.GetControlPointType(spline.selectedControlPoint));
             }
         }
@@ -339,7 +340,7 @@ namespace SplineArchitect.Ui
                 }
 
                 GUILayout.FlexibleSpace();
-                if (EHandlePrefab.IsPrefabStageActive() && spline.componentMode == ComponentMode.INACTIVE)
+                if (EHandlePrefab.IsPrefabStageActive() && spline.componentMode == ComponentMode.INACTIVE && so.type == SplineObject.Type.DEFORMATION)
                 {
                     EUiUtility.CreatePopupField("Component:", 70, 1, componentModeOptions, (int newValue) =>
                     {
@@ -354,13 +355,17 @@ namespace SplineArchitect.Ui
                         so.meshContainers != null &&
                         so.meshContainers.Count > 0)
                     {
-                        EUiUtility.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgSplineObjectGenerateDeformationsRuntime);
+                        EUiUtility.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgSOGenerateDeformationsRuntime);
+                    }
+                    else if (spline.componentMode != ComponentMode.ACTIVE && so.componentMode != ComponentMode.REMOVE_FROM_BUILD && so.type != SplineObject.Type.DEFORMATION)
+                    {
+                        EUiUtility.CreateErrorWarningMessageIcon(LibraryGUIContent.warningMsgComponentOptionIsRedundant);
                     }
                     else if (so.gameObject.isStatic && so.componentMode != ComponentMode.REMOVE_FROM_BUILD)
                     {
-                        EUiUtility.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgStaticSplineObject);
+                        EUiUtility.CreateErrorWarningMessageIcon(LibraryGUIContent.errorMsgStaticSO);
                     }
-                    else EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgACOComponentMode);
+                    else EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgSOComponentMode);
                     EUiUtility.CreatePopupField("Component:", 70, (int)so.componentMode, componentModeOptions, (int newValue) =>
                     {
                         EHandleSelection.UpdatedSelectedSplineObjectsRecordUndo((selected) =>
@@ -391,7 +396,7 @@ namespace SplineArchitect.Ui
                         }, "Change component mode");
 
                         EHandleSpline.MarkForInfoUpdate(spline);
-                    }, 80, true, spline.componentMode == ComponentMode.ACTIVE);
+                    }, 80, true, spline.componentMode == ComponentMode.ACTIVE || so.type != SplineObject.Type.DEFORMATION);
                 }
 
                 GUILayout.EndHorizontal();

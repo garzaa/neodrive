@@ -206,7 +206,10 @@ namespace SplineArchitect.Objects
                 float distance = Vector3.Distance(GetPosition(opositeType, space), GetPosition(ControlHandle.ANCHOR, space));
                 Vector3 direction = (newPosition - GetPosition(ControlHandle.ANCHOR, space)).normalized;
                 Vector3 oppositePosition = GetPosition(ControlHandle.ANCHOR, space) - direction * distance;
-                SetPosition(opositeType, oppositePosition, space);
+
+                if(!GeneralUtility.IsEqual(newPosition, GetPosition(ControlHandle.ANCHOR, space)))
+                    SetPosition(opositeType, oppositePosition, space);
+
                 SetPosition(controlHandle, newPosition, space);
             }
 

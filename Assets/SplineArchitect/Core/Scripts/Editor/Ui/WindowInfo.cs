@@ -19,7 +19,7 @@ namespace SplineArchitect.Ui
     public class WindowInfo : WindowBase
     {
         public const string toolName = "Spline Architect";
-        public const string versionNumber = "1.2.5";
+        public const string versionNumber = "1.2.7";
 
         private static List<string> activeAddons = new List<string> { "None" };
 
@@ -63,6 +63,12 @@ namespace SplineArchitect.Ui
             EUiUtility.CreateLabelField($"Lines drawn: {EHandleSpline.totalLinesDrawn}", LibraryGUIStyle.textDefault, true);
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
+            string tempFolderSize = GeneralUtility.GetMemorySizeFormat(EHandleFolder.tempFolderSize);
+            string harddiskSpaceLeft = GeneralUtility.GetMemorySizeFormat(EHandleFolder.harddiskSpaceLeft);
+            EUiUtility.CreateLabelField($"Temp data: {tempFolderSize} / {harddiskSpaceLeft}", LibraryGUIStyle.textDefault, true);
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal(LibraryGUIStyle.backgroundSubHeader);
             EUiUtility.CreateLabelField("<b>ADDONS INSTALLED</b>", LibraryGUIStyle.textSubHeader, true);
             GUILayout.EndHorizontal();
@@ -75,7 +81,7 @@ namespace SplineArchitect.Ui
 
         protected override void UpdateWindowSize()
         {
-            cachedRect.size = new Vector2(327, menuItemHeight * 4 + 10);
+            cachedRect.size = new Vector2(327, menuItemHeight * 5 + 10);
             cachedRect.height += menuItemHeight * activeAddons.Count;
         }
 

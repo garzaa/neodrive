@@ -32,6 +32,7 @@ namespace SplineArchitect.Ui
         private static string[] optionsComponentMode = new string[] { "Remove from build", "Inactive", "Active" };
         private static string[] optionsDeformedMeshMode = new string[] { "Save in build", "Save in scene", "Generate", "Do nothing" };
         private static string[] optionsDeformedMeshModePrefab = new string[] { "Generate" };
+        private static string[] optionsUpdateMode = new string[] { "Update", "Late update" };
 
         //Addons
         private static List<(string, Action<Spline>)> addonsDrawWindow = new();
@@ -293,6 +294,21 @@ namespace SplineArchitect.Ui
                     }, "Change component mode");
                 }, -1, true);
                 GUILayout.EndHorizontal();
+
+                if(spline.componentMode == ComponentMode.ACTIVE)
+                {
+                    GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
+                    EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgUpdateType);
+                    EUiUtility.CreatePopupField("Update mode:", 110, (int)spline.updateType, optionsUpdateMode, (int newValue) =>
+                    {
+                        EHandleSelection.UpdatedSelectedSplinesRecordUndo((selected) =>
+                        {
+                            selected.updateType = (Spline.UpdateType)newValue;
+                            EditorUtility.SetDirty(selected);
+                        }, "Change update mode");
+                    }, -1, true);
+                    GUILayout.EndHorizontal();
+                }
 
                 if (spline.deformations > 0)
                 {
@@ -680,20 +696,20 @@ namespace SplineArchitect.Ui
 
                 GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
                 EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgSplineData);
-                EUiUtility.CreateLabelField("Spline data: " + EHandleSpline.GetMemorySizeFormat(splineData), LibraryGUIStyle.textDefault, true);
+                EUiUtility.CreateLabelField("Spline data: " + GeneralUtility.GetMemorySizeFormat(splineData), LibraryGUIStyle.textDefault, true);
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
                 EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgComponentData);
-                EUiUtility.CreateLabelField("Component data: " + EHandleSpline.GetMemorySizeFormat(componentData), LibraryGUIStyle.textDefault, true);
+                EUiUtility.CreateLabelField("Component data: " + GeneralUtility.GetMemorySizeFormat(componentData), LibraryGUIStyle.textDefault, true);
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal(EUiUtility.GetBackgroundStyle());
                 EUiUtility.CreateInfoMessageIcon(LibraryGUIContent.infoMsgMeshData);
                 if (spline.deformationMode == DeformationMode.GENERATE)
-                    EUiUtility.CreateLabelField($"Mesh data: {EHandleSpline.GetMemorySizeFormat(deformationData)} (disk 0 byte)", LibraryGUIStyle.textDefault, true);
+                    EUiUtility.CreateLabelField($"Mesh data: {GeneralUtility.GetMemorySizeFormat(deformationData)} (disk 0 byte)", LibraryGUIStyle.textDefault, true);
                 else
-                    EUiUtility.CreateLabelField($"Mesh data: {EHandleSpline.GetMemorySizeFormat(deformationData)}", LibraryGUIStyle.textDefault, true);
+                    EUiUtility.CreateLabelField($"Mesh data: {GeneralUtility.GetMemorySizeFormat(deformationData)}", LibraryGUIStyle.textDefault, true);
                 GUILayout.EndHorizontal();
 
                 EUiUtility.CreateLabelField("Length: " + length.ToString(), LibraryGUIStyle.textDefault);
@@ -763,6 +779,8 @@ namespace SplineArchitect.Ui
 
             GUILayout.EndHorizontal();
             #endregion
+
+            EHandleEvents.InvokeWindowSplineGUI(Event.current);
         }
 
         protected override void UpdateWindowSize()
@@ -789,6 +807,9 @@ namespace SplineArchitect.Ui
                     cachedRect.height = menuItemHeight * 10 + 10;
 
                     if (spline.normalType == Spline.NormalType.DYNAMIC)
+                        cachedRect.height += menuItemHeight;
+
+                    if (spline.componentMode == ComponentMode.ACTIVE)
                         cachedRect.height += menuItemHeight;
 
                     if (spline.deformations == 0)

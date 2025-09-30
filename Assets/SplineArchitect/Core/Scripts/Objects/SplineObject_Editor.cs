@@ -117,14 +117,19 @@ namespace SplineArchitect.Objects
             //Check for invalid meshes
             if (splineParent.deformationMode == DeformationMode.GENERATE)
             {
+                bool foundInvalidMesh = false;
                 foreach (MeshContainer mc in meshContainers)
                 {
                     if (!mc.GetOriginMesh().isReadable)
                     {
                         Debug.LogError($"[Spline Architect] SplineObject \"{name}\" has an invalid mesh.\n Enable 'Read/Write Enabled' in the import settings to allow runtime deformation.");
+                        foundInvalidMesh = true;
                         break;
                     }
                 }
+
+                if (foundInvalidMesh && (EHandlePrefab.IsPartOfAnyPrefab(gameObject) || EHandlePrefab.IsPrefabStageActive()))
+                    Debug.LogError($"[Spline Architect] Read/Write access need to be enabled on all deformations within prefabs.");
             }
 
             //Deform mesh during build and store it in the built application.
@@ -146,7 +151,19 @@ namespace SplineArchitect.Objects
                             mesh.MarkDynamic();
                             mesh.SetVertices(vertices);
                             mesh.RecalculateBounds();
-                            mc.SetInstanceMesh(mesh);
+                            if (mc.IsMeshFilter())
+                            {
+                                foreach (MeshContainer mc2 in so.meshContainers)
+                                {
+                                    Mesh instanceMesh = mc2.GetInstanceMesh();
+                                    if (instanceMesh == null) continue;
+                                    if (instanceMesh == mesh) mc2.SetInstanceMesh(mesh);
+                                }
+                            }
+                            else
+                            {
+                                mc.SetInstanceMesh(mesh);
+                            }
                             MeshUtility.HandleOrthoNormals(mc, so);
                         }
                     });
@@ -166,6 +183,11 @@ namespace SplineArchitect.Objects
                     mc.UpdateResourceKey();
                     //3. The instanceMeshs name is the resourceKey.
                     mc.UpdateInstanceMeshName();
+                }
+
+                if (EHandlePrefab.IsPartOfAnyPrefab(gameObject))
+                {
+                    componentMode = splineParent.componentMode;
                 }
             }
 
@@ -237,39 +259,42 @@ namespace SplineArchitect.Objects
             }
         }
 
-        public bool ValidForRuntimeDeformation(bool runWarnings)
+        public bool ValidForRuntimeDeformation()
         {
-            if(runWarnings && !componentModeWarningTriggered && !initalizedThisFrame && Application.isPlaying && componentMode != ComponentMode.ACTIVE)
+            if(!componentModeWarningTriggered && !initalizedThisFrame && Application.isPlaying && componentMode != ComponentMode.ACTIVE)
             {
                 componentModeWarningTriggered = true;
                 Debug.LogWarning($"[Spline Architect] Component mode is not set to Active on {name}! Animating this object will not work in your built game.");
             }
-            else if (runWarnings && !componentModeWarningTriggered && Application.isPlaying && componentMode == ComponentMode.REMOVE_FROM_BUILD)
+            else if (!componentModeWarningTriggered && Application.isPlaying && componentMode == ComponentMode.REMOVE_FROM_BUILD)
             {
                 componentModeWarningTriggered = true;
                 Debug.LogWarning($"[Spline Architect] Component mode is not set to Active or Inactive on {name}! Generating this object will not work in your built game.");
             }
 
-            foreach (MeshContainer mc in meshContainers)
+            if(type == Type.DEFORMATION)
             {
-                Mesh instanceMesh = mc.GetInstanceMesh();
-                Mesh originMesh = mc.GetOriginMesh();
-
-                if (instanceMesh == null || originMesh == null)
-                    return false;
-
-                if (originMesh == instanceMesh)
-                    return false;
-
-                if (!instanceMesh.isReadable)
+                foreach (MeshContainer mc in meshContainers)
                 {
-                    if (runWarnings && !readWriteWarningTriggered && Application.isPlaying && type == Type.DEFORMATION)
-                    {
-                        readWriteWarningTriggered = true;
-                        Debug.LogWarning($"[Spline Architect] No read/write access on {name}! Generating or animating this object will not work in your built game.");
-                    }
+                    Mesh instanceMesh = mc.GetInstanceMesh();
+                    Mesh originMesh = mc.GetOriginMesh();
 
-                    return false;
+                    if (instanceMesh == null || originMesh == null)
+                        return false;
+
+                    if (originMesh == instanceMesh)
+                        return false;
+
+                    if (!instanceMesh.isReadable)
+                    {
+                        if (!readWriteWarningTriggered && Application.isPlaying && type == Type.DEFORMATION)
+                        {
+                            readWriteWarningTriggered = true;
+                            Debug.LogWarning($"[Spline Architect] No read/write access on {name}! Generating or animating this object will not work in your built game.");
+                        }
+
+                        return false;
+                    }
                 }
             }
 

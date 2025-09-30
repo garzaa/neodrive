@@ -68,15 +68,25 @@ namespace SplineArchitect.Objects
             }
 
             int vertices = 0;
+            Mesh meshFilterMesh = so.meshContainers.Count > 0 ? so.meshContainers[0].GetInstanceMesh() : null;
 
-            foreach (MeshContainer mc in so.meshContainers)
+            for (int i = 0; i < so.meshContainers.Count; i++)
             {
+                MeshContainer mc = so.meshContainers[i];
                 Mesh instanceMesh = mc.GetInstanceMesh();
+
                 if (instanceMesh == null)
-                    return;
+                    continue;
+
+                //If mesh colliders uses the same mesh as the mesh filter, skip.
+                if (i > 0 && meshFilterMesh != null && meshFilterMesh == instanceMesh)
+                    continue;
 
                 vertices += instanceMesh.vertexCount;
             }
+
+            if(vertices == 0)
+                return;
 
             totalVertices += vertices;
             splineObjects.Add(so);
@@ -124,11 +134,16 @@ namespace SplineArchitect.Objects
 
                 float4x4 matrix = SplineObjectUtility.GetCombinedParentMatrixs(so);
                 localSpaces.Add(i, matrix);
+                Mesh meshFilterMesh = so.meshContainers.Count > 0 ? so.meshContainers[0].GetInstanceMesh() : null;
 
                 //MeshContainers
                 for (int i2 = 0; i2 < so.meshContainers.Count; i2++)
                 {
                     MeshContainer mc = so.meshContainers[i2];
+
+                    if (i2 > 0 && meshFilterMesh != null && meshFilterMesh == mc.GetInstanceMesh())
+                        continue;
+
                     Vector3[] originVertices = HandleCachedResources.FetchOriginVertices(mc);
                     NativeArray<Vector3>.Copy(originVertices, 0, vertices, offset, originVertices.Length);
                     offset += originVertices.Length;
@@ -173,9 +188,15 @@ namespace SplineArchitect.Objects
 
                 so.monitor.UpdateSplineLength(splineLength);
 
+                Mesh meshFilterMesh = so.meshContainers.Count > 0 ? so.meshContainers[0].GetInstanceMesh() : null;
+
                 for (int y = 0; y < so.meshContainers.Count; y++)
                 {
                     MeshContainer mc = so.meshContainers[y];
+
+                    if (y > 0 && meshFilterMesh != null && meshFilterMesh == mc.GetInstanceMesh())
+                        continue;
+
                     Vector3[] vertices = HandleCachedResources.FetchNewVerticesContainer(mc);
                     NativeArray<Vector3>.Copy(deformJob.vertices, verticesId, vertices, 0, vertices.Length);
                     verticesId += vertices.Length;

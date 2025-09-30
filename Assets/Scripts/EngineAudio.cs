@@ -30,7 +30,7 @@ public class EngineAudio : MonoBehaviour {
         this.bigSteps = bigSteps;
 		maxEngineVolume = engineAudioSource.volume;
         foreach (RPMPoint r in engine.rpmPoints) {
-			if (bigSteps && (r.rpm % 1000 != 0)) continue;
+			if (bigSteps && (r.rpm % 2000 != 0)) continue;
 
             AudioSource rAudio = engineAudioSource.gameObject.AddComponent<AudioSource>();
             rAudio.volume = 0;

@@ -315,22 +315,27 @@ namespace SplineArchitect.Objects
                 if (meshFilter == null && meshCollider == null)
                     continue;
 
-                MeshContainer mc = null;
+                Mesh sharedMesh = null;
+                if (meshFilter != null) sharedMesh = meshFilter.sharedMesh;
+                else if (meshCollider != null) sharedMesh = meshCollider.sharedMesh;
 
+                if (sharedMesh == null)
+                    continue;
+
+                bool allreadyExists = false;
                 foreach (MeshContainer mc2 in meshContainers)
                 {
-                    if (mc2.Contains(component))
+                    if (mc2 != null && mc2.Contains(component))
                     {
-                        mc = mc2;
+                        allreadyExists = true;
                         break;
                     }
                 }
 
-                if (mc == null)
-                {
-                    mc = new MeshContainer(component);
-                    AddMeshContainer(mc);
-                }
+                if (allreadyExists) 
+                    continue;
+
+                AddMeshContainer(new MeshContainer(component));
             }
         }
 

@@ -115,6 +115,23 @@ namespace SplineArchitect.Utility
             return true;
         }
 
+        public static bool IsZero(Quaternion a, float epsilon = 0.0001f)
+        {
+            if (!IsZero(a.x, epsilon))
+                return false;
+
+            if (!IsZero(a.y, epsilon))
+                return false;
+
+            if (!IsZero(a.z, epsilon))
+                return false;
+
+            if (!IsZero(a.w, epsilon))
+                return false;
+
+            return true;
+        }
+
         public static float RoundToClosest(float value, float roundPoint)
         {
             if (roundPoint <= 0)
@@ -168,6 +185,29 @@ namespace SplineArchitect.Utility
             float rotatedZ = x * Mathf.Sin(amount) + z * Mathf.Cos(amount);
 
             return new Vector3(center.x + rotatedX, point.y, center.z + rotatedZ);
+        }
+
+        public static string GetMemorySizeFormat(float size)
+        {
+            string sizeFormat = "bytes";
+
+            if (size > 999)
+            {
+                size = size / 1024;
+                sizeFormat = "kb";
+            }
+            if (size > 999)
+            {
+                size = size / 1024;
+                sizeFormat = "mb";
+            }
+            if (size > 999)
+            {
+                size = size / 1024;
+                sizeFormat = "gb";
+            }
+
+            return Mathf.Round(size) + " " + sizeFormat;
         }
 
         public static float BoostedValue(float x, float k, float p)

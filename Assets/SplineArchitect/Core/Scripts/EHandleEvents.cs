@@ -53,6 +53,8 @@ namespace SplineArchitect
         public static event Action<Spline> OnUpdateLoopEndData;
         public static event Action<Spline, SplineObject> OnSplineObjectSCeneGUI;
         public static event Action OnDisposeDeformJob;
+        public static event Action<Event> OnWindowSplineGUI;
+        public static event Action<Event> OnWindowControlPointGUI;
 
         public static void InitAfterDrag(SceneView sceneView)
         {
@@ -179,6 +181,16 @@ namespace SplineArchitect
         public static void InvokeAfterSplineObjectActivatePositionTool(SplineObject splineObject)
         {
             AfterSplineObjectActivatePositionTool?.Invoke(splineObject);
+        }
+
+        public static void InvokeWindowSplineGUI(Event e)
+        {
+            OnWindowSplineGUI?.Invoke(e);
+        }
+
+        public static void InvokeWindowControlPointGUI(Event e)
+        {
+            OnWindowControlPointGUI?.Invoke(e);
         }
 
         public static void MarkForInfoUpdate(Spline spline)

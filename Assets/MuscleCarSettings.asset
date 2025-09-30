@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MuscleCarSettings
   m_EditorClassIdentifier: 
   suspensionTravel: 0.1
-  springStrength: 900
+  springStrength: 1200
   springDamper: 50
   wheelRaycast:
     serializedVersion: 2

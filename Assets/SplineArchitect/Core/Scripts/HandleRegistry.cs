@@ -70,6 +70,7 @@ namespace SplineArchitect
         {
 #if UNITY_EDITOR
             registrySplinesPrefabStage.Remove(spline);
+            registrySplinesThisFrame.Remove(spline);
 #endif
             registrySplines.Remove(spline);
         }
@@ -115,6 +116,7 @@ namespace SplineArchitect
         {
 #if UNITY_EDITOR
             registrySplineConnectorsPrefabStage.Remove(sc);
+            registrySplineConnectorsThisFrame.Remove(sc);
 #endif
 
             registrySplineConnectors.Remove(sc);

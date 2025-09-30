@@ -66,7 +66,9 @@ namespace SplineArchitect
         {
             foreach (Spline spline in HandleRegistry.GetSplines())
             {
-                //Spline HideFlags
+                if (spline == null)
+                    continue;
+
                 if (spline.componentMode == ComponentMode.REMOVE_FROM_BUILD)
                     spline.hideFlags = HideFlags.DontSaveInBuild;
                 else
@@ -79,20 +81,23 @@ namespace SplineArchitect
                         continue;
 
                     //Meshes HideFlags
-                    if (so.type == SplineObject.Type.FOLLOWER || spline.deformationMode == DeformationMode.SAVE_IN_SCENE)
+                    if (so.type == SplineObject.Type.DEFORMATION)
                     {
-                        foreach (MeshContainer mc in so.meshContainers) 
-                            UpdateHideFlagsMeshContainer(mc, HideFlags.None);
-                    }
-                    else if (spline.deformationMode == DeformationMode.SAVE_IN_BUILD)
-                    {
-                        foreach (MeshContainer mc in so.meshContainers) 
-                            UpdateHideFlagsMeshContainer(mc, HideFlags.DontSaveInEditor);
-                    }
-                    else
-                    {
-                        foreach (MeshContainer mc in so.meshContainers) 
-                            UpdateHideFlagsMeshContainer(mc, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
+                        if (spline.deformationMode == DeformationMode.SAVE_IN_SCENE)
+                        {
+                            foreach (MeshContainer mc in so.meshContainers)
+                                UpdateHideFlagsMeshContainer(mc, HideFlags.None);
+                        }
+                        else if (spline.deformationMode == DeformationMode.SAVE_IN_BUILD)
+                        {
+                            foreach (MeshContainer mc in so.meshContainers)
+                                UpdateHideFlagsMeshContainer(mc, HideFlags.DontSaveInEditor);
+                        }
+                        else
+                        {
+                            foreach (MeshContainer mc in so.meshContainers)
+                                UpdateHideFlagsMeshContainer(mc, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
+                        }
                     }
 
                     so.hideFlags = HideFlags.DontSaveInBuild;
@@ -125,8 +130,12 @@ namespace SplineArchitect
         private static void UpdateHideFlagsMeshContainer(MeshContainer mc, HideFlags hideFlags)
         {
             Mesh instanceMesh = mc.GetInstanceMesh();
+            Mesh originMesh = mc.GetOriginMesh();
 
-            if (instanceMesh == null)
+            if (originMesh == null || instanceMesh == null)
+                return;
+
+            if (originMesh == instanceMesh)
                 return;
 
             instanceMesh.hideFlags = hideFlags;

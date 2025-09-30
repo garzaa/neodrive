@@ -57,7 +57,7 @@ namespace SplineArchitect.Utility
                 bool scaleChange = so.monitor.ScaleChange(true);
                 bool posRotSplineSpaceChange = so.monitor.PosRotSplineSpaceChange(true);
                 bool combinedParentPosRotScaleChange = so.monitor.CombinedParentPosRotScaleChange(true);
-                bool acoDirty = scaleChange || posRotSplineSpaceChange || combinedParentPosRotScaleChange;
+                bool soDirty = scaleChange || posRotSplineSpaceChange || combinedParentPosRotScaleChange;
 
 #if UNITY_EDITOR
                 Vector3 combinedScale = SplineObjectUtility.GetCombinedParentScales(so);
@@ -69,14 +69,17 @@ namespace SplineArchitect.Utility
 
                 //If not valid for runtime let the editor deformation process catch and deform it.
                 //If readablility is set to false, the mesh can still be deformed during the editor deformation process.
-                if (!so.ValidForRuntimeDeformation(splineDirty || acoDirty))
+                if ((splineDirty || soDirty) && !so.ValidForRuntimeDeformation())
+                {
+                    so.monitor.ForceUpdateEditor();
                     continue;
+                }
 #endif
 
                 //FOLLOWER
                 if (so.type == SplineObject.Type.FOLLOWER)
                 {
-                    if (!splineDirty && !acoDirty)
+                    if (!splineDirty && !soDirty)
                         continue;
 
                     spline.followerUpdateList.Add(so);
@@ -84,7 +87,7 @@ namespace SplineArchitect.Utility
                 //DEFORMATION
                 else if (so.type == SplineObject.Type.DEFORMATION)
                 {
-                    if (!splineDirty && !acoDirty)
+                    if (!splineDirty && !soDirty)
                         continue;
 
                     if (so.meshContainers == null || so.meshContainers.Count == 0)
@@ -112,7 +115,21 @@ namespace SplineArchitect.Utility
                         mesh.MarkDynamic();
                         mesh.SetVertices(vertices);
                         mesh.RecalculateBounds();
-                        mc.SetInstanceMesh(mesh);
+
+                        if (mc.IsMeshFilter())
+                        {
+                            foreach (MeshContainer mc2 in so.meshContainers)
+                            {
+                                Mesh instanceMesh = mc2.GetInstanceMesh();
+                                if (instanceMesh == null) continue;
+                                if (instanceMesh == mesh) mc2.SetInstanceMesh(mesh);
+                            }
+                        }
+                        else
+                        {
+                            mc.SetInstanceMesh(mesh);
+                        }
+
                         MeshUtility.HandleOrthoNormals(mc, so);
                     }
                 });

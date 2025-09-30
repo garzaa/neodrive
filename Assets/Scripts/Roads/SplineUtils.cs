@@ -9,6 +9,7 @@ public class SplineUtils : MonoBehaviour {
 	Spline spline;
 	public float loopRadius = 50;
 	public float roadWidth = 10;
+	public float widthMultiplier = 1;
 
 	readonly Vector3[] normals = new Vector3[3];
 
@@ -51,7 +52,7 @@ public class SplineUtils : MonoBehaviour {
 		newPos = lastPos + (loopRadius * rightUpForward[1]) - (loopRadius * rightUpForward[2]);
 		// move right so it doesn't overlap
 		// coming down it'll move right again
-		newPos += rightUpForward[0] * roadWidth/2f;
+		newPos += rightUpForward[0] * roadWidth/2f * widthMultiplier;
 		spline.CreateSegment(
 			newPos,
 			newPos - (loopRadius * 0.5f * rightUpForward[2]),
@@ -62,7 +63,7 @@ public class SplineUtils : MonoBehaviour {
 		// down the backside
 		lastPos = newPos;
 		newPos = lastPos - (loopRadius * rightUpForward[1]) - (loopRadius * rightUpForward[2]);
-		newPos += rightUpForward[0] * roadWidth/2f;
+		newPos += rightUpForward[0] * roadWidth/2f * widthMultiplier;
 		spline.CreateSegment(
 			newPos,
 			newPos - (loopRadius * 0.5f * rightUpForward[1]),
@@ -90,9 +91,7 @@ public class SplineUtils : MonoBehaviour {
 		);
 		SetFlat(spline.segments[^1]);
 
-		// need to update?
-		// TODO: update spline architect
-		// spline.monitor.ForceUpdate();
+		spline.monitor.ForceUpdate();
 	}
 	
 	void SetFlat(Segment s) {
@@ -118,9 +117,17 @@ public class SplineUtils : MonoBehaviour {
 	}
 
 	[Button("Fix Spline LODs")]
-	void FixBounds() {
+	public void FixBounds() {
 		foreach (LODGroup lod in GetComponentsInChildren<LODGroup>()) {
 			lod.RecalculateBounds();
+		}
+	}
+
+	[Button("Fix Checkpoint Names")]
+	public void FixCheckpoints() {
+		Checkpoint[] checkpoints = GetComponentsInChildren<Checkpoint>();
+		for (int i=0; i<checkpoints.Length; i++) {
+			checkpoints[i].name = "Checkpoint " + i;
 		}
 	}
 }

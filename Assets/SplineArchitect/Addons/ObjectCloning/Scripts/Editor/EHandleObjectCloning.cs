@@ -24,7 +24,7 @@ namespace SplineArchitect
     public class EHandleObjectCloning
     {
         const string name = "Object Cloning";
-        const string version = "1.2.2";
+        const string version = "1.2.3";
 
         public static Texture2D textureClone { get; private set; }
         public static Texture2D textureCloneActive { get; private set; }
@@ -358,7 +358,7 @@ namespace SplineArchitect
                     cloneParent.disableOnTransformChildrenChanged = false;
 
                     GameObject prefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(originClone.gameObject);
-                    if (prefab != null)
+                    if (prefab != null && PrefabUtility.IsAnyPrefabInstanceRoot(originClone.gameObject))
                     {
                         ConvertToPrefabInstanceSettings settings = new();
                         settings.componentsNotMatchedBecomesOverride = true;

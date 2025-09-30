@@ -162,13 +162,6 @@ namespace SplineArchitect
                 {
                     EHandleEvents.InvokeCopiedSpline(spline);
                     EHandleSelection.ForceUpdate();
-
-                    //Unlink all on new spline
-                    //EHandleUndo.RecordNow(spline);
-                    //foreach (Segment s in spline.segments)
-                    //{
-                    //    s.linkTarget = Segment.LinkTarget.NONE;
-                    //}
                 }
             }
 
@@ -190,6 +183,7 @@ namespace SplineArchitect
             EHandleDeformation.TryDeform(spline);
 
             EHandleEvents.InvokeInitalizeSplineEditor(spline);
+            EHandleMeshContainer.DeleteDuplicates(spline);
         }
 
         public static void UpdateLinksOnTransformMovement(Spline spline)
@@ -830,24 +824,6 @@ namespace SplineArchitect
             }
 
             spline.deformationsMemoryUsage = Mathf.Round(size);
-        }
-
-        public static string GetMemorySizeFormat(float size)
-        {
-            string sizeFormat = "bytes";
-
-            if (size > 999)
-            {
-                size = size / 1024;
-                sizeFormat = "KB";
-            }
-            if (size > 999)
-            {
-                size = size / 1024;
-                sizeFormat = "MB";
-            }
-
-            return Mathf.Round(size) + " " +  sizeFormat;
         }
 
         public static float GetSplineMemoryUsage(Spline spline)

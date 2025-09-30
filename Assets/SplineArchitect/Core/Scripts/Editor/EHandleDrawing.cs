@@ -76,7 +76,7 @@ namespace SplineArchitect
                     if (GlobalSettings.GetGridVisibility())
                         EHandleGrid.DrawLabels(EHandleSelection.selectedSpline);
 
-                    if(EHandleSpline.controlPointCreationActive)
+                    if(EHandleSpline.controlPointCreationActive && EHandleSceneView.mouseInsideSceneView)
                         DrawSegmentIndicator(e, EHandleSelection.selectedSpline);
                 }
             }
@@ -87,7 +87,7 @@ namespace SplineArchitect
                 if (PositionTool.activePart != PositionTool.Part.NONE)
                     return;
 
-                if (EHandleSelection.selectedSpline == null)
+                if (EHandleSelection.selectedSpline == null && EHandleSceneView.mouseInsideSceneView)
                 {
                     if (GlobalSettings.GetGridVisibility()) DrawIndicatorGrid(e);
                     else DrawIndicator(e);

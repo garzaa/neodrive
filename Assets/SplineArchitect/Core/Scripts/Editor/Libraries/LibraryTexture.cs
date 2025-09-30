@@ -136,7 +136,7 @@ namespace SplineArchitect.Libraries
 
         public static Texture2D empty { get; private set; }
 
-        public static string textureFolderPath = $"{EHandleMainFolder.GetFolderPath()}/Core/Textures/";
+        public static string textureFolderPath = $"{EHandleFolder.GetMainFolderPath()}/Core/Textures/";
 
         public static void Init()
         {

@@ -250,6 +250,21 @@ namespace SplineArchitect.Objects
                 }
             }
         }
+
+        private bool ValidForEditorRealtimeDeformation()
+        {
+            if (EHandleEvents.dragActive)
+                return false;
+
+            if (segments.Count < 2)
+                return false;
+
+            if (EHandleEvents.playModeStateChange == UnityEditor.PlayModeStateChange.ExitingEditMode ||
+                EHandleEvents.playModeStateChange == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+                return false;
+
+            return true;
+        }
 #endif
     }
 }
