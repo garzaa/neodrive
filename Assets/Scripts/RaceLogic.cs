@@ -127,7 +127,9 @@ public class RaceLogic : MonoBehaviour {
 			}
 		}
 
-		if (bestPlayerGhost.totalTime < authorGhost.totalTime) {
+		if (bestPlayerGhost != null &&
+			authorGhost != null &&
+			bestPlayerGhost.totalTime < authorGhost.totalTime) {
 			firstAuthor.Get();
 		}
 

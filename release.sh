@@ -23,6 +23,7 @@ function gitrelease() {
 set -x
 itchrelease
 zip
-gitrelease
+# this doesn't work unless you version the zips because then the names collide. fucking incredible
+# gitrelease
 
 set +x
