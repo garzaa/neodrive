@@ -25,8 +25,6 @@ public class Wheel : MonoBehaviour {
 	public float suspensionCompressionLastStep;
 	public Vector3 suspensionForce;
 
-	const float springTarget = 0;
-
 	public Image compressionBar;
 	public Text compressionRatio;
 
@@ -170,10 +168,10 @@ public class Wheel : MonoBehaviour {
 			suspensionCompression = 0;
 		}
 
-		suspensionForce = (suspensionCompression - settings.suspensionTravel * springTarget) * settings.springStrength * transform.up;
+		suspensionForce = suspensionCompression * settings.springStrength * frameHit.normal;
 		suspensionForce += frameHit.normal * (suspensionCompression - suspensionCompressionLastStep) / Time.fixedDeltaTime * settings.springDamper;
-
 		suspensionCompressionLastStep = suspensionCompression;
+
 		inWater = Physics.OverlapSphereNonAlloc(
 			transform.position,
 			wheelRadius * 0.5f,

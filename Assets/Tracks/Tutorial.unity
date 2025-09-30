@@ -1394,7 +1394,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &46327539
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1438,7 +1438,7 @@ MonoBehaviour:
     meshCollider: {fileID: 46327540}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2155,7 +2155,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &84631181
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2195,7 +2195,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2216,7 +2216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &86165106
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2252,7 +2252,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2565,7 +2565,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &106634404
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2609,7 +2609,7 @@ MonoBehaviour:
     meshCollider: {fileID: 106634405}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2630,7 +2630,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &116053316
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2674,7 +2674,7 @@ MonoBehaviour:
     meshCollider: {fileID: 116053317}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2700,7 +2700,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &119517298
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2736,7 +2736,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2747,7 +2747,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &129464147
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2787,7 +2787,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2808,7 +2808,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &144551425
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2844,7 +2844,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3349,7 +3349,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &162626728
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3393,7 +3393,7 @@ MonoBehaviour:
     meshCollider: {fileID: 162626726}
     originMesh: {fileID: -8171488845856374164, guid: 95053d8810a8aec48b93ed3df3a3c6d1, type: 3}
     timestamp: 638931425149230877
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3404,7 +3404,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &162989325
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3448,7 +3448,7 @@ MonoBehaviour:
     meshCollider: {fileID: 162989326}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3474,7 +3474,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &173192541
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3510,7 +3510,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3567,7 +3567,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &175001111
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3607,7 +3607,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3623,7 +3623,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &180754815
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3663,7 +3663,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -3891,7 +3891,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &206080930
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3927,7 +3927,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -4493,7 +4493,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &223206447
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4529,7 +4529,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -4794,7 +4794,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &231503231
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4838,7 +4838,7 @@ MonoBehaviour:
     meshCollider: {fileID: 231503229}
     originMesh: {fileID: -8171488845856374164, guid: 95053d8810a8aec48b93ed3df3a3c6d1, type: 3}
     timestamp: 638931425149230877
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -5054,7 +5054,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &243518597
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5098,7 +5098,7 @@ MonoBehaviour:
     meshCollider: {fileID: 243518595}
     originMesh: {fileID: -8171488845856374164, guid: 95053d8810a8aec48b93ed3df3a3c6d1, type: 3}
     timestamp: 638931425149230877
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -5308,7 +5308,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &251262032
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5347,16 +5347,12 @@ MonoBehaviour:
   - meshFilter: {fileID: 251262031}
     meshCollider: {fileID: 0}
     originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
-  - meshFilter: {fileID: 251262031}
-    meshCollider: {fileID: 0}
-    originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   - meshFilter: {fileID: 0}
     meshCollider: {fileID: 251262034}
     originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
-  componentMode: 0
+    timestamp: 638947655643931172
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -5602,7 +5598,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &271515010
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5642,7 +5638,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -5663,7 +5659,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &273268499
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5699,7 +5695,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -6175,7 +6171,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &290460793
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6215,7 +6211,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -6342,7 +6338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &292781238
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6378,7 +6374,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -7639,6 +7635,7 @@ MonoBehaviour:
   noiseGroupMesh: 1
   deformationMode: 0
   componentMode: 2
+  updateType: 0
   calculateLocalPositions: 1
   calculateControlPointBounds: 1
   resolutionSplineData: 500
@@ -7701,7 +7698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &333158207
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7737,7 +7734,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -8044,7 +8041,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &356097979
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -8080,7 +8077,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -9486,7 +9483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &431025039
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9522,7 +9519,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -9901,7 +9898,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &471509006
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9945,7 +9942,7 @@ MonoBehaviour:
     meshCollider: {fileID: 471509007}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -10149,7 +10146,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &493244760
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -10189,7 +10186,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -10543,7 +10540,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &509443893
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -10583,7 +10580,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -11506,7 +11503,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &578115346
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11546,7 +11543,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -11567,7 +11564,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &578795600
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11603,7 +11600,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -12177,7 +12174,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &605559856
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12221,7 +12218,7 @@ MonoBehaviour:
     meshCollider: {fileID: 605559857}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -12247,7 +12244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &607692558
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12287,7 +12284,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 5568686718040045268, guid: 512777aae9e55484aaace7eef85daf02, type: 3}
     timestamp: 638888146017999294
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13114,7 +13111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &639763977
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13150,7 +13147,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13327,7 +13324,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &643047573
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13371,7 +13368,7 @@ MonoBehaviour:
     meshCollider: {fileID: 643047576}
     originMesh: {fileID: -1292113893959676541, guid: 07eef03aa501af048aa49fc802dc97ed, type: 3}
     timestamp: 638879248032703767
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13392,7 +13389,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &645026087
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13432,7 +13429,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13520,7 +13517,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &673949898
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13560,7 +13557,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13576,7 +13573,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &685906382
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13620,7 +13617,7 @@ MonoBehaviour:
     meshCollider: {fileID: 685906383}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -13641,7 +13638,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &688372164
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13685,7 +13682,7 @@ MonoBehaviour:
     meshCollider: {fileID: 688372165}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -14073,7 +14070,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &697181955
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14117,7 +14114,7 @@ MonoBehaviour:
     meshCollider: {fileID: 697181958}
     originMesh: {fileID: -1292113893959676541, guid: 07eef03aa501af048aa49fc802dc97ed, type: 3}
     timestamp: 638879248032703767
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -14245,7 +14242,7 @@ MonoBehaviour:
   - meshFilter: {fileID: 989276590}
     meshCollider: {fileID: 0}
     originMesh: {fileID: 2903224078509831638, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   componentMode: 0
   hasPrimitiveCollider: 0
   autoType: 0
@@ -14353,7 +14350,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &725737100
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14397,7 +14394,7 @@ MonoBehaviour:
     meshCollider: {fileID: 725737098}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -14609,7 +14606,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &734792531
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14653,7 +14650,7 @@ MonoBehaviour:
     meshCollider: {fileID: 734792529}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -14664,7 +14661,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &736854737
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14708,7 +14705,7 @@ MonoBehaviour:
     meshCollider: {fileID: 736854738}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -16075,7 +16072,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &759511570
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16115,7 +16112,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -16408,7 +16405,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &771151502
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16452,7 +16449,7 @@ MonoBehaviour:
     meshCollider: {fileID: 771151500}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -16463,7 +16460,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &775900655
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16503,7 +16500,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17043,7 +17040,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &821651914
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17087,7 +17084,7 @@ MonoBehaviour:
     meshCollider: {fileID: 821651915}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17147,7 +17144,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &833235743
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17191,7 +17188,7 @@ MonoBehaviour:
     meshCollider: {fileID: 833235744}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17217,7 +17214,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &834604797
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17253,7 +17250,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17269,7 +17266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &844073947
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17305,7 +17302,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17454,7 +17451,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &860528408
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17498,7 +17495,7 @@ MonoBehaviour:
     meshCollider: {fileID: 860528409}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -17519,7 +17516,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &862334517
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17563,7 +17560,7 @@ MonoBehaviour:
     meshCollider: {fileID: 862334518}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -18189,7 +18186,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &878591665
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -18229,7 +18226,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -18815,7 +18812,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &922259447
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -18859,7 +18856,7 @@ MonoBehaviour:
     meshCollider: {fileID: 922259445}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -19134,7 +19131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &931594794
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -19170,7 +19167,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -24642,7 +24639,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &970199705
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -24686,7 +24683,7 @@ MonoBehaviour:
     meshCollider: {fileID: 970199706}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -24707,7 +24704,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &982732466
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -24751,7 +24748,7 @@ MonoBehaviour:
     meshCollider: {fileID: 982732467}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -25100,11 +25097,11 @@ MonoBehaviour:
   - meshFilter: {fileID: 989276595}
     meshCollider: {fileID: 0}
     originMesh: {fileID: -530795163270215139, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   - meshFilter: {fileID: 0}
     meshCollider: {fileID: 989276594}
     originMesh: {fileID: -1652001975995332469, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   componentMode: 0
   hasPrimitiveCollider: 0
   autoType: 0
@@ -25307,7 +25304,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1002720308
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -25347,7 +25344,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -25529,7 +25526,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1011326403
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -25573,7 +25570,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1011326404}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -25987,7 +25984,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1021560987
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -26023,7 +26020,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -26149,7 +26146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1031636162
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -26185,7 +26182,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -26599,7 +26596,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1053657818
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -26639,7 +26636,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -26872,7 +26869,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1059831039
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -26908,7 +26905,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -27529,7 +27526,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1068302403
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -27569,7 +27566,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -27874,7 +27871,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1081487122
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -27918,7 +27915,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1081487120}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -27961,7 +27958,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1094748634
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -27997,7 +27994,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28216,7 +28213,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1106516002
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28260,7 +28257,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1106516000}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28332,7 +28329,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1111544419
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28376,7 +28373,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1111544420}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28524,7 +28521,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1159825286
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28560,7 +28557,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28571,7 +28568,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1160393018
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28611,7 +28608,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28627,7 +28624,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1161014026
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28671,7 +28668,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1161014027}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28848,7 +28845,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1174424924
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28892,7 +28889,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1174424925}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -28913,7 +28910,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1177619856
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -28953,7 +28950,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -29400,7 +29397,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1198557943
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -29436,7 +29433,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -29452,7 +29449,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1221812600
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -29492,7 +29489,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 5568686718040045268, guid: 512777aae9e55484aaace7eef85daf02, type: 3}
     timestamp: 638888146017999294
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -29508,7 +29505,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1228815695
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -29548,7 +29545,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -29949,6 +29946,7 @@ MonoBehaviour:
   noiseGroupMesh: 1
   deformationMode: 0
   componentMode: 2
+  updateType: 0
   calculateLocalPositions: 1
   calculateControlPointBounds: 1
   resolutionSplineData: 500
@@ -30649,7 +30647,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1268295857
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -30693,7 +30691,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1268295858}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -30903,7 +30901,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1289756726
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -30943,7 +30941,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -31130,7 +31128,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1292508671
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -31170,7 +31168,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -31596,7 +31594,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1313189292
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -31636,7 +31634,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -31831,7 +31829,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1325556609
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -31871,7 +31869,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -31887,7 +31885,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1329284170
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -31931,7 +31929,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1329284171}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -32248,7 +32246,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1362534939
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32292,7 +32290,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1362534940}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -32313,7 +32311,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1369970168
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32353,7 +32351,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -32735,7 +32733,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1390259280
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32775,7 +32773,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -33122,7 +33120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1445388132
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -33158,7 +33156,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -33337,7 +33335,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1454898063
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -33376,16 +33374,12 @@ MonoBehaviour:
   - meshFilter: {fileID: 1454898062}
     meshCollider: {fileID: 0}
     originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
-  - meshFilter: {fileID: 1454898062}
-    meshCollider: {fileID: 0}
-    originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   - meshFilter: {fileID: 0}
     meshCollider: {fileID: 1454898065}
     originMesh: {fileID: 689736024401875923, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
-  componentMode: 0
+    timestamp: 638947655643931172
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -33602,7 +33596,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1470390752
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -33646,7 +33640,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1470390750}
     originMesh: {fileID: -8171488845856374164, guid: 95053d8810a8aec48b93ed3df3a3c6d1, type: 3}
     timestamp: 638931425149230877
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -33763,7 +33757,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1486984056
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -33803,7 +33797,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -33929,7 +33923,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1494286254
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -33973,7 +33967,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1494286255}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -34436,7 +34430,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1538949704
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -34476,7 +34470,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35235,7 +35229,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1577995207
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35279,7 +35273,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1577995208}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35300,7 +35294,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1586701478
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35340,7 +35334,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35361,7 +35355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1587395866
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35397,7 +35391,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35408,7 +35402,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1591570319
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35448,7 +35442,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35809,7 +35803,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1628602437
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35849,7 +35843,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35865,7 +35859,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1634363598
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35905,7 +35899,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35921,7 +35915,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1643376397
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -35965,7 +35959,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1643376398}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -35986,7 +35980,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1643477848
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36026,7 +36020,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -36047,7 +36041,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1651553753
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36083,7 +36077,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -36094,7 +36088,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1661089235
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36134,7 +36128,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -36313,7 +36307,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1679688222
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36357,7 +36351,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1679688223}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -36874,7 +36868,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1719036330
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36914,7 +36908,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 5568686718040045268, guid: 512777aae9e55484aaace7eef85daf02, type: 3}
     timestamp: 638888146017999294
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -37609,7 +37603,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1757433166
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -37653,7 +37647,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1757433169}
     originMesh: {fileID: -1292113893959676541, guid: 07eef03aa501af048aa49fc802dc97ed, type: 3}
     timestamp: 638879248032703767
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -38101,7 +38095,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1785632101
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -38145,7 +38139,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1785632099}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -39101,7 +39095,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1813310982
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -39137,7 +39131,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -40221,7 +40215,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1857196053
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -40261,7 +40255,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -40660,7 +40654,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1899849573
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -40700,7 +40694,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -40716,7 +40710,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1901679476
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -40760,7 +40754,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1901679477}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41014,7 +41008,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1909341561
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41050,7 +41044,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41061,7 +41055,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1910954756
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41101,7 +41095,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1964066224966039464, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41117,7 +41111,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1941079363
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41161,7 +41155,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1941079364}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41287,7 +41281,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1946427822
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41331,7 +41325,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1946427823}
     originMesh: {fileID: 8520558596828055644, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41754,7 +41748,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1962693980
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41798,7 +41792,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1962693981}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41853,7 +41847,7 @@ MonoBehaviour:
   - meshFilter: {fileID: 989276592}
     meshCollider: {fileID: 0}
     originMesh: {fileID: 513351740331369189, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
-    timestamp: 638944217339645217
+    timestamp: 638947655643931172
   componentMode: 0
   hasPrimitiveCollider: 0
   autoType: 0
@@ -41956,7 +41950,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1965318700
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -42000,7 +41994,7 @@ MonoBehaviour:
     meshCollider: {fileID: 1965318698}
     originMesh: {fileID: -2298122662680231747, guid: 82f39bdbf25167840a972a3ccaab7f33, type: 3}
     timestamp: 638888179759106897
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -42431,7 +42425,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1977315817
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -42467,7 +42461,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -42483,7 +42477,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1978636567
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -42519,7 +42513,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -43423,7 +43417,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2064151077
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43463,7 +43457,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -43824,7 +43818,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2072404987
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43864,7 +43858,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: 4843389770356058144, guid: a9f48c1fe954023438fef1b303bfb354, type: 3}
     timestamp: 638886995573018551
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -44107,7 +44101,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2081494043
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44151,7 +44145,7 @@ MonoBehaviour:
     meshCollider: {fileID: 2081494044}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -44745,7 +44739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2112540663
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44781,7 +44775,7 @@ MonoBehaviour:
   splineParent: {fileID: 325391588}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -44838,7 +44832,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2119171449
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44878,7 +44872,7 @@ MonoBehaviour:
     meshCollider: {fileID: 0}
     originMesh: {fileID: -1238546068742215796, guid: 2d784976745f8b8408739a65718befb8, type: 3}
     timestamp: 638894938125167365
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -44899,7 +44893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2124105762
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44935,7 +44929,7 @@ MonoBehaviour:
   splineParent: {fileID: 1240920978}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1

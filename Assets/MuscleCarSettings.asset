@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ec1f38951394047a2a14bc60cb5e68, type: 3}
   m_Name: MuscleCarSettings
   m_EditorClassIdentifier: 
+  carMass: 10
   suspensionTravel: 0.1
   springStrength: 1200
-  springDamper: 50
+  springDamper: 100
   wheelRaycast:
     serializedVersion: 2
     m_Bits: 8

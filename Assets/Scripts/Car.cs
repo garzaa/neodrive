@@ -157,6 +157,7 @@ public class Car : MonoBehaviour {
         respawnRoutine = RespawnRoutine();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
+        rb.mass = settings.carMass;
         rb.centerOfMass = centerOfGravity.transform.localPosition;
         
         engineAnimator = GetComponent<Animator>();
@@ -432,7 +433,7 @@ public class Car : MonoBehaviour {
         }
 
         // if not currently doing a burnout, increase grip again
-        if (!burnout) forwardTraction = Mathf.MoveTowards(forwardTraction, 1, 0.5f * Time.fixedDeltaTime);
+        if (!burnout && !drifting) forwardTraction = Mathf.MoveTowards(forwardTraction, 1, 0.5f * Time.fixedDeltaTime);
         lcsLight.SetOff();
         burnout = false;
         if (WheelRR.Grounded || WheelRL.Grounded) {
@@ -914,7 +915,6 @@ public class Car : MonoBehaviour {
 
     void ClutchKick() {
         // push the car sideways based on gas, in the direction it's sliding
-        // TODO: maybe have a little visual for that too?
         if (Mathf.Abs(steering) > 0.5f) {
             Alert("clutch kick\n+"+settings.driftNitroGain);
             nitroxMeter.Add(settings.driftNitroGain);

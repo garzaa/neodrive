@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Data/CarSettings")]
 public class CarSettings : ScriptableObject {
+	public float carMass = 10;
 	public float suspensionTravel;
 	public float springStrength = 15000f;
-	public float springDamper = 1000f;
+	public float springDamper = 60f;
+
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
 	[Tooltip("Max RPM diff when shifting before lurching/breaking TCS")]
@@ -69,6 +71,7 @@ public class CarSettings : ScriptableObject {
 	[Range(0f, 1f)]
 	public float hydroplaneGrip = 0.1f;
 
+	// TODO: need to include downforceGrip
 	public float GetTireSlip(float forwardSpeed) {
 		if (forwardSpeed < 10f) {
 			return Mathf.Lerp(0.9f, tireSlip, forwardSpeed/10f);
