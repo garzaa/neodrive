@@ -61,6 +61,7 @@ public class Car : MonoBehaviour {
     CinemachineImpulseSource impulseSource;
 
     bool drifting = false;
+    bool burnout = false;
     float driftingTime = 0;
     bool hydroplaning = false;
     bool inWater = false;
@@ -97,6 +98,7 @@ public class Car : MonoBehaviour {
 
     float handbrakeDown = -999;
     bool assistDisabled = false;
+    bool lcsDisabled = false;
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
@@ -404,11 +406,15 @@ public class Car : MonoBehaviour {
 
             foreach (Wheel w in wheels) {
                 float rpm = w.GetWheelRPMFromSpeed(Vector3.Dot(rb.velocity, transform.forward));
+                // if in a drive gear with the clutch in
                 if ((w == WheelRR || w == WheelRL) && !clutch && currentGear != 0 && engineRunning) {
                     rpm = Mathf.Lerp(rpm, GetWheelRPMFromEngineRPM(engineRPM), forwardTraction*clutchRatio);
                     if (!grounded) {
                         rpm = GetWheelRPMFromEngineRPM(engineRPM);
                     }
+                } else if ((w == WheelFR || w == WheelFL) && !grounded) {
+                    // let wheels free-spin if in the air, but apply some drag
+                    rpm = Mathf.MoveTowards(w.rpm, 0, 1 * Time.fixedDeltaTime);
                 }
 
                 bool wheelBoost = false;
@@ -425,8 +431,10 @@ public class Car : MonoBehaviour {
             }
         }
 
-        forwardTraction = Mathf.MoveTowards(forwardTraction, 1, 0.5f * Time.fixedDeltaTime);
+        // if not currently doing a burnout, increase grip again
+        if (!burnout) forwardTraction = Mathf.MoveTowards(forwardTraction, 1, 0.5f * Time.fixedDeltaTime);
         lcsLight.SetOff();
+        burnout = false;
         if (WheelRR.Grounded || WheelRL.Grounded) {
             if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
@@ -441,8 +449,9 @@ public class Car : MonoBehaviour {
                     bool lcsBreak = ((wantedAccel-settings.burnoutThreshold) > settings.lcsLimit) && !usingKeyboard;
 
                     // if braking at low speed allow doing a burnout
-                    bool burnout = gas>0 && (forwardSpeed * u2mph) < 5 && (brake>0 || InputManager.Button(Buttons.HANDBRAKE));
-                    lcsBreak |= burnout;
+                    lcsBreak |= gas > 0 && brake > 0 && !clutch;
+                    lcsBreak |= lcsDisabled;
+                    burnout = lcsBreak;
 
                     // don't disable LCS on disabling assists
                     // just to make a the car a little easier to drive
@@ -582,7 +591,7 @@ public class Car : MonoBehaviour {
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
-        return WheelFL.GetWheelRPMFromSpeed(flatSpeed)
+        return WheelRR.GetWheelRPMFromSpeed(flatSpeed)
             * Mathf.Sign(currentGear)
             * engine.diffRatio
             * engine.gearRatios[Mathf.Abs(currentGear)-1];
@@ -612,7 +621,7 @@ public class Car : MonoBehaviour {
                     }
                 }
 
-                engineRPMFromSpeed = GetEngineRPMFromSpeed(flatSpeed);
+                engineRPMFromSpeed = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
                 if (clutchOutThisFrame) {
                     float rpmDiff = engineRPMFromSpeed - engineRPM;
                     if (rpmDiff < 0) {
@@ -888,14 +897,17 @@ public class Car : MonoBehaviour {
 
     IEnumerator GearLurch() {
         carBody.maxXAngle *= 2f;
-        if (lastGear == currentGear && gas > 0) {
+        if (grounded && lastGear == currentGear && gas > 0 && rb.velocity.sqrMagnitude > 2f) {
             ClutchKick();
         } else {
             shiftLurch = true;
         }
         assistDisabled = true;
+        // allow burnouts on first gear but maybe don't do it in others
+        if (currentGear == 1) lcsDisabled = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
         assistDisabled = false;
+        lcsDisabled = false;
         shiftLurch = false;
         carBody.maxXAngle /= 2f;
     }

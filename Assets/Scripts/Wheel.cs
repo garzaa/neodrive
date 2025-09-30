@@ -58,6 +58,8 @@ public class Wheel : MonoBehaviour {
 
 	int waterRaycast;
 
+	public float rpm;
+
 	void Awake() {
 		settings = GetComponentInParent<Car>()?.settings;
 		if (settings == null) {
@@ -222,6 +224,7 @@ public class Wheel : MonoBehaviour {
 		wheelObject.transform.position += transform.up * fakeGroundBump;
 		Vector3 v = normalSpeedObject.transform.localRotation.eulerAngles;
 
+		this.rpm = rpm;
 		// get wheel position against the ground
 		float deg = rpm / 60f * Time.deltaTime * 360f;
 		v.z += deg * (reverseRotation ? -1 : 1);
