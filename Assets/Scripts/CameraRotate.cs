@@ -45,6 +45,11 @@ public class CameraRotate : SavedObject {
 
     int favoriteCamera = 0;
 
+    bool chaseCamNearGround;
+    Vector3 targetOffset;
+
+    float y, x;
+
 	protected override void LoadFromProperties() {
 		favoriteCamera = Get<int>(nameof(favoriteCamera));
         currentCamera = favoriteCamera;
@@ -166,7 +171,7 @@ public class CameraRotate : SavedObject {
 
         Quaternion targetRotation = Quaternion.identity;
         if (car.grounded) {
-            targetRotation =  Quaternion.FromToRotation(transform.up, car.transform.up);
+            targetRotation = Quaternion.FromToRotation(transform.up, car.transform.up);
         }
         transform.rotation = QuaternionUtil.SmoothDamp(
             transform.rotation,
@@ -179,12 +184,36 @@ public class CameraRotate : SavedObject {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
-        float y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
+
+		// move the camera up a bit if near ground
+		// if on a convex track segment, for example
+		chaseCamNearGround = Physics.Raycast(
+			new Ray(cameras[0].transform.position-targetOffset, -cameras[0].transform.up),
+			out RaycastHit tempHit,
+			0.5f,
+			LayerMask.GetMask("Ground")
+		);
+        if (chaseCamNearGround) {
+            targetOffset = Vector3.MoveTowards(targetOffset, cameras[0].transform.up, 0.5f * Time.fixedDeltaTime);
+            Debug.DrawLine(cameras[0].transform.position, tempHit.point, Color.red);
+        }
+        else targetOffset = Vector3.MoveTowards(targetOffset, Vector3.zero, 0.5f * Time.fixedDeltaTime);
+
+        y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
         if (snapping) {
             y = rotationAngle;
         }
-        ring.localRotation = Quaternion.Euler(0, y, 0);
-        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
+        
+        // TODO: if car is grounded, and x-angle is above a certain threshold...
+        // then move the camera's x-rotation to that value
+        if (car.grounded && Mathf.Abs(Vector3.SignedAngle(car.transform.rotation.eulerAngles, Vector3.right, car.transform.right)) > 22) {
+            x = Mathf.MoveTowardsAngle(x, car.transform.rotation.eulerAngles.x, 1f * Time.deltaTime);
+        } else {
+            x = Mathf.MoveTowardsAngle(x, 0, 1f * Time.deltaTime);
+        }
+
+        ring.localRotation = Quaternion.Euler(x, y, 0);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos+targetOffset, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
         if (snapping) {
             transform.position = targetPos;
         }

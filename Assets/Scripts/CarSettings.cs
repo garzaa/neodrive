@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 
 [CreateAssetMenu(menuName = "Data/CarSettings")]
 public class CarSettings : ScriptableObject {
 	public float carMass = 10;
+	[Tooltip("This should be derived from adding a meshcollider and seeing what it is ingame")]
+	public Vector3 inertiaTensor;
 	public float suspensionTravel;
 	public float springStrength = 15000f;
 	public float springDamper = 60f;
