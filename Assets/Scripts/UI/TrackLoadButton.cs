@@ -14,6 +14,8 @@ public class TrackLoadButton : MonoBehaviour {
 	[Foldout("Internal")]
 	public Text trackTitle;
 	[Foldout("Internal")]
+	public Text trackNumber;
+	[Foldout("Internal")]
 	public GameObject bronze, silver, gold, author;
 	
 	public Achievement firstAuthorAchievement;
@@ -24,6 +26,7 @@ public class TrackLoadButton : MonoBehaviour {
 	void Start() {
 		GetComponent<Button>().onClick.AddListener(() => FindObjectOfType<MainMenu>().LoadTrack(track));
 		trackName = track.ScenePath.Split("/")[^1].Split(".unity")[0];
+		trackNumber.text = (transform.GetSiblingIndex()+1).ToString("D2");
 		trackTitle.text = trackName;
 		trackPreviewThumbnail.sprite = trackImage;
 

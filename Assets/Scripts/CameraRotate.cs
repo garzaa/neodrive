@@ -194,10 +194,10 @@ public class CameraRotate : SavedObject {
 			LayerMask.GetMask("Ground")
 		);
         if (chaseCamNearGround) {
-            targetOffset = Vector3.MoveTowards(targetOffset, cameras[0].transform.up, 0.5f * Time.fixedDeltaTime);
+            targetOffset = Vector3.MoveTowards(targetOffset, cameras[0].transform.up, 0.25f * Time.fixedDeltaTime);
             Debug.DrawLine(cameras[0].transform.position, tempHit.point, Color.red);
         }
-        else targetOffset = Vector3.MoveTowards(targetOffset, Vector3.zero, 0.5f * Time.fixedDeltaTime);
+        else targetOffset = Vector3.MoveTowards(targetOffset, Vector3.zero, 0.25f * Time.fixedDeltaTime);
 
         y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
         if (snapping) {
