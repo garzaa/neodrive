@@ -105,8 +105,8 @@ Material:
     - _ReflectionStrength: 0.489
     - _RefractionAmount: 0.0155
     - _RimDistance: 1.91
-    - _RimDistortion: 0.139
-    - _RimSize: 0.3
+    - _RimDistortion: 0.036
+    - _RimSize: 0.2
     - _Rimfalloff: 0.4
     - _Rimtiling: 3.609999
     - _SECONDARY_WAVES: 0

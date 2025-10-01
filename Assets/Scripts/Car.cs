@@ -157,6 +157,8 @@ public class Car : MonoBehaviour {
         respawnRoutine = RespawnRoutine();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
+        print(rb.inertiaTensor);
+        rb.inertiaTensor = new Vector3(20, 25, 6);
         rb.mass = settings.carMass;
         rb.centerOfMass = centerOfGravity.transform.localPosition;
         
@@ -510,7 +512,7 @@ public class Car : MonoBehaviour {
         UpdateSteering();
         if (!drifting) {
             // gradually return to max grip after a drift
-            currentGrip = Mathf.MoveTowards(currentGrip, 1f, 0.5f*Time.fixedDeltaTime);
+            currentGrip = Mathf.MoveTowards(currentGrip, 1f, 1f*Time.fixedDeltaTime);
         }
         
         if (grounded) {
