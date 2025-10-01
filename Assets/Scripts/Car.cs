@@ -189,9 +189,6 @@ public class Car : MonoBehaviour {
             transform.SetPositionAndRotation(startLine.transform.position, startLine.transform.rotation);
             rb.MovePosition(startLine.transform.position);
             rb.MoveRotation(startLine.transform.rotation);
-			print("moving to start line pos");
-            Debug.Log($"car: {transform.position}, rotation {transform.rotation}");
-            Debug.Log($"start line: {startLine.transform.position}, rotation {startLine.transform.rotation}");
         }
         startPoint = transform.position;
         startRotation = transform.rotation;
@@ -1021,6 +1018,7 @@ public class Car : MonoBehaviour {
 		} else {
 			bumpVibration = 0;
 		}
+        bumpVibration = 0;
 
         if (boosting) {
             bumpVibration += 0.5f;

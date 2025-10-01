@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carMass: 10
   suspensionTravel: 0.1
-  springStrength: 1200
+  springStrength: 1600
   springDamper: 100
   wheelRaycast:
     serializedVersion: 2
