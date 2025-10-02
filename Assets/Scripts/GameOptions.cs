@@ -22,6 +22,9 @@ public class GameOptions : MonoBehaviour {
 		AuthorGhost = LoadBool("AuthorGhost", true);
 		Rumble = LoadBool("Rumble", true);
 		QualitySettings.vSyncCount = LoadBool("VSync") ? 1 : 0;
+		QualitySettings.SetQualityLevel(
+			PlayerPrefs.GetInt(QualityDropdown.qualityName, QualitySettings.names.Length)
+		);
 		instance.Apply.Invoke();
 		foreach (SettingsSlider slider in FindObjectsOfType<SettingsSlider>(includeInactive: true)) {
 			slider.OnEnable();
