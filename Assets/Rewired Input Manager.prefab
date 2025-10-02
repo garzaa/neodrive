@@ -2316,7 +2316,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 41
+    actionIdCounter: 42
     actionCategoryIdCounter: 2
     inputBehaviorIdCounter: 4
     mapCategoryIdCounter: 1

@@ -10,8 +10,13 @@ public class PhotoModeCamera : MonoBehaviour {
 	// this needs to be linked in the editor so it actually fires for some reason
 	public UnityEvent<bool> OnPhotoModeChange;
 
+	GameObject controlCanvas;
+
 	void OnEnable() {
-		if (car == null) car = FindObjectOfType<Car>().gameObject;
+		if (car == null) {
+			car = FindObjectOfType<Car>().gameObject;
+			controlCanvas = GetComponentInChildren<Canvas>().gameObject;
+		}
 	}
 
 	public void EnterPhotoMode() {
@@ -20,6 +25,7 @@ public class PhotoModeCamera : MonoBehaviour {
 		transform.position = car.transform.position;
 		transform.SetPositionAndRotation(car.transform.position + new Vector3(3, 0, 2), Quaternion.Euler(0, 270, 0));
 		OnPhotoModeChange.Invoke(true);
+		controlCanvas.SetActive(true);
 	}
 
 	public void ExitPhotoMode() {
@@ -40,5 +46,9 @@ public class PhotoModeCamera : MonoBehaviour {
 		r.y += InputManager.GetAxis(Buttons.CAM_X) * 180 * Time.unscaledDeltaTime;
 		r.x -= InputManager.GetAxis(Buttons.CAM_Y) * 45 * Time.unscaledDeltaTime;
 		transform.localRotation = Quaternion.Euler(r);
+
+		if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
+			controlCanvas.SetActive(!controlCanvas.activeSelf);
+		}
 	}
 }
