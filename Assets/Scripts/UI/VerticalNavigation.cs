@@ -8,6 +8,10 @@ public class VerticalNavigation : MonoBehaviour {
 	public Selectable leftSelect;
 
 	void Start() {
+		SetNavigation();
+	}
+
+	public void SetNavigation() {
 		Selectable[] children = GetComponentsInChildren<Selectable>();
 		for (int i=0; i<children.Length; i++) {
 			Selectable s = children[i];

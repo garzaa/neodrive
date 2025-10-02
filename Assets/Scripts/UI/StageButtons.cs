@@ -34,18 +34,24 @@ public class StageButtons : SavedObject {
 
 	public void SelectStage(StageButton stage) {
 		lastStage = stage.name;
+		// make all stage buttons point to the first of the newly shown stages
+		Selectable firstChild = stage.stageUI.GetComponentInChildren<Selectable>(includeInactive: true);
+		VerticalNavigation vn = GetComponent<VerticalNavigation>();
+		vn.rightSelect = firstChild;
+		vn.SetNavigation();
+
 		foreach (StageButton sb in stageButtons) {
 			sb.GetComponent<Animator>().SetBool("ForceHighlight", false);
 			sb.stageUI.SetActive(false);
 		}
 		stage.GetComponent<Animator>().SetBool("ForceHighlight", true);
 		stage.stageUI.SetActive(true);
-		StartCoroutine(SelectNextFrame(stage));
+		StartCoroutine(SelectNextFrame(firstChild));
 	}
 
-	IEnumerator SelectNextFrame(StageButton stage) {
+	IEnumerator SelectNextFrame(Selectable firstChild) {
 		yield return new WaitForEndOfFrame();
 		yield return new WaitForEndOfFrame();
-		stage.GetComponentInChildren<Selectable>().Select();
+		firstChild.Select();
 	}
 }

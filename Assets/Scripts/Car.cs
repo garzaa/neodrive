@@ -543,7 +543,7 @@ public class Car : MonoBehaviour {
             if (flatSpeed < 0.2f) {
                 wheelAudio.volume = 0;
             } else {
-                wheelAudio.volume = 0.5f;
+                wheelAudio.volume = 0.2f;
                 wheelAudio.pitch = Mathf.Lerp(1, 3f, flatSpeed / 80f);
             }
             tireSkid.mute = hydroplaning;
