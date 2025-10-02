@@ -77,10 +77,8 @@ public class MainMenu : SavedObject {
 
 	public void OpenSubmenu(GameObject submenu) {
 		if (submenus.Count > 0) {
-			print("opening submenu" + submenus.Peek().name);
 			submenus.Peek().SetActive(false);
 		} else {
-			print("closing main menu");
 			mainMenu.SetActive(false);
 		}
 		submenus.Push(submenu);

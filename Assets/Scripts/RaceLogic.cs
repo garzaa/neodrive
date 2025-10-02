@@ -200,7 +200,6 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	public void OnPhotoModeChange(bool photoMode) {
-		Debug.Log($"photo mode set to {photoMode}");
 		foreach (GameObject g in photoModeDisable) {
 			if (photoMode) g.SetActive(false);
 			else g.SetActive(true);

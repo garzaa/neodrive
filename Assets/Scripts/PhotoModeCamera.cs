@@ -20,7 +20,6 @@ public class PhotoModeCamera : MonoBehaviour {
 	}
 
 	public void EnterPhotoMode() {
-		Debug.Log($"entering photo mode");
 		gameObject.SetActive(true);
 		transform.position = car.transform.position;
 		transform.SetPositionAndRotation(car.transform.position + new Vector3(3, 0, 2), Quaternion.Euler(0, 270, 0));

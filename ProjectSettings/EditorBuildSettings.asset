@@ -38,4 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Double Loop.unity
     guid: 11ec5ddc819d69146be5a59a73f505a7
+  - enabled: 1
+    path: Assets/Tracks/Rock Loop II.unity
+    guid: 130666bf978a70446af931ce4b7f4641
   m_configObjects: {}

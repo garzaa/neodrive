@@ -187,8 +187,9 @@ public class Car : MonoBehaviour {
         carMesh.GetPropertyBlock(shaderBlock, 0);
         StartLine startLine = FindObjectOfType<StartLine>();
         if (startLine != null) {
-            transform.SetPositionAndRotation(startLine.transform.position, startLine.transform.rotation);
-            rb.MovePosition(startLine.transform.position);
+            Vector3 pos = startLine.transform.position + (0.1f * Vector3.up);
+            transform.SetPositionAndRotation(pos, startLine.transform.rotation);
+            rb.MovePosition(pos);
             rb.MoveRotation(startLine.transform.rotation);
         }
         startPoint = transform.position;
