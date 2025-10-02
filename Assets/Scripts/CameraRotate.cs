@@ -45,10 +45,7 @@ public class CameraRotate : SavedObject {
 
     int favoriteCamera = 0;
 
-    bool chaseCamNearGround;
-    Vector3 targetOffset;
-
-    float y, x;
+    float y;
 
 	protected override void LoadFromProperties() {
 		favoriteCamera = Get<int>(nameof(favoriteCamera));
@@ -188,28 +185,13 @@ public class CameraRotate : SavedObject {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
 
-
-		// move the camera up a bit if near ground
-		// if on a convex track segment, for example
-		chaseCamNearGround = Physics.Raycast(
-			new Ray(cameras[0].transform.position-targetOffset, -cameras[0].transform.up),
-			out RaycastHit tempHit,
-			0.5f,
-			LayerMask.GetMask("Ground")
-		);
-        if (chaseCamNearGround) {
-            targetOffset = Vector3.MoveTowards(targetOffset, cameras[0].transform.up, 0.25f * Time.fixedDeltaTime);
-            Debug.DrawLine(cameras[0].transform.position, tempHit.point, Color.red);
-        }
-        else targetOffset = Vector3.MoveTowards(targetOffset, Vector3.zero, 0.25f * Time.fixedDeltaTime);
-
         y = Mathf.SmoothDampAngle(ring.localRotation.eulerAngles.y, rotationAngle, ref rotationSpeed, rotationSmoothTime);
         if (snapping) {
             y = rotationAngle;
         }
 
         ring.localRotation = Quaternion.Euler(0, y, 0);
-        transform.position = Vector3.SmoothDamp(transform.position, targetPos+targetOffset, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
         if (snapping) {
             transform.position = targetPos;
         }
