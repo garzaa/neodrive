@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Rock Loop II.unity
     guid: 130666bf978a70446af931ce4b7f4641
+  - enabled: 1
+    path: Assets/Tracks/Puddlejumper.unity
+    guid: 4ba79ce77af34fe4d99c278ad42ee2bb
   m_configObjects: {}

@@ -18,15 +18,14 @@ public class TrackLoadButton : MonoBehaviour {
 	[Foldout("Internal")]
 	public GameObject bronze, silver, gold, author;
 	
-	public Achievement firstAuthorAchievement;
-
 	string trackName;
 	BinarySaver bs;
 
 	void Start() {
 		GetComponent<Button>().onClick.AddListener(() => FindObjectOfType<MainMenu>().LoadTrack(track));
 		trackName = track.ScenePath.Split("/")[^1].Split(".unity")[0];
-		trackNumber.text = (transform.GetSiblingIndex()+1).ToString("D2");
+		string stageNumber = (transform.parent.GetSiblingIndex()+1).ToString();
+		trackNumber.text = stageNumber + "-" + (transform.GetSiblingIndex()+1).ToString("D2");
 		trackTitle.text = trackName;
 		trackPreviewThumbnail.sprite = trackImage;
 
@@ -60,7 +59,7 @@ public class TrackLoadButton : MonoBehaviour {
 				string medalName = medalTask.Task.Result;
 				switch (medalName) {
 					case "author":
-						firstAuthorAchievement.Get();
+						FindObjectOfType<RaceLogic>().firstAuthorAchievement.Get();
 						author.SetActive(true);
 						goto case "gold";
 					case "gold":

@@ -15,6 +15,7 @@ public class StageButtons : SavedObject {
 
 	void OnEnable() {
 		// if lastStage is "" it's fine
+		stageButtons = GetComponentsInChildren<StageButton>();
 		foreach (StageButton stage in stageButtons) {
 			if (stage.name.Equals(lastStage)) {
 				SelectStage(stage);
@@ -46,12 +47,5 @@ public class StageButtons : SavedObject {
 		}
 		stage.GetComponent<Animator>().SetBool("ForceHighlight", true);
 		stage.stageUI.SetActive(true);
-		StartCoroutine(SelectNextFrame(firstChild));
-	}
-
-	IEnumerator SelectNextFrame(Selectable firstChild) {
-		yield return new WaitForEndOfFrame();
-		yield return new WaitForEndOfFrame();
-		firstChild.Select();
 	}
 }

@@ -74,6 +74,8 @@ public class RaceLogic : MonoBehaviour {
 
 	public List<GameObject> photoModeDisable;
 
+	public Achievement firstAuthorAchievement;
+
 	struct NameTimePair {
 		public string name;
 		public float time;

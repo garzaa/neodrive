@@ -130,9 +130,15 @@ public class Wheel : MonoBehaviour {
 		float flatVelocity = Vector3.ProjectOnPlane(rb.velocity, transform.up).magnitude;
 		RaycastHit waterHit = GetRaycast(waterRaycast);
 		hydroplaning = false;
-		// only hydroplane check if water is above ground
+
+		// as track rises back above water, water shouldn't take precedence
+		bool onWater = waterHit.collider != null;
+		if (onWater && groundHit.collider != null) {
+			onWater = waterHit.distance < groundHit.distance;
+		}
+		
 		if (waterWake != null) {
-			if (waterHit.collider != null && rb.velocity.sqrMagnitude > 1) {
+			if (onWater && rb.velocity.sqrMagnitude > 1) {
 				if (!waterWake.isPlaying) {
 					waterWake.Play();
 					for (int i=0; i<waterWakes.Length; i++) {
