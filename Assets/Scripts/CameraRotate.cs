@@ -26,7 +26,7 @@ public class CameraRotate : SavedObject {
 
     Camera mainCam;
 
-    GameObject photoModeCamera;
+    PhotoModeCamera photoModeCamera;
     bool photoMode = false;
     public AudioMixerSnapshot pausedAudio;
 	public AudioMixerSnapshot unpausedAudio;
@@ -65,8 +65,8 @@ public class CameraRotate : SavedObject {
         cameras[1] = car.transform.Find("BodyMesh/HoodCamera").GetComponent<CinemachineVirtualCamera>();
         mainCam = Camera.main;
         mainCam.depthTextureMode = DepthTextureMode.Depth;
-        photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true).gameObject;
-        photoModeCamera.SetActive(false);
+        photoModeCamera = FindObjectOfType<PhotoModeCamera>(includeInactive: true);
+        photoModeCamera.gameObject.SetActive(false);
         car.onRespawn.AddListener(OnRespawn);
         respawnTime = Time.time;
         baseFOV = cameras[0].m_Lens.FieldOfView;
@@ -105,7 +105,11 @@ public class CameraRotate : SavedObject {
             if (!photoMode && Time.timeScale != 1) return;
             photoMode = !photoMode;
             Time.timeScale = photoMode ? 0 : 1;
-            photoModeCamera.SetActive(photoMode);
+            if (!photoMode) {
+                photoModeCamera.ExitPhotoMode();
+            } else {
+                photoModeCamera.EnterPhotoMode();
+            }
             AudioListener.volume = photoMode ? 0 : 1;
             if (photoMode) {
                 pausedAudio.TransitionTo(0.5f);
@@ -203,16 +207,8 @@ public class CameraRotate : SavedObject {
         if (snapping) {
             y = rotationAngle;
         }
-        
-        // TODO: if car is grounded, and x-angle is above a certain threshold...
-        // then move the camera's x-rotation to that value
-        if (car.grounded && Mathf.Abs(Vector3.SignedAngle(car.transform.rotation.eulerAngles, Vector3.right, car.transform.right)) > 22) {
-            x = Mathf.MoveTowardsAngle(x, car.transform.rotation.eulerAngles.x, 1f * Time.deltaTime);
-        } else {
-            x = Mathf.MoveTowardsAngle(x, 0, 1f * Time.deltaTime);
-        }
 
-        ring.localRotation = Quaternion.Euler(x, y, 0);
+        ring.localRotation = Quaternion.Euler(0, y, 0);
         transform.position = Vector3.SmoothDamp(transform.position, targetPos+targetOffset, ref camVelocity, chaseSmoothTime, maxSpeed: 500);
         if (snapping) {
             transform.position = targetPos;

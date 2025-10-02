@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, ISubmitHandler {
+public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler {
 	public AudioClip onHover;
 	public AudioClip onClick;
 
@@ -13,8 +13,11 @@ public class ButtonSounds: MonoBehaviour, IPointerEnterHandler, ISelectHandler, 
 		if (audioSource == null) audioSource = GetComponentInParent<AudioSource>();
 	}
 
-	public void OnSubmit(BaseEventData data) {
-		// if it's a button that closes its parent UI
+	void Start() {
+		GetComponent<Button>().onClick.AddListener(PlayClickSouond);	
+	}
+
+	void PlayClickSouond() {
 		if (audioSource.enabled) audioSource.PlayOneShot(onClick);
 	}
 

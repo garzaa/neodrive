@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class GridNavigation : MonoBehaviour {
 	public int columns = 5;
 
+	public Selectable leftSelect;
+
 	void OnEnable() {
 		SetGridNavigation(GetComponentsInChildren<Selectable>(includeInactive: true), columns);
 	}
@@ -27,6 +29,9 @@ public class GridNavigation : MonoBehaviour {
 			}
 			if (i < buttons.Length - cols) {
 				n.selectOnDown = buttons[i+cols];
+			}
+			if (i % cols == 0 && leftSelect != null) {
+				n.selectOnLeft = leftSelect;
 			}
 			buttons[i].navigation = n;
 		}

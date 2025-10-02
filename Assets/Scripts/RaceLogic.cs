@@ -72,6 +72,8 @@ public class RaceLogic : MonoBehaviour {
 	List<Checkpoint> allCheckpoints = new();
 	readonly HashSet<Checkpoint> checkpointsCrossed = new();
 
+	public List<GameObject> photoModeDisable;
+
 	struct NameTimePair {
 		public string name;
 		public float time;
@@ -195,6 +197,14 @@ public class RaceLogic : MonoBehaviour {
 		lapTimer.Restart();
 		checkpointsCrossed.Clear();
 		finishedOnce = false;
+	}
+
+	public void OnPhotoModeChange(bool photoMode) {
+		Debug.Log($"photo mode set to {photoMode}");
+		foreach (GameObject g in photoModeDisable) {
+			if (photoMode) g.SetActive(false);
+			else g.SetActive(true);
+		}
 	}
 
 	public void StartRecordingGhost() {
@@ -551,10 +561,6 @@ public class RaceLogic : MonoBehaviour {
 	IEnumerator ShowResults() {
 		yield return new WaitForSeconds(1f);
 		medalText.gameObject.SetActive(true);
-		// write the last time
-		// then the best time
-		// then display the medals for that time
-		// (if the author medal exists)
 		yield return new WaitForSeconds(3f);
 		medalText.gameObject.SetActive(false);
 	}

@@ -21,6 +21,7 @@ public class MainMenu : SavedObject {
 		foreach (GameObject g in submenuList) {
 			menuNames[g.GetHierarchicalName()] = g;
 		}
+		Application.wantsToQuit += UnsetFromTrack;
 	}
 
 	protected override void LoadFromProperties() {
@@ -29,7 +30,6 @@ public class MainMenu : SavedObject {
 	}
 
 	protected override void SaveToProperties(ref Dictionary<string, object> properties) {
-		Debug.Log($"saving submenus to array");
 		// do this so it doesn't interfere if the main menu is in a world level
 		// and syncs its fromTrack bool, don't sync an empty submenu list as well. christ
 		properties["submenus"] = submenuNameList;
@@ -49,7 +49,13 @@ public class MainMenu : SavedObject {
 		fromTrack = true;
 	}
 
+	public bool UnsetFromTrack() {
+		fromTrack = false;
+		return true;
+	}
+
 	public void Exit() {
+		UnsetFromTrack();
 		SaveManager.WriteEternalSave();
 		Application.Quit();
 	}
@@ -99,6 +105,6 @@ public class MainMenu : SavedObject {
 
 	IEnumerator SelectNextFrame(GameObject parent) {
 		yield return new WaitForEndOfFrame();
-		parent.GetComponentInChildren<Selectable>().Select();
+		if (!parent.GetComponent<SetFirstSelected>()) parent.GetComponentInChildren<Selectable>().Select();
 	}
 }

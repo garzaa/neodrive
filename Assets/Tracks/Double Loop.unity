@@ -3952,8 +3952,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105571524}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -73.33823, y: 1.2144059, z: -46.038948}
-  m_Size: 26.651855
+  m_LocalReferencePoint: {x: -73.14165, y: 1.2039995, z: -46.06784}
+  m_Size: 26.865982
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -7517,8 +7517,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234207891}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 2.1096792, z: -304.11102}
-  m_Size: 25.201904
+  m_LocalReferencePoint: {x: 0, y: 1.9854388, z: -304.11835}
+  m_Size: 25.250183
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -9377,8 +9377,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306397928}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -17.08883, y: 0.00000023841858, z: -297.74072}
-  m_Size: 26.698536
+  m_LocalReferencePoint: {x: -16.12129, y: 0, z: -298.26746}
+  m_Size: 29.775074
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -9612,8 +9612,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315792949}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -76.96306, y: 1.7540989, z: 5.6056595}
-  m_Size: 30.875114
+  m_LocalReferencePoint: {x: -76.62263, y: 1.7507788, z: 5.566571}
+  m_Size: 30.95329
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -11751,8 +11751,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375354520}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -42.185757, y: 0.0000014305115, z: -277.17276}
-  m_Size: 28.420433
+  m_LocalReferencePoint: {x: -42.59752, y: 0.0000014305115, z: -277.30328}
+  m_Size: 30.385405
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -22039,6 +22039,10 @@ PrefabInstance:
     - target: {fileID: 2034190980466569474, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408839010633228605, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3150824910883812794, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: field of view
@@ -35064,8 +35068,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015756858}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -63.48027, y: 0.0000035762787, z: -242.10983}
-  m_Size: 26.328064
+  m_LocalReferencePoint: {x: -64.167435, y: 0.0000038146973, z: -242.63011}
+  m_Size: 30.514435
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -36229,8 +36233,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049046240}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.14308548, y: 0.37867475, z: -304.34772}
-  m_Size: 25.900146
+  m_LocalReferencePoint: {x: -0.13179064, y: 0.27498078, z: -304.51953}
+  m_Size: 26.306885
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -41128,8 +41132,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1210621453}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -74.78066, y: 0.0000042915344, z: -196.71614}
-  m_Size: 27.43814
+  m_LocalReferencePoint: {x: -75.01683, y: 0.0000042915344, z: -197.39111}
+  m_Size: 29.234009
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -46663,8 +46667,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404756605}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -74.24804, y: 0.5604538, z: -96.25461}
-  m_Size: 26.253448
+  m_LocalReferencePoint: {x: -74.74537, y: 0.5510411, z: -96.35985}
+  m_Size: 26.73584
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -47195,8 +47199,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1416720556}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 5.156654, z: -304.32275}
-  m_Size: 25.141357
+  m_LocalReferencePoint: {x: 0, y: 5.0973825, z: -304.3296}
+  m_Size: 25.161133
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -52297,8 +52301,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1602514243}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -4.0482473, y: 0.0000014305115, z: -304.61786}
-  m_Size: 27.727417
+  m_LocalReferencePoint: {x: -3.7144976, y: 0.0000009536743, z: -305.3218}
+  m_Size: 29.885681
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -57045,7 +57049,7 @@ MonoBehaviour:
     contrast: 1.5
     noise: 1
     saddleSkew: {x: 0, y: 0}
-    scale: {x: 1, y: 1}
+    scale: {x: 1.5, y: 1}
     length: 72.935394
     zPosition: 169.64056
     linkTarget: 0
@@ -57063,7 +57067,7 @@ MonoBehaviour:
     contrast: 1.5
     noise: 1
     saddleSkew: {x: 0, y: 0}
-    scale: {x: 1, y: 1}
+    scale: {x: 1.5, y: 1}
     length: 63.999084
     zPosition: 242.57596
     linkTarget: 0
@@ -57081,7 +57085,7 @@ MonoBehaviour:
     contrast: 1.5
     noise: 1
     saddleSkew: {x: 0, y: 0}
-    scale: {x: 1, y: 1}
+    scale: {x: 1.5, y: 1}
     length: 90.862305
     zPosition: 306.57504
     linkTarget: 0
@@ -57463,7 +57467,7 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 1}
   editorDirty: 0
   gridCenterPoint: {x: 0, y: 0, z: 0}
-  selectedControlPoint: 1006
+  selectedControlPoint: 0
   selectedAnchors: 
   selectedSplineMenu: deformation
   selectedAnchorMenu: deformation
@@ -66908,8 +66912,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053988415}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -76.910675, y: 0.079977274, z: -145.77116}
-  m_Size: 26.243683
+  m_LocalReferencePoint: {x: -77.12659, y: 0.05496168, z: -145.70941}
+  m_Size: 26.81311
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -67470,8 +67474,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070339664}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 9.437117, z: -304.6324}
-  m_Size: 25.0495
+  m_LocalReferencePoint: {x: 0, y: 9.42772, z: -304.6339}
+  m_Size: 25.052612
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
