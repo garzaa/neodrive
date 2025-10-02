@@ -8553,8 +8553,8 @@ RectTransform:
   m_LocalScale: {x: 0.10000002, y: 0.1, z: 0.10000002}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6941304675518154065}
   - {fileID: 97358053540569660}
+  - {fileID: 6941304675518154065}
   - {fileID: 2475806745783778866}
   m_Father: {fileID: 2475806745139959412}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8999,8 +8999,8 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 3727255574289627311}
-    m_SelectOnLeft: {fileID: 3727255574289627311}
+    m_SelectOnDown: {fileID: 9029081783905650680}
+    m_SelectOnLeft: {fileID: 9029081783905650680}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:

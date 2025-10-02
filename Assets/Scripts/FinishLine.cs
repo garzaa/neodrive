@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class FinishLine : MonoBehaviour {
 	public UnityEvent onFinishCross;
 
-	void OnTriggerEnter(Collider other) {
+	public void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
 			onFinishCross.Invoke();
 		}

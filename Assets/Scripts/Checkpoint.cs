@@ -8,7 +8,7 @@ public class Checkpoint : MonoBehaviour {
 
 	float lastCrossTime;
 
-	void OnTriggerEnter(Collider other) {
+	public void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
 			if (Time.time < lastCrossTime+1f) return;
 			lastCrossTime = Time.time;
