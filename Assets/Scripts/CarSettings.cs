@@ -74,7 +74,6 @@ public class CarSettings : ScriptableObject {
 	[Range(0f, 1f)]
 	public float hydroplaneGrip = 0.1f;
 
-	// TODO: need to include downforceGrip
 	public float GetTireSlip(float forwardSpeed) {
 		if (forwardSpeed < 10f) {
 			return Mathf.Lerp(0.9f, tireSlip, forwardSpeed/10f);

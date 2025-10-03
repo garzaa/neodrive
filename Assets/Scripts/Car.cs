@@ -148,6 +148,8 @@ public class Car : MonoBehaviour {
     }
 
     EngineAudio engineAudio;
+    
+    Coroutine collisionRecoveryRoutine;
 
     void Awake() {
         wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
@@ -331,6 +333,13 @@ public class Car : MonoBehaviour {
                 collision.contacts[0].normal
             ));
             collisionHitmarker.Emit(1);
+        }
+
+        if (grounded && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            if (collisionRecoveryRoutine != null) {
+                StopCoroutine(collisionRecoveryRoutine);
+            }
+            collisionRecoveryRoutine = StartCoroutine(CollisionRecovery());
         }
     }
 
@@ -1142,5 +1151,12 @@ public class Car : MonoBehaviour {
         clutchRatio = 0.5f;
         clutch = false;
         changingGear = false;
+    }
+
+    IEnumerator CollisionRecovery() {
+        // don't get completely fucked if you hit a track wall
+        rb.angularDrag = 10f;
+        yield return new WaitForSeconds(0.5f);
+        rb.angularDrag = 0.05f;
     }
 }
