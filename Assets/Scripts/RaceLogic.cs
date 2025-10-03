@@ -8,6 +8,7 @@ using Cinemachine;
 using System;
 using NaughtyAttributes;
 using UnityEngine.Events;
+using NaughtyAttributes.Test;
 
 [RequireComponent(typeof(AudioSource))]
 public class RaceLogic : MonoBehaviour {
@@ -23,6 +24,8 @@ public class RaceLogic : MonoBehaviour {
 	public RaceType raceType = RaceType.HOTLAP;
 
 	public Text medalText;
+	public GameObject medal3DContainer;
+	public GameObject medalTexture;
 
 	// this should be info about a playing ghost, not the ghost itself
 	// need timestamps and all that
@@ -98,6 +101,7 @@ public class RaceLogic : MonoBehaviour {
 
 		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
+		FindObjectOfType<PauseMenu>(includeInactive: true).OnPause.AddListener(OnPause);
 		timerAlert = FindObjectOfType<TimerAlert>();
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
@@ -195,6 +199,8 @@ public class RaceLogic : MonoBehaviour {
 		StartCoroutine(startRoutine);
 		StopPlayingGhosts();
 		medalText.gameObject.SetActive(false);
+		medal3DContainer.SetActive(false);
+		medalTexture.SetActive(false);
 		raceTimer.Restart();
 		lapTimer.Restart();
 		checkpointsCrossed.Clear();
@@ -214,6 +220,10 @@ public class RaceLogic : MonoBehaviour {
 		};
 		recording = true;
 		recordStart = Time.time;
+	}
+
+	void OnPause() {
+		HideResults();
 	}
 
 	void Update() {
@@ -365,14 +375,12 @@ public class RaceLogic : MonoBehaviour {
 
 		Tuple<string, Sprite> resultData = GetBestMedal(p.totalTime);
 		if (raceType == RaceType.ROUTE) {
-			medalText.gameObject.SetActive(true);
 			medalText.text = resultData.Item1;
-			if (resultData.Item2 == null) {
-				medalText.GetComponentInChildren<Image>().enabled = false;
-			} else {
-				var i = medalText.GetComponentInChildren<Image>();
-				i.enabled = true;
-				i.sprite = resultData.Item2;
+			if (resultData.Item2 != null) {
+				// medalcontainer > medal > gold/silver/bronze
+				foreach (Transform medal in medal3DContainer.transform.GetChild(0)) {
+					medal.gameObject.SetActive(medal.name == resultData.Item1);
+				}
 			}
 			if (string.IsNullOrEmpty(resultData.Item1)) {
 				medalText.enabled = false;
@@ -519,6 +527,8 @@ public class RaceLogic : MonoBehaviour {
 	public void HideResults() {
 		StopCoroutine(resultsRoutine);
 		medalText.gameObject.SetActive(false);
+		medal3DContainer.SetActive(false);
+		medalTexture.SetActive(false);
 	}
 
 	public void FirstStart() {
@@ -560,10 +570,12 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	IEnumerator ShowResults() {
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(2f);
 		medalText.gameObject.SetActive(true);
-		yield return new WaitForSeconds(3f);
-		medalText.gameObject.SetActive(false);
+		if (medalText.text != "" && medalText.text.ToLower() != "no medal") {
+			medalTexture.SetActive(true);
+			medal3DContainer.SetActive(true);
+		}
 	}
 
 	[Button("Invalidate Times")]

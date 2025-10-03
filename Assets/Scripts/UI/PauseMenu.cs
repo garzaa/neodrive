@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class PauseMenu : MonoBehaviour {
 	public GameObject vCam;
@@ -23,6 +24,8 @@ public class PauseMenu : MonoBehaviour {
 	bool pausedThisFrame = false;
 	
 	public MainMenu mainMenu;
+
+	public UnityEvent OnPause;
 
 	void Start() {
 		GetComponentInChildren<Canvas>(includeInactive: true).worldCamera = Camera.current;
@@ -86,6 +89,7 @@ public class PauseMenu : MonoBehaviour {
 		ShowCanvas();
 		pausedAudio.TransitionTo(0.5f);
 		StartCoroutine(SelectNextFrame(gameObject));
+		OnPause.Invoke();
 	}
 
 	public void Unpause() {

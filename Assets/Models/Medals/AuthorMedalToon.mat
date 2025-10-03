@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _EMISSIVE_SIMPLE
+  - _EMISSIVE_ANIMATION
   - _IS_ANGELRING_OFF
   - _IS_CLIPPING_OFF
   - _IS_OUTLINE_CLIPPING_NO
@@ -297,7 +297,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EMISSIVE: 0
+    - _EMISSIVE: 1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
