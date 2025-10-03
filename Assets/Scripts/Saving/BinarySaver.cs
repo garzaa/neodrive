@@ -147,12 +147,7 @@ public class BinarySaver {
 		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
 		if (ghosts.Count() == 0) return "";
 		float playerTime = ghosts.First().totalTime;
-		Debug.Log("comparing times for " + trackName);
-		Debug.Log($"player time: {playerTime}. author: {authorTime}");
-		if (playerTime <= authorTime) {
-			Debug.Log("got author medal");
-			return "author";
-		}
+		if (playerTime <= authorTime) return "author";
 		if (playerTime < authorTime * 1.1f) return "gold";
 		if (playerTime < authorTime * 1.2f) return "silver";
 		if (playerTime < authorTime * 1.5f) return "bronze";
