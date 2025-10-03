@@ -224,7 +224,7 @@ Material:
     - _1st_ShadeColor_Feather: 0.165
     - _1st_ShadeColor_Step: 0.867
     - _2nd_ShadeColor_Feather: 0.0001
-    - _2nd_ShadeColor_Step: 0.253
+    - _2nd_ShadeColor_Step: 0.259
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ARSampler_AlphaOn: 0
@@ -405,7 +405,7 @@ Material:
     - _SecondShadeOverridden: 0
     - _SecondShadeVisible: 1
     - _Set_SystemShadowsToBase: 1
-    - _ShadeColor_Step: 0.253
+    - _ShadeColor_Step: 0.259
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
