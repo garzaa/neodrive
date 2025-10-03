@@ -59,7 +59,9 @@ public class TrackLoadButton : MonoBehaviour {
 				string medalName = medalTask.Task.Result;
 				switch (medalName) {
 					case "author":
-						FindObjectOfType<RaceLogic>().firstAuthorAchievement.Get();
+						// this is blocking for some reason
+						// FindObjectOfType<RaceLogic>().firstAuthorAchievement.Get();
+						Resources.Load<Achievement>("Achievements/zzz Handsome Devil").Get();
 						author.SetActive(true);
 						goto case "gold";
 					case "gold":
@@ -70,7 +72,6 @@ public class TrackLoadButton : MonoBehaviour {
 						goto case "bronze";
 					case "bronze":
 						bronze.SetActive(true);
-						print("got a medal");
 						break;
 					default:
 						break;

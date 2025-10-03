@@ -35,7 +35,7 @@ public class BinarySaver {
 		try {
 			g = LoadGhost(fn);
 			if (!CompatibleVersions(g.version)) {
-				Debug.Log("no compatible ghost version");
+				Debug.Log($"no compatible ghost version for {fn}");
 				return null;
 			}
 		} catch (Exception e) {
@@ -147,7 +147,12 @@ public class BinarySaver {
 		var ghosts = GetGhosts(trackName).OrderBy(x => x.totalTime);
 		if (ghosts.Count() == 0) return "";
 		float playerTime = ghosts.First().totalTime;
-		if (playerTime <= authorTime) return "author";
+		Debug.Log("comparing times for " + trackName);
+		Debug.Log($"player time: {playerTime}. author: {authorTime}");
+		if (playerTime <= authorTime) {
+			Debug.Log("got author medal");
+			return "author";
+		}
 		if (playerTime < authorTime * 1.1f) return "gold";
 		if (playerTime < authorTime * 1.2f) return "silver";
 		if (playerTime < authorTime * 1.5f) return "bronze";
