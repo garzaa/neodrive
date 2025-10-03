@@ -70,6 +70,7 @@ public class TrackLoadButton : MonoBehaviour {
 						goto case "bronze";
 					case "bronze":
 						bronze.SetActive(true);
+						print("got a medal");
 						break;
 					default:
 						break;
