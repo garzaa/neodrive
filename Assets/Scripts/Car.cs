@@ -112,6 +112,7 @@ public class Car : MonoBehaviour {
 
     float tireSkidVolume;
     float spawnTime;
+    bool finished;
 
     [SerializeField]
     List<Canvas> dashboardUI;
@@ -181,7 +182,9 @@ public class Car : MonoBehaviour {
         FinishLine f = FindObjectOfType<FinishLine>();
         if (f) {
             f.onFinishCross.AddListener(() => nitroxMeter.Reset());
-            dashboardUI.Add(FindObjectOfType<RaceLogic>().GetComponentInChildren<Canvas>());
+            RaceLogic r = FindObjectOfType<RaceLogic>();
+            dashboardUI.Add(r.GetComponentInChildren<Canvas>());
+            r.onValidFinish.AddListener(OnValidFinish);
         }
         pointsAudio.mute = true;
         shaderBlock = new();
@@ -1003,7 +1006,14 @@ public class Car : MonoBehaviour {
     }
 
     void UpdateVibration() {
-        if (Time.unscaledTime < spawnTime + 0.5f || Time.timeScale != 1 || !GameOptions.Rumble || !grounded || !usingController) {
+        if (
+            Time.unscaledTime < spawnTime + 0.5f
+            || Time.timeScale != 1
+            || !GameOptions.Rumble
+            || !grounded
+            || !usingController
+            || finished
+        ) {
             InputManager.player.StopVibration();
             return;
         }
@@ -1094,6 +1104,7 @@ public class Car : MonoBehaviour {
 
     IEnumerator RespawnRoutine() {
         nitroxMeter.Reset();
+        finished = false;
         currentGear = 0;
         engineRPM = engine.idleRPM;
         engineRunning = false;
@@ -1158,5 +1169,9 @@ public class Car : MonoBehaviour {
         rb.angularDrag = 10f;
         yield return new WaitForSeconds(0.5f);
         rb.angularDrag = 0.05f;
+    }
+
+    void OnValidFinish() {
+        finished = true;
     }
 }
