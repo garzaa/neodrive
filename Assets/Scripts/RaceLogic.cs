@@ -583,6 +583,7 @@ public class RaceLogic : MonoBehaviour {
 			medalTexture.SetActive(true);
 			medal3DContainer.SetActive(true);
 		}
+		medalText.text = SceneManager.GetActiveScene().name + "\n" + medalText.text;
 		quitButtons.SetActive(true);
 	}
 
