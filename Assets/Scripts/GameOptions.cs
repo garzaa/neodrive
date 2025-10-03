@@ -23,15 +23,13 @@ public class GameOptions : MonoBehaviour {
 		AuthorGhost = LoadBool("AuthorGhost", true);
 		Rumble = LoadBool("Rumble", true);
 		QualitySettings.vSyncCount = LoadBool("VSync") ? 1 : 0;
-		int qualityLevel = PlayerPrefs.GetInt(QualityDropdown.qualityName, QualitySettings.names.Length);
-		QualitySettings.SetQualityLevel(
-			qualityLevel
-		);
 		instance.Apply.Invoke();
 		foreach (SettingsSlider slider in FindObjectsOfType<SettingsSlider>(includeInactive: true)) {
 			slider.OnEnable();
 		}
 
+		int qualityLevel = PlayerPrefs.GetInt(QualityDropdown.qualityName, QualitySettings.names.Length);
+		QualitySettings.SetQualityLevel(qualityLevel);
 		var postProcessLayer = Camera.main.GetComponent<PostProcessLayer>();
 		if (qualityLevel == 3) {
 			postProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
@@ -41,6 +39,8 @@ public class GameOptions : MonoBehaviour {
 			postProcessLayer.subpixelMorphologicalAntialiasing.quality = SubpixelMorphologicalAntialiasing.Quality.Medium;
 		} else if (qualityLevel == 1) {
 			postProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.FastApproximateAntialiasing;
+		} else if (qualityLevel == 0) {
+			postProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.None;
 		}
 	}
 
