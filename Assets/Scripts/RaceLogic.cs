@@ -9,6 +9,7 @@ using System;
 using NaughtyAttributes;
 using UnityEngine.Events;
 using NaughtyAttributes.Test;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(AudioSource))]
 public class RaceLogic : MonoBehaviour {
@@ -26,6 +27,7 @@ public class RaceLogic : MonoBehaviour {
 	public Text medalText;
 	public GameObject medal3DContainer;
 	public GameObject medalTexture;
+	public GameObject quitButtons;
 
 	// this should be info about a playing ghost, not the ghost itself
 	// need timestamps and all that
@@ -76,8 +78,6 @@ public class RaceLogic : MonoBehaviour {
 	readonly HashSet<Checkpoint> checkpointsCrossed = new();
 
 	public List<GameObject> photoModeDisable;
-
-	public Achievement firstAuthorAchievement;
 
 	struct NameTimePair {
 		public string name;
@@ -156,6 +156,7 @@ public class RaceLogic : MonoBehaviour {
 
 		raceTimer.gameObject.SetActive(raceType != RaceType.ROUTE);
 		StartCoroutine(WaitForSpawn());
+		HideResults();
 	}
 
 	IEnumerator WaitForSpawn() {
@@ -233,6 +234,9 @@ public class RaceLogic : MonoBehaviour {
 				car.GetSnapshot()
 			));
 		}
+		// if (EventSystem.current.IsPointerOverGameObject()) {
+		// 	Debug.Log($"pointer over {GetEventSystemRaycastResults()[0].gameObject.name}");
+		// }
 		if (Time.timeScale > 0) {
 			foreach (string ghostName in playingGhosts.Keys) {
 				PlayingGhost pg = playingGhosts[ghostName];
@@ -529,6 +533,7 @@ public class RaceLogic : MonoBehaviour {
 		medalText.gameObject.SetActive(false);
 		medal3DContainer.SetActive(false);
 		medalTexture.SetActive(false);
+		quitButtons.SetActive(false);
 	}
 
 	public void FirstStart() {
@@ -567,6 +572,8 @@ public class RaceLogic : MonoBehaviour {
 		countdown.text = "GO";
 		countdownAnimator.SetTrigger("Animate");
 		OnRaceStart();
+		yield return new WaitForSecondsRealtime(0.5f);
+		countdownAnimator.gameObject.SetActive(false);
 	}
 
 	IEnumerator ShowResults() {
@@ -576,6 +583,7 @@ public class RaceLogic : MonoBehaviour {
 			medalTexture.SetActive(true);
 			medal3DContainer.SetActive(true);
 		}
+		quitButtons.SetActive(true);
 	}
 
 	[Button("Invalidate Times")]
@@ -598,6 +606,22 @@ public class RaceLogic : MonoBehaviour {
 		foreach (Wheel w in playerGhostCar.GetComponentsInChildren<Wheel>()) {
 			w.ApplyCustomWheel(wheel);
 		}
+	}
+
+	List<RaycastResult> GetEventSystemRaycastResults() {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        return raycastResults;
+    }
+
+	public void MenuButtonClick() {
+		FindObjectOfType<PauseMenu>(includeInactive: true).Menu();
+	}
+
+	public void RestartButtonClick() {
+		car.Respawn();
 	}
 }
 
