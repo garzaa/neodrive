@@ -17,13 +17,13 @@ function zip() {
 function gitrelease() {
     TAG=$(cat ProjectSettings/ProjectSettings.asset | grep bundleVersion | cut -d':' -f2 | xargs)
     echo $TAG
-    gh release create $TAG Demos/zips/*.zip  --generate-notes
+    gh release create $TAG --generate-notes
 }
 
 set -x
 itchrelease
 zip
-# this doesn't work unless you version the zips because then the names collide. fucking incredible
-# gitrelease
+gitrelease
+echo "release complete, go upload the zips on github"
 
 set +x
