@@ -96,10 +96,11 @@ public class RaceLogic : MonoBehaviour {
 		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
 		car = FindObjectOfType<Car>();
 		
+		if (quitButtons != null) quitButtons.SetActive(false);
+		if (medalText != null) medalText.gameObject.SetActive(false);
+		
 		if (finishLine == null) return;
 		
-		medalText.gameObject.SetActive(false);
-		quitButtons.SetActive(false);
 		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
 		FindObjectOfType<PauseMenu>(includeInactive: true).OnPause.AddListener(OnPause);

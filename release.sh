@@ -23,7 +23,7 @@ function gitrelease() {
 set -x
 itchrelease
 zip
-gitrelease
-echo "release complete, go upload the zips on github"
+# gitrelease
+# echo "release complete, go upload the zips on github"
 
 set +x

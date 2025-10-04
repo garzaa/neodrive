@@ -112,6 +112,7 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void Exit() {
+		mainMenu.UnsetFromTrack();
 		SaveManager.WriteEternalSave();
 		Application.Quit();
 	}
