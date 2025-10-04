@@ -1167,7 +1167,7 @@ public class Car : MonoBehaviour {
     IEnumerator CollisionRecovery() {
         // don't get completely fucked if you hit a track wall
         rb.angularDrag = 10f;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         rb.angularDrag = 0.05f;
     }
 
