@@ -94,11 +94,12 @@ public class RaceLogic : MonoBehaviour {
 	void Start() {
 		finishLine = FindObjectOfType<FinishLine>();
 		FindObjectOfType<GameOptions>().Apply.AddListener(OnSettingsApply);
-		medalText.gameObject.SetActive(false);
 		car = FindObjectOfType<Car>();
 		
 		if (finishLine == null) return;
-
+		
+		medalText.gameObject.SetActive(false);
+		quitButtons.SetActive(false);
 		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
 		FindObjectOfType<PauseMenu>(includeInactive: true).OnPause.AddListener(OnPause);
@@ -604,6 +605,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 	
 	public void ApplyWheel(CustomWheel wheel) {
+		if (playerGhostCar == null) return;
 		foreach (Wheel w in playerGhostCar.GetComponentsInChildren<Wheel>()) {
 			w.ApplyCustomWheel(wheel);
 		}

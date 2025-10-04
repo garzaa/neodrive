@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Puddlejumper.unity
     guid: 4ba79ce77af34fe4d99c278ad42ee2bb
+  - enabled: 1
+    path: Assets/Tracks/Water 8.unity
+    guid: 65807397713c9a640ad60d879b7e51f9
   m_configObjects: {}
