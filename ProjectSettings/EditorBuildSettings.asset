@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Tracks/Desert Speedway.unity
     guid: a668814d356744c48837f14191a9bde3
   - enabled: 1
-    path: Assets/Tracks/Rock Loop.unity
+    path: Assets/Tracks/Rock Loop I.unity
     guid: c0f0b79ff50fceb4681eff544b475888
   - enabled: 1
     path: Assets/Tracks/Lakeshore Curve.unity
