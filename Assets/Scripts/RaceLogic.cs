@@ -236,9 +236,9 @@ public class RaceLogic : MonoBehaviour {
 				car.GetSnapshot()
 			));
 		}
-		// if (EventSystem.current.IsPointerOverGameObject()) {
-		// 	Debug.Log($"pointer over {GetEventSystemRaycastResults()[0].gameObject.name}");
-		// }
+		if (EventSystem.current.IsPointerOverGameObject()) {
+			Debug.Log($"pointer over {GetEventSystemRaycastResults()[0].gameObject.name}");
+		}
 		if (Time.timeScale > 0) {
 			foreach (string ghostName in playingGhosts.Keys) {
 				PlayingGhost pg = playingGhosts[ghostName];
