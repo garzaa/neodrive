@@ -143,7 +143,6 @@ public class PauseMenu : MonoBehaviour {
 
 	IEnumerator SelectNextFrame(GameObject parent) {
 		yield return new WaitForEndOfFrame();
-		LayoutRebuilder.ForceRebuildLayoutImmediate(parent.GetComponentInChildren<RectTransform>());
 		parent.GetComponentInChildren<Selectable>(includeInactive: true).Select();
 	}
 }

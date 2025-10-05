@@ -28,13 +28,10 @@ public class RaceLogic : MonoBehaviour {
 	public GameObject medal3DContainer;
 	public GameObject medalTexture;
 	public GameObject quitButtons;
+	public GameObject raceSummary;
 
-	// this should be info about a playing ghost, not the ghost itself
-	// need timestamps and all that
-	// or...keep the current playing timestamp actually
-	// ghosts wouldn't get out of sync, they all start when the player starts the race
-	// or actually you do need which ghost car it's linked to, damn
-	// then you might also need a list of which materials to replace with the ghost texture?
+	Ghost lastGhost;
+
 	readonly Dictionary<string, PlayingGhost> playingGhosts = new();
 
 	BinarySaver saver;
@@ -236,9 +233,9 @@ public class RaceLogic : MonoBehaviour {
 				car.GetSnapshot()
 			));
 		}
-		if (EventSystem.current.IsPointerOverGameObject()) {
-			Debug.Log($"pointer over {GetEventSystemRaycastResults()[0].gameObject.name}");
-		}
+		// if (EventSystem.current.IsPointerOverGameObject()) {
+		// 	Debug.Log($"pointer over {GetEventSystemRaycastResults()[0].gameObject.name}");
+		// }
 		if (Time.timeScale > 0) {
 			foreach (string ghostName in playingGhosts.Keys) {
 				PlayingGhost pg = playingGhosts[ghostName];
@@ -359,6 +356,7 @@ public class RaceLogic : MonoBehaviour {
 
 	void OnValidFinish() {
 		Ghost p = StopRecordingGhost();
+		lastGhost = p;
 		if (bestPlayerGhost == null || p.totalTime < bestPlayerGhost.totalTime) {
 			player.time = p.totalTime;
 			p.splits = GetBestLapSplits();
@@ -536,6 +534,8 @@ public class RaceLogic : MonoBehaviour {
 		medal3DContainer.SetActive(false);
 		medalTexture.SetActive(false);
 		quitButtons.SetActive(false);
+		raceSummary.SetActive(false);
+		car.SetDashboardEnabled(true);
 	}
 
 	public void FirstStart() {
@@ -587,6 +587,8 @@ public class RaceLogic : MonoBehaviour {
 		}
 		medalText.text = SceneManager.GetActiveScene().name + "\n" + medalText.text;
 		quitButtons.SetActive(true);
+		ShowRaceSummary();
+		car.SetDashboardEnabled(false);
 	}
 
 	[Button("Invalidate Times")]
@@ -626,6 +628,23 @@ public class RaceLogic : MonoBehaviour {
 
 	public void RestartButtonClick() {
 		car.Respawn();
+	}
+
+	public void ShowRaceSummary() {
+		raceSummary.SetActive(true);
+		RaceData data = car.GetRaceData();
+		Text[] texts = raceSummary.GetComponentsInChildren<Text>();
+		// statName | stat pairs
+		int idx = 1;
+		texts[idx].text = raceTimer.FormattedTime(lastGhost.totalTime);
+		idx += 2;
+		texts[idx].text = data.GetMaxVelocityMPH() + " mph";
+		idx += 2;
+		texts[idx].text = data.nitros.ToString();
+		idx += 2;
+		texts[idx].text = data.GetLongestDriftFeet() + " ft";
+		idx += 2;
+		texts[idx].text = data.GetShiftQuality();
 	}
 }
 

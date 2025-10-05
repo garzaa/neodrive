@@ -116,6 +116,7 @@ public class Car : MonoBehaviour {
 
     [SerializeField]
     List<Canvas> dashboardUI;
+    int dashboardDisableSources;
 
     Vector3 startPoint;
     Quaternion startRotation;
@@ -152,6 +153,8 @@ public class Car : MonoBehaviour {
     
     Coroutine collisionRecoveryRoutine;
 
+    RaceData raceData = new();
+
     void Awake() {
         wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
     }
@@ -181,7 +184,12 @@ public class Car : MonoBehaviour {
         spawnTime = Time.time;
         FinishLine f = FindObjectOfType<FinishLine>();
         if (f) {
-            f.onFinishCross.AddListener(() => nitroxMeter.Reset());
+            f.onFinishCross.AddListener(() => {
+                if (FindObjectOfType<RaceLogic>().raceType == RaceType.HOTLAP) {
+                    nitroxMeter.Reset();
+                    raceData = new();
+                }
+            });
             RaceLogic r = FindObjectOfType<RaceLogic>();
             dashboardUI.Add(r.GetComponentInChildren<Canvas>());
             r.onValidFinish.AddListener(OnValidFinish);
@@ -209,6 +217,7 @@ public class Car : MonoBehaviour {
         bool currentClutch = InputManager.Button(Buttons.CLUTCH) || forceClutch;
         if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
+            if (!automatic) raceData.totalShifts++;
             clutchOutTime = Time.time;
         } else if (!clutch && currentClutch) {
             clutchInThisFrame = true;
@@ -347,6 +356,7 @@ public class Car : MonoBehaviour {
     }
 
     IEnumerator Boost() {
+        raceData.nitros++;
         rb.velocity -= Vector3.Project(rb.velocity, transform.right);
         gearshiftAudio.PlayOneShot(boostSound);
         nitroxMeter.OnBoost();
@@ -600,6 +610,8 @@ public class Car : MonoBehaviour {
         groundedLastStep = grounded;
 
         hydroplaneNoise.mute = !hydroplaning && !(inWater && rb.velocity.sqrMagnitude > 5f);
+        
+        raceData.maxSpeed = Mathf.Max(raceData.maxSpeed, rb.velocity.magnitude);
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
@@ -844,8 +856,13 @@ public class Car : MonoBehaviour {
         float wantedAccel = -lateralSpeed * settings.GetTireSlip(Vector3.Dot(flatVelocity, transform.forward)) / Time.fixedDeltaTime;
         if (steeringAxle) {
             if (Mathf.Abs(wantedAccel) > settings.maxCorneringAccel && !hydroplaning) {
+                if (!drifting) raceData.driftStartPos = transform.position;
                 drifting = true;
             } else {
+                if (drifting) {
+                    float driftDistance = Vector3.Distance(transform.position, raceData.driftStartPos);
+                    raceData.longestDrift = Mathf.Max(driftDistance, raceData.longestDrift);
+                }
                 drifting = false;
             }
             if (drifting) {
@@ -895,6 +912,11 @@ public class Car : MonoBehaviour {
         if (alert) {
             Alert(t + "\n+" + bonus);
             nitroxMeter.Add(bonus);
+        }
+        if (!automatic) {
+            float amt = 1 - (Mathf.Abs(rpmDiff) / settings.maxRPMDiff);
+            if (amt < 0) amt = 1; // perfect launch
+            raceData.goodShiftAmount += amt;
         }
     }
 
@@ -1087,6 +1109,12 @@ public class Car : MonoBehaviour {
     }
 
     public void SetDashboardEnabled(bool b) {
+        if (!b) dashboardDisableSources++;
+        else dashboardDisableSources--;
+        dashboardDisableSources = Mathf.Max(dashboardDisableSources, 0);
+
+        b = dashboardDisableSources == 0;
+
         foreach (Canvas c in dashboardUI) {
             c.enabled = b;
         }
@@ -1103,6 +1131,7 @@ public class Car : MonoBehaviour {
     }
 
     IEnumerator RespawnRoutine() {
+        raceData = new();
         nitroxMeter.Reset();
         finished = false;
         currentGear = 0;
@@ -1172,6 +1201,14 @@ public class Car : MonoBehaviour {
     }
 
     void OnValidFinish() {
+        if (drifting) {
+            float driftDistance = Vector3.Distance(transform.position, raceData.driftStartPos);
+            raceData.longestDrift = Mathf.Max(driftDistance, raceData.longestDrift);
+        }
         finished = true;
+    }
+
+    public RaceData GetRaceData() {
+        return raceData;
     }
 }
