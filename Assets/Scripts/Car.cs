@@ -112,7 +112,7 @@ public class Car : MonoBehaviour {
 
     float tireSkidVolume;
     float spawnTime;
-    bool finished;
+    public bool finished { get; private set; }
 
     [SerializeField]
     List<Canvas> dashboardUI;
@@ -1196,7 +1196,7 @@ public class Car : MonoBehaviour {
     IEnumerator CollisionRecovery() {
         // don't get completely fucked if you hit a track wall
         rb.angularDrag = 10f;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForFixedUpdate();
         rb.angularDrag = 0.05f;
     }
 

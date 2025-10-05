@@ -58,7 +58,7 @@ public class PauseMenu : MonoBehaviour {
 		}
 
 		if (InputManager.ButtonDown(Buttons.PAUSE)) {
-			if (!paused && InputManager.Button(Buttons.CLUTCH)) {
+			if (!paused && (InputManager.Button(Buttons.CLUTCH) || car.finished)) {
 				return;
 			}
 			if (Time.timeScale == 1 && !paused) {
