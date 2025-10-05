@@ -116,7 +116,7 @@ public class Car : MonoBehaviour {
 
     [SerializeField]
     List<Canvas> dashboardUI;
-    int dashboardDisableSources;
+    public int dashboardDisableSources = 0;
 
     Vector3 startPoint;
     Quaternion startRotation;
@@ -1109,6 +1109,7 @@ public class Car : MonoBehaviour {
     }
 
     public void SetDashboardEnabled(bool b) {
+        Debug.Log($"setting dashboard enabled to {b}");
         if (!b) dashboardDisableSources++;
         else dashboardDisableSources--;
         dashboardDisableSources = Mathf.Max(dashboardDisableSources, 0);
@@ -1205,7 +1206,7 @@ public class Car : MonoBehaviour {
             float driftDistance = Vector3.Distance(transform.position, raceData.driftStartPos);
             raceData.longestDrift = Mathf.Max(driftDistance, raceData.longestDrift);
         }
-        finished = true;
+        if (FindObjectOfType<RaceLogic>().raceType == RaceType.ROUTE) finished = true;
     }
 
     public RaceData GetRaceData() {

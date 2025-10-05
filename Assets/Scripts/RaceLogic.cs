@@ -100,7 +100,6 @@ public class RaceLogic : MonoBehaviour {
 		
 		raceTimer = transform.Find("RaceTimer").GetComponent<Timer>();
 		lapTimer = transform.Find("LapTimer").GetComponent<Timer>();
-		FindObjectOfType<PauseMenu>(includeInactive: true).OnPause.AddListener(OnPause);
 		timerAlert = FindObjectOfType<TimerAlert>();
 		currentLap = new();
 		checkpointSound = GetComponent<AudioSource>();
@@ -220,10 +219,6 @@ public class RaceLogic : MonoBehaviour {
 		};
 		recording = true;
 		recordStart = Time.time;
-	}
-
-	void OnPause() {
-		HideResults();
 	}
 
 	void Update() {
