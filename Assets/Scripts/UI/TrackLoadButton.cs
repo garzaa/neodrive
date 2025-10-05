@@ -21,7 +21,7 @@ public class TrackLoadButton : MonoBehaviour {
 	string trackName;
 	BinarySaver bs;
 
-	void Start() {
+	public void LoadData() {
 		GetComponent<Button>().onClick.AddListener(() => FindObjectOfType<MainMenu>().LoadTrack(track));
 		trackName = track.ScenePath.Split("/")[^1].Split(".unity")[0];
 		string stageNumber = (transform.parent.GetSiblingIndex()+1).ToString();

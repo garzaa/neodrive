@@ -22,6 +22,9 @@ public class MainMenu : SavedObject {
 			menuNames[g.GetHierarchicalName()] = g;
 		}
 		Application.wantsToQuit += UnsetFromTrack;
+		foreach (TrackLoadButton tb in FindObjectsOfType<TrackLoadButton>(includeInactive: true)) {
+			tb.LoadData();
+		}
 	}
 
 	protected override void LoadFromProperties() {
