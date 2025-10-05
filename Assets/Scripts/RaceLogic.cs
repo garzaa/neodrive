@@ -585,7 +585,9 @@ public class RaceLogic : MonoBehaviour {
 			medalTexture.SetActive(true);
 			medal3DContainer.SetActive(true);
 		}
-		medalText.text = SceneManager.GetActiveScene().name + "\n" + medalText.text;
+		medalText.text = SceneManager.GetActiveScene().name + "\n"
+			+ raceTimer.FormattedTime(lastGhost.totalTime) + "\n"
+			+ medalText.text;
 		quitButtons.SetActive(true);
 		ShowRaceSummary();
 		car.SetDashboardEnabled(false);
@@ -635,9 +637,7 @@ public class RaceLogic : MonoBehaviour {
 		RaceData data = car.GetRaceData();
 		Text[] texts = raceSummary.GetComponentsInChildren<Text>();
 		// statName | stat pairs
-		int idx = 1;
-		texts[idx].text = raceTimer.FormattedTime(lastGhost.totalTime);
-		idx += 2;
+		int idx = 2;
 		texts[idx].text = data.GetMaxVelocityMPH() + " mph";
 		idx += 2;
 		texts[idx].text = data.nitros.ToString();

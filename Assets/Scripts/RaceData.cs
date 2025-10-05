@@ -25,8 +25,6 @@ public class RaceData {
 
 	public string GetShiftQuality() {
 		try {
-			Debug.Log($"total shifts: {totalShifts}");
-			Debug.Log($"shift quality: {goodShiftAmount / (float) totalShifts}");
 			float averageShiftQuality = goodShiftAmount / (float) totalShifts;
 			int idx = Mathf.FloorToInt(averageShiftQuality * shiftGradations.Length);
 			Debug.Log(idx);
