@@ -28,6 +28,7 @@ public class PauseMenu : MonoBehaviour {
 	public UnityEvent OnPause;
 
 	void Start() {
+		settingsMenu.SetActive(false);
 		GetComponentInChildren<Canvas>(includeInactive: true).worldCamera = Camera.current;
 		vCam.SetActive(false);
 		car = FindObjectOfType<Car>();
@@ -142,6 +143,7 @@ public class PauseMenu : MonoBehaviour {
 
 	IEnumerator SelectNextFrame(GameObject parent) {
 		yield return new WaitForEndOfFrame();
+		LayoutRebuilder.ForceRebuildLayoutImmediate(parent.GetComponentInChildren<RectTransform>());
 		parent.GetComponentInChildren<Selectable>(includeInactive: true).Select();
 	}
 }
