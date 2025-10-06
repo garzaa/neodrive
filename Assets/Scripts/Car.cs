@@ -1212,6 +1212,7 @@ public class Car : MonoBehaviour {
         // don't get completely fucked if you hit a track wall
         rb.angularDrag = 10f;
         yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
         rb.angularDrag = 0.05f;
     }
 
