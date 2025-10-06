@@ -14603,6 +14603,7 @@ GameObject:
   - component: {fileID: 5533401737325030018}
   - component: {fileID: 6763001599143198661}
   - component: {fileID: 4916336261011241591}
+  - component: {fileID: 4127020253448098335}
   m_Layer: 5
   m_Name: SmokeImage
   m_TagString: Untagged
@@ -14667,6 +14668,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4127020253448098335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7256491386802303193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08059e3a47b7711428cd41b8ea7d0317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7321296655141783397
 GameObject:
   m_ObjectHideFlags: 0

@@ -3258,6 +3258,7 @@ RectTransform:
   m_Children:
   - {fileID: 81612456}
   - {fileID: 13170960}
+  - {fileID: 691704537}
   m_Father: {fileID: 1833956598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
@@ -11977,6 +11978,204 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684270537}
   m_CullTransparentMesh: 1
+--- !u!1001 &691704536
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 292379411}
+    m_Modifications:
+    - target: {fileID: 1087194507094035080, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571529748875824983, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571529748875824983, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571529748875824983, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 179.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571529748875824983, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2699599611361105719, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: trackImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e603aa76f9c44a498963acc3836a51b, type: 3}
+    - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: track.scenePath
+      value: Assets/Tracks/Arroyo Seco Parkway.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2930641222392357338, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: track.sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 3ab9dafcf15654c45af19c0ea8a35ac6, type: 3}
+    - target: {fileID: 3409243023390190641, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Text
+      value: Double Loop
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 163.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628849046255995632, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634639021463556721, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634639021463556721, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634639021463556721, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 171.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634639021463556721, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5664650587919593020, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Text
+      value: Test Track
+      objectReference: {fileID: 0}
+    - target: {fileID: 6978438398408197388, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e603aa76f9c44a498963acc3836a51b, type: 3}
+    - target: {fileID: 7588731399802961176, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_Name
+      value: Arroyo Seco Parkway
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 155.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002787854796191154, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+--- !u!224 &691704537 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1456092917804223880, guid: e32204df1202501419dfe0feb40cdea6, type: 3}
+  m_PrefabInstance: {fileID: 691704536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &720736169
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ Shader "Unlit/ThresholdSmoke"
         _Threshold ("Alpha Threshold", Range(0, 5)) = 1.0
         _SmokeColor ("Smoke Color", Color) = (1,1,1,1)
         _MainTex ("Dummy Main Texture", 2D) = "white" {}
+        _Color ("Tint", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -25,20 +26,24 @@ Shader "Unlit/ThresholdSmoke"
             struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 color    : COLOR;
             };
 
             struct v2f {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
 				float4 screenPos : TEXCOORD1;
+                 fixed4 color    : COLOR;
             };
 
             sampler2D _AccumTex;
             float _Threshold;
             fixed4 _SmokeColor;
+            fixed4 _Color;
 
             v2f vert (appdata v) {
                 v2f o;
+                o.color = v.color * _Color;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 				o.screenPos = ComputeScreenPos(o.vertex);
                 o.uv = v.uv;
@@ -47,6 +52,7 @@ Shader "Unlit/ThresholdSmoke"
 
 			sampler2D_float _CameraDepthTexture;
             sampler2D _MainTex; // needed for platform-dependent macros or some shit
+            
             fixed4 frag (v2f i) : SV_Target {
                 float2 screenUV = i.screenPos.xy / i.screenPos.w;
 
@@ -68,11 +74,14 @@ Shader "Unlit/ThresholdSmoke"
 				if (accumulatedAlpha < _Threshold) {
 					discard;
 				}
+                
+                // why is this not picking up the color
+                return i.color;
 
 				// approximate smoke density by fading it out
 				// the closer it is to the camera
 				_SmokeColor.a *= saturate(1-smokeDepth*5);
-				return _SmokeColor;
+				return _SmokeColor * _Color;
             }
             ENDCG
         }

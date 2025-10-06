@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Water 8.unity
     guid: 65807397713c9a640ad60d879b7e51f9
+  - enabled: 1
+    path: Assets/Tracks/Arroyo Seco Parkway.unity
+    guid: 3ab9dafcf15654c45af19c0ea8a35ac6
   m_configObjects: {}
