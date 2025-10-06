@@ -30761,7 +30761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8241854014246791608, guid: 66cf6230aa78c2b4899279c026d175f6, type: 3}
       propertyPath: m_Name
-      value: Checkpoint Ring (2)
+      value: Checkpoint Ring (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
