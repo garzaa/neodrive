@@ -1124,7 +1124,6 @@ public class Car : MonoBehaviour {
     }
 
     public void SetDashboardEnabled(bool b) {
-        Debug.Log($"setting dashboard enabled to {b}");
         if (!b) dashboardDisableSources++;
         else dashboardDisableSources--;
         dashboardDisableSources = Mathf.Max(dashboardDisableSources, 0);
