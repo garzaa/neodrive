@@ -74,10 +74,11 @@ public class TrackLoadButton : MonoBehaviour {
 					default:
 						break;
 				}
-			} catch (NullReferenceException) {
-				// if the buttons finish loading after going to a new scene
-				// easy hack so we don't interrupt the async bs
 			}
+			// if the buttons finish loading after going to a new scene
+			// easy hack so we don't interrupt the async bs
+			catch (NullReferenceException) {}
+			catch (MissingReferenceException) {}
 		});
 	}
 }

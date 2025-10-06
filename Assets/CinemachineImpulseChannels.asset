@@ -15,3 +15,4 @@ MonoBehaviour:
   ImpulseChannels:
   - default
   - CarVibration
+  - TrackingVibration

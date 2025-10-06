@@ -95,6 +95,7 @@ public class RaceLogic : MonoBehaviour {
 		
 		if (quitButtons != null) quitButtons.SetActive(false);
 		if (medalText != null) medalText.gameObject.SetActive(false);
+		if (raceSummary != null) raceSummary.SetActive(false);
 		
 		if (finishLine == null) return;
 		

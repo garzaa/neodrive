@@ -59,6 +59,7 @@ public class Car : MonoBehaviour {
     CarBody carBody;
 
     CinemachineImpulseSource impulseSource;
+    public CinemachineImpulseSource trackingCamImpulseSource;
 
     bool drifting = false;
     bool burnout = false;
@@ -102,6 +103,7 @@ public class Car : MonoBehaviour {
     float tcsFrac;
     Vector3 frontAxle, rearAxle;
     float bumpTS = -999;
+    float vibrationTS;
     float timeAtEdge = 0;
 
     public AudioClip boostSound;
@@ -235,6 +237,7 @@ public class Car : MonoBehaviour {
         // not firing when tcsFrac is 0 for some reason
         pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
         UpdateVibration();
+        UpdateCameraVibration();
         carMesh.GetPropertyBlock(shaderBlock, 0);
         shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
         carMesh.SetPropertyBlock(shaderBlock, 0);
@@ -1077,7 +1080,19 @@ public class Car : MonoBehaviour {
         
 		InputManager.player.SetVibration(0, startVibration+bumpVibration);
         InputManager.player.SetVibration(1, startVibration+rpmVibration);
-        
+    }
+
+    void UpdateCameraVibration() {
+        // create a repeated impulse on the channel for the tracking camera listeners
+        // then have it based on current speed (20-100mph)
+        if (Time.time > vibrationTS + 0.05f) {
+            trackingCamImpulseSource.GenerateImpulse(Vector3.up * Mathf.Lerp(
+                0,
+                0.02f,
+                Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.forward)) * u2mph / 100f
+            ));
+            vibrationTS = Time.time;
+        }
     }
 
     float GetRPMAudioPoint() {
