@@ -161,7 +161,12 @@ public class RaceLogic : MonoBehaviour {
 	IEnumerator WaitForSpawn() {
 		yield return new WaitForEndOfFrame();
 		allCheckpoints = FindObjectsOfType<Checkpoint>().ToList();
+		HashSet<string> checkpointNames = new();
 		foreach (Checkpoint c in allCheckpoints) {
+			if (checkpointNames.Contains(c.name)) {
+				Debug.LogError("Duplicate checkpoint name "+c.name);
+			}
+			checkpointNames.Add(c.name);
 			c.onPlayerEnter.AddListener(() => OnCheckpointCrossed(c));
 		}
 	}

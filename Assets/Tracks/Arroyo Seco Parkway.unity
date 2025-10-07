@@ -4240,7 +4240,7 @@ GameObject:
   - component: {fileID: 401338761}
   - component: {fileID: 401338763}
   - component: {fileID: 401338762}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-1500.00, -2.03, -1500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6733,7 +6733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3150824910883812794, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: field of view
-      value: 90
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3150824910883812794, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -7517,23 +7517,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 389.6
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.54
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -707.87
+      value: -29.5
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99965733
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.026176935
       objectReference: {fileID: 0}
     - target: {fileID: 9045039555896521953, guid: e29b32c7f6972f04d919c6a5040918b1, type: 3}
       propertyPath: m_LocalRotation.y
@@ -7718,7 +7718,7 @@ GameObject:
   - component: {fileID: 774079901}
   - component: {fileID: 774079903}
   - component: {fileID: 774079902}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-500.00, -2.03, -1500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7867,7 +7867,7 @@ GameObject:
   - component: {fileID: 799296587}
   - component: {fileID: 799296589}
   - component: {fileID: 799296588}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-1500.00, -2.03, -500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8890,7 +8890,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 924540971}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8984,7 +8984,7 @@ GameObject:
   - component: {fileID: 1005613304}
   - component: {fileID: 1005613306}
   - component: {fileID: 1005613305}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-1500.00, -2.03, 500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10455,7 +10455,7 @@ GameObject:
   - component: {fileID: 1215464759}
   - component: {fileID: 1215464761}
   - component: {fileID: 1215464760}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(-500.00, -2.03, 500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13650,7 +13650,7 @@ GameObject:
   - component: {fileID: 1712082789}
   - component: {fileID: 1712082791}
   - component: {fileID: 1712082790}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(500.00, -2.03, -500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15661,7 +15661,7 @@ GameObject:
   - component: {fileID: 1931683774}
   - component: {fileID: 1931683776}
   - component: {fileID: 1931683775}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(500.00, -2.03, -1500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16233,7 +16233,7 @@ GameObject:
   - component: {fileID: 2065548530}
   - component: {fileID: 2065548532}
   - component: {fileID: 2065548531}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain_(500.00, -2.03, 500.00)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
