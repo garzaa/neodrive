@@ -12,42 +12,42 @@ EditorBuildSettings:
     path: Assets/Tracks/Test Track.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Tracks/Desert Speedway.unity
-    guid: a668814d356744c48837f14191a9bde3
-  - enabled: 1
-    path: Assets/Tracks/Rock Loop I.unity
-    guid: c0f0b79ff50fceb4681eff544b475888
-  - enabled: 1
-    path: Assets/Tracks/Lakeshore Curve.unity
-    guid: 0020dad920cd5ef47b96ac78a6b1d972
-  - enabled: 1
-    path: Assets/Tracks/Turbine Climb.unity
-    guid: f88a18a42f8d8814e97e428c6ef8cfda
-  - enabled: 1
-    path: Assets/Tracks/Lake Circuit.unity
-    guid: 6a12f89841b7ea64dbb7a1206010b739
+    path: Assets/Tracks/Arroyo Seco Parkway.unity
+    guid: 3ab9dafcf15654c45af19c0ea8a35ac6
   - enabled: 1
     path: Assets/Tracks/Canyon Bends.unity
     guid: 6dc7eea45a793a94aabc66de8356e431
   - enabled: 1
-    path: Assets/Tracks/Tutorial.unity
-    guid: dda3b138a9651b24a94a2084d5302fe3
-  - enabled: 1
-    path: Assets/Tracks/Hydroplane.unity
-    guid: ae9ec0aa0a4a86e4b977ab405e3448bb
+    path: Assets/Tracks/Desert Speedway.unity
+    guid: a668814d356744c48837f14191a9bde3
   - enabled: 1
     path: Assets/Tracks/Double Loop.unity
     guid: 11ec5ddc819d69146be5a59a73f505a7
   - enabled: 1
-    path: Assets/Tracks/Rock Loop II.unity
-    guid: 130666bf978a70446af931ce4b7f4641
+    path: Assets/Tracks/Hydroplane.unity
+    guid: ae9ec0aa0a4a86e4b977ab405e3448bb
+  - enabled: 1
+    path: Assets/Tracks/Lake Circuit.unity
+    guid: 6a12f89841b7ea64dbb7a1206010b739
+  - enabled: 1
+    path: Assets/Tracks/Lakeshore Curve.unity
+    guid: 0020dad920cd5ef47b96ac78a6b1d972
   - enabled: 1
     path: Assets/Tracks/Puddlejumper.unity
     guid: 4ba79ce77af34fe4d99c278ad42ee2bb
   - enabled: 1
+    path: Assets/Tracks/Rock Loop I.unity
+    guid: c0f0b79ff50fceb4681eff544b475888
+  - enabled: 1
+    path: Assets/Tracks/Rock Loop II.unity
+    guid: 130666bf978a70446af931ce4b7f4641
+  - enabled: 1
+    path: Assets/Tracks/Turbine Climb.unity
+    guid: f88a18a42f8d8814e97e428c6ef8cfda
+  - enabled: 1
+    path: Assets/Tracks/Tutorial.unity
+    guid: dda3b138a9651b24a94a2084d5302fe3
+  - enabled: 1
     path: Assets/Tracks/Water 8.unity
     guid: 65807397713c9a640ad60d879b7e51f9
-  - enabled: 1
-    path: Assets/Tracks/Arroyo Seco Parkway.unity
-    guid: 3ab9dafcf15654c45af19c0ea8a35ac6
   m_configObjects: {}

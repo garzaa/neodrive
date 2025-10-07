@@ -200,7 +200,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4141703738968819157}
   - component: {fileID: 6884836856509487659}
-  - component: {fileID: 3143060888994191346}
   m_Layer: 0
   m_Name: Streetlight
   m_TagString: Untagged
@@ -251,48 +250,3 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers: []
   m_Enabled: 1
---- !u!114 &3143060888994191346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5997179038592326706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d01e298d8c99747a5e0bd13b65de9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCloneHead: 0
-  isOriginClone: 0
-  isClone: 0
-  cloneUseFixedAmount: 0
-  cloneAmount: 0
-  cloneMenuAmount: 0
-  cloneSectionLength: 0
-  cloneShiftForward: 0
-  cloneShiftBackward: 0
-  cloneOffset: {x: 0, y: 0, z: 30}
-  cloneDirection: 0
-  originClones: []
-  mirrorDeformation: 0
-  localSplinePosition: {x: 0, y: 0, z: 0}
-  localSplineRotation: {x: 0, y: 0, z: 0, w: 1.0000001}
-  followAxels: {x: 1, y: 1, z: 1}
-  lockPosition: 0
-  snapMode: 0
-  snapLengthStart: 1
-  snapLengthEnd: 1
-  snapOffsetStart: 0
-  snapOffsetEnd: 0
-  type: 0
-  normalType: 0
-  tangentType: 0
-  splineParent: {fileID: 0}
-  soParent: {fileID: 0}
-  meshContainers: []
-  primitiveColliders: []
-  componentMode: 0
-  hasPrimitiveCollider: 0
-  autoType: 0
-  canUpdateSelection: 1

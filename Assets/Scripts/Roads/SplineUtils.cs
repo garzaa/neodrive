@@ -125,7 +125,7 @@ public class SplineUtils : MonoBehaviour {
 
 	[Button("Fix Checkpoint Names")]
 	public void FixCheckpoints() {
-		Checkpoint[] checkpoints = GetComponentsInChildren<Checkpoint>();
+		Checkpoint[] checkpoints = FindObjectsOfType<Checkpoint>();
 		for (int i=0; i<checkpoints.Length; i++) {
 			checkpoints[i].name = "Checkpoint " + i;
 		}
