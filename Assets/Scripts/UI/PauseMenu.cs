@@ -53,7 +53,7 @@ public class PauseMenu : MonoBehaviour {
 			), Quaternion.Slerp(
 				vCam.transform.localRotation,
 				targetRotation,
-				0.05f
+				1f * Time.deltaTime
 			));
 		}
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   carMass: 10
   inertiaTensor: {x: 20, y: 25, z: 6}
   suspensionTravel: 0.1
-  springStrength: 2000
+  springStrength: 1500
   springDamper: 100
   wheelRaycast:
     serializedVersion: 2
