@@ -9,6 +9,7 @@ using UnityEngine.Events;
 public class PauseMenu : MonoBehaviour {
 	public GameObject vCam;
 	public CinemachineVirtualCamera chaseCam;
+	CinemachineCollider chaseCamCollider;
 	CanvasGroup pauseUI;
 	Car car;
 	bool paused = false;
@@ -37,6 +38,7 @@ public class PauseMenu : MonoBehaviour {
 		targetPosition = vCam.transform.localPosition;
 		targetRotation = vCam.transform.localRotation;
 		chaseCam = FindObjectOfType<CameraRotate>().GetComponentInChildren<CinemachineVirtualCamera>(includeInactive: true);
+		chaseCamCollider = chaseCam.GetComponent<CinemachineCollider>();
 		FindObjectOfType<GameOptions>(includeInactive: true).Awake();
 		GameOptions.Load();
 		foreach (SettingsSlider slider in GetComponentsInChildren<SettingsSlider>()) {
@@ -49,11 +51,11 @@ public class PauseMenu : MonoBehaviour {
 			vCam.transform.SetLocalPositionAndRotation(Vector3.Slerp(
 				vCam.transform.localPosition,
 				targetPosition,
-				0.05f
+				10f * Time.unscaledDeltaTime
 			), Quaternion.Slerp(
 				vCam.transform.localRotation,
 				targetRotation,
-				1f * Time.deltaTime
+				10f * Time.unscaledDeltaTime
 			));
 		}
 
@@ -82,6 +84,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void Pause() {
 		pausedThisFrame = true;
+		chaseCamCollider.m_AvoidObstacles = false;
 		Time.timeScale = 0;
 		paused = true;
 		vCam.transform.SetPositionAndRotation(chaseCam.transform.position, chaseCam.transform.rotation);
@@ -101,6 +104,7 @@ public class PauseMenu : MonoBehaviour {
 		HideSettings();
 		HideCanvas();
 		unpausedAudio.TransitionTo(0.1f);
+		chaseCamCollider.m_AvoidObstacles = true;
 	}
 
 	void ShowCanvas() {
