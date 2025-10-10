@@ -20,7 +20,7 @@ MonoBehaviour:
   wheelRaycast:
     serializedVersion: 2
     m_Bits: 8
-  gearShiftTime: 0.5
+  gearShiftTime: 0.25
   maxRPMDiff: 1200
   enableNitrox: 1
   maxNitrox: 3000

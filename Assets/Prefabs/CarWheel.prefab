@@ -5986,6 +5986,7 @@ MonoBehaviour:
   skidSmokes:
   - {fileID: 5638506764351835476}
   - {fileID: 1202548879388431046}
+  rpm: 0
 --- !u!1 &6491664209910354116
 GameObject:
   m_ObjectHideFlags: 0

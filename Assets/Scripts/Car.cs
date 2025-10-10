@@ -47,6 +47,7 @@ public class Car : MonoBehaviour {
 
     public Text gearTelemetry;
     bool fuelCutoff = false;
+    bool gearshiftFuelCutoff = false;
     public int currentGear { get; private set; }
     bool engineStarting = false;
     public bool engineRunning { get; private set; }
@@ -148,7 +149,7 @@ public class Car : MonoBehaviour {
     }
 
     bool ignition {
-        get { return !fuelCutoff && engineRunning; }
+        get { return !fuelCutoff && engineRunning && !gearshiftFuelCutoff; }
     }
 
     EngineAudio engineAudio;
@@ -216,8 +217,11 @@ public class Car : MonoBehaviour {
     void Update() {
         UpdateInputs();
 
-        bool currentClutch = InputManager.Button(Buttons.CLUTCH) || forceClutch;
+        clutchOutThisFrame = false;
+        clutchInThisFrame = false;
+        bool currentClutch = InputManager.Clutch() || forceClutch;
         if (clutch && !currentClutch) {
+            print("clutch out this frame");
             clutchOutThisFrame = true;
             if (!automatic) raceData.totalShifts++;
             clutchOutTime = Time.time;
@@ -234,7 +238,6 @@ public class Car : MonoBehaviour {
             tireSkidVolume = 0f;
         }
         tireSkid.volume = Mathf.MoveTowards(tireSkid.volume, tireSkidVolume, 4f * Time.deltaTime);
-        // not firing when tcsFrac is 0 for some reason
         pointsAudio.mute = !((tcsFrac==0 && timeAtEdge>0.2f) || driftingTime>0);
         UpdateVibration();
         UpdateCameraVibration();
@@ -259,11 +262,11 @@ public class Car : MonoBehaviour {
         if (forceBrake) brake = 1;
         steering = InputManager.GetAxis(Buttons.STEER);
 
-         if (InputManager.ButtonUp(Buttons.CLUTCH) || InputManager.ButtonDown(Buttons.CLUTCH)) {
+         if (InputManager.ClutchIn() || InputManager.ClutchOut()) {
             gearshiftAudio.PlayOneShot(engine.clutchSound);
         }
 
-        if (InputManager.ButtonDown(Buttons.CLUTCH)) {
+        if (InputManager.ClutchIn()) {
             lastGear = currentGear;
         }
 
@@ -292,8 +295,16 @@ public class Car : MonoBehaviour {
                 ChangeGear(currentGear+1);
             }
         }
+
+        if (GameOptions.PaddleShift && !changingGear) {
+            if (InputManager.ButtonDown(Buttons.PADDLE_UP)) {
+                StartCoroutine(AutoGearUp());
+            } else if (InputManager.ButtonDown(Buttons.PADDLE_DOWN)) {
+                StartCoroutine(AutoGearDown());
+            }
+        }
         
-        if (InputManager.ButtonDown(Buttons.STARTENGINE) && clutch) {
+        if (InputManager.ButtonDownWithManualClutch(Buttons.STARTENGINE)) {
             if (!engineRunning && !engineStarting) {
                 StartCoroutine(StartEngine());
             } else {
@@ -462,7 +473,7 @@ public class Car : MonoBehaviour {
         lcsLight.SetOff();
         burnout = false;
         if (WheelRR.Grounded || WheelRL.Grounded) {
-            if (gas > 0 && !fuelCutoff && engineRunning && currentGear != 0 && !clutch) {
+            if (gas > 0 && ignition && currentGear != 0 && !clutch) {
                 float mult = currentGear < 0 ? -1 : 1;
                 mult *= boosting ? settings.nitroxBoost : 1;
                 // if you can just barely toe the line with TCS, you don't get slowed down
@@ -592,13 +603,11 @@ public class Car : MonoBehaviour {
         if (inWater && !hydroplaning) {
             dragForce *= 50f;
         }
-        if (gas==0 || fuelCutoff) dragForce = 0;
+        if (gas==0 || !ignition) dragForce = 0;
         rb.AddForce((-rb.velocity.normalized)*dragForce, ForceMode.Force);
         if (grounded) rb.AddForce(-dragForce * settings.downforceRatio * transform.up);
 
         UpdateTelemetry();
-        clutchOutThisFrame = false;
-        clutchInThisFrame = false;
 
         // right the car if upside down
         if (Physics.Raycast(
@@ -637,8 +646,8 @@ public class Car : MonoBehaviour {
                 engineRPM = 1500 + Mathf.Sin(Time.time*64) * 200;
             }
         } else {
-            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, !fuelCutoff ? gas*engine.redline : 0);
-            float moveSpeed = !fuelCutoff ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
+            float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, ignition ? gas*engine.redline : 0);
+            float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
                 if (fullAutomatic) {
@@ -655,13 +664,15 @@ public class Car : MonoBehaviour {
                     if (rpmDiff < 0) {
                         // you can shift bad from first gear if you're at max power
                         if (rpmDiff < -settings.maxRPMDiff && (currentGear != 1 || !engine.PeakPower(idealEngineRPM))) {
+                            // this is the general bad shift
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
-                            clutchRatio = 0f;
+                            clutchRatio = 0.1f;
                             if (currentGear == 1 && gas > 0) forwardTraction = 0.1f;
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, transform.forward) * u2mph < 5f) {
                             // this is the max power shift launch
-                            // keep the clutch ratio soft to avoid a money shift on launch
+                            // keep the clutch ratio soft at first to avoid a money shift on launch
+                            print("perfect shift");
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             achievements.Get("Peak Power");
@@ -680,6 +691,7 @@ public class Car : MonoBehaviour {
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
                         } else if (idealEngineRPM < engine.redline+500) {
+                            print("perfect shift");
                             // no perfect shift on the money shift
                             PerfectShift(rpmDiff);
                         }
@@ -688,17 +700,17 @@ public class Car : MonoBehaviour {
                 engineRPM = Mathf.Lerp(
                     idealEngineRPM,
                     engineRPMFromSpeed,
-                    grounded ? clutchRatio : idealEngineRPM
+                    grounded ? clutchRatio : 0
                 );
 
-                // then if there's wheelspin, move more towards what the engine actually wants
-                engineRPM = Mathf.Lerp(
-                    targetRPM,
-                    engineRPM,
-                    Mathf.Max(forwardTraction, 0.2f) * clutchRatio
-                );
-                // but if it's not grounded, that takes precedence
-                if (!grounded) engineRPM = idealEngineRPM;
+                // then if there's wheelspin on the ground, move more towards what the engine actually wants
+                if (grounded) {
+                    engineRPM = Mathf.Lerp(
+                        idealEngineRPM,
+                        engineRPM,
+                        Mathf.Max(forwardTraction, 0.2f) * clutchRatio
+                    );
+                }
             } else if (currentGear == 0 || clutch) {
                 engineRPM = idealEngineRPM;
             }
@@ -722,9 +734,8 @@ public class Car : MonoBehaviour {
         if (engineRunning) {
             if (engineRPM < engine.stallRPM) {
                 if (Mathf.Abs(currentGear) == 1 && gas > 0.3f) {
-                    // mimic letting the clutch out slowly 
                     engineRPM = engine.stallRPM;
-                } else if (fullAutomatic) {
+                } else if (fullAutomatic || GameOptions.PaddleShift) {
                     engineRPM = engine.stallRPM;
                 } else {
                     checkEngine.Flash();
@@ -747,7 +758,7 @@ public class Car : MonoBehaviour {
         engineAudio.SetRPMAudio(
             GetRPMAudioPoint(),
             gas,
-            fuelCutoff,
+            ignition,
             clutch, 
             Mathf.Abs(Vector3.Dot(rb.velocity, transform.forward)) * u2mph
         );
@@ -899,6 +910,7 @@ public class Car : MonoBehaviour {
     void PerfectShift(float rpmDiff, bool alert=true) {
         if (lastGear == currentGear) return;
         if (engineRPM + rpmDiff > engine.redline+500) return;
+        if (GameOptions.PaddleShift) return;
         perfectShiftEffect.SetTrigger("Trigger");
         perfectShiftAudio.pitch = 1 + Random.Range(-0.15f, 0.15f);
         perfectShiftAudio.Play();
@@ -1201,26 +1213,30 @@ public class Car : MonoBehaviour {
     IEnumerator AutoGearUp() {
         if (changingGear) yield break;
         changingGear = true;
-        clutch = true;
+        forceClutch = true;
+        gearshiftFuelCutoff = true;
         yield return new WaitForSeconds(settings.gearShiftTime);
         if (currentGear < engine.gearRatios.Count) {
-            ChangeGear(currentGear-1);
+            ChangeGear(currentGear+1);
         }
-        clutchRatio = 0.2f;
-        clutch = false;
+        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
+        engineRPM = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
+        forceClutch = false;
+        gearshiftFuelCutoff = false;
         changingGear = false;
     }
 
     IEnumerator AutoGearDown() {
         if (changingGear) yield break;
         changingGear = true;
-        clutch = true;
-        yield return new WaitForSeconds(settings.gearShiftTime);
+        forceClutch = true;
+        yield return new WaitForSeconds(settings.gearShiftTime * 0.5f);
         if (currentGear > 1) {
             ChangeGear(currentGear-1);
         }
-        clutchRatio = 0.2f;
-        clutch = false;
+        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
+        engineRPM = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
+        forceClutch = false;
         changingGear = false;
     }
 

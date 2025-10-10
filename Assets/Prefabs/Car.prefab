@@ -12037,6 +12037,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -280
       objectReference: {fileID: 0}
+    - target: {fileID: 2864765026861813611, guid: f0c1080ad60c63549a560da406f66d51, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2475806745965643692}
+    - target: {fileID: 2864765026861813611, guid: f0c1080ad60c63549a560da406f66d51, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 2864765026861813611, guid: f0c1080ad60c63549a560da406f66d51, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4090357016176908561, guid: f0c1080ad60c63549a560da406f66d51, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -12308,6 +12320,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 6491664209475229036, guid: 764f3ac18a798634cb17816ef87ea4bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491664209475229039, guid: 764f3ac18a798634cb17816ef87ea4bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6491664209683059469, guid: 764f3ac18a798634cb17816ef87ea4bf, type: 3}
       propertyPath: reverseRotation
       value: 0
@@ -12390,6 +12410,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2475806746609259883}
     m_Modifications:
+    - target: {fileID: 6491664209475229039, guid: 764f3ac18a798634cb17816ef87ea4bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6491664209683059474, guid: 764f3ac18a798634cb17816ef87ea4bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.02532

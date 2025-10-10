@@ -62,7 +62,7 @@ public class EngineAudio : MonoBehaviour {
         gearAudio.Play();
 	}
 
-	public void SetRPMAudio(float rpm, float gas, bool fuelCutoff, bool clutchPressed, float carSpeed) {
+	public void SetRPMAudio(float rpm, float gas, bool ignition, bool clutchPressed, float carSpeed) {
         // shorthand for checking whether we're on a ghost car
         // which has no speed currently computed
         SetGearAudio(carSpeed, clutchPressed, gas);
@@ -131,8 +131,8 @@ public class EngineAudio : MonoBehaviour {
         lowTarget.throttleAudio.volume *= gas;
         highTarget.throttleAudio.volume *= gas;
         // audibly drop the audio on fuel cutoff so you Know
-        lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
-        highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (!fuelCutoff ? 1f : 0.2f);
+        lowTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
+        highTarget.throttleOffAudio.volume *= 1-gas * 0.5f * (ignition ? 1f : 0.2f);
 
         // then warp the sound to match the RPM
         lowTarget.throttleAudio.pitch = targetLowPitch;

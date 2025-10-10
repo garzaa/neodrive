@@ -14,7 +14,7 @@ public class CarSettings : ScriptableObject {
 
 	public LayerMask wheelRaycast;
 	public float gearShiftTime = 0.25f;
-	[Tooltip("Max RPM diff when shifting before lurching/breaking TCS")]
+	[Tooltip("Max RPM diff when shifting before lurching/breaking TCS. Below this is a perfect shift.")]
 	public int maxRPMDiff = 1200;
 
 	public bool enableNitrox = true;

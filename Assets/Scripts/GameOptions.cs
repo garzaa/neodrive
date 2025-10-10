@@ -8,6 +8,7 @@ public class GameOptions : MonoBehaviour {
 	public static bool PlayerGhost { get; private set; }
 	public static bool AuthorGhost { get; private set; }
 	public static bool Rumble { get; private set; }
+	public static bool PaddleShift { get; private set; }
 
 	public UnityEvent Apply;
 
@@ -42,6 +43,8 @@ public class GameOptions : MonoBehaviour {
 		} else if (qualityLevel == 0) {
 			postProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.None;
 		}
+
+		PaddleShift = LoadBool("PaddleShift", false);
 	}
 
 	static bool LoadBool(string name, bool defaultValue = false) {

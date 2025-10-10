@@ -625,7 +625,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 1
     - _id: 42
-      _name: PaddleUP
+      _name: PaddleUp
       _type: 1
       _descriptiveName: Paddle Gear Up
       _positiveDescriptiveName: 
