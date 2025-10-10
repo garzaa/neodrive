@@ -267,6 +267,7 @@ public class Car : MonoBehaviour {
             lastGear = currentGear;
         }
 
+        // TODO: check for paddle shifting mode
         if (
             (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch)
             // this is to allow buffering of a shift input if the player slightly mistimes it
@@ -1205,7 +1206,7 @@ public class Car : MonoBehaviour {
         if (currentGear < engine.gearRatios.Count) {
             ChangeGear(currentGear-1);
         }
-        clutchRatio = 0.5f;
+        clutchRatio = 0.2f;
         clutch = false;
         changingGear = false;
     }
@@ -1218,7 +1219,7 @@ public class Car : MonoBehaviour {
         if (currentGear > 1) {
             ChangeGear(currentGear-1);
         }
-        clutchRatio = 0.5f;
+        clutchRatio = 0.2f;
         clutch = false;
         changingGear = false;
     }

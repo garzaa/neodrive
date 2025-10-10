@@ -30,4 +30,7 @@ public static class Buttons {
     public static readonly string GEAR5 = "Gear5";
     public static readonly string GEAR6 = "Gear6";
     public static readonly string GEARR = "GearR";
+
+    public static readonly string PADDLE_UP = "PaddleUp";
+    public static readonly string PADDLE_DOWN = "PaddleDown";
 }

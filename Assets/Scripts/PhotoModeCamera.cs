@@ -2,9 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Cinemachine;
 
 public class PhotoModeCamera : MonoBehaviour {
 	readonly float cameraSpeed = 10f;
+	float defaultFOV;
+	CinemachineVirtualCamera cam;
 	GameObject car = null;
 
 	// this needs to be linked in the editor so it actually fires for some reason
@@ -16,6 +19,8 @@ public class PhotoModeCamera : MonoBehaviour {
 		if (car == null) {
 			car = FindObjectOfType<Car>().gameObject;
 			controlCanvas = GetComponentInChildren<Canvas>().gameObject;
+			cam = GetComponent<CinemachineVirtualCamera>();
+			defaultFOV = cam.m_Lens.FieldOfView;
 		}
 	}
 
@@ -30,6 +35,7 @@ public class PhotoModeCamera : MonoBehaviour {
 	public void ExitPhotoMode() {
 		OnPhotoModeChange.Invoke(false);
 		gameObject.SetActive(false);
+		cam.m_Lens.FieldOfView = defaultFOV;
 	}
 
 	public void Update() {
@@ -49,5 +55,16 @@ public class PhotoModeCamera : MonoBehaviour {
 		if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA)) {
 			controlCanvas.SetActive(!controlCanvas.activeSelf);
 		}
+
+		if (InputManager.Button(Buttons.PADDLE_UP)) {
+			cam.m_Lens.FieldOfView -= 90 * Time.unscaledDeltaTime;
+		}
+		if (InputManager.Button(Buttons.PADDLE_DOWN)) {
+			cam.m_Lens.FieldOfView += 90 * Time.unscaledDeltaTime;
+		}
+		if (InputManager.Button(Buttons.PADDLE_DOWN) && InputManager.Button(Buttons.PADDLE_UP)) {
+			cam.m_Lens.FieldOfView = defaultFOV;
+		}
+		cam.m_Lens.FieldOfView = Mathf.Clamp(cam.m_Lens.FieldOfView, 4, 120);
 	}
 }
