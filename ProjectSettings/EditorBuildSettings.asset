@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tracks/Water 8.unity
     guid: 65807397713c9a640ad60d879b7e51f9
+  - enabled: 1
+    path: Assets/Tracks/Ramp Twist.unity
+    guid: d47eabc7ad533284e99042b39f623f74
   m_configObjects: {}
