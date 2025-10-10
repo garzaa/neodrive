@@ -217,11 +217,8 @@ public class Car : MonoBehaviour {
     void Update() {
         UpdateInputs();
 
-        clutchOutThisFrame = false;
-        clutchInThisFrame = false;
         bool currentClutch = InputManager.Clutch() || forceClutch;
         if (clutch && !currentClutch) {
-            print("clutch out this frame");
             clutchOutThisFrame = true;
             if (!automatic) raceData.totalShifts++;
             clutchOutTime = Time.time;
@@ -625,6 +622,8 @@ public class Car : MonoBehaviour {
         hydroplaneNoise.mute = !hydroplaning && !(inWater && rb.velocity.sqrMagnitude > 5f);
         
         raceData.maxSpeed = Mathf.Max(raceData.maxSpeed, rb.velocity.magnitude);
+        clutchOutThisFrame = false;
+        clutchInThisFrame = false;
     }
 
     float GetEngineRPMFromSpeed(float flatSpeed) {
@@ -672,7 +671,6 @@ public class Car : MonoBehaviour {
                         } else if (Mathf.Abs(currentGear) == 1 && engine.PeakPower(idealEngineRPM) && Vector3.Dot(rb.velocity, transform.forward) * u2mph < 5f) {
                             // this is the max power shift launch
                             // keep the clutch ratio soft at first to avoid a money shift on launch
-                            print("perfect shift");
                             PerfectShift(rpmDiff, alert: false);
                             Alert("perfect launch \n+" + (int) engine.maxPower*5);
                             achievements.Get("Peak Power");
@@ -691,7 +689,6 @@ public class Car : MonoBehaviour {
                             impulseSource.GenerateImpulse();
                             StartCoroutine(GearLurch());
                         } else if (idealEngineRPM < engine.redline+500) {
-                            print("perfect shift");
                             // no perfect shift on the money shift
                             PerfectShift(rpmDiff);
                         }
