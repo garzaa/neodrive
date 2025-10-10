@@ -1482,7 +1482,7 @@ AudioSource:
   m_GameObject: {fileID: 843341000502040656}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -8312322636375061050, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
+  OutputAudioMixerGroup: {fileID: -6769992673271849732, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
   m_audioClip: {fileID: 8300000, guid: a3a4ff3827e17d942a665ea77b813cd8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3818,8 +3818,8 @@ MonoBehaviour:
   photoModeDisable:
   - {fileID: 2408839010633228605}
   - {fileID: 235393418170327858}
-  finishedSnapshot: {fileID: 24500006, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
-  defaultSnapshot: {fileID: -2810346538576549909, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
+  finishedSnapshot: {fileID: -2810346538576549909, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
+  defaultSnapshot: {fileID: 24500006, guid: cd4124655d9bc6a4babf586058a35557, type: 2}
 --- !u!82 &250212425858728740
 AudioSource:
   m_ObjectHideFlags: 0

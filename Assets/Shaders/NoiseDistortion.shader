@@ -5,6 +5,7 @@ Shader "UI/NoiseDistortion"
         _DistortTex ("Normal Texture", 2D) = "white" {}
         _MainTex ("Dummy Main Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
+		_NoiseStr("Noise Strength", Float) = 1
     }
     SubShader
     {
@@ -34,7 +35,7 @@ Shader "UI/NoiseDistortion"
 				fixed4 color    : COLOR;
             };
 
-            sampler2D _DistortTex;
+            
             fixed4 _Color;
 
             v2f vert (appdata v) {
@@ -49,11 +50,21 @@ Shader "UI/NoiseDistortion"
             sampler2D _MainTex;
 			float4 _MainTex_TexelSize;
 
+			sampler2D _DistortTex;
+			float4 _DistortTex_ST;
+
+			float _NoiseStr;
+
             fixed4 frag (v2f i) : SV_Target {
                 // distort i.uv by the normal noise texture
 				float2 uv = i.uv;
-				uv.x += sin(uv.x * 10) * _MainTex_TexelSize.x * 200;
-				uv.y += sin(uv.x * 10) * _MainTex_TexelSize.x * 200;
+
+				float2 noiseUV = i.uv * _DistortTex_ST.xy + _DistortTex_ST.zw;
+				float4 noise = tex2D(_DistortTex, noiseUV);
+
+				noise = tex2D(_DistortTex, noise.xy);
+
+				uv += noise.xy * _MainTex_TexelSize.xy * _NoiseStr;
 
 				// then sample the texture at that uv
 				return tex2D(_MainTex, uv);

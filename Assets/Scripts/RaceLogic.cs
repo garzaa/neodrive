@@ -540,6 +540,7 @@ public class RaceLogic : MonoBehaviour {
 		medalTexture.SetActive(false);
 		quitButtons.SetActive(false);
 		raceSummary.SetActive(false);
+		defaultSnapshot.TransitionTo(0.2f);
 		car.SetDashboardEnabled(true);
 	}
 
