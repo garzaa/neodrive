@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ScrollViewUtils : MonoBehaviour {
 	bool scrolling = false;
 	Vector2 targetPos;
-	float lerpRate = 0.05f;
+	readonly float lerpRate = 0.05f;
 	RectTransform target;
 
 	ScrollRect scrollView;
@@ -51,7 +51,7 @@ public class ScrollViewUtils : MonoBehaviour {
         Canvas.ForceUpdateCanvases();
         Vector2 viewportLocalPosition = scrollView.viewport.localPosition;
         Vector2 childLocalPosition   = child.localPosition;
-        Vector2 result = new Vector2(
+        Vector2 result = new(
             0 - (viewportLocalPosition.x + childLocalPosition.x),
             0 - (viewportLocalPosition.y + childLocalPosition.y)
         );

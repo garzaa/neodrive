@@ -16,12 +16,10 @@ public class InputManager : MonoBehaviour {
     }
 
     public static bool Button(string buttonName) {
-        if (string.Equals(buttonName, Buttons.CLUTCH) && GameOptions.PaddleShift) return false;
         return player.GetButton(buttonName);
     }
 
     public static bool ButtonDown(string buttonName) {
-        if (string.Equals(buttonName, Buttons.CLUTCH) && GameOptions.PaddleShift) return false;
         return player.GetButtonDown(buttonName);
     }
 
@@ -30,7 +28,6 @@ public class InputManager : MonoBehaviour {
     }
 
     public static bool ButtonUp(string buttonName) {
-        if (string.Equals(buttonName, Buttons.CLUTCH) && GameOptions.PaddleShift) return false;
         return player.GetButtonUp(buttonName);
     }
 

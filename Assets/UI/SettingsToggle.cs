@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ public class SettingsToggle : MonoBehaviour {
 
 	void Awake() {
 		GetComponentInChildren<Toggle>().onValueChanged.AddListener(HandleValueChanged);
+        GetComponentInChildren<Toggle>().AddComponent<ScrollToOnSelect>();
 		audioSource = GetComponentInParent<AudioSource>();
 	}
 
@@ -27,5 +29,6 @@ public class SettingsToggle : MonoBehaviour {
         }
 		GameOptions.Load();
     }
+
 }
 
