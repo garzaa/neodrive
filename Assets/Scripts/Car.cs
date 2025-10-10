@@ -1231,7 +1231,7 @@ public class Car : MonoBehaviour {
         changingGear = true;
         forceClutch = true;
         yield return new WaitForSeconds(settings.gearShiftTime * 0.5f);
-        if (currentGear > 1) {
+        if (currentGear > -1) {
             ChangeGear(currentGear-1);
         }
         float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
