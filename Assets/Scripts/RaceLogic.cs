@@ -8,8 +8,8 @@ using Cinemachine;
 using System;
 using NaughtyAttributes;
 using UnityEngine.Events;
-using NaughtyAttributes.Test;
 using UnityEngine.EventSystems;
+using UnityEngine.Audio;
 
 [RequireComponent(typeof(AudioSource))]
 public class RaceLogic : MonoBehaviour {
@@ -75,6 +75,9 @@ public class RaceLogic : MonoBehaviour {
 	readonly HashSet<Checkpoint> checkpointsCrossed = new();
 
 	public List<GameObject> photoModeDisable;
+
+	public AudioMixerSnapshot finishedSnapshot;
+	public AudioMixerSnapshot defaultSnapshot;
 
 	struct NameTimePair {
 		public string name;
@@ -210,6 +213,7 @@ public class RaceLogic : MonoBehaviour {
 		lapTimer.Restart();
 		checkpointsCrossed.Clear();
 		finishedOnce = false;
+		defaultSnapshot.TransitionTo(0.2f);
 	}
 
 	public void OnPhotoModeChange(bool photoMode) {
@@ -580,6 +584,7 @@ public class RaceLogic : MonoBehaviour {
 	}
 
 	IEnumerator ShowResults() {
+		finishedSnapshot.TransitionTo(2f);
 		yield return new WaitForSeconds(2f);
 		medalText.gameObject.SetActive(true);
 		if (medalText.text != "" && medalText.text.ToLower() != "no medal") {

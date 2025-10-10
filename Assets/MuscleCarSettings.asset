@@ -69,7 +69,7 @@ MonoBehaviour:
   lcsLimit: 1
   driftBoost: 1
   driftControl: 3
-  airSpinControl: 0.7
-  airPitchControl: 0.5
+  airSpinAccel: 0.5
+  airSpinMaxSpeed: 60
   hydroplaneSpeed: 90
   hydroplaneGrip: 0.1

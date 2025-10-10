@@ -988,10 +988,25 @@ public class Car : MonoBehaviour {
             rb.AddTorque(-spin);
         }
 
-        rb.AddTorque(50 * settings.airSpinControl * steering * transform.up);
+        Vector3 v = rb.angularVelocity;
+        // v.y is flat spin
+        v.y += steering * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.y = Mathf.Clamp(v.y, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
 
-        rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_Y) * settings.airPitchControl * transform.right);
-        rb.AddTorque(50 * InputManager.GetAxis(Buttons.CAM_X) * settings.airPitchControl * -transform.forward);
+        // v.x is pitch y
+        v.x += InputManager.GetAxis(Buttons.CAM_Y) * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.x = Mathf.Clamp(v.x, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
+
+        // v.z is pitch x, rolling side to side
+        v.z -= InputManager.GetAxis(Buttons.CAM_X) * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.z = Mathf.Clamp(v.z, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
+
+        // then slowly reset to velocity 0
+        if (steering == 0) v.y = Mathf.MoveTowards(v.y, 0, 1f/settings.airSpinAccel * Time.fixedDeltaTime);
+        if (InputManager.GetAxis(Buttons.CAM_Y) == 0) v.x = Mathf.MoveTowards(v.x, 0, 1f/settings.airSpinAccel * Time.fixedDeltaTime);
+        if (InputManager.GetAxis(Buttons.CAM_X) == 0) v.z = Mathf.MoveTowards(v.z, 0, 1f/settings.airSpinAccel * Time.fixedDeltaTime);
+        
+        rb.angularVelocity = v;
 
         if (InputManager.ButtonDown(Buttons.HANDBRAKE) && !forceBrake) {
             rb.angularVelocity = Vector3.zero;

@@ -66,8 +66,10 @@ public class CarSettings : ScriptableObject {
 	public float driftControl = 1f;
 
 	[Header("Air Control")]
-	public float airSpinControl = 0.5f;
-	public float airPitchControl = 0.5f;
+	[Tooltip("Time in seconds taken to accelerate to max air spin speed")]
+	public float airSpinAccel = 0.5f;
+	[Tooltip("Air spin max speed, in degrees/second")]
+	public float airSpinMaxSpeed = 50f;
 
 	[Tooltip("Speed, in MPH, the car must be traveling to hydroplane")]
 	public float hydroplaneSpeed = 90f;

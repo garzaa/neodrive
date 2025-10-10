@@ -12,6 +12,5 @@ public class FreewayCar : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		if (!collision.gameObject.CompareTag("Player")) return;
 		parentCars.OnCarHit(this);
-		Debug.Log($"hit by {collision.collider.gameObject.name}");
 	}
 }
