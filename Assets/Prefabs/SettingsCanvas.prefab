@@ -934,6 +934,91 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1488439477776461512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2122915654263792054}
+  - component: {fileID: 2301420227934378584}
+  - component: {fileID: 5895945301356367710}
+  m_Layer: 5
+  m_Name: Caveats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2122915654263792054
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488439477776461512}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6441147726277648732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 170.00002, y: 0}
+  m_SizeDelta: {x: 440, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2301420227934378584
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488439477776461512}
+  m_CullTransparentMesh: 1
+--- !u!114 &5895945301356367710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488439477776461512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 424fd8a5d6be2c14f87325d30e7dc38d, type: 3}
+    m_FontSize: 16
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'IF YOU HAVE SAVE DATA ALREADY:
+
+    Make sure Paddle Gear Up and Paddle
+    Gear Down binds are set.
+
+    You will also need to map the Respawn button, if
+    not mapped.'
 --- !u!1 &1535258924483194105
 GameObject:
   m_ObjectHideFlags: 0
@@ -4406,6 +4491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeSound: {fileID: 8300000, guid: 24a544c80ec45d54b853ae3067075445, type: 3}
   defaultValue: 1
+  showOnEnabled: {fileID: 0}
 --- !u!1 &4993323178945751889
 GameObject:
   m_ObjectHideFlags: 0
@@ -4722,6 +4808,7 @@ RectTransform:
   m_Children:
   - {fileID: 8847250322296236382}
   - {fileID: 527573787265352361}
+  - {fileID: 2122915654263792054}
   m_Father: {fileID: 1659950313299008006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4742,7 +4829,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeSound: {fileID: 8300000, guid: 24a544c80ec45d54b853ae3067075445, type: 3}
-  defaultValue: 1
+  defaultValue: 0
+  showOnEnabled: {fileID: 1488439477776461512}
 --- !u!1 &5352587889743774435
 GameObject:
   m_ObjectHideFlags: 0
@@ -6807,6 +6895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeSound: {fileID: 8300000, guid: 24a544c80ec45d54b853ae3067075445, type: 3}
   defaultValue: 1
+  showOnEnabled: {fileID: 0}
 --- !u!1 &7555296454192292074
 GameObject:
   m_ObjectHideFlags: 0
@@ -7410,6 +7499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeSound: {fileID: 8300000, guid: 24a544c80ec45d54b853ae3067075445, type: 3}
   defaultValue: 1
+  showOnEnabled: {fileID: 0}
 --- !u!1 &8090356863185265158
 GameObject:
   m_ObjectHideFlags: 0
@@ -7673,6 +7763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeSound: {fileID: 8300000, guid: 24a544c80ec45d54b853ae3067075445, type: 3}
   defaultValue: 0
+  showOnEnabled: {fileID: 0}
 --- !u!1 &8635168678710925335
 GameObject:
   m_ObjectHideFlags: 0

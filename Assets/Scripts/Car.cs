@@ -114,7 +114,7 @@ public class Car : MonoBehaviour {
     bool automatic = false;
 
     float tireSkidVolume;
-    float spawnTime;
+    float spawnTime, respawnTime;
     public bool finished { get; private set; }
 
     [SerializeField]
@@ -313,7 +313,7 @@ public class Car : MonoBehaviour {
             handbrakeDown = Time.time;
         }
 
-        if (InputManager.ButtonDown(Buttons.PAUSE) && InputManager.Button(Buttons.CLUTCH)) {
+        if (InputManager.ButtonDown(Buttons.RESPAWN) || (!GameOptions.PaddleShift && InputManager.Clutch() && InputManager.ButtonDown(Buttons.PAUSE))) {
 			Respawn();
 		}
 
@@ -424,6 +424,9 @@ public class Car : MonoBehaviour {
                 // all four wheels gotta be in/not hydroplaning
                 inWater = false;
             }
+        }
+        if (!groundedLastStep && grounded) {
+            OnHitGround(Vector3.Dot(rb.velocity, transform.up) * u2mph);
         }
 
         frontAxle = (WheelFL.transform.position + WheelFR.transform.position) / 2f;
@@ -1016,8 +1019,8 @@ public class Car : MonoBehaviour {
         if (InputManager.ButtonDown(Buttons.HANDBRAKE) && !forceBrake) {
             rb.angularVelocity = Vector3.zero;
         }
-        if (Time.time > handbrakeDown + 0.25f && !forceBrake) {
-            rb.AddForce(-Vector3.Project(rb.velocity, Vector3.up)*0.2f);
+        if (brake > 0 && !forceBrake) {
+            rb.AddForce(0.5f * -rb.velocity);
         }
     }
 
@@ -1167,6 +1170,7 @@ public class Car : MonoBehaviour {
 
     IEnumerator RespawnRoutine() {
         raceData = new();
+        respawnTime = Time.time;
         nitroxMeter.Reset();
         finished = false;
         currentGear = 0;
@@ -1207,12 +1211,11 @@ public class Car : MonoBehaviour {
         changingGear = true;
         forceClutch = true;
         gearshiftFuelCutoff = true;
-        yield return new WaitForSeconds(settings.gearShiftTime);
+        yield return new WaitForSeconds(settings.gearShiftTime * 0.5f);
         if (currentGear < engine.gearRatios.Count) {
             ChangeGear(currentGear+1);
         }
-        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
-        engineRPM = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
+        AutoRevmatch();
         forceClutch = false;
         gearshiftFuelCutoff = false;
         changingGear = false;
@@ -1226,8 +1229,7 @@ public class Car : MonoBehaviour {
         if (currentGear > -1) {
             ChangeGear(currentGear-1);
         }
-        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
-        engineRPM = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
+        AutoRevmatch();
         forceClutch = false;
         changingGear = false;
     }
@@ -1240,6 +1242,13 @@ public class Car : MonoBehaviour {
         rb.angularDrag = 0.05f;
     }
 
+    void AutoRevmatch() {
+        float flatSpeed = Vector3.Dot(rb.velocity, transform.forward);
+        if (currentGear != 0) {
+            engineRPM = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
+        }
+    }
+
     void OnValidFinish() {
         if (drifting) {
             float driftDistance = Vector3.Distance(transform.position, raceData.driftStartPos);
@@ -1250,5 +1259,13 @@ public class Car : MonoBehaviour {
 
     public RaceData GetRaceData() {
         return raceData;
+    }
+
+    void OnHitGround(float fallSpeedMPH) {
+        if (Time.time < spawnTime + 0.2f) return;
+        if (fallSpeedMPH > 5) {
+            impulseSource.GenerateImpulse(transform.up * 0.2f);
+            gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
+        }
     }
 }

@@ -9,6 +9,8 @@ public class SettingsToggle : MonoBehaviour {
 	AudioSource audioSource;
     bool quiet;
 
+    public GameObject showOnEnabled;
+
 	void Awake() {
 		GetComponentInChildren<Toggle>().onValueChanged.AddListener(HandleValueChanged);
         GetComponentInChildren<Toggle>().AddComponent<ScrollToOnSelect>();
@@ -28,6 +30,9 @@ public class SettingsToggle : MonoBehaviour {
             audioSource.PlayOneShot(changeSound);
         }
 		GameOptions.Load();
+        if (showOnEnabled != null) {
+            showOnEnabled.SetActive(val);
+        }
     }
 
 }

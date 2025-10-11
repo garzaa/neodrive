@@ -32,7 +32,7 @@ public class Tutorial : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!carStarted && InputManager.ButtonDown(Buttons.STARTENGINE) && InputManager.Button(Buttons.CLUTCH)) {
+		if (!carStarted && InputManager.ButtonDown(Buttons.STARTENGINE) && InputManager.Clutch()) {
 			vcam.gameObject.SetActive(false);
 		}
 

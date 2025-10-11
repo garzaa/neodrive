@@ -46,6 +46,7 @@ public class MainMenu : SavedObject {
 			}
 			fromTrack = false;
 		}
+		GameOptions.Load();
 	}
 	
 	public void SetFromTrack() {

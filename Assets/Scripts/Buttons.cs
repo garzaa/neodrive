@@ -18,6 +18,7 @@ public static class Buttons {
     public static readonly string PHOTOMODE = "PhotoMode";
     public static readonly string SHIFTALT = "ShiftAlt";
     public static readonly string PAUSE = "Pause";
+    public static readonly string RESPAWN = "Respawn";
 
     public static readonly string UICANCEL = "UICancel";
     public static readonly string UILEFT = "UILeft";
