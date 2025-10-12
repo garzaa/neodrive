@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine.Audio;
-using UnityEditor.EditorTools;
 
 public class CameraRotate : SavedObject {
 
@@ -96,25 +95,34 @@ public class CameraRotate : SavedObject {
         }
     }
 
+    void TogglePhotoMode() {
+        // check if something else paused it
+        if (!photoMode && Time.timeScale != 1) return;
+        photoMode = !photoMode;
+        Time.timeScale = photoMode ? 0 : 1;
+        if (!photoMode) {
+            photoModeCamera.ExitPhotoMode();
+        } else {
+            photoModeCamera.EnterPhotoMode();
+        }
+        AudioListener.volume = photoMode ? 0 : 1;
+        if (photoMode) {
+            pausedAudio.TransitionTo(0.5f);
+        } else {
+            unpausedAudio.TransitionTo(0.1f);
+        }
+        car.SetDashboardEnabled(!photoMode);
+    }
+
     void LateUpdate() {
         snapping = Time.time < respawnTime+0.5f;
+        
         if (InputManager.ButtonDown(Buttons.PHOTOMODE)) {
-            // check if something else paused it
-            if (!photoMode && Time.timeScale != 1) return;
-            photoMode = !photoMode;
-            Time.timeScale = photoMode ? 0 : 1;
-            if (!photoMode) {
-                photoModeCamera.ExitPhotoMode();
-            } else {
-                photoModeCamera.EnterPhotoMode();
-            }
-            AudioListener.volume = photoMode ? 0 : 1;
-            if (photoMode) {
-                pausedAudio.TransitionTo(0.5f);
-            } else {
-                unpausedAudio.TransitionTo(0.1f);
-            }
-            car.SetDashboardEnabled(!photoMode);
+           TogglePhotoMode();
+        }
+
+        if (photoMode && InputManager.ButtonDown(Buttons.UICANCEL)) {
+            TogglePhotoMode();
         }
 
         if (InputManager.ButtonDown(Buttons.CYCLE_CAMERA) && Time.timeScale == 1) {

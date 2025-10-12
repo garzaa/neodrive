@@ -207,6 +207,8 @@ public class Car : MonoBehaviour {
         if (nightMode) {
             shaderBlock.SetTexture("_Emissive_Tex", nightIllum);
             carMesh.SetPropertyBlock(shaderBlock, 0);
+        } else {
+            brakeFlares.SetActive(false);
         }
 
         StartLine startLine = FindObjectOfType<StartLine>();
