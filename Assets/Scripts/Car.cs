@@ -226,6 +226,7 @@ public class Car : MonoBehaviour {
         UpdateInputs();
 
         bool currentClutch = InputManager.Clutch() || forceClutch;
+        if (GameOptions.PaddleShift) currentClutch = forceClutch;
         if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
             if (!nitroAutomatic) raceData.totalShifts++;
@@ -280,33 +281,32 @@ public class Car : MonoBehaviour {
             lastGear = currentGear;
         }
 
-        // TODO: check for paddle shifting mode
-        if (
-            (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch)
-            // this is to allow buffering of a shift input if the player slightly mistimes it
-            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARDOWN) > ReInput.time.unscaledTime-0.25f))
-        ) {
-            if (InputManager.Button(Buttons.SHIFTALT)) {
-                currentGear = -1;
-                if (Vector3.Dot(rb.velocity, transform.forward) > 60*mph2u) {
-                    achievements.Get("R For Racing");
-                    StallEngine();
+        if (!GameOptions.PaddleShift) {
+            if (
+                (InputManager.ButtonDown(Buttons.GEARDOWN) && clutch)
+                // this is to allow buffering of a shift input if the player slightly mistimes it
+                || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARDOWN) > ReInput.time.unscaledTime-0.25f))
+            ) {
+                if (InputManager.Button(Buttons.SHIFTALT)) {
+                    currentGear = -1;
+                    if (Vector3.Dot(rb.velocity, transform.forward) > 60*mph2u) {
+                        achievements.Get("R For Racing");
+                        StallEngine();
+                    }
+                } else {
+                    if (currentGear > -1) {
+                        ChangeGear(currentGear - 1);
+                    }
                 }
-            } else {
-                if (currentGear > -1) {
-                    ChangeGear(currentGear - 1);
+            } else if (
+                (InputManager.ButtonDown(Buttons.GEARUP) && clutch)
+                || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARUP) > ReInput.time.unscaledTime-0.25f))
+            ) {
+                if (currentGear < engine.gearRatios.Count) {
+                    ChangeGear(currentGear+1);
                 }
             }
-        } else if (
-            (InputManager.ButtonDown(Buttons.GEARUP) && clutch)
-            || (clutchInThisFrame && (InputManager.player.GetButtonTimePressed(Buttons.GEARUP) > ReInput.time.unscaledTime-0.25f))
-        ) {
-            if (currentGear < engine.gearRatios.Count) {
-                ChangeGear(currentGear+1);
-            }
-        }
-
-        if (GameOptions.PaddleShift && !changingGear) {
+        } else if (!changingGear) {
             if (InputManager.ButtonDown(Buttons.PADDLE_UP)) {
                 StartCoroutine(AutoGearUp());
             } else if (InputManager.ButtonDown(Buttons.PADDLE_DOWN)) {

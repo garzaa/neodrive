@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine.Audio;
+using UnityEditor.EditorTools;
 
 public class CameraRotate : SavedObject {
 
@@ -127,14 +128,14 @@ public class CameraRotate : SavedObject {
         }
 
         // don't move the camera around but allow holding its position
-        if (InputManager.Button(Buttons.CAMERA)) {
+        if (InputManager.Button(Buttons.CAMERA) || GameOptions.PaddleShift) {
             cameraStick = new Vector2(
                 InputManager.GetAxis(Buttons.CAM_X),
                 InputManager.GetAxis(Buttons.CAM_Y)
             ).normalized;
         }
 
-        if (!InputManager.Button(Buttons.CAMERA)) {
+        if (!InputManager.Button(Buttons.CAMERA) && !GameOptions.PaddleShift) {
             cameraStick = Vector2.zero;
         }
 
