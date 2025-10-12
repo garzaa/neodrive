@@ -12,7 +12,7 @@ Flare:
   m_Elements:
   - m_ImageIndex: 0
     m_Position: 0
-    m_Size: 7
+    m_Size: 25
     m_Color: {r: 1, g: 0.98796415, b: 0.8160377, a: 1}
     m_UseLightColor: 1
     m_Rotate: 0

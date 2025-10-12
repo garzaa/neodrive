@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Cinemachine;
 using Rewired;
 using Random = UnityEngine.Random;
+using NaughtyAttributes;
 
 [RequireComponent(typeof(EngineAudio))]
 public class Car : MonoBehaviour {
@@ -111,7 +112,7 @@ public class Car : MonoBehaviour {
     public AudioClip[] impactSounds;
     public GameObject boostEffect;
     public bool boosting { get; private set; }
-    bool automatic = false;
+    bool nitroAutomatic = false;
 
     float tireSkidVolume;
     float spawnTime, respawnTime;
@@ -138,8 +139,6 @@ public class Car : MonoBehaviour {
     
     bool usingKeyboard, usingWheel, usingController;
 
-    // this is currently broken
-    bool fullAutomatic = false;
     bool changingGear = false;    
 
     public bool Drifting {
@@ -153,10 +152,13 @@ public class Car : MonoBehaviour {
     }
 
     EngineAudio engineAudio;
-    
     Coroutine collisionRecoveryRoutine;
-
     RaceData raceData = new();
+    // TODO: get this with light probes or level data
+    public bool nightMode = false;
+    [ShowIf("nightMode")]
+    public Texture nightIllum;
+    public GameObject brakeFlares;
 
     void Awake() {
         wheels = new Wheel[]{WheelFL, WheelFR, WheelRL, WheelRR};
@@ -166,6 +168,7 @@ public class Car : MonoBehaviour {
         respawnRoutine = RespawnRoutine();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
+        rb.inertiaTensor = new Vector3(20, 25, 6);
         rb.mass = settings.carMass;
         rb.centerOfMass = centerOfGravity.transform.localPosition;
         
@@ -200,6 +203,12 @@ public class Car : MonoBehaviour {
         shaderBlock = new();
 		carMesh = transform.Find("BodyMesh/CarBase/Body").GetComponent<MeshRenderer>();
         carMesh.GetPropertyBlock(shaderBlock, 0);
+
+        if (nightMode) {
+            shaderBlock.SetTexture("_Emissive_Tex", nightIllum);
+            carMesh.SetPropertyBlock(shaderBlock, 0);
+        }
+
         StartLine startLine = FindObjectOfType<StartLine>();
         if (startLine != null) {
             Vector3 pos = startLine.transform.position + (0.1f * Vector3.up);
@@ -219,7 +228,7 @@ public class Car : MonoBehaviour {
         bool currentClutch = InputManager.Clutch() || forceClutch;
         if (clutch && !currentClutch) {
             clutchOutThisFrame = true;
-            if (!automatic) raceData.totalShifts++;
+            if (!nitroAutomatic) raceData.totalShifts++;
             clutchOutTime = Time.time;
         } else if (!clutch && currentClutch) {
             clutchInThisFrame = true;
@@ -238,7 +247,12 @@ public class Car : MonoBehaviour {
         UpdateVibration();
         UpdateCameraVibration();
         carMesh.GetPropertyBlock(shaderBlock, 0);
-        shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
+        if (!nightMode) {
+            shaderBlock.SetColor("_Emissive_Color", brake > 0 ? Color.white : Color.black);
+        } else {
+            // the flares look insanely huge when finishing for some reason
+            brakeFlares.SetActive(brake > 0 && !finished);
+        }
         carMesh.SetPropertyBlock(shaderBlock, 0);
         if (clutch && (currentGear == 1)) {
             if (engine.PeakPower(engineRPM)) {
@@ -374,11 +388,11 @@ public class Car : MonoBehaviour {
         StartCoroutine(GearLurch());
         rb.AddForce(100 * settings.nitroxBoost * transform.forward, ForceMode.Impulse);
         boosting = true;
-        automatic = true;
+        nitroAutomatic = true;
         yield return new WaitForSeconds(settings.boostDuration);
         boosting = false;
         yield return new WaitForSeconds(1);
-        automatic = false;
+        nitroAutomatic = false;
     }
 
     IEnumerator StartEngine() {
@@ -651,14 +665,6 @@ public class Car : MonoBehaviour {
             float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
-                if (fullAutomatic) {
-                    if (engineRPM > engine.redline-200) {
-                        StartCoroutine(AutoGearUp());
-                    } else if (engineRPM < engine.stallRPM+200) {
-                        StartCoroutine(AutoGearDown());
-                    }
-                }
-
                 engineRPMFromSpeed = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
                 if (clutchOutThisFrame) {
                     float rpmDiff = engineRPMFromSpeed - engineRPM;
@@ -719,7 +725,7 @@ public class Car : MonoBehaviour {
 
         engineAnimator.speed = engineRPM == 0 ? 0 : 1 + (engineRPM/engine.redline);
         if (engineRPM > engine.redline-100) {
-            if (fullAutomatic || automatic && currentGear < engine.gearRatios.Count && !clutch) {
+            if (nitroAutomatic && currentGear < engine.gearRatios.Count && !clutch) {
                 ChangeGear(currentGear + 1);
             } else {
                 fuelCutoff = true;
@@ -734,14 +740,14 @@ public class Car : MonoBehaviour {
             if (engineRPM < engine.stallRPM) {
                 if (Mathf.Abs(currentGear) == 1 && gas > 0.3f) {
                     engineRPM = engine.stallRPM;
-                } else if (fullAutomatic || GameOptions.PaddleShift) {
+                } else if (GameOptions.PaddleShift) {
                     engineRPM = engine.stallRPM;
                 } else {
                     checkEngine.Flash();
                     StallEngine();
                 }
             } else if (engineRPM > engine.redline+500) {
-                if (automatic && currentGear < engine.gearRatios.Count && !clutch) {
+                if (nitroAutomatic && currentGear < engine.gearRatios.Count && !clutch) {
                     ChangeGear(currentGear + 1);
                 } else if (!boosting) {
                     // Money Shift achievement
@@ -928,7 +934,7 @@ public class Car : MonoBehaviour {
             Alert(t + "\n+" + bonus);
             nitroxMeter.Add(bonus);
         }
-        if (!automatic) {
+        if (!nitroAutomatic) {
             float amt = 1 - (Mathf.Abs(rpmDiff) / settings.maxRPMDiff);
             if (amt < 0) amt = 1; // perfect launch
             raceData.goodShiftAmount += amt;
