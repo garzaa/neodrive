@@ -153,6 +153,7 @@ public class CameraRotate : SavedObject {
         }
         rotationAngle = Vector3.SignedAngle(transform.forward, car.rb.velocity, Vector3.up);
 
+        // follow rear of the car if drifting
         if (car.Drifting) {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
@@ -163,7 +164,8 @@ public class CameraRotate : SavedObject {
         }
 
         if (!car.grounded && car.rb.velocity.sqrMagnitude > 0 && !snapping) {
-            // look towards velocity
+            // look towards velocity without tilting
+            // actually - might want to tilt on the X axis because that's pitching up and down
             rotationAngle = Quaternion.LookRotation(car.rb.velocity, transform.up).eulerAngles.y;
         }
 
@@ -179,6 +181,7 @@ public class CameraRotate : SavedObject {
             rotationAngle += Vector3.SignedAngle(Vector3.forward, new Vector3(cameraStick.x, 0, cameraStick.y), Vector3.up);
         }
 
+        // get the base rotation - upright and behind the car
         Quaternion targetRotation = Quaternion.identity;
         if (car.grounded) {
             targetRotation = Quaternion.FromToRotation(transform.up, car.transform.up);
@@ -190,6 +193,7 @@ public class CameraRotate : SavedObject {
             55f * Time.deltaTime
         );
 
+        // disregard it if the camera is snapping
         if (snapping) {
             rotationAngle = Vector3.SignedAngle(transform.forward, car.transform.forward, Vector3.up);
         }
