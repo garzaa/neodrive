@@ -166,7 +166,6 @@ public class Car : MonoBehaviour {
         respawnRoutine = RespawnRoutine();
         currentGear = 0;
         rb = GetComponent<Rigidbody>();
-        rb.inertiaTensor = new Vector3(20, 25, 6);
         rb.mass = settings.carMass;
         rb.centerOfMass = centerOfGravity.transform.localPosition;
         
