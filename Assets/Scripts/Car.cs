@@ -373,8 +373,6 @@ public class Car : MonoBehaviour {
             collisionHitmarker.Emit(1);
         }
         
-        Debug.Log($"hit by {collision.gameObject.name}");
-
         if (grounded && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             if (collisionRecoveryRoutine != null) {
                 StopCoroutine(collisionRecoveryRoutine);
