@@ -25,7 +25,7 @@ public class FreewayCars : MonoBehaviour {
 			carSpeeds.Add(new Vector3(
 				0,
 				0,
-				(speedRange * Mathf.Sin(((child.GetSiblingIndex() * 7 % 11) / transform.childCount)))+1+baseSpeed
+				(speedRange * Mathf.Sin((child.GetSiblingIndex() * 7 % 11) / transform.childCount))+1+baseSpeed
 			));
 			startingPositions.Add(so.splinePosition);
 		}

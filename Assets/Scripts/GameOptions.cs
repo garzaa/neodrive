@@ -50,4 +50,14 @@ public class GameOptions : MonoBehaviour {
 	static bool LoadBool(string name, bool defaultValue = false) {
 		return PlayerPrefs.GetInt(name, defaultValue ? 1 : 0) == 1;
 	}
+
+	public void SetClutchShifting() {
+		PaddleShift = false;
+		PlayerPrefs.SetInt(nameof(PaddleShift), 0);
+	}
+
+	public void SetPaddleShifting() {
+		PaddleShift = true;
+		PlayerPrefs.SetInt(nameof(PaddleShift), 1);
+	}
 }

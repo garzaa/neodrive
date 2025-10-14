@@ -136,11 +136,13 @@ public class CameraRotate : SavedObject {
         }
 
         // don't move the camera around but allow holding its position
-        if (InputManager.Button(Buttons.CAMERA) || GameOptions.PaddleShift) {
+        if (InputManager.Button(Buttons.CAMERA) || (GameOptions.PaddleShift && InputManager.Button(Buttons.SHIFTALT))) {
             cameraStick = new Vector2(
                 InputManager.GetAxis(Buttons.CAM_X),
                 InputManager.GetAxis(Buttons.CAM_Y)
             ).normalized;
+        } else {
+            cameraStick = Vector2.zero;
         }
 
         if (!InputManager.Button(Buttons.CAMERA) && !GameOptions.PaddleShift) {

@@ -366,13 +366,14 @@ public class Car : MonoBehaviour {
         // don't play the bang noise if the car suspension bottoms out
         if (rb.velocity.sqrMagnitude > 5 * mph2u && Vector3.Angle(transform.up, collision.contacts[0].normal) > 20f) {
             gearshiftAudio.PlayOneShot(impactSounds[Random.Range(0, impactSounds.Length-1)]);
-            // ok need ot not play this when the wheel colliders hit. howmst
             collisionHitmarker.transform.SetPositionAndRotation(collision.contacts[0].point, Quaternion.FromToRotation(
                 collisionHitmarker.transform.up,
                 collision.contacts[0].normal
             ));
             collisionHitmarker.Emit(1);
         }
+        
+        Debug.Log($"hit by {collision.gameObject.name}");
 
         if (grounded && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             if (collisionRecoveryRoutine != null) {
