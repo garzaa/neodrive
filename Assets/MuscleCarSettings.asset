@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: MuscleCarSettings
   m_EditorClassIdentifier: 
   carMass: 10
-  inertiaTensor: {x: 20, y: 25, z: 6}
   suspensionTravel: 0.1
   springStrength: 1500
   springDamper: 100
@@ -69,7 +68,7 @@ MonoBehaviour:
   lcsLimit: 1
   driftBoost: 1
   driftControl: 3
-  airSpinAccel: 0.5
-  airSpinMaxSpeed: 60
+  airSpinAccel: 5
+  airSpinMaxSpeed: 30
   hydroplaneSpeed: 90
   hydroplaneGrip: 0.1

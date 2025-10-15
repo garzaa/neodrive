@@ -1008,17 +1008,25 @@ public class Car : MonoBehaviour {
         }
 
         Vector3 v = transform.InverseTransformDirection(rb.angularVelocity);
+
+        float spinInput = steering;
+        float pitchInput = InputManager.GetAxis(Buttons.CAM_X);
+        float rollInput = InputManager.GetAxis(Buttons.CAM_Y);
+
         // v.y is flat spin
-        v.y += steering * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.y += spinInput * (1f/settings.airSpinAccel) * settings.airSpinMaxSpeed * Time.fixedDeltaTime;
         v.y = Mathf.Clamp(v.y, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
 
         // v.z is pitch y
-        v.z -= InputManager.GetAxis(Buttons.CAM_X) * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.z -= pitchInput * (1f/settings.airSpinAccel) * settings.airSpinMaxSpeed * Time.fixedDeltaTime;
         v.z = Mathf.Clamp(v.z, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
 
         // v.x is pitch x, rolling side to side
-        v.x += InputManager.GetAxis(Buttons.CAM_Y) * (1f/settings.airSpinAccel) * Time.fixedDeltaTime;
+        v.x += rollInput * (1f/settings.airSpinAccel) * settings.airSpinMaxSpeed * Time.fixedDeltaTime;
         v.x = Mathf.Clamp(v.x, -settings.airSpinMaxSpeed, settings.airSpinMaxSpeed);
+
+        // TODO: round the pitch/roll axes for the inputs?
+        // TODO: if no input, gradually slow the car rotational velocity down
 
         rb.angularVelocity = transform.TransformDirection(v);
 
