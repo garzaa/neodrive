@@ -531,7 +531,7 @@ MonoBehaviour:
     - _id: 37
       _name: Gear6
       _type: 1
-      _descriptiveName: Gear1
+      _descriptiveName: Gear6
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -555,7 +555,7 @@ MonoBehaviour:
     - _id: 36
       _name: Gear5
       _type: 1
-      _descriptiveName: Gear1
+      _descriptiveName: Gear5
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -567,7 +567,7 @@ MonoBehaviour:
     - _id: 35
       _name: Gear4
       _type: 1
-      _descriptiveName: Gear1
+      _descriptiveName: Gear4
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -579,7 +579,7 @@ MonoBehaviour:
     - _id: 34
       _name: Gear3
       _type: 1
-      _descriptiveName: Gear1
+      _descriptiveName: Gear3
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
@@ -591,7 +591,7 @@ MonoBehaviour:
     - _id: 33
       _name: Gear2
       _type: 1
-      _descriptiveName: Gear1
+      _descriptiveName: Gear2
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _key: 
