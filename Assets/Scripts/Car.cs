@@ -500,7 +500,7 @@ public class Car : MonoBehaviour {
                     bool lcsBreak = ((wantedAccel-settings.burnoutThreshold) > settings.lcsLimit) && !usingKeyboard;
 
                     // if braking at low speed allow doing a burnout
-                    lcsBreak |= gas > 0 && brake > 0 && !clutch;
+                    lcsBreak |= gas > 0 && brake > 0 && !clutch && currentGear == 1;
                     lcsBreak |= lcsDisabled;
                     burnout = lcsBreak;
 
@@ -664,6 +664,8 @@ public class Car : MonoBehaviour {
         } else {
             float targetRPM = Mathf.Max(engine.idleRPM + Mathf.Sin(Time.time*64)*50f, ignition ? gas*engine.redline : 0);
             float moveSpeed = ignition ? engine.GetThrottleResponse(engineRPM) : (engine.engineBraking*(engineRPM/engine.redline)*3+1000f);
+            // add rev hang if the car is in the air so it doesn't go back to idling in less than a second
+            if (gas == 0 && !grounded) moveSpeed /= 10f;
             float idealEngineRPM = Mathf.MoveTowards(engineRPM, targetRPM, moveSpeed * Time.fixedDeltaTime);
             if (currentGear != 0 && !clutch) {
                 engineRPMFromSpeed = grounded ? GetEngineRPMFromSpeed(flatSpeed) : engineRPM;
