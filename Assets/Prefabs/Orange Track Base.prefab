@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2612725542086440620, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2612725542086440620, guid: b82bf363f7740844785ee82160a1f553, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -161,7 +161,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 9191126656719063098, guid: c31194ef18dc618458a291146eb2ef7a, type: 3}
+  m_Mesh: {fileID: 9191126656719063098, guid: b82bf363f7740844785ee82160a1f553, type: 3}
 --- !u!1 &2128890180746041792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b82bf363f7740844785ee82160a1f553, type: 3}
