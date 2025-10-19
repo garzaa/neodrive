@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &8718709
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2377,7 +2377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &52634070
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2413,7 +2413,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -2922,7 +2922,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &77852867
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2958,7 +2958,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 0}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -4351,7 +4351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &114276481
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4387,7 +4387,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -9620,7 +9620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &223485421
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -9656,7 +9656,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -12572,7 +12572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &293496854
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12608,7 +12608,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -19877,7 +19877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loop: 0
-  length: 1112.9792
+  length: 1112.979
   normalType: 0
   segments:
   - anchor: {x: -14.529297, y: 3.6874027, z: -57.212646}
@@ -20016,7 +20016,7 @@ MonoBehaviour:
     noise: 1
     saddleSkew: {x: 0, y: 0}
     scale: {x: 1, y: 1}
-    length: 55.559326
+    length: 55.55945
     zPosition: 590.7342
     linkTarget: 0
     mirrorConnector: 0
@@ -20034,8 +20034,8 @@ MonoBehaviour:
     noise: 1
     saddleSkew: {x: 0, y: 0}
     scale: {x: 1, y: 1}
-    length: 180.07452
-    zPosition: 646.2935
+    length: 180.07422
+    zPosition: 646.29364
     linkTarget: 0
     mirrorConnector: 0
     oldDisTangentA: 3
@@ -20053,7 +20053,7 @@ MonoBehaviour:
     saddleSkew: {x: 0, y: 0}
     scale: {x: 1, y: 1}
     length: 130.16205
-    zPosition: 826.36804
+    zPosition: 826.36786
     linkTarget: 0
     mirrorConnector: 0
     oldDisTangentA: 3
@@ -20070,8 +20070,8 @@ MonoBehaviour:
     noise: 1
     saddleSkew: {x: 0, y: 0}
     scale: {x: 1, y: 1}
-    length: 156.44916
-    zPosition: 956.5301
+    length: 156.4491
+    zPosition: 956.5299
     linkTarget: 0
     mirrorConnector: 0
     oldDisTangentA: 3
@@ -20089,7 +20089,7 @@ MonoBehaviour:
     saddleSkew: {x: 0, y: 0}
     scale: {x: 1, y: 1}
     length: 0
-    zPosition: 1112.9792
+    zPosition: 1112.979
     linkTarget: 0
     mirrorConnector: 0
     oldDisTangentA: 3
@@ -20109,7 +20109,7 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 1}
   editorDirty: 1
   gridCenterPoint: {x: 49.180176, y: -3.7057362, z: -63.729736}
-  selectedControlPoint: 1024
+  selectedControlPoint: 0
   selectedAnchors: 
   selectedSplineMenu: deformation
   selectedAnchorMenu: deformation
@@ -21824,7 +21824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &430869708
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -21860,7 +21860,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -24537,7 +24537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &503569074
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -24573,7 +24573,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -32697,7 +32697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &728080195
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32733,7 +32733,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41256,7 +41256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &865049486
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41292,7 +41292,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -41648,7 +41648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &873752148
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41684,7 +41684,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -45513,7 +45513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &952452390
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -45549,7 +45549,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -45710,7 +45710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &958083439
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -45746,7 +45746,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -54759,7 +54759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1172270106
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -54795,7 +54795,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -54956,7 +54956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1174464575
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -54992,7 +54992,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -65626,7 +65626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1374658195
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -65662,7 +65662,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -68465,7 +68465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1424266706
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -68501,7 +68501,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -68857,7 +68857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1435841967
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -68893,7 +68893,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -69173,7 +69173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1440374509
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -69209,7 +69209,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -74263,7 +74263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1564009090
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -74299,7 +74299,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -75183,7 +75183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1583542912
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -75219,7 +75219,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -77511,7 +77511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1653431540
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -77547,7 +77547,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -77786,7 +77786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1658535081
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -77822,7 +77822,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -80268,7 +80268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1695398156
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -80304,7 +80304,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -80793,7 +80793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1704386844
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -80829,7 +80829,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -82240,7 +82240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1723007236
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -82276,7 +82276,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -82391,7 +82391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1723716460
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -82427,7 +82427,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -86478,7 +86478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1793452892
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -86514,7 +86514,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -88850,7 +88850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1843118431
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -88886,7 +88886,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -89006,7 +89006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1847437361
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -89042,7 +89042,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -94790,7 +94790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1979753847
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -94826,7 +94826,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -95586,7 +95586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &1995770252
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -95622,7 +95622,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -96736,7 +96736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &2028776609
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -96772,7 +96772,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -99657,7 +99657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &2066223978
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -99693,7 +99693,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -100401,7 +100401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &2071090512
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -100437,7 +100437,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -102196,7 +102196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &2088904704
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -102232,7 +102232,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1
@@ -107252,7 +107252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &6593685754432980698
 MonoBehaviour:
-  m_ObjectHideFlags: 16
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -107288,7 +107288,7 @@ MonoBehaviour:
   splineParent: {fileID: 401648913}
   soParent: {fileID: 77852867}
   meshContainers: []
-  componentMode: 0
+  componentMode: 2
   hasPrimitiveCollider: 0
   autoType: 0
   canUpdateSelection: 1

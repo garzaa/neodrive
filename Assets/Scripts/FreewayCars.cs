@@ -77,8 +77,6 @@ public class FreewayCars : MonoBehaviour {
 	}
 
 	public void OnCarHit(FreewayCar freewayCar) {
-		int idx = cars.IndexOf(freewayCar.GetComponent<SplineObject>());
-		// immediately swap the car with an instatiated copy that's physics enabled
 		SetPhysical(freewayCar.gameObject);
 	}
 }

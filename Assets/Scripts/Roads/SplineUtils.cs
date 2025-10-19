@@ -24,6 +24,11 @@ public class SplineUtils : MonoBehaviour {
 
 	[Button("Add Loop")]
 	public void AddLoop() {
+		// TODO: addLoop should separate out this spline and stitch in a new one
+		// fuuck need to also connect the end of the new one to the start of the old one. that's fine, that's possible
+		// for now just make sure to have the code to flatten out the ends so the tangents are the same
+		// get that from Mike
+
 		// three segments. look at the tangent direction of the last segment
 		GetSpline();
 		Vector3[] rightUpForward = new Vector3[3];

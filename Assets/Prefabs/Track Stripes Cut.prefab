@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9215441961309391414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2609140244031381001}
+  m_Layer: 0
+  m_Name: Track Stripes Cut
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2609140244031381001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9215441961309391414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4264330979361193382}
+  - {fileID: 6046209297638922482}
+  - {fileID: 259934935921039782}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1526554829119943127
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2609140244031381001}
+    m_Modifications:
+    - target: {fileID: 583884578946671255, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3632115315828532106, guid: 9a45936c7fae81444a48254f5fe3ae0a, type: 3}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628865337122982512, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Name
+      value: Track Stripes
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+--- !u!4 &6046209297638922482 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+  m_PrefabInstance: {fileID: 1526554829119943127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4997979257280852099
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2609140244031381001}
+    m_Modifications:
+    - target: {fileID: 583884578946671255, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8299132772825408577, guid: 8d65b7d9de8715d4589f1d24c791a72c, type: 3}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628865337122982512, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Name
+      value: Track Stripes (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+--- !u!4 &259934935921039782 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+  m_PrefabInstance: {fileID: 4997979257280852099}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9073320292053619843
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2609140244031381001}
+    m_Modifications:
+    - target: {fileID: 583884578946671255, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8445810170256988887, guid: 8d65b7d9de8715d4589f1d24c791a72c, type: 3}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000057601163
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628865337122982512, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+      propertyPath: m_Name
+      value: Track Stripes (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+--- !u!4 &4264330979361193382 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5100074605162752293, guid: 2270d92ddfb7aa94a9a78709f365caa9, type: 3}
+  m_PrefabInstance: {fileID: 9073320292053619843}
+  m_PrefabAsset: {fileID: 0}
