@@ -139,7 +139,8 @@ public class Car : MonoBehaviour {
     
     bool usingKeyboard, usingWheel, usingController;
 
-    bool changingGear = false;    
+    bool changingGear = false;
+    bool clutchKickThisDrift = false;  
 
     public bool Drifting {
         get {
@@ -885,6 +886,7 @@ public class Car : MonoBehaviour {
                 if (drifting) {
                     float driftDistance = Vector3.Distance(transform.position, raceData.driftStartPos);
                     raceData.longestDrift = Mathf.Max(driftDistance, raceData.longestDrift);
+                    clutchKickThisDrift = false;
                 }
                 drifting = false;
             }
@@ -971,10 +973,16 @@ public class Car : MonoBehaviour {
     }
 
     void ClutchKick() {
+        Debug.Log($"clutch kick? steering is {Mathf.Abs(steering)}");
         // push the car sideways based on gas, in the direction it's sliding
-        if (Mathf.Abs(steering) > 0.5f) {
+        if (!clutchKickThisDrift) {
+            print("clutch kick first time");
             Alert("clutch kick\n+"+settings.driftNitroGain);
             nitroxMeter.Add(settings.driftNitroGain);
+            clutchKickThisDrift = true;
+        } else {
+            Debug.Log($"stale clutch kick");
+            Alert("clutch kick (stale)\n+0");
         }
         float angleOffForward = Vector3.SignedAngle(transform.forward, rb.velocity, transform.up);
         float slideDirection = angleOffForward > 0 ? 1 : -1;
