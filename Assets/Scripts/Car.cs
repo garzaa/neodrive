@@ -973,16 +973,13 @@ public class Car : MonoBehaviour {
     }
 
     void ClutchKick() {
-        Debug.Log($"clutch kick? steering is {Mathf.Abs(steering)}");
         // push the car sideways based on gas, in the direction it's sliding
         if (!clutchKickThisDrift) {
-            print("clutch kick first time");
             Alert("clutch kick\n+"+settings.driftNitroGain);
             nitroxMeter.Add(settings.driftNitroGain);
             clutchKickThisDrift = true;
         } else {
             Debug.Log($"stale clutch kick");
-            Alert("clutch kick (stale)\n+0");
         }
         float angleOffForward = Vector3.SignedAngle(transform.forward, rb.velocity, transform.up);
         float slideDirection = angleOffForward > 0 ? 1 : -1;
